@@ -1,0 +1,43 @@
+"""Here, we show a script that creates a dataset of monkeys with different poses - rendering RGB & Normals.
+To run this script, we first generate the dataset of labels using examples/dataset_creation/generate_labels.py
+Then, we run this script using create_dataset.py
+"""
+
+import blendersynth as bsyn
+import sys
+
+inputs = bsyn.INPUTS()  # This is an iterable of the jsons passed in via run.py
+
+# Create the scene
+monkey = bsyn.BSObject.from_primitive('monkey')  # Create Monkey object
+
+# add normals AOV
+cam_normals_aov = bsyn.aov.NormalsAOV('cam_normals', ref_frame='CAMERA')
+monkey.assign_aov(cam_normals_aov)
+
+bsyn.render.set_cycles_samples(100)
+bsyn.render.set_resolution(512, 512)
+
+# create compositor to output RGB, Normals AOV & Depth
+comp = bsyn.Compositor()
+comp.output_to_file('Image', 'example_dataset/rgb')  # render RGB layer
+comp.output_to_file(cam_normals_aov.name, 'example_dataset/normal')  # render normals layer
+
+# Now iterate through and generate dataset
+for i, (fname, input) in enumerate(inputs):
+	# Set the pose of the monkey
+	monkey.set_euler_rotation(*input['euler'])
+	monkey.set_position(*input['location'])
+
+
+	# Render - set the output filename to match the json filename (e.g. 0001.json -> 0001.png)
+	comp.register_fname('Image', fname)
+	comp.register_fname(cam_normals_aov.name, fname)
+	comp.render()
+
+	# Save the pose and lighting as an output json
+	# (you may want to add other things here, such as keypoints)
+	bsyn.file.save_label(input, f'example_dataset/label/{fname}.json')
+
+	# So that the threading can track progress, log here
+	bsyn.log_event(i)
