@@ -44,7 +44,7 @@ blender_path = get_blender_path()
 python_path = find_blender_python(blender_path) # blender's python path
 
 # install necessary packages to blender's python
-packages = ['imageio[pyav]']
+packages = ['imageio[pyav]', 'numpy']
 subprocess.call([python_path, "-m", "ensurepip"])
 subprocess.call([python_path, "-m", "pip", "install", "--upgrade", "pip"])
 for package in packages:

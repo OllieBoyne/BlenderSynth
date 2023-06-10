@@ -12,6 +12,7 @@ if 'blender' in sys.argv:
 	from file.dataset_inputs import INPUTS
 	import file
 	from run.blender_interface import log_event
+	from blender import world
 
 	# set render engine to cycles
 	render.set_engine('CYCLES')

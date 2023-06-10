@@ -15,7 +15,7 @@ monkey = bsyn.BSObject.from_primitive('monkey')  # Create Monkey object
 cam_normals_aov = bsyn.aov.NormalsAOV('cam_normals', ref_frame='CAMERA')
 monkey.assign_aov(cam_normals_aov)
 
-bsyn.render.set_cycles_samples(100)
+bsyn.render.set_cycles_samples(10)
 bsyn.render.set_resolution(512, 512)
 
 # create compositor to output RGB, Normals AOV & Depth
@@ -28,7 +28,6 @@ for i, (fname, input) in enumerate(inputs):
 	# Set the pose of the monkey
 	monkey.set_euler_rotation(*input['euler'])
 	monkey.set_position(*input['location'])
-
 
 	# Render - set the output filename to match the json filename (e.g. 0001.json -> 0001.png)
 	comp.register_fname('Image', fname)
