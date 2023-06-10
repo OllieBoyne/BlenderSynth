@@ -1,8 +1,8 @@
 import os.path
 
 import bpy
-from blender.utils import GetNewObject
-from blender.aov import AOV
+from .utils import GetNewObject
+from .aov import AOV
 
 _primitives ={
 	"cube": bpy.ops.mesh.primitive_cube_add,

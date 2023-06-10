@@ -5,6 +5,7 @@ Then, we run this script using create_dataset.py
 
 import blendersynth as bsyn
 import sys
+import os
 
 inputs = bsyn.INPUTS()  # This is an iterable of the jsons passed in via run.py
 
@@ -20,8 +21,8 @@ bsyn.render.set_resolution(512, 512)
 
 # create compositor to output RGB, Normals AOV & Depth
 comp = bsyn.Compositor()
-comp.output_to_file('Image', 'example_dataset/rgb')  # render RGB layer
-comp.output_to_file(cam_normals_aov.name, 'example_dataset/normal')  # render normals layer
+comp.output_to_file('Image', os.path.join('example_dataset', 'rgb'))  # render RGB layer
+comp.output_to_file(cam_normals_aov.name, os.path.join('example_dataset', 'normal'))  # render normals layer
 
 # Now iterate through and generate dataset
 for i, (fname, input) in enumerate(inputs):

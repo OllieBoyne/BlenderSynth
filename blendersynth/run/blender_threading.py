@@ -4,7 +4,7 @@ from time import perf_counter, sleep
 import numpy as np
 from subprocess import Popen
 
-from run.blender_interface import LOG_PREPEND
+from .blender_interface import LOG_PREPEND
 from datetime import datetime, timedelta
 import os
 
@@ -93,7 +93,7 @@ class BlenderThread():
 			return 0 # process not started yet
 
 		if self.to_stdout:
-			reader = sys.stdout.readlines()
+			reader = sys.stdout
 		else:
 			reader = open(self.log_loc, "r").readlines()
 
@@ -124,7 +124,8 @@ class BlenderThread():
 		return True
 
 class BlenderThreadManager:
-	def __init__(self, command, jsons, output_directory, MAX_PER_JOB=100):
+	def __init__(self, command, jsons, output_directory, print_to_stdout=False,
+				 MAX_PER_JOB=100):
 		"""
 		:param commands: Base Blender command to run
 		:param jsons: A list of num_threads size, each element is a list of jsons to render from
@@ -156,7 +157,7 @@ class BlenderThreadManager:
 								   jobs = jsons[i],
 								   log_loc=None if logs is None else logs[i],
 								   name=str(i),
-								   to_stdout=False,
+								   to_stdout=print_to_stdout,
 								   MAX_PER_JOB=MAX_PER_JOB)
 			self.threads.append(thread)
 

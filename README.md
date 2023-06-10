@@ -12,7 +12,8 @@ We produce support for:
 ## Installation
 
 1) Install Blender
-2) `python setup.py install`
+2) `python setup.py install <--blender_path /path/to/blender>`
+- If Blender is in PATH, you can omit the `--blender_path` argument
 
 ## Quickstart
 

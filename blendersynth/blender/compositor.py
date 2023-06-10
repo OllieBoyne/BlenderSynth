@@ -1,8 +1,8 @@
 import bpy
-from blender.utils import get_node_by_name
+from .utils import get_node_by_name
 import os
 import shutil
-from blender.render import render
+from .render import render
 
 
 # Mapping of file formats to extensions
@@ -62,6 +62,7 @@ class Compositor:
 		node = get_node_by_name(self.node_tree, node_name)
 
 		fname = remove_ext(fname)
+		directory = os.path.abspath(directory) # make sure directory is absolute
 		os.makedirs(directory, exist_ok=True)
 
 		if not node:

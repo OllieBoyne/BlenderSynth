@@ -1,6 +1,7 @@
 import os
 
-from run.blender_threading import BlenderThreadManager, list_split
+from .blender_threading import BlenderThreadManager, list_split
+from ..utils.blender_locator import load_blender_path
 import numpy as np
 
 from sys import platform
@@ -37,7 +38,9 @@ class BlenderCommand:
 		return self._command + ["--jobs", ",".join(job_list)]
 
 class Runner:
-	def __init__(self, script, jsons, output_directory, num_threads=1, **script_kwargs):
+	def __init__(self, script, jsons, output_directory, num_threads=1,
+				 print_to_stdout=False,
+				 **script_kwargs):
 		"""
 		:param jsons: N sized list of .json files, each with info about the given job
 		:param num_threads: threads to run in parallel (default = 1)
@@ -48,20 +51,29 @@ class Runner:
 		# Split the jsons into num_threads chunks
 		json_chunks = list_split(self.jsons, self.num_threads)
 
-		command = BlenderCommand(blender_loc="blender", background=True)
+		blender_loc = load_blender_path()
+		command = BlenderCommand(blender_loc=blender_loc, background=True)
 		command.compose(script=script, silent=True, **script_kwargs)
 
-		thread_manager = BlenderThreadManager(command, json_chunks, output_directory=output_directory)
+		thread_manager = BlenderThreadManager(command, json_chunks, print_to_stdout=print_to_stdout,
+											  output_directory=output_directory)
 
 		thread_manager.start()
 
-def execute_jobs(script, json_src, output_directory, num_threads=1, **script_kwargs):
+def execute_jobs(script, json_src, output_directory, num_threads=1,
+				 print_to_stdout=False, **script_kwargs):
 	"""
 	:param json_src: N sized list of .json files, each with info about the given job. OR a directory containing .json files,
 		which will be used as the jsons
 	:param num_threads: threads to run in parallel (default = 1)
 	"""
+
+	assert not(num_threads> 1 and print_to_stdout), "Cannot print to stdout with multiple threads"
+	if print_to_stdout:
+		raise NotImplementedError("Print to stdout not supported yet.")
+
 	if isinstance(json_src, str):
 		json_src = sorted([os.path.join(json_src, f) for f in os.listdir(json_src) if f.endswith(".json")])
 
-	Runner(script, json_src, output_directory, num_threads, **script_kwargs)
+	Runner(script, json_src, output_directory, num_threads, print_to_stdout=print_to_stdout,
+			**script_kwargs)
