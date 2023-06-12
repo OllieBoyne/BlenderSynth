@@ -13,7 +13,7 @@ _primitives ={
 	"monkey": bpy.ops.mesh.primitive_monkey_add
 }
 
-class BSObject:
+class Mesh:
 	def __init__(self, obj, material=None):
 		self.obj = obj
 
@@ -22,6 +22,12 @@ class BSObject:
 			material = bpy.data.materials.new(name='Material')
 			material.use_nodes = True
 		self.obj.data.materials.append(material)
+
+	@classmethod
+	def from_scene(cls, key):
+		"""Create object from scene"""
+		obj = bpy.data.objects[key]
+		return cls(obj)
 
 	@classmethod
 	def from_primitive(cls, name='cube'):
@@ -51,6 +57,11 @@ class BSObject:
 	def materials(self):
 		return self.obj.data.materials
 
+	def assign_pass_index(self, index: int):
+		"""Assign pass index to object. This can be used when mask rendering."""
+		self.obj.pass_index = index
+		return index
+
 	def assign_aov(self, aov: AOV):
 		"""Assign AOV to object.
 		Requires exactly 1 material on object."""
@@ -65,3 +76,13 @@ class BSObject:
 
 	def set_position(self, x, y, z):
 		self.obj.location = (x, y, z)
+
+	@property
+	def bound_box(self):
+		"""Return bounding box of object"""
+		return self.obj.bound_box
+
+	@property
+	def matrix_world(self):
+		"""Return world matrix of object"""
+		return self.obj.matrix_world
