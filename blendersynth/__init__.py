@@ -14,6 +14,7 @@ if load_blender_path() == sys.argv[0]:  # if blender is running this script
 	from .run.blender_interface import log_event
 	from .blender import world
 	from .blender.light import Light
+	from .blender.camera import Camera
 	from . import annotations
 
 	# set render engine to cycles

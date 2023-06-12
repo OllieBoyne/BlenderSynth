@@ -27,19 +27,24 @@ class Camera:
 
 		self.camera = camera
 
+	def update(self):
+		bpy.context.view_layer.update()
+		bpy.context.evaluated_depsgraph_get()
+
 	@property
 	def fov(self):
 		"""Return FOV in degrees"""
 		return self.camera.data.angle * 180/np.pi
 
 	@property
-	def position(self):
+	def location(self):
 		return self.camera.location
 
-	@position.setter
-	def position(self, pos):
+	@location.setter
+	def location(self, pos):
 		self.camera.location = mathutils.Vector(pos)
-		bpy.context.evaluated_depsgraph_get()  # need to update despgraph to update camera position
+		self.update()
+
 	@property
 	def euler(self):
 		return self.camera.rotation_euler
@@ -47,15 +52,24 @@ class Camera:
 	@euler.setter
 	def euler(self, euler):
 		self.camera.rotation_euler = euler
-		bpy.context.evaluated_depsgraph_get()  # need to update despgraph to update camera position
+		self.update()
+
+	@property
+	def matrix_world(self):
+		return self.camera.matrix_world
+
+	@property
+	def data(self):
+		return self.camera.data
+
 
 	def look_at(self, at=mathutils.Vector((0, 0, 0)), up=mathutils.Vector((0, 1, 0))):
 		self.euler = look_at_rotation(self.camera, at, up)
 
 	def place_and_rotate(self, pos, euler):
-		self.position = pos
+		self.location = pos
 		self.euler = euler
 
 	def place_and_look_at(self, pos, at, up=mathutils.Vector((0, 1, 0))):
-		self.position = pos
+		self.location = pos
 		self.look_at(at, up)

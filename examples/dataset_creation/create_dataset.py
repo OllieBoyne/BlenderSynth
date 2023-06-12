@@ -1,4 +1,3 @@
-import os
 import blendersynth as bsyn
 from examples.dataset_creation.generate_labels import json_dir
 

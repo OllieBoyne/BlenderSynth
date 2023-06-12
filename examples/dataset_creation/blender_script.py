@@ -11,7 +11,7 @@ inputs = bsyn.INPUTS()  # This is an iterable of the jsons passed in via run.py
 
 # Create the scene
 monkey = bsyn.Mesh.from_primitive('monkey')  # Create Monkey object
-light = bsyn.Light.create('Light', location=(1, 0, 0), intensity=100.)  # Create light object
+light = bsyn.Light.create('POINT', location=(1, 0, 0), intensity=100.)  # Create light object
 
 # add normals AOV
 cam_normals_aov = bsyn.aov.NormalsAOV('cam_normals', ref_frame='CAMERA')
@@ -38,7 +38,7 @@ for i, (fname, input) in enumerate(inputs):
 
 	# Save the pose and lighting as an output json
 	output = {**input}  # items to save to output label
-	output['bbox'] = bsyn.annotations.bounding_box(monkey)
+	output['bbox'] = bsyn.annotations.bounding_box(monkey, return_fmt='xywh')
 	bsyn.file.save_label(output, f'example_dataset/label/{fname}.json')
 
 	# So that the threading can track progress, log here

@@ -3,6 +3,7 @@ import os.path
 import bpy
 from .utils import GetNewObject
 from .aov import AOV
+import numpy as np
 
 _primitives ={
 	"cube": bpy.ops.mesh.primitive_cube_add,
@@ -53,6 +54,24 @@ class Mesh:
 
 		return cls(importer.imported_obj)
 
+
+	def get_all_vertices(self, ref_frame='WORLD'):
+		verts = np.array([vert.co[:] + (1,) for vert in self.obj.data.vertices]).T
+
+		if ref_frame == 'LOCAL':
+			pass
+
+		elif ref_frame == 'WORLD':
+			world_matrix = np.array(self.obj.matrix_world)
+			verts = np.dot(world_matrix, verts)
+
+		else:
+			raise ValueError(f"Invalid ref_frame: {ref_frame}. Must be one of ['LOCAL', 'WORLD']")
+
+		verts = verts[:3, :] / verts[3, :]  # convert from homogeneous coordinates
+		return verts.T
+
+
 	@property
 	def materials(self):
 		return self.obj.data.materials
@@ -86,3 +105,33 @@ class Mesh:
 	def matrix_world(self):
 		"""Return world matrix of object"""
 		return self.obj.matrix_world
+
+	@property
+	def scale(self):
+		"""Return scale of object"""
+		return self.obj.scale
+
+	@scale.setter
+	def scale(self, scale):
+		"""Set scale of object"""
+		self.obj.scale = scale
+
+	@property
+	def rotation_euler(self):
+		"""Return euler rotation of object"""
+		return self.obj.rotation_euler
+
+	@rotation_euler.setter
+	def rotation_euler(self, rotation):
+		"""Set euler rotation of object"""
+		self.obj.rotation_euler = rotation
+
+	@property
+	def location(self):
+		"""Return location of object"""
+		return self.obj.location
+
+	@location.setter
+	def location(self, location):
+		"""Set location of object"""
+		self.obj.location = location

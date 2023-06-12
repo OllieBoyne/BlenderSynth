@@ -4,8 +4,11 @@ import os
 import shutil
 from ..render import render
 from .node_group import CompositorNodeGroup
+from ..mesh import Mesh
 from .mask_overlay import MaskOverlay
-from typing import Union
+from .shape_overlays import BBoxOverlays
+from typing import Union, List
+from ...utils.node_arranger import tidy_tree
 
 # Mapping of file formats to extensions
 format_to_extension = {
@@ -54,8 +57,14 @@ class Compositor:
 		self.node_tree = bpy.context.scene.node_tree
 		self.file_output_nodes = []
 
-		self.view_layer = view_layer
+		self.view_layer = view_layer#
+
 		self.mask_nodes = {}  # Mapping of mask pass index to CompositorNodeGroup
+		self.overlays = {}
+
+	def tidy_tree(self):
+		"""Tidy up node tree"""
+		tidy_tree(self.node_tree)
 
 	@property
 	def render_layers_node(self):
@@ -82,19 +91,37 @@ class Compositor:
 							  self.node_tree, index=index, dtype=dtype,
 							  use_antialiasing=anti_aliasing)
 
-			self.node_tree.links.new(ip_node, cng.input('Image')) # THIS ISN'T CONNECTING CORRECTLY!!
+			self.node_tree.links.new(ip_node, cng.input('Image'))
 			self.node_tree.links.new(self.render_layers_node.outputs['IndexOB'], cng.input('IndexOB'))
-
-			# print([*self.node_tree.nodes.keys()])
-			# gn = self.node_tree.nodes['Group']
-			# raise ValueError(gn, cng.gn)
-			# self.node_tree.links.new(self.render_layers_node.outputs['IndexOB'], gn.inputs['IndexOB'])
-
 			self.mask_nodes[index] = cng
 
+		self.tidy_tree()
 		return self.mask_nodes[index]
 
-	def output_to_file(self, input_data: Union[str, CompositorNodeGroup], directory, fname='_', color_management=None,
+	def get_bounding_box_visual(self, objs: Union[Mesh, List[Mesh]], col=(1, 0, 0), thickness=0.01) -> BBoxOverlays:
+		"""Given a single Mesh instance, or a list of Mesh instances, return a CompositorNodeGroup,
+		which will render the bounding box of the object(s)
+
+		:param objs: Mesh instance, or list of Mesh instances
+		:param col: (3,) or (N, 3) Color(s) of bounding box(es)
+		:param thickness: (,) or (N,) Thickness(es) of bounding box(es)
+		"""
+
+		if isinstance(objs, Mesh):
+			objs = [objs]
+
+		cng = BBoxOverlays(f"Bounding Box Visual - {len(objs)}", self.node_tree, objs, col=col, thickness=thickness)
+		self.node_tree.links.new(self.render_layers_node.outputs['Image'], cng.input('Image'))
+
+		if 'BBox' in self.overlays:
+			raise ValueError("Only allowed one BBox overlay (it can contain multiple objects).")
+
+		self.overlays['BBox'] = cng
+
+		self.tidy_tree()
+		return cng
+
+	def output_to_file(self, input_data: Union[str, CompositorNodeGroup], directory, file_name=None, color_management=None,
 					   file_format='PNG', color_mode='RGBA', jpeg_quality=90,
 					   png_compression=15, color_depth='8', EXR_color_depth='32',
 					   input_name=None):
@@ -114,7 +141,10 @@ class Compositor:
 		node_name = f"File Output {input_name}"
 		node = get_node_by_name(self.node_tree, node_name)
 
-		fname = remove_ext(fname)
+		if file_name is None: # if fname is not given, use input_name
+			file_name = input_name
+
+		file_name = remove_ext(file_name)
 		directory = os.path.abspath(directory)  # make sure directory is absolute
 		os.makedirs(directory, exist_ok=True)
 
@@ -133,23 +163,10 @@ class Compositor:
 				raise NotImplementedError(
 					f"input_data must be either str or CompositorNodeGroup, got {type(input_data)}")
 
-			# if mask_index is None:
-			# 	self.node_tree.links.new(self.render_layers_node.outputs[input_name], node.inputs['Image'])
-			#
-			# else:
-			# 	# Add mask node & Mix node
-			# 	mask_node = self.get_mask(mask_index)
-			# 	mix_node = self.node_tree.nodes.new('CompositorNodeMixRGB')
-			# 	mix_node.inputs[1].default_value = (0, 0, 0, 0)  # black - 0 alpha
-			#
-			# 	self.node_tree.links.new(mask_node.outputs['Alpha'], mix_node.inputs['Fac'])
-			# 	self.node_tree.links.new(self.render_layers_node.outputs[input_name], mix_node.inputs[2])
-			# 	self.node_tree.links.new(mix_node.outputs['Image'], node.inputs['Image'])
-
 			# Set file output node properties
 			node.label = node_name
 			node.base_path = directory
-			node.file_slots[0].path = fname
+			node.file_slots[0].path = file_name
 
 			if color_management is not None:
 				node.color_management = 'OVERRIDE'
@@ -164,6 +181,7 @@ class Compositor:
 
 			self.file_output_nodes.append(node)
 
+		self.tidy_tree()
 		return input_name
 
 	def register_fname(self, key, fname):

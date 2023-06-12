@@ -1,6 +1,7 @@
 """Shader AOV manager"""
 
 import bpy
+from ..utils.node_arranger import tidy_tree
 
 ref_frames = ['CAMERA', 'WORLD', 'OBJECT']
 
@@ -25,6 +26,10 @@ class AOV:
 
 	def add_to_shader(self, shader_node_tree):
 		"""Add AOV to shader node tree"""
+		self._add_to_shader(shader_node_tree)
+		tidy_tree(shader_node_tree)
+
+	def _add_to_shader(self, shader_node_tree):
 		raise NotImplementedError
 
 class NormalsAOV(AOV):
@@ -46,7 +51,7 @@ class NormalsAOV(AOV):
 		self.order = order
 		self.polarity = polarity
 
-	def add_to_shader(self, shader_node_tree):
+	def _add_to_shader(self, shader_node_tree):
 
 		geom_node = shader_node_tree.nodes.new('ShaderNodeNewGeometry')
 		vec_transform = shader_node_tree.nodes.new('ShaderNodeVectorTransform')

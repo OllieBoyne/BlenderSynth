@@ -1,5 +1,7 @@
 """Custom compositor node group"""
 import bpy
+from ...utils.node_arranger import tidy_tree
+
 class CompositorNodeGroup:
 	def __init__(self, name, node_tree):
 		self.name = name
@@ -11,6 +13,9 @@ class CompositorNodeGroup:
 
 		self.input_node = self.group.nodes.new("NodeGroupInput")
 		self.output_node = self.group.nodes.new("NodeGroupOutput")
+
+	def tidy(self):
+		tidy_tree(self.group)
 
 
 	@property
