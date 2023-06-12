@@ -1,6 +1,7 @@
 """Use compositor nodes to draw shape overlays on rendered images"""
 from .node_group import CompositorNodeGroup
 from ...annotations.bbox import bounding_box
+import bpy
 
 class RectangleOverlay(CompositorNodeGroup):
 	def __init__(self, node_tree, col=(1.0, 0.0, 0.0), thickness=0.01):
@@ -41,15 +42,22 @@ class RectangleOverlay(CompositorNodeGroup):
 	def set_dimensions(self, x0, y0, w, h):
 		"""Given dimensions in format
 		(x0, y0, w, h), (x0, y0) is bottom left corner"""
+
+		# X, Y and width are all as a fraction of the respective axis (X or Y)
+		# Height, bizarrely, is a fraction of the width
+		# correct by multiplying by aspect ratio
+		aspect_ratio = bpy.context.scene.render.resolution_y / bpy.context.scene.render.resolution_x
+
+
 		self.box_mask_outer.x = x0 + w / 2
 		self.box_mask_outer.y = y0 + h / 2
 		self.box_mask_outer.width = w
-		self.box_mask_outer.height = h
+		self.box_mask_outer.height = h * aspect_ratio
 
 		self.box_mask_inner.x = x0 + w / 2
 		self.box_mask_inner.y = y0 + h / 2
 		self.box_mask_inner.width = w - 2 * self.thickness
-		self.box_mask_inner.height = h - 2 * self.thickness
+		self.box_mask_inner.height = (h * aspect_ratio) - 2 * self.thickness
 
 	@property
 	def thickness(self):

@@ -8,6 +8,7 @@ LIGHT_TYPES = ['POINT', 'SUN', 'SPOT', 'AREA']
 
 class Light:
 	def __init__(self, light):
+		self.obj = light
 		self.__dict__ = copy.deepcopy(light.__dict__)  # copy over attributes from light
 
 	@classmethod
@@ -30,3 +31,19 @@ class Light:
 		bpy.context.collection.objects.link(light)
 
 		return light  # Return object
+
+	@property
+	def rotation_euler(self):
+		return self.obj.rotation_euler
+
+	@rotation_euler.setter
+	def rotation_euler(self, value):
+		self.obj.rotation_euler = value
+
+	@property
+	def location(self):
+		return self.obj.location
+
+	@location.setter
+	def location(self, value):
+		self.obj.location = value

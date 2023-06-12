@@ -80,3 +80,22 @@ class NormalsAOV(AOV):
 		shader_node_tree.links.new(vec_transform.outputs['Vector'], map_range_node.inputs['Vector'])
 		shader_node_tree.links.new(map_range_node.outputs['Vector'], sep_xyz_node.inputs['Vector'])
 		shader_node_tree.links.new(comb_xyz_node.outputs['Vector'], shader_aov_node.inputs['Color'])
+
+
+class NOCAOV(AOV):
+	"""Normalised object coordinates - Gives the position of the object in object space,
+	normalised to the object's bounding box."""
+
+	def _add_to_shader(self, shader_node_tree):
+		texcon_node = shader_node_tree.nodes.new('ShaderNodeTexCoord')
+		shader_aov_node = shader_node_tree.nodes.new('ShaderNodeOutputAOV')
+		shader_node_tree.links.new(texcon_node.outputs['Generated'], shader_aov_node.inputs['Color'])
+
+
+class UVAOV(AOV):
+	"""UV coordinates"""
+
+	def _add_to_shader(self, shader_node_tree):
+		texcon_node = shader_node_tree.nodes.new('ShaderNodeTexCoord')
+		shader_aov_node = shader_node_tree.nodes.new('ShaderNodeOutputAOV')
+		shader_node_tree.links.new(texcon_node.outputs['UV'], shader_aov_node.inputs['Color'])

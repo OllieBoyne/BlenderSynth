@@ -114,6 +114,8 @@ class Mesh:
 	@scale.setter
 	def scale(self, scale):
 		"""Set scale of object"""
+		if isinstance(scale, (int, float)):
+			scale = (scale, scale, scale)
 		self.obj.scale = scale
 
 	@property

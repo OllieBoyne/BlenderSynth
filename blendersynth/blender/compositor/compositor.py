@@ -121,18 +121,21 @@ class Compositor:
 		self.tidy_tree()
 		return cng
 
-	def output_to_file(self, input_data: Union[str, CompositorNodeGroup], directory, file_name=None, color_management=None,
+	def output_to_file(self, input_data: Union[str, CompositorNodeGroup], directory, file_name=None, mode='image',
 					   file_format='PNG', color_mode='RGBA', jpeg_quality=90,
 					   png_compression=15, color_depth='8', EXR_color_depth='32',
 					   input_name=None):
 		"""Add a connection between a valid render output, and a file output node.
 		Supports changing view output.
 
+		:mode: if 'image', export in sRGB color space. If 'data', export in raw linear color space
+
 		:input_node: if string, will get the input_data from that key in the render_layers_node
 		:input_data: if CompositorNodeGroup, will use that node as input
 		:input_name: Name of output. If not given, will take the str representation of input_data
 		"""
 
+		assert mode in ['image', 'data'], f"mode must be 'image' or 'data', got {mode}"
 		assert file_format in format_to_extension, f"File format `{file_format}` not supported. Options are: {list(format_to_extension.keys())}"
 
 		if input_name is None:
@@ -168,9 +171,9 @@ class Compositor:
 			node.base_path = directory
 			node.file_slots[0].path = file_name
 
-			if color_management is not None:
-				node.color_management = 'OVERRIDE'
-				node.view_settings.view_transform = color_management
+			if mode == 'data':
+				node.format.color_management = 'OVERRIDE'
+				node.format.display_settings.display_device = 'None'
 
 			# File format kwargs
 			node.format.file_format = file_format
