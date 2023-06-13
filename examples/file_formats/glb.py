@@ -1,10 +1,11 @@
 """We show loading of a GLB file into a scene"""
 import blendersynth as bsyn
-bsyn.run_this_script(debug = False)
+bsyn.run_this_script(debug = True)
 
 # Load a GLB file
 mesh = bsyn.Mesh.from_glb('../../resources/monkeys/monkey.glb')
-mesh.rotation_euler = [3.14 / 2, 0, 0] # Rotate the mesh
+mesh.set_euler_rotation(3, 0, 0) # Rotate the mesh
+mesh.set_position(2, 0, 0)
 
 bsyn.render.set_cycles_samples(10)
 

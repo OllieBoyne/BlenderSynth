@@ -195,6 +195,7 @@ class Mesh:
 
 	def set_euler_rotation(self, x, y, z):
 		for m in self._meshes:
+			m.rotation_mode = 'XYZ'
 			m.rotation_euler = (x, y, z)
 
 	def set_position(self, x, y, z):
