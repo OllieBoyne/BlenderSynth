@@ -4,5 +4,7 @@ requires = [
     "wheel",
     "numpy",
     "appdirs"
+    "numpy"
+    "tqdm"
 ]
 build-backend = "setuptools.build_meta"
