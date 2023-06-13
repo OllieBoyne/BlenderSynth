@@ -16,19 +16,43 @@ _primitives ={
 	"torus": bpy.ops.mesh.primitive_torus_add,
 }
 
+def get_child_meshes(obj):
+	"""Given an object, return all meshes that are children of it. Recursively searches children of children"""
+	if obj.type == 'MESH':
+		return [obj]
+	elif obj.type == 'EMPTY':
+		meshes = []
+		for child in obj.children:
+			meshes += get_child_meshes(child)
+		return meshes
+	else:
+		return []
+
 class Mesh:
 	def __init__(self, obj, material=None, scene=None):
+		"""
+		:param obj: Receives either a single mesh, or an empty with children empty & meshes
+		:param material:
+		:param scene:
+
+		If obj contains multiple meshes, they will all be assigned the same material, and must act as a single object
+		i.e. they will all be transformed together
+
+		"""
 
 		if scene is None:
 			scene = bpy.context.scene
 
 		self.obj = obj
+		self._meshes = get_child_meshes(obj)
 
 		# Must have a material, create if not passed
 		if material is None:
 			material = bpy.data.materials.new(name='Material')
 			material.use_nodes = True
-		self.obj.data.materials.append(material)
+
+			for mesh in self._meshes:
+				mesh.data.materials.append(material)
 
 		num_objs = sum(o.type == 'MESH' for o in scene.objects)
 		self.obj['instance_id'] = num_objs - 1  # 0-indexed
@@ -53,10 +77,6 @@ class Mesh:
 		if scale is not None:  # handle scale separately so can be a single value
 			obj.scale = scale
 
-			# # Monkey and plane need to be hard-coded for scale
-			# if name in ["monkey", "plane"]:
-			# 	obj.set_scale(scale)
-
 		return obj
 
 
@@ -66,13 +86,29 @@ class Mesh:
 		assert os.path.isfile(obj_loc) and obj_loc.endswith('.obj'), f"File `{obj_loc}` not a valid .obj file"
 
 		directory, fname = os.path.split(obj_loc)
-
 		importer = GetNewObject(bpy.context.scene)
 		with importer:
 			bpy.ops.import_scene.obj(filepath=fname, directory=directory, filter_image=True,
 									 files=[{"name": fname}], forward_axis='X', up_axis='Z')
 
+		obj = importer.imported_obj.pop()
+		return cls(obj)
+
+	@classmethod
+	def from_glb(cls, glb_loc):
+		"""Load object from .glb file"""
+		assert os.path.isfile(glb_loc) and glb_loc.endswith(('.glb', '.gtlf')), f"File `{glb_loc}` not a valid .glb file"
+
+		directory, fname = os.path.split(glb_loc)
+		importer = GetNewObject(bpy.context.scene)
+		with importer:
+			bpy.ops.import_scene.gltf(filepath=glb_loc, files=[{"name": fname}])
+
 		return cls(importer.imported_obj)
+
+	@classmethod
+	def from_gltf(cls, gltf_loc):
+		return cls.from_glb(gltf_loc)
 
 
 	def get_all_vertices(self, ref_frame='WORLD'):
@@ -94,7 +130,7 @@ class Mesh:
 
 	@property
 	def materials(self):
-		return self.obj.data.materials
+		return [m for mesh in self._meshes for m in mesh.data.materials]
 
 	def assign_pass_index(self, index: int):
 		"""Assign pass index to object. This can be used when mask rendering."""
@@ -102,65 +138,74 @@ class Mesh:
 		return index
 
 	def assign_aov(self, aov: AOV):
-		"""Assign AOV to object.
-		Requires exactly 1 material on object."""
-		assert len(self.materials) == 1, f"Object must have exactly 1 material. Found {len(self.materials)}"
+		"""Assign AOV to object. Applies to all materials"""
+		for material in self.materials:
+			shader_node_tree = material.node_tree
+			assert shader_node_tree is not None, "Material must have a node tree"
+			aov.add_to_shader(shader_node_tree)
 
-		shader_node_tree = self.materials[0].node_tree
-		assert shader_node_tree is not None, "Material must have a node tree"
-		aov.add_to_shader(shader_node_tree)
 
 	def set_euler_rotation(self, x, y, z):
-		self.obj.rotation_euler = (x, y, z)
+		for m in self._meshes:
+			m.rotation_euler = (x, y, z)
 
 	def set_position(self, x, y, z):
-		self.obj.location = (x, y, z)
+		for m in self._meshes:
+			m.location = (x, y, z)
 
 	def set_minimum_to(self, axis='Z', pos=0):
 		"""Set minimum of object to a given position"""
 		min_pos = self.get_all_vertices('WORLD')[:, 'XYZ'.index(axis)].min()
 		self.obj.location['XYZ'.index(axis)] += pos - min_pos
 
-	@property
-	def bound_box(self):
-		"""Return bounding box of object"""
-		return self.obj.bound_box
+	# @property
+	# def bound_box(self):
+	# 	"""Return bounding box of object(s)"""
+	# 	return self.obj.bound_box
 
 	@property
 	def matrix_world(self):
-		"""Return world matrix of object"""
+		"""Return world matrix of object(s)"""
 		bpy.context.evaluated_depsgraph_get() # required to update object matrix
 
-		return self.obj.matrix_world
+		if len(self._meshes) == 1:
+			return self.obj.matrix_world
+
+		else:
+			return [m.matrix_world for m in self._meshes]
 
 	@property
 	def scale(self):
 		"""Return scale of object"""
-		return self.obj.scale
+		return self._meshes[0].scale
 
 	@scale.setter
 	def scale(self, scale):
 		"""Set scale of object"""
 		if isinstance(scale, (int, float)):
 			scale = (scale, scale, scale)
-		self.obj.scale = scale
+
+		for m in self._meshes:
+			m.scale = scale
 
 	@property
 	def rotation_euler(self):
 		"""Return euler rotation of object"""
-		return self.obj.rotation_euler
+		return self._meshes[0].rotation_euler
 
 	@rotation_euler.setter
 	def rotation_euler(self, rotation):
 		"""Set euler rotation of object"""
-		self.obj.rotation_euler = rotation
+		for m in self._meshes:
+			m.rotation_euler = rotation
 
 	@property
 	def location(self):
 		"""Return location of object"""
-		return self.obj.location
+		return self._meshes[0].location
 
 	@location.setter
 	def location(self, location):
 		"""Set location of object"""
-		self.obj.location = location
+		for m in self._meshes:
+			m.location = location
