@@ -16,6 +16,17 @@ _primitives ={
 	"torus": bpy.ops.mesh.primitive_torus_add,
 }
 
+default_ids = {
+	'prim_cube': 0,
+	'prim_sphere': 1,
+	'prim_cylinder': 2,
+	'prim_plane': 3,
+	'prim_cone': 4,
+	'prim_monkey': 5,
+	'prim_torus': 6,
+	'loaded_mesh': 7,
+}
+
 def get_child_meshes(obj):
 	"""Given an object, return all meshes that are children of it. Recursively searches children of children"""
 	if obj.type == 'MESH':
@@ -29,7 +40,7 @@ def get_child_meshes(obj):
 		return []
 
 class Mesh:
-	def __init__(self, obj, material=None, scene=None):
+	def __init__(self, obj, material=None, scene=None, class_id=None):
 		"""
 		:param obj: Receives either a single mesh, or an empty with children empty & meshes
 		:param material:
@@ -43,6 +54,7 @@ class Mesh:
 		if scene is None:
 			scene = bpy.context.scene
 
+		self.scene = scene
 		self.obj = obj
 		self._meshes = get_child_meshes(obj)
 
@@ -54,17 +66,30 @@ class Mesh:
 			for mesh in self._meshes:
 				mesh.data.materials.append(material)
 
-		num_objs = sum(o.type == 'MESH' for o in scene.objects)
-		self.obj['instance_id'] = num_objs - 1  # 0-indexed
+		# INSTANCING - Define InstanceID based on number of meshes in scene
+		self.obj['instance_id'] = scene.get('NUM_MESHES', 0)
+		scene['NUM_MESHES'] = scene.get('NUM_MESHES', 0) + 1  # Increment number of meshes in scene
+
+		# CLASS - Define class based on type of object (e.g. primitive)
+		# can be overriden at any point
+		self.set_class_id(class_id)
+
+	def set_class_id(self, class_id):
+		assert isinstance(class_id, int), f"Class ID must be an integer, not {type(class_id)}"
+		assert class_id >= 0, f"Class ID must be >= 0, not {class_id}"
+
+		self.obj['class_id'] = class_id
+		self.scene['MAX_CLASSES'] = max(self.scene.get('MAX_CLASSES', 0), class_id)
+
 
 	@classmethod
-	def from_scene(cls, key):
+	def from_scene(cls, key, class_id=None):
 		"""Create object from scene"""
 		obj = bpy.data.objects[key]
-		return cls(obj)
+		return cls(obj, class_id=class_id)
 
 	@classmethod
-	def from_primitive(cls, name='cube', scale=None, **kwargs):
+	def from_primitive(cls, name='cube', scale=None, class_id=None, **kwargs):
 		"""Create object from primitive"""
 		assert name in _primitives, f"Primitive `{name}` not found. Options are: {list(_primitives.keys())}"
 
@@ -72,7 +97,10 @@ class Mesh:
 		with importer:
 			prim = _primitives[name](**kwargs)  # Create primitive
 
-		obj = cls(importer.imported_obj)
+		if class_id is None:
+			class_id = default_ids[f'prim_{name}']
+
+		obj = cls(importer.imported_obj, class_id=class_id)
 
 		if scale is not None:  # handle scale separately so can be a single value
 			obj.scale = scale
@@ -81,7 +109,7 @@ class Mesh:
 
 
 	@classmethod
-	def from_obj(cls, obj_loc):
+	def from_obj(cls, obj_loc, class_id=None):
 		"""Load object from .obj file"""
 		assert os.path.isfile(obj_loc) and obj_loc.endswith('.obj'), f"File `{obj_loc}` not a valid .obj file"
 
@@ -91,11 +119,14 @@ class Mesh:
 			bpy.ops.import_scene.obj(filepath=fname, directory=directory, filter_image=True,
 									 files=[{"name": fname}], forward_axis='X', up_axis='Z')
 
+		if class_id is None:
+			class_id = default_ids['loaded_mesh']
+
 		obj = importer.imported_obj.pop()
-		return cls(obj)
+		return cls(obj, class_id=class_id)
 
 	@classmethod
-	def from_glb(cls, glb_loc):
+	def from_glb(cls, glb_loc, class_id=None):
 		"""Load object from .glb file"""
 		assert os.path.isfile(glb_loc) and glb_loc.endswith(('.glb', '.gtlf')), f"File `{glb_loc}` not a valid .glb file"
 
@@ -104,11 +135,14 @@ class Mesh:
 		with importer:
 			bpy.ops.import_scene.gltf(filepath=glb_loc, files=[{"name": fname}])
 
-		return cls(importer.imported_obj)
+		if class_id is None:
+			class_id = default_ids['loaded_mesh']
+
+		return cls(importer.imported_obj, class_id=class_id)
 
 	@classmethod
-	def from_gltf(cls, gltf_loc):
-		return cls.from_glb(gltf_loc)
+	def from_gltf(cls, gltf_loc, class_id=None):
+		return cls.from_glb(gltf_loc, class_id=class_id)
 
 
 	def get_all_vertices(self, ref_frame='WORLD'):

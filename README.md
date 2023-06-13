@@ -1,5 +1,7 @@
 # BlenderSynth
 
+![](docs/splash.png)
+
 Synthetic Blender pipeline - aimed at generating large synthetic datasets.
 
 BlenderProc is an incredibly useful tool for synthetic dataset generation. We aim here to provide an alternative that is (a) more specialised for uncommon data forms, and (b) runs faster for creating large scale datasets.

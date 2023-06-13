@@ -4,6 +4,7 @@ import os
 import shutil
 from ..render import render
 from .node_group import CompositorNodeGroup
+from ..aov import AOV
 from ..mesh import Mesh
 from .mask_overlay import MaskOverlay
 from .shape_overlays import BBoxOverlays
@@ -61,6 +62,7 @@ class Compositor:
 
 		self.mask_nodes = {}  # Mapping of mask pass index to CompositorNodeGroup
 		self.overlays = {}
+		self.aovs = []  # List of AOVs (used to update before rendering)
 
 	def tidy_tree(self):
 		"""Tidy up node tree"""
@@ -121,10 +123,10 @@ class Compositor:
 		self.tidy_tree()
 		return cng
 
-	def output_to_file(self, input_data: Union[str, CompositorNodeGroup], directory, file_name=None, mode='image',
+	def output_to_file(self, input_data: Union[str, CompositorNodeGroup, AOV], directory, file_name=None, mode='image',
 					   file_format='PNG', color_mode='RGBA', jpeg_quality=90,
 					   png_compression=15, color_depth='8', EXR_color_depth='32',
-					   input_name=None):
+					   name=None):
 		"""Add a connection between a valid render output, and a file output node.
 		Supports changing view output.
 
@@ -132,20 +134,25 @@ class Compositor:
 
 		:input_node: if string, will get the input_data from that key in the render_layers_node
 		:input_data: if CompositorNodeGroup, will use that node as input
-		:input_name: Name of output. If not given, will take the str representation of input_data
+		:input_data: if AOV, will use that AOV as input (storing AOV)
+		:name: Name of output. If not given, will take the str representation of input_data
 		"""
+
+		if isinstance(input_data, AOV):
+			self.aovs.append(input_data)
+			input_data = input_data.name  # name is sufficient to pull from render_layers_node
 
 		assert mode in ['image', 'data'], f"mode must be 'image' or 'data', got {mode}"
 		assert file_format in format_to_extension, f"File format `{file_format}` not supported. Options are: {list(format_to_extension.keys())}"
 
-		if input_name is None:
-			input_name = str(input_data)
+		if name is None:
+			name = str(input_data)
 
-		node_name = f"File Output {input_name}"
+		node_name = f"File Output {name}"
 		node = get_node_by_name(self.node_tree, node_name)
 
 		if file_name is None: # if fname is not given, use input_name
-			file_name = input_name
+			file_name = name
 
 		file_name = remove_ext(file_name)
 		directory = os.path.abspath(directory)  # make sure directory is absolute
@@ -185,7 +192,7 @@ class Compositor:
 			self.file_output_nodes.append(node)
 
 		self.tidy_tree()
-		return input_name
+		return name
 
 	def register_fname(self, key, fname):
 		"""Reassign the filename (not directory) for a given file output node"""
@@ -210,7 +217,8 @@ class Compositor:
 
 	def update_aovs(self):
 		"""Update any AOVs that are connected to the render layers node"""
-		pass
+		for aov in self.aovs:
+			aov.update()
 
 	def render(self):
 		"""Render the scene"""

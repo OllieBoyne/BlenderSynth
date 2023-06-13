@@ -20,16 +20,12 @@ for i in range(N):
 	objects.append(object)
 
 obj_pass_idx = objects[0].assign_pass_index(1)  # To show masking, we assign a pass index to the first object
-point_light = bsyn.Light.create('POINT', location=(1, 0, 0), intensity=10., color=(1.0, 0, 0))  # Create light object
-spot_light = bsyn.Light.create('SUN', location=(0, -6, 0), intensity=2., color=(0, 0, 1.0))  # Create light object
-spot_light.rotation_euler = [3.14 / 2, 0, 0]
+point_light = bsyn.Light.create('POINT', location=(1, 0, 0), intensity=1000.)  # Create light object
 
 # Set some render settings
 bsyn.render.set_cycles_samples(10)
 bsyn.render.set_resolution(512, 512)
 camera = bsyn.Camera()
-# camera.location = [0, -5, 0]
-# camera.euler = [3.14 / 2, 0, 0]
 
 ## RENDER PASSES
 # Here we show several different rendering methods
@@ -42,12 +38,13 @@ bounding_box_visual.update(camera)
 # For simplicity, we will assign all AOVs to all objects - but that doesn't have to be done.
 all_objects = objects + [floor]
 
-cam_normals_aov = bsyn.aov.NormalsAOV('cam_normals', ref_frame='CAMERA', polarity=[-1, 1, -1])
-instancing_aov = bsyn.aov.InstanceRGBAOV('instancing')
-UVAOV = bsyn.aov.UVAOV('uv_aov') # UV Coordinates
-NOCAOV = bsyn.aov.NOCAOV('noc_aov') # Normalized Object Coordinates (NOC)
+cam_normals_aov = bsyn.aov.NormalsAOV(ref_frame='CAMERA', polarity=[-1, 1, -1])
+instancing_aov = bsyn.aov.InstanceRGBAOV()
+class_aov = bsyn.aov.ClassRGBAOV()
+UVAOV = bsyn.aov.UVAOV()  # UV Coordinates
+NOCAOV = bsyn.aov.NOCAOV()  # Normalized Object Coordinates (NOC)
 
-for aov in [cam_normals_aov, instancing_aov, UVAOV, NOCAOV]:
+for aov in [cam_normals_aov, instancing_aov, class_aov, UVAOV, NOCAOV]:
 	for obj in all_objects:
 		obj.assign_aov(aov)
 
@@ -55,14 +52,14 @@ for aov in [cam_normals_aov, instancing_aov, UVAOV, NOCAOV]:
 # Now we assign our render passes to the compositor, telling it what files to output
 output_folder = 'quickstart'
 comp.output_to_file('Image', output_folder, file_name='rgb', mode='image')  # render RGB layer (note mode='image')
-comp.output_to_file(rgb_mask, output_folder, input_name='rgb_masked', mode='image') # render RGB layer masked by monkey
-comp.output_to_file(bounding_box_visual, output_folder, input_name='bounding_box_visual', mode='image')
-comp.output_to_file(instancing_aov.name, output_folder, mode='image')  # render instancing layer (note mode='image')
+comp.output_to_file(rgb_mask, output_folder, name='rgb_masked', mode='image') # render RGB layer masked by monkey
+comp.output_to_file(bounding_box_visual, output_folder, name='bounding_box_visual', mode='image')
+comp.output_to_file(instancing_aov, output_folder, name='instancing', mode='image')  # render instancing layer (note mode='image')
+comp.output_to_file(class_aov, output_folder, name='semantic', mode='image')  # render class layer (note mode='image'
 
-comp.output_to_file(cam_normals_aov.name, output_folder, mode='data')  # render normals layer (note mode='data')
-comp.output_to_file(UVAOV.name, output_folder, mode='data')
-comp.output_to_file(NOCAOV.name, output_folder, mode='data')
+comp.output_to_file(cam_normals_aov, output_folder, name='normals', mode='data')  # render normals layer (note mode='data')
+comp.output_to_file(UVAOV, output_folder, name='UV', mode='data')
+comp.output_to_file(NOCAOV, output_folder, name='NOC', mode='data')
 comp.output_to_file('Depth', output_folder, file_format='OPEN_EXR', mode='data')  # render depth as EXR (as not in 0-1 range)
 
-instancing_aov.update() # for instancing AOV, we need to update before rendering to get the total instance count
 comp.render()  # render all the different passes - see output folder for results

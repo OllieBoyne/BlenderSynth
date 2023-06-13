@@ -7,7 +7,10 @@ ref_frames = ['CAMERA', 'WORLD', 'OBJECT']
 
 class AOV:
 	AOV_TYPE = 'COLOR'
-	def __init__(self, name, **kwargs):
+	def __init__(self, name=None, **kwargs):
+		if name is None:
+			name = self.__class__.__name__
+
 		self.name = name
 		self._add_to_view_layer()
 
@@ -32,8 +35,12 @@ class AOV:
 	def _add_to_shader(self, shader_node_tree):
 		raise NotImplementedError
 
+	def update(self):
+		"""Some AOVs need an update before rendering (to change certain node properties)"""
+		return
+
 class NormalsAOV(AOV):
-	def __init__(self, name,
+	def __init__(self, name=None,
 					ref_frame='CAMERA',
 					order='XYZ',
 					polarity=(1, 1, 1)):
@@ -106,26 +113,49 @@ class UVAOV(AOV):
 
 		shader_node_tree.links.new(texcon_node.outputs['UV'], shader_aov_node.inputs['Color'])
 
-class InstanceIDAOV(AOV):
-	"""Instance ID - given to each object on creation.
-	Output is an integer corresponding to the object's instance ID (0-indexed)
-	"""
+
+class AttrAOV(AOV):
+	"""Take an object attribute, and output it as an AOV"""
+	attribute_type = None
+	attribute_name = None
+
 	def _add_to_shader(self, shader_node_tree):
 		attr_node = shader_node_tree.nodes.new('ShaderNodeAttribute')
-		attr_node.attribute_type = 'OBJECT'
-		attr_node.attribute_name = 'instance_id'
+		attr_node.attribute_type = self.attribute_type
+		attr_node.attribute_name = self.attribute_name
 
 		shader_aov_node = shader_node_tree.nodes.new('ShaderNodeOutputAOV')
 		shader_aov_node.name = self.name
 
 		shader_node_tree.links.new(attr_node.outputs['Instance Index'], shader_aov_node.inputs['Value'])
 
-class InstanceRGBAOV(AOV):
+class InstanceIDAOV(AttrAOV):
+	"""Instance ID - given to each object on creation.
+	Output is an integer corresponding to the object's instance ID (0-indexed)
 	"""
-	Similar to InstanceIDAOV, but outputs an RGB value corresponding to the object's instance ID.
-	For N instances total, samples evenly on a distribution of hues, on a colour scale of S = 1, V = 1
+	attribute_type = 'OBJECT'
+	attribute_name = 'instance_id'
+
+class ClassIDAOV(AttrAOV):
+	"""Class ID - given to each object on creation.
+	Output is an integer corresponding to the object's class ID (0-indexed)
+	Class IDs can be manually set either when creating a Mesh, or by using the Mesh's set_class_id() method.
+	If not set, will default to a different index from each primitive.
 	"""
-	def __init__(self, name):
+	attribute_type = 'OBJECT'
+	attribute_name = 'class_id'
+
+class AttrRGBAOV(AOV):
+	"""
+	For a given numerical attribute, outputs a color corresponding to the attribute's value.
+	For N objects total, samples evenly on a distribution of hues, on a colour scale of S = 1, V = 1
+	Runs update() method to change the value of N, which is called before rendering.
+	N can be a property of the object to update.
+	"""
+	attribute_type = None
+	attribute_name = None
+
+	def __init__(self, name=None):
 		super().__init__(name)
 
 		# Create Int Index -> HSV as a node group, so the 'num_objects' parameter can be edited centrally
@@ -140,7 +170,7 @@ class InstanceRGBAOV(AOV):
 		self.div_node = div_node = self.group.nodes.new('ShaderNodeMath')  # Need to keep reference so can update at runtime
 		div_node.operation = 'DIVIDE'
 		div_node.use_clamp = True
-		div_node.inputs[1].default_value = 0
+		div_node.inputs[1].default_value = self.N
 
 		hsv_node = self.group.nodes.new('ShaderNodeHueSaturation')
 		hsv_node.inputs['Saturation'].default_value = 1
@@ -152,11 +182,10 @@ class InstanceRGBAOV(AOV):
 		self.group.links.new(hsv_node.outputs['Color'], self.output_node.inputs['Color'])
 		tidy_tree(self.group)
 
-
 	def _add_to_shader(self, shader_node_tree):
 		attr_node = shader_node_tree.nodes.new('ShaderNodeAttribute')
-		attr_node.attribute_type = 'OBJECT'
-		attr_node.attribute_name = 'instance_id'
+		attr_node.attribute_type = self.attribute_type
+		attr_node.attribute_name = self.attribute_name
 
 		# Create a group node for the Int Index -> HSV conversion
 		group_node = shader_node_tree.nodes.new('ShaderNodeGroup')
@@ -168,10 +197,37 @@ class InstanceRGBAOV(AOV):
 		shader_node_tree.links.new(attr_node.outputs['Fac'], group_node.inputs['Index'])
 		shader_node_tree.links.new(group_node.outputs['Color'], shader_aov_node.inputs['Color'])
 
-	def update(self, scene=None):
-		"""Update the divisor node with the current number of instances"""
-		if scene is None:
-			scene = bpy.context.scene
+	def update(self):
+		self.div_node.inputs[1].default_value = self.N
 
-		num_objs = sum(o.type == 'MESH' for o in scene.objects)
-		self.div_node.inputs[1].default_value = num_objs
+	@property
+	def N(self):
+		return 0
+
+class InstanceRGBAOV(AttrRGBAOV):
+	"""
+	Similar to InstanceIDAOV, but outputs an RGB value corresponding to the object's instance ID.
+	For N instances total, samples evenly on a distribution of hues, on a colour scale of S = 1, V = 1.
+	Updates N at render time by reading the scene property 'NUM_MESHES'
+	"""
+	attribute_type = 'OBJECT'
+	attribute_name = 'instance_id'
+
+	@property
+	def N(self):
+		"""Update the divisor node with the current number of instances"""
+		return bpy.context.scene.get('NUM_MESHES', 0) + 1
+
+class ClassRGBAOV(AttrRGBAOV):
+	"""
+	Similar to ClassIDAOV, but outputs an RGB value corresponding to the object's class ID.
+	For N classes total, samples evenly on a distribution of hues, on a colour scale of S = 1, V = 1.
+	Updates N at render time by reading the scene property 'MAX_CLASSES'
+	"""
+	attribute_type = 'OBJECT'
+	attribute_name = 'class_id'
+
+	@property
+	def N(self):
+		"""Update the divisor node with the current number of classes"""
+		return bpy.context.scene.get('MAX_CLASSES', 0) + 1

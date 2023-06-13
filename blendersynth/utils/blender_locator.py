@@ -20,12 +20,18 @@ def find_blender_python(blender_path):
 		p = subprocess.Popen([blender_path, "--background", "--python", "blendersynth/utils/blender_python_path.py"], stdout=f)
 		p.wait()
 
+
+	out = None
 	with open('___python.txt', 'r') as f:
 		for l in f.readlines():
 			if "PYTHON INTERPRETER" in l:
-				return l.split(": ")[1].strip()
+				out = l.split(": ")[1].strip()
+				break
 
 	os.remove('___python.txt')
+
+	if out is not None:
+		return out
 
 	raise Exception("Could not find Python interpreter for Blender.")
 
