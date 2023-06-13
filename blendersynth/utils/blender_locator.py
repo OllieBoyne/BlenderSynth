@@ -32,12 +32,17 @@ def find_blender_python(blender_path):
 def get_blender_path(_blender_path=None):
 
 	if _blender_path is not None:
-		if not _blender_path.endswith('.exe'):
-			_blender_path += '.exe' # add .exe if not there (helps os.access checking)
 
-		assert os.access(_blender_path, os.X_OK), f"Provided Blender path, {_blender_path}, is not executable."
-		print("Using provided blender path: ", _blender_path)
-		blender_path = _blender_path
+		if os.access(_blender_path, os.X_OK):
+			blender_path = _blender_path
+
+		elif os.access(_blender_path + '.exe', os.X_OK): # add .exe if not there (helps os.access checking)
+			blender_path = _blender_path + '.exe'
+
+		else:
+			raise ValueError(f"Provided Blender path, {_blender_path}, is not executable.")
+
+		print("Using provided blender path: ", blender_path)
 
 	elif is_blender_in_path():
 		blender_path = shutil.which("blender")
