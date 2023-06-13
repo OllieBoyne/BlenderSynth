@@ -53,6 +53,10 @@ class Mesh:
 		if scale is not None:  # handle scale separately so can be a single value
 			obj.scale = scale
 
+			# # Monkey and plane need to be hard-coded for scale
+			# if name in ["monkey", "plane"]:
+			# 	obj.set_scale(scale)
+
 		return obj
 
 
@@ -127,9 +131,7 @@ class Mesh:
 		"""Return world matrix of object"""
 		bpy.context.evaluated_depsgraph_get() # required to update object matrix
 
-		# current missing scale, add here
-		scale_mat = mathutils.Matrix.Diagonal((*self.scale, 1))
-		return self.obj.matrix_world @ scale_mat
+		return self.obj.matrix_world
 
 	@property
 	def scale(self):

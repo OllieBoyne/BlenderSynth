@@ -3,6 +3,7 @@ import os
 import configparser
 import shutil
 import subprocess
+import warnings
 
 appname = "blendersynth"
 appauthor = "BlenderSynth"
@@ -60,7 +61,8 @@ def save_blender_path(path):
 def load_blender_path():
 	config = configparser.ConfigParser()
 	if not os.path.exists(config_file):
-		raise FileNotFoundError(f"Config file not found at {config_file}. Please re-run setup.py with the --blender_path argument.")
+		warnings.warn(f"Config file not found at {config_file}. Please re-run setup.py with the --blender_path argument. (Ignore this if you are running setup.py.)")
+		return None
 
 	config.read(config_file)
 

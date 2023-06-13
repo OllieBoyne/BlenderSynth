@@ -28,4 +28,5 @@ for package in packages:
 setup(
 	name='blendersynth',
 	version='0.1.0',
+	packages=find_packages(include=['blendersynth'])
 )
