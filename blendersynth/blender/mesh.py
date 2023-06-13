@@ -245,8 +245,8 @@ class Mesh:
 	@rotation_euler.setter
 	def rotation_euler(self, rotation):
 		"""Set euler rotation of object"""
-		for m in self._meshes:
-			m.rotation_euler = rotation
+		assert len(rotation) == 3, f"Rotation must be a tuple of length 3, got {len(rotation)}"
+		self.set_euler_rotation(*rotation)
 
 	@property
 	def location(self):
@@ -256,5 +256,5 @@ class Mesh:
 	@location.setter
 	def location(self, location):
 		"""Set location of object"""
-		for m in self._meshes:
-			m.location = location
+		assert len(location) == 3, f"Location must be a tuple of length 3, got {len(location)}"
+		self.set_position(*location)
