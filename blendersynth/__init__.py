@@ -4,6 +4,7 @@ from .run_this_script import run_this_script
 import sys
 from .utils.blender_locator import load_blender_path
 if load_blender_path() == sys.argv[0]:  # if blender is running this script
+	import bpy
 	from bpy import *
 	from .blender.mesh import Mesh
 	from .blender import render
@@ -19,6 +20,9 @@ if load_blender_path() == sys.argv[0]:  # if blender is running this script
 
 	# set render engine to cycles
 	render.set_engine('CYCLES')
+
+	# common aliases
+	load_blend = bpy.ops.wm.open_mainfile
 
 	# Clear default cube
 	import bpy

@@ -98,7 +98,7 @@ class Compositor:
 		self.tidy_tree()
 		return self.mask_nodes[index]
 
-	def get_bounding_box_visual(self, objs: Union[Mesh, List[Mesh]], col=(1, 0, 0), thickness=0.01) -> BBoxOverlays:
+	def get_bounding_box_visual(self, objs: Union[Mesh, List[Mesh]], col=(1., 0., 0.), thickness=0.01) -> BBoxOverlays:
 		"""Given a single Mesh instance, or a list of Mesh instances, return a CompositorNodeGroup,
 		which will render the bounding box of the object(s)
 
@@ -208,7 +208,12 @@ class Compositor:
 				target_file_name
 			)
 
+	def update_aovs(self):
+		"""Update any AOVs that are connected to the render layers node"""
+		pass
+
 	def render(self):
 		"""Render the scene"""
+		self.update_aovs()
 		render()
 		self.fix_namings()

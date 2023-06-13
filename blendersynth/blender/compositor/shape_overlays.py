@@ -92,7 +92,7 @@ class BBoxOverlays(CompositorNodeGroup):
 		self.group.inputs.new(f'NodeSocketColor', 'Image')
 		self.group.outputs.new(f'NodeSocketColor', 'Image')
 
-		if isinstance(col[0], float): col = [col] * N
+		if isinstance(col[0], float) or isinstance(col[0], int): col = [col] * N
 		if isinstance(thickness, float): thickness = [thickness] * N
 
 		last_image = None
