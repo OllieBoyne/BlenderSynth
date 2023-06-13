@@ -109,20 +109,34 @@ class Mesh:
 
 
 	@classmethod
-	def from_obj(cls, obj_loc, class_id=None):
-		"""Load object from .obj file"""
+	def from_obj(cls, obj_loc, class_id=None,
+				 forward_axis='-Z', up_axis='Y'):
+		"""Load object from .obj file.
+
+		Note: we use bpy.ops.wm.obj_import instead of bpy.ops.import_scene.obj because the latter
+		causes issues with materials & vertex ordering.
+		(Changing vertex ordering makes the use of keypoints difficult.)
+		"""
+		for axis in (forward_axis, up_axis):
+			assert axis in ('X', 'Y', 'Z', '-X', '-Y', '-Z'), f"Axis `{axis}` not valid, must be one of X, Y, Z, -X, -Y, -Z"
+
+		forward_axis = axis.replace('-', 'NEGATIVE_') # e.g. -X -> NEGATIVE_X
+		up_axis = axis.replace('-', 'NEGATIVE_')
+
 		assert os.path.isfile(obj_loc) and obj_loc.endswith('.obj'), f"File `{obj_loc}` not a valid .obj file"
 
 		directory, fname = os.path.split(obj_loc)
+		directory = os.path.abspath(directory)  # ensure absolute path for clean loading
+
 		importer = GetNewObject(bpy.context.scene)
 		with importer:
-			bpy.ops.import_scene.obj(filepath=fname, directory=directory, filter_image=True,
-									 files=[{"name": fname}], forward_axis='X', up_axis='Z')
+			bpy.ops.wm.obj_import(filepath=fname, directory=directory, filter_image=False,
+									 files=[{"name": fname}], forward_axis=forward_axis, up_axis=up_axis)
 
 		if class_id is None:
 			class_id = default_ids['loaded_mesh']
 
-		obj = importer.imported_obj.pop()
+		obj = importer.imported_obj
 		return cls(obj, class_id=class_id)
 
 	@classmethod
