@@ -178,7 +178,7 @@ class Mesh:
 
 	@property
 	def materials(self):
-		return [m for mesh in self._meshes for m in mesh.data.materials]
+		return {m for mesh in self._meshes for m in mesh.data.materials}
 
 	def assign_pass_index(self, index: int):
 		"""Assign pass index to object. This can be used when mask rendering."""
