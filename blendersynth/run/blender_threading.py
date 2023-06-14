@@ -15,9 +15,13 @@ def list_split(list, chunks):
 	return [[*x] for x in np.array_split(list, chunks)]
 
 class BlenderThread():
-	def __init__(self, command, jobs, log_loc, name='', timeout=100, to_stdout=False,
+	def __init__(self, command, jobs, log_loc, progress_loc, name='', timeout=100, to_stdout=False,
 				 MAX_PER_JOB=100):
-		"""Timeout: longest time in (s) without render after which process is finished.
+		"""
+
+		:progress_loc: .log file to write progress to
+
+		Timeout: longest time in (s) without render after which process is finished.
 		MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process."""
 
 		self.command = command
@@ -36,6 +40,8 @@ class BlenderThread():
 			self.logfile = open(self.log_loc, "a")
 		else:
 			self.log_loc, self.logfile = None, None
+
+		self.logger_loc = progress_loc
 
 
 		self.process = None
@@ -63,7 +69,7 @@ class BlenderThread():
 
 	def start_job(self, job=0):
 		job_list = self.jobs[job]
-		command = self.command.set_job(job_list)
+		command = self.command.set_job(job_list).set_logger(self.logger_loc).command
 
 		stdout = sys.stdout if self.to_stdout else self.logfile
 		stderr = sys.stderr if self.to_stdout else self.logfile
@@ -90,18 +96,13 @@ class BlenderThread():
 	@property
 	def num_rendered(self):
 		"""Read through Log file to find how many renders have been completed"""
-		if self.process is None:
+		if self.process is None or not os.path.isfile(self.logger_loc):
 			return 0 # process not started yet
 
-		if self.to_stdout:
-			reader = sys.stdout
-		else:
-			reader = open(self.log_loc, "r").readlines()
-
 		x = 0
-		for line in reader:
-			if line.startswith(LOG_PREPEND):
-				x += 1
+		with open(self.logger_loc, 'r') as f:
+			for line in f.readlines():
+				x += 1  # currently only 1 type of message to logger - render complete
 
 		return x
 
@@ -146,9 +147,13 @@ class BlenderThreadManager:
 		# create logs
 		session_name = datetime.now().strftime(r"%y%m%d-%H%M%S")
 		log_dir = os.path.join(output_directory, 'logs', session_name)
+		progress_dir = os.path.join(log_dir, '_progress')  # for storing progress
 
 		os.makedirs(log_dir, exist_ok=True)
+		os.makedirs(progress_dir, exist_ok=True)
+
 		logs = [os.path.join(log_dir, f'log_{i:02d}.txt') for i in range(self.num_threads)]
+		progresses = [os.path.join(progress_dir, f'progress_{i:02d}.log') for i in range(self.num_threads)]
 		self.log_locs = logs
 
 		# Set report name as report_xx, incrementing by 1 each report
@@ -163,6 +168,7 @@ class BlenderThreadManager:
 			thread = BlenderThread(command,
 								   jobs = jsons[i],
 								   log_loc=None if logs is None else logs[i],
+								   progress_loc=progresses[i],
 								   name=str(i),
 								   to_stdout=print_to_stdout,
 								   MAX_PER_JOB=MAX_PER_JOB)

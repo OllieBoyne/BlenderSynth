@@ -2,6 +2,7 @@ import os
 
 from .blender_threading import BlenderThreadManager, list_split
 from ..utils.blender_setup.blender_locator import get_blender_path
+from copy import deepcopy
 
 from sys import platform
 if platform == "linux" or platform == "linux2" or platform == "darwin":
@@ -11,14 +12,17 @@ elif platform == "win32":
 
 
 
+
+
 class BlenderCommand:
 	"""Construct command for running blender script"""
 	def __init__(self, blender_loc, background=True):
-		self.base_command = [blender_loc, "--background" if background else ""]
-		self._command = self.base_command
+		self.blender_loc = blender_loc
+		self.background = background
+		self._command = [blender_loc, "--background" if background else ""]
 
 	def compose(self, script, args=(), **kwargs):
-		command = self.base_command + ["--python", script]
+		command = self._command + ["--python", script]
 		command += ["--"]
 		for arg in args:
 			command.append(f"--{arg}")
@@ -32,9 +36,23 @@ class BlenderCommand:
 	def command(self):
 		return self._command
 
+	def copy(self):
+		"""Return a copy of the command"""
+		cmd = BlenderCommand(self.blender_loc, self.background)
+		cmd._command = [*self._command]
+		return cmd
+
 	def set_job(self, job_list):
 		"""Receives list of json files, adds as , separated string to command"""
-		return self._command + ["--jobs", ",".join(job_list)]
+		cmd = self.copy()
+		cmd._command += ["--jobs", ",".join(job_list)]
+		return cmd
+
+	def set_logger(self, log_loc):
+		"""Set file for logging"""
+		cmd = self.copy()
+		cmd._command += ["--log", log_loc]
+		return cmd
 
 class Runner:
 	def __init__(self, script, jsons, output_directory, num_threads=1,
