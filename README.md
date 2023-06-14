@@ -44,6 +44,15 @@ For a list of actions, see [].
 
 Note that `bsyn` imports all `bpy` functionality, so you can call any `bpy` function as if you would normally.
 
+## Troubleshooting
+
+If any issues with the Blender scripts not having the correct modules,
+
+```python
+import blendersynth as bsyn
+bsyn.fix_blender_install()
+```
+
 ## Benchmarking
 
 We show significant speed improvements over BlenderProc

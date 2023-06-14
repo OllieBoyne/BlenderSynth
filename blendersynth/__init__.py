@@ -2,6 +2,10 @@
 from .utils.blender_setup import check_blender_install
 check_blender_install() # check install here
 
+def fix_blender_install():
+	"""If Blender is not installed correctly, run first time setup"""
+	check_blender_install(force=True)
+
 from .run_this_script import run_this_script
 
 import sys
