@@ -31,7 +31,10 @@ def install_module(python_executable, module_name, is_test_pypi=False,
 	except subprocess.CalledProcessError as e:
 		raise Exception(f"Could not install {module_name} via pip. Error: {e}")
 
-def check_blender_install(force=False):
+def check_blender_install(force_all=False,
+						  force_find_blender=False,
+						  force_find_blender_python=False,
+						  force_install_dependencies=False):
 	"""Check if Blender is installed correctly and has all necessary packages.
 	If not, run first time setup.
 
@@ -41,8 +44,12 @@ def check_blender_install(force=False):
 	Force: if True, will run first time setup (overwriting any existing config.ini)
 	regardless"""
 
-	if force:
+	if force_all:
 		remove_config() # remove config file if it exists to force first time setup
+
+	if force_find_blender: remove_config('BLENDER_PATH')
+	if force_find_blender_python: remove_config('BLENDER_PYTHON_PATH')
+	if force_install_dependencies: remove_config('DEPENDENCIES_INSTALLED')
 
 	blender_path = get_blender_path()
 	python_path = find_blender_python(blender_path)

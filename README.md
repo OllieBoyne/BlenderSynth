@@ -46,12 +46,7 @@ Note that `bsyn` imports all `bpy` functionality, so you can call any `bpy` func
 
 ## Troubleshooting
 
-If any issues with the Blender scripts not having the correct modules,
-
-```python
-import blendersynth as bsyn
-bsyn.fix_blender_install()
-```
+If any issues with the Blender scripts not having the correct modules, try `bsyn.fix_blender_modules()`, or to completely reconfigure Blender, `bsyn.fix_blender_install()`.
 
 ## Benchmarking
 

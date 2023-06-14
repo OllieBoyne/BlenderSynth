@@ -127,6 +127,24 @@ def read_from_config(key, section='BLENDER_SETUP'):
 
 	return config[section][key]
 
+def remove_from_config(key, section='BLENDER_SETUP'):
+	"""Load config, and remove key from cfg[section]"""
+	config = configparser.ConfigParser()
+
+	if os.path.exists(config_file):
+		config.read(config_file)
+
+	if section not in config:
+		return None
+
+	if key not in config[section]:
+		return None
+
+	del config[section][key]
+
+	with open(config_file, 'w') as configfile:
+		config.write(configfile)
+
 def remove_config():
 	"""Remove config file"""
 	if os.path.exists(config_file):
