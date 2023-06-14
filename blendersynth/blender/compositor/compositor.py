@@ -56,10 +56,11 @@ class Compositor:
 		# Create compositor node tree
 		bpy.context.scene.use_nodes = True
 		self.node_tree = bpy.context.scene.node_tree
-		self.file_output_nodes = []
+		# self.file_output_nodes = []
 
 		self.view_layer = view_layer#
 
+		self.file_output_nodes = {}  # Mapping of output name to FileOutputNode
 		self.mask_nodes = {}  # Mapping of mask pass index to CompositorNodeGroup
 		self.overlays = {}
 		self.aovs = []  # List of AOVs (used to update before rendering)
@@ -123,12 +124,15 @@ class Compositor:
 		self.tidy_tree()
 		return cng
 
-	def output_to_file(self, input_data: Union[str, CompositorNodeGroup, AOV], directory, file_name=None, mode='image',
-					   file_format='PNG', color_mode='RGBA', jpeg_quality=90,
-					   png_compression=15, color_depth='8', EXR_color_depth='32',
-					   name=None):
+	def define_output(self, input_data: Union[str, CompositorNodeGroup, AOV], directory, file_name=None, mode='image',
+					  file_format='PNG', color_mode='RGBA', jpeg_quality=90,
+					  png_compression=15, color_depth='8', EXR_color_depth='32',
+					  name=None):
 		"""Add a connection between a valid render output, and a file output node.
 		Supports changing view output.
+
+		This should only be called once per output (NOT inside a loop).
+		To update output file name, use update_output_fname method
 
 		:mode: if 'image', export in sRGB color space. If 'data', export in raw linear color space
 
@@ -149,7 +153,12 @@ class Compositor:
 			name = str(input_data)
 
 		node_name = f"File Output {name}"
-		node = get_node_by_name(self.node_tree, node_name)
+
+		# check node doesn't exist
+		if name in self.file_output_nodes:
+			raise ValueError(f"File output `{name}` already exists."
+							 f"Only call define_output once per output type.")
+
 
 		if file_name is None: # if fname is not given, use input_name
 			file_name = name
@@ -158,54 +167,58 @@ class Compositor:
 		directory = os.path.abspath(directory)  # make sure directory is absolute
 		os.makedirs(directory, exist_ok=True)
 
-		if not node:
-			# Create new 'File Output' node in compositor
-			node = self.node_tree.nodes.new('CompositorNodeOutputFile')
-			node.name = node_name
+		# Create new 'File Output' node in compositor
+		node = self.node_tree.nodes.new('CompositorNodeOutputFile')
+		node.name = node_name
 
-			if isinstance(input_data, str):
-				self.node_tree.links.new(self.render_layers_node.outputs[input_data], node.inputs['Image'])
+		if isinstance(input_data, str):
+			self.node_tree.links.new(self.render_layers_node.outputs[input_data], node.inputs['Image'])
 
-			elif isinstance(input_data, CompositorNodeGroup):  # add overlay in between
-				self.node_tree.links.new(input_data.outputs[0], node.inputs['Image'])
+		elif isinstance(input_data, CompositorNodeGroup):  # add overlay in between
+			self.node_tree.links.new(input_data.outputs[0], node.inputs['Image'])
 
-			else:
-				raise NotImplementedError(
-					f"input_data must be either str or CompositorNodeGroup, got {type(input_data)}")
+		else:
+			raise NotImplementedError(
+				f"input_data must be either str or CompositorNodeGroup, got {type(input_data)}")
 
-			# Set file output node properties
-			node.label = node_name
-			node.base_path = directory
-			node.file_slots[0].path = file_name
+		# Set file output node properties
+		node.label = node_name
+		node.base_path = directory
+		node.file_slots[0].path = file_name
 
-			if mode == 'data':
-				node.format.color_management = 'OVERRIDE'
-				node.format.display_settings.display_device = 'None'
+		if mode == 'data':
+			node.format.color_management = 'OVERRIDE'
+			node.format.display_settings.display_device = 'None'
 
-			# File format kwargs
-			node.format.file_format = file_format
-			node.format.color_mode = color_mode
-			node.format.quality = jpeg_quality
-			node.format.compression = png_compression
-			node.format.color_depth = color_depth if file_format != 'OPEN_EXR' else EXR_color_depth
+		# File format kwargs
+		node.format.file_format = file_format
+		node.format.color_mode = color_mode
+		node.format.quality = jpeg_quality
+		node.format.compression = png_compression
+		node.format.color_depth = color_depth if file_format != 'OPEN_EXR' else EXR_color_depth
 
-			self.file_output_nodes.append(node)
+		self.file_output_nodes[name] = node
 
 		self.tidy_tree()
 		return name
 
-	def register_fname(self, key, fname):
+	def update_filename(self, key, fname):
 		"""Reassign the filename (not directory) for a given file output node"""
 		fname = remove_ext(fname)
-		node = get_node_by_name(self.node_tree, f"File Output {str(key)}")
+		node = self.file_output_nodes[key]
 		node.file_slots[0].path = fname
+
+	def update_directory(self, key, directory):
+		"""Reassign the directory for a given file output node"""
+		node = self.file_output_nodes[key]
+		node.base_path = directory
 
 	def fix_namings(self):
 		"""After rendering,
 		File Output node has property that frame number gets added to filename.
 		Fix that here"""
 
-		for node in self.file_output_nodes:
+		for node in self.file_output_nodes.values():
 			# get expected file name and extension
 			ext = format_to_extension[node.format.file_format]
 			target_file_name = os.path.join(node.base_path, node.file_slots[0].path + ext)

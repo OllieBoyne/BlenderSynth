@@ -22,8 +22,8 @@ bsyn.render.set_resolution(512, 512)
 
 # create compositor to output RGB, Normals AOV & Depth
 comp = bsyn.Compositor()
-comp.output_to_file('Image', os.path.join('example_dataset', 'rgb'))  # render RGB layer
-comp.output_to_file(cam_normals_aov.name, os.path.join('example_dataset', 'normal'))  # render normals layer
+comp.define_output('Image', os.path.join('example_dataset', 'rgb'))  # render RGB layer
+comp.define_output(cam_normals_aov.name, os.path.join('example_dataset', 'normal'))  # render normals layer
 
 # Now iterate through and generate dataset
 for i, (fname, input) in enumerate(inputs):
@@ -32,8 +32,9 @@ for i, (fname, input) in enumerate(inputs):
 	monkey.set_position(*input['location'])
 
 	# Render - set the output filename to match the json filename (e.g. 0001.json -> 0001.png)
-	comp.register_fname('Image', fname)
-	comp.register_fname(cam_normals_aov.name, fname)
+	comp.update_filename('Image', fname)
+	comp.update_filename(cam_normals_aov.name, fname)
+	# to change directory, comp.update_directory
 	comp.render()
 
 	# Save the pose and lighting as an output json
