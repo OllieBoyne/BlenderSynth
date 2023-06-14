@@ -13,7 +13,7 @@ if load_blender_path() == sys.argv[0]:  # if blender is running this script
 	from .file.dataset_inputs import INPUTS
 	from . import file
 	from .run.blender_interface import log_event
-	from .blender import world
+	from .blender.world import world
 	from .blender.light import Light
 	from .blender.camera import Camera
 	from . import annotations
