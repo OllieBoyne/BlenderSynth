@@ -5,9 +5,9 @@ check_blender_install() # check install here
 from .run_this_script import run_this_script
 
 import sys
-from .utils.blender_setup.blender_locator import load_blender_path
+from .utils.blender_setup.blender_locator import get_blender_path
 
-if load_blender_path() == sys.argv[0]:  # if blender is running this script
+if get_blender_path() == sys.argv[0]:  # if blender is running this script
 	import bpy
 	from bpy import *
 	from .blender.mesh import Mesh

@@ -1,7 +1,7 @@
 import os
 
 from .blender_threading import BlenderThreadManager, list_split
-from ..utils.blender_setup.blender_locator import load_blender_path
+from ..utils.blender_setup.blender_locator import get_blender_path
 
 from sys import platform
 if platform == "linux" or platform == "linux2" or platform == "darwin":
@@ -50,7 +50,7 @@ class Runner:
 		# Split the jsons into num_threads chunks
 		json_chunks = list_split(self.jsons, self.num_threads)
 
-		blender_loc = load_blender_path()
+		blender_loc = get_blender_path()
 		command = BlenderCommand(blender_loc=blender_loc, background=True)
 		command.compose(script=script, silent=True, **script_kwargs)
 

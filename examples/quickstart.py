@@ -48,18 +48,20 @@ for aov in [cam_normals_aov, instancing_aov, class_aov, UVAOV, NOCAOV]:
 	for obj in all_objects:
 		obj.assign_aov(aov)
 
+# bsyn.world.set_hdri('/Users/ollie/Library/CloudStorage/OneDrive-UniversityofCambridge/synthetic_feet/assets/HDRIs/polyhaven/abandoned_workshop_02_4k.exr')
+bsyn.world.set_color((1.0, 0.1, 0.1))
 
 # Now we assign our render passes to the compositor, telling it what files to output
 output_folder = 'quickstart'
-comp.output_to_file('Image', output_folder, file_name='rgb', mode='image')  # render RGB layer (note mode='image')
-comp.output_to_file(rgb_mask, output_folder, name='rgb_masked', mode='image') # render RGB layer masked by monkey
-comp.output_to_file(bounding_box_visual, output_folder, name='bounding_box_visual', mode='image')
-comp.output_to_file(instancing_aov, output_folder, name='instancing', mode='image')  # render instancing layer (note mode='image')
-comp.output_to_file(class_aov, output_folder, name='semantic', mode='image')  # render class layer (note mode='image'
+comp.define_output('Image', output_folder, file_name='rgb', mode='image')  # render RGB layer (note mode='image')
+comp.define_output(rgb_mask, output_folder, name='rgb_masked', mode='image') # render RGB layer masked by monkey
+comp.define_output(bounding_box_visual, output_folder, name='bounding_box_visual', mode='image')
+comp.define_output(instancing_aov, output_folder, name='instancing', mode='image')  # render instancing layer (note mode='image')
+comp.define_output(class_aov, output_folder, name='semantic', mode='image')  # render class layer (note mode='image'
 
-comp.output_to_file(cam_normals_aov, output_folder, name='normals', mode='data')  # render normals layer (note mode='data')
-comp.output_to_file(UVAOV, output_folder, name='UV', mode='data')
-comp.output_to_file(NOCAOV, output_folder, name='NOC', mode='data')
-comp.output_to_file('Depth', output_folder, file_format='OPEN_EXR', mode='data')  # render depth as EXR (as not in 0-1 range)
+comp.define_output(cam_normals_aov, output_folder, name='normals', mode='data')  # render normals layer (note mode='data')
+comp.define_output(UVAOV, output_folder, name='UV', mode='data')
+comp.define_output(NOCAOV, output_folder, name='NOC', mode='data')
+comp.define_output('Depth', output_folder, file_format='OPEN_EXR', mode='data')  # render depth as EXR (as not in 0-1 range)
 
 comp.render()  # render all the different passes - see output folder for results

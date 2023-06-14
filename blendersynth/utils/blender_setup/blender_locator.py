@@ -15,6 +15,9 @@ def is_blender_in_path():
 
 def find_blender_python(blender_path):
 
+	if read_from_config('BLENDER_PYTHON_PATH') is not None:
+		return read_from_config('BLENDER_PYTHON_PATH')
+
 	targ_script = os.path.abspath(os.path.join(os.path.dirname(__file__), 'blender_python_path.py'))
 
 	# open file as read & write
@@ -36,6 +39,7 @@ def find_blender_python(blender_path):
 	os.remove('___python.txt')
 
 	if out is not None:
+		write_to_config('BLENDER_PYTHON_PATH', out)
 		return out
 
 	raise Exception("Could not find Python interpreter for Blender.")
@@ -47,6 +51,15 @@ def validate_blender_path(blender_path):
 	return False
 
 def get_blender_path(_blender_path=None):
+	"""Get blender path in following order of precedence:
+	1. Input arg to function
+	2. In config file
+	3. Environment variable BLENDER_PATH
+	4. Blender in PATH
+	5. Ask user for path
+	"""
+
+	cfg_result = read_from_config('BLENDER_PATH')
 
 	if _blender_path is not None:
 
@@ -59,46 +72,62 @@ def get_blender_path(_blender_path=None):
 		else:
 			raise ValueError(f"Provided Blender path, {_blender_path}, is not executable.")
 
+	elif cfg_result is not None:
+		blender_path = cfg_result
+
 	elif os.environ.get('BLENDER_PATH') is not None:
 		blender_path = os.environ.get('BLENDER_PATH')
 
 	elif is_blender_in_path():
 		blender_path = shutil.which("blender")
 
-	elif load_blender_path():
-		blender_path = load_blender_path()
-
 	else:
-		# raise ValueError("Blender not in PATH. Please either add to PATH or provide it to setup.py with the --blender_path argument")
 		blender_path = input("Blender not found in PATH or Environment Variable.\n"
 							 "Please provide path to blender executable: ")
 
-	blender_path = os.path.abspath(blender_path) # make sure it's absolute path
+	blender_path = os.path.abspath(blender_path)  # make sure it's absolute path
 
 	if not validate_blender_path(blender_path):
-		raise ValueError(f"Provided Blender path, {blender_path}, is not valid as a Blender executable.")
+		if validate_blender_path(blender_path + '.exe'):
+			blender_path += '.exe'
 
-	save_blender_path(blender_path)
+		else:
+			raise ValueError(f"Provided Blender path, {blender_path}, is not valid as a Blender executable.")
+
+	write_to_config('BLENDER_PATH', blender_path)
 	return blender_path
 
-def save_blender_path(path):
+def write_to_config(key, value, section='BLENDER_SETUP'):
+	"""Load config, and write key value pair to cfg[section]"""
 	config = configparser.ConfigParser()
-	config['DEFAULT'] = {'BlenderPath': path}
 
-	os.makedirs(os.path.dirname(config_file), exist_ok=True)
+	if os.path.exists(config_file):
+		config.read(config_file)
+
+	if section not in config:
+		config[section] = {}
+
+	config[section][key] = value
 
 	with open(config_file, 'w') as configfile:
 		config.write(configfile)
 
-def load_blender_path():
+def read_from_config(key, section='BLENDER_SETUP'):
+	"""Load config, and read value from cfg[section]"""
 	config = configparser.ConfigParser()
-	if not os.path.exists(config_file):
-		warnings.warn(f"Config file not found at {config_file}. Please re-run setup.py with the --blender_path argument. (Ignore this if you are running setup.py.)")
+
+	if os.path.exists(config_file):
+		config.read(config_file)
+
+	if section not in config:
 		return None
 
-	config.read(config_file)
-
-	try:
-		return config['DEFAULT']['BlenderPath']
-	except KeyError:
+	if key not in config[section]:
 		return None
+
+	return config[section][key]
+
+def remove_config():
+	"""Remove config file"""
+	if os.path.exists(config_file):
+		os.remove(config_file)
