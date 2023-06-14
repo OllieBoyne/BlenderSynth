@@ -55,7 +55,6 @@ def check_blender_install(force=False):
 
 		# Install blendersynth. For now, this is a testpypi package.
 		# TODO: make this a real pypi package
-		if not check_module(python_path, 'blendersynth'):
-			install_module(python_path, 'blendersynth', is_test_pypi=True)
+		install_module(python_path, 'blendersynth', is_test_pypi=True, upgrade=True)
 
 		write_to_config('DEPENDENCIES_INSTALLED', 'True')

@@ -17,9 +17,9 @@ class BlenderCommand:
 		self.base_command = [blender_loc, "--background" if background else ""]
 		self._command = self.base_command
 
-	def compose(self, script, silent, args=(), **kwargs):
+	def compose(self, script, args=(), **kwargs):
 		command = self.base_command + ["--python", script]
-		command += [f"1> {nul_text}" if silent else "", "--"]
+		command += ["--"]
 		for arg in args:
 			command.append(f"--{arg}")
 
@@ -52,7 +52,7 @@ class Runner:
 
 		blender_loc = get_blender_path()
 		command = BlenderCommand(blender_loc=blender_loc, background=True)
-		command.compose(script=script, silent=True, **script_kwargs)
+		command.compose(script=script, **script_kwargs)
 
 		thread_manager = BlenderThreadManager(command, json_chunks, print_to_stdout=print_to_stdout,
 											  output_directory=output_directory)
