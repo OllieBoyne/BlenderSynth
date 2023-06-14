@@ -3,6 +3,7 @@ from tqdm import tqdm
 from time import perf_counter, sleep
 import numpy as np
 from subprocess import Popen
+import atexit
 
 from .blender_interface import LOG_PREPEND
 from datetime import datetime, timedelta
@@ -123,6 +124,12 @@ class BlenderThread():
 
 		return True
 
+	def kill(self):
+		self.process.kill()
+
+	def terminate(self):
+		self.process.terminate()
+
 class BlenderThreadManager:
 	def __init__(self, command, jsons, output_directory, print_to_stdout=False,
 				 MAX_PER_JOB=100):
@@ -176,6 +183,9 @@ class BlenderThreadManager:
 		self.session_start = datetime.now()
 		for thread in self.threads:
 			thread.check_in()
+
+		# register atexit handler
+		atexit.register(self.terminate)
 
 		last_report_time = perf_counter()
 
@@ -256,3 +266,7 @@ class BlenderThreadManager:
 
 		with open(self.report_loc, 'w') as outfile:
 			outfile.writelines(report)
+
+	def terminate(self):
+		for thread in self.threads:
+			thread.terminate()
