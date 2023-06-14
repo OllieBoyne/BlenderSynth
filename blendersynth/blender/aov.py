@@ -39,6 +39,9 @@ class AOV:
 		"""Some AOVs need an update before rendering (to change certain node properties)"""
 		return
 
+	def __str__(self):
+		return self.name
+
 class NormalsAOV(AOV):
 	def __init__(self, name=None,
 					ref_frame='CAMERA',

@@ -204,12 +204,12 @@ class Compositor:
 	def update_filename(self, key, fname):
 		"""Reassign the filename (not directory) for a given file output node"""
 		fname = remove_ext(fname)
-		node = self.file_output_nodes[key]
+		node = self.file_output_nodes[str(key)]
 		node.file_slots[0].path = fname
 
 	def update_directory(self, key, directory):
 		"""Reassign the directory for a given file output node"""
-		node = self.file_output_nodes[key]
+		node = self.file_output_nodes[str(key)]
 		node.base_path = directory
 
 	def fix_namings(self):

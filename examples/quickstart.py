@@ -48,8 +48,7 @@ for aov in [cam_normals_aov, instancing_aov, class_aov, UVAOV, NOCAOV]:
 	for obj in all_objects:
 		obj.assign_aov(aov)
 
-# bsyn.world.set_hdri('/Users/ollie/Library/CloudStorage/OneDrive-UniversityofCambridge/synthetic_feet/assets/HDRIs/polyhaven/abandoned_workshop_02_4k.exr')
-bsyn.world.set_color((1.0, 0.1, 0.1))
+bsyn.world.set_color((0.2, 0.2, 0.6))
 
 # Now we assign our render passes to the compositor, telling it what files to output
 output_folder = 'quickstart'
