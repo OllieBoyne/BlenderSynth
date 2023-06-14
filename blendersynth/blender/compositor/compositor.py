@@ -132,7 +132,7 @@ class Compositor:
 		Supports changing view output.
 
 		This should only be called once per output (NOT inside a loop).
-		To update output file name, use update_output_fname method
+		Inside the loop, only
 
 		:mode: if 'image', export in sRGB color space. If 'data', export in raw linear color space
 
@@ -156,8 +156,7 @@ class Compositor:
 
 		# check node doesn't exist
 		if name in self.file_output_nodes:
-			raise ValueError(f"File output `{name}` already exists."
-							 f"Only call define_output once per output type.")
+			raise ValueError(f"File output `{name}` already exists. Only call define_output once per output type.")
 
 
 		if file_name is None: # if fname is not given, use input_name

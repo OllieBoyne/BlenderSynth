@@ -15,10 +15,15 @@ def is_blender_in_path():
 
 def find_blender_python(blender_path):
 
+	targ_script = os.path.abspath(os.path.join(os.path.dirname(__file__), 'blender_python_path.py'))
+
 	# open file as read & write
 	with open('___python.txt', 'w') as f:
-		p = subprocess.Popen([blender_path, "--background", "--python", "blendersynth/utils/blender_python_path.py"], stdout=f)
-		p.wait()
+		try:
+			subprocess.check_call([blender_path, "--background", "--python",
+							  targ_script], stdout=f)
+		except subprocess.CalledProcessError as e:
+			raise Exception(f"Issues with finding blender python path. Error: {e}")
 
 
 	out = None
@@ -35,27 +40,43 @@ def find_blender_python(blender_path):
 
 	raise Exception("Could not find Python interpreter for Blender.")
 
+def validate_blender_path(blender_path):
+	if os.access(blender_path, os.X_OK):
+		return True
+
+	return False
+
 def get_blender_path(_blender_path=None):
 
 	if _blender_path is not None:
 
-		if os.access(_blender_path, os.X_OK):
+		if validate_blender_path(_blender_path):
 			blender_path = _blender_path
 
-		elif os.access(_blender_path + '.exe', os.X_OK): # add .exe if not there (helps os.access checking)
+		elif validate_blender_path(_blender_path + '.exe'): # add .exe if not there (helps os.access checking)
 			blender_path = _blender_path + '.exe'
 
 		else:
 			raise ValueError(f"Provided Blender path, {_blender_path}, is not executable.")
 
-		print("Using provided blender path: ", blender_path)
+	elif os.environ.get('BLENDER_PATH') is not None:
+		blender_path = os.environ.get('BLENDER_PATH')
 
 	elif is_blender_in_path():
 		blender_path = shutil.which("blender")
-		print("Blender is in PATH: ", blender_path)
+
+	elif load_blender_path():
+		blender_path = load_blender_path()
 
 	else:
-		raise ValueError("Blender not in PATH. Please either add to PATH or provide it to setup.py with the --blender_path argument")
+		# raise ValueError("Blender not in PATH. Please either add to PATH or provide it to setup.py with the --blender_path argument")
+		blender_path = input("Blender not found in PATH or Environment Variable.\n"
+							 "Please provide path to blender executable: ")
+
+	blender_path = os.path.abspath(blender_path) # make sure it's absolute path
+
+	if not validate_blender_path(blender_path):
+		raise ValueError(f"Provided Blender path, {blender_path}, is not valid as a Blender executable.")
 
 	save_blender_path(blender_path)
 	return blender_path

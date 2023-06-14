@@ -1,9 +1,8 @@
 """Quick utility to run the current script from Blender"""
-import os, sys
 import subprocess
 import inspect
 import sys
-from .utils.blender_locator import load_blender_path
+from .utils.blender_setup.blender_locator import load_blender_path
 
 def run_this_script(debug=False):
 	"""Run the current script from Blender"""

@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "appdirs>=1.4.4", "numpy", "tqdm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blendersynth"
+version = "0.0.5"
+authors = [
+  { name="Ollie Boyne", email="ollieboyne@gmail.com" },
+]
+description = "Synthetic Rendering for Blender"
+readme = "README.md"
+
+[project.urls]
+"Homepage" = "https://github.com/OllieBoyne/BlenderSynth"

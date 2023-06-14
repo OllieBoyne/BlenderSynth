@@ -1,8 +1,12 @@
+# First, make sure Blender has been set up properly
+from .utils.blender_setup import check_blender_install
+check_blender_install() # check install here
+
 from .run_this_script import run_this_script
 
-# Import bpy attributes, only if bpy exists
 import sys
-from .utils.blender_locator import load_blender_path
+from .utils.blender_setup.blender_locator import load_blender_path
+
 if load_blender_path() == sys.argv[0]:  # if blender is running this script
 	import bpy
 	from bpy import *

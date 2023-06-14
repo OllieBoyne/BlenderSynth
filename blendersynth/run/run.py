@@ -1,8 +1,7 @@
 import os
 
 from .blender_threading import BlenderThreadManager, list_split
-from ..utils.blender_locator import load_blender_path
-import numpy as np
+from ..utils.blender_setup.blender_locator import load_blender_path
 
 from sys import platform
 if platform == "linux" or platform == "linux2" or platform == "darwin":

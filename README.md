@@ -13,9 +13,23 @@ We produce support for:
 
 ## Installation
 
-1) Install Blender
-2) `python setup.py install <--blender_path /path/to/blender>`
-- If Blender is in PATH, you can omit the `--blender_path` argument
+1) Install [Blender](https://www.blender.org)
+
+2) Install blendersynth
+
+First, blendersynth needs to be able to find your Blender installation. There are many ways to do this:
+- Add Blender to PATH (so that `blender` can be called from the command line)
+- Set the `BLENDER_PATH` environment variable to the path to your Blender installation
+- Pass the `--blender_path` argument to `python setup.py install`
+- If none of these are done, you will be prompted to give the location of your Blender installation during install
+
+From pip:
+
+```pip install blendersynth```
+
+Or:
+
+`python setup.py install [--blender_path /path/to/blender]`
 
 ## Quickstart
 

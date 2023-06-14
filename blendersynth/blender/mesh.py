@@ -259,7 +259,7 @@ class Mesh:
 		assert len(location) == 3, f"Location must be a tuple of length 3, got {len(location)}"
 		self.set_position(*location)
 
-	def delete(self):
+	def delete(self, delete_materials=True):
 		"""Clear mesh from scene & mesh data"""
 		mesh_names = [m.name for m in self._meshes]
 		for mesh in self._meshes:
@@ -272,4 +272,8 @@ class Mesh:
 					bpy.data.meshes.remove(m)
 					break
 
-		self._meshes = [] # clear mesh list
+		self._meshes = []  # clear mesh list
+
+		if delete_materials:
+			for material in self.materials:
+				bpy.data.materials.remove(material, do_unlink=True)
