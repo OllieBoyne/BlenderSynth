@@ -1,6 +1,6 @@
 import subprocess
 import os
-from blendersynth.utils.blender_setup.blender_locator import find_blender_python, get_blender_path, remove_config, write_to_config, read_from_config
+from blendersynth.utils.blender_setup.blender_locator import find_blender_python, get_blender_path, remove_config, write_to_config, read_from_config, remove_from_config
 
 from time import perf_counter
 
@@ -47,9 +47,9 @@ def check_blender_install(force_all=False,
 	if force_all:
 		remove_config() # remove config file if it exists to force first time setup
 
-	if force_find_blender: remove_config('BLENDER_PATH')
-	if force_find_blender_python: remove_config('BLENDER_PYTHON_PATH')
-	if force_install_dependencies: remove_config('DEPENDENCIES_INSTALLED')
+	if force_find_blender: remove_from_config('BLENDER_PATH')
+	if force_find_blender_python: remove_from_config('BLENDER_PYTHON_PATH')
+	if force_install_dependencies: remove_from_config('DEPENDENCIES_INSTALLED')
 
 	blender_path = get_blender_path()
 	python_path = find_blender_python(blender_path)
