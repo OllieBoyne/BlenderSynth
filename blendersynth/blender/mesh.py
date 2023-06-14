@@ -261,11 +261,15 @@ class Mesh:
 
 	def delete(self):
 		"""Clear mesh from scene & mesh data"""
+		mesh_names = [m.name for m in self._meshes]
 		for mesh in self._meshes:
-			mesh_name = mesh.name
 			bpy.data.objects.remove(mesh, do_unlink=True)
 
-			# Also remove its mesh data from bpy.data.meshes
+		# Also remove its mesh data from bpy.data.meshes
+		for mname in mesh_names:
 			for m in bpy.data.meshes:
-				if m.name == mesh_name:
+				if m.name == mname:
 					bpy.data.meshes.remove(m)
+					break
+
+		self._meshes = [] # clear mesh list
