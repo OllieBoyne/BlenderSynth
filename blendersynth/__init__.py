@@ -2,11 +2,11 @@
 from .utils.blender_setup import check_blender_install
 check_blender_install() # check install here
 
-def fix_blender_install():
-	check_blender_install(force_all=True)
+def fix_blender_install(local=False):
+	check_blender_install(force_all=True, blendersynth_from_local=local)
 
-def fix_blender_modules():
-	check_blender_install(force_install_dependencies=True)
+def fix_blender_modules(local=False):
+	check_blender_install(force_install_dependencies=True, blendersynth_from_local=local)
 
 from .run_this_script import run_this_script
 

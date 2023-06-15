@@ -34,7 +34,8 @@ def install_module(python_executable, module_name, is_test_pypi=False,
 def check_blender_install(force_all=False,
 						  force_find_blender=False,
 						  force_find_blender_python=False,
-						  force_install_dependencies=False):
+						  force_install_dependencies=False,
+						  blendersynth_from_local=False):
 	"""Check if Blender is installed correctly and has all necessary packages.
 	If not, run first time setup.
 
@@ -61,6 +62,15 @@ def check_blender_install(force_all=False,
 				install_module(python_path, dependency)
 
 		# Install blendersynth package to blender's python
-		install_module(python_path, 'blendersynth', upgrade=True)
+		if blendersynth_from_local:
+			# Install from local setup.py
+			setup_py_loc = os.path.join(os.path.dirname(__file__), '..', '..', 'setup.py')
+			if not os.path.isfile('setup.py'):
+				raise Exception(f"Could not find setup.py at {setup_py_loc}.")
+			subprocess.check_call([python_path, 'setup.py', 'install'])
+
+		else:
+			# Install from pypi
+			install_module(python_path, 'blendersynth', upgrade=True)
 
 		write_to_config('DEPENDENCIES_INSTALLED', 'True')
