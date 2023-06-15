@@ -39,6 +39,26 @@ def get_child_meshes(obj):
 	else:
 		return []
 
+def bounds_center(mesh):
+	"""Get center of bounding box in world space"""
+	local_bbox_center = 0.125 * sum((mathutils.Vector(b) for b in mesh.bound_box), mathutils.Vector())
+	global_bbox_center = mesh.matrix_world @ local_bbox_center
+	return np.array(global_bbox_center)
+
+def vertex_center(mesh):
+	"""Get center of vertices in world space"""
+	verts = np.array([mesh.matrix_world @ v.co for v in mesh.data.vertices])
+	return verts.mean(axis=0)
+
+def set_origin(mesh, vec):
+
+	if mesh.type == 'MESH':
+		delta = mathutils.Vector(vec) - mesh.location
+		delta_object = mesh.matrix_world.inverted() @ delta
+		mesh.data.transform(mathutils.Matrix.Translation(-delta_object)) # Move the mesh vertices in the opposite direction
+		mesh.location += delta_object
+		bpy.context.view_layer.update()
+
 class Mesh:
 	def __init__(self, obj, material=None, scene=None, class_id=None):
 		"""
@@ -277,3 +297,28 @@ class Mesh:
 		if delete_materials:
 			for material in self.materials:
 				bpy.data.materials.remove(material, do_unlink=True)
+
+	def centroid(self, method='vertex'):
+		"""
+		:param method: 'vertex' or 'bounds'
+		:return:
+		"""
+		centroids = []
+
+		for mesh in self._meshes:
+			if method == 'vertex':
+				centroids.append(vertex_center(mesh))
+
+			elif method == 'bounds':
+				centroids.append(bounds_center(mesh))
+
+			else:
+				raise ValueError(f"Invalid method: {method}. Must be one of ['vertex', 'bounds']")
+
+		return np.mean(centroids, axis=0)
+
+	def origin_to_centroid(self, method='bounds'):
+		"""Move object origin to centroid"""
+		centroid = self.centroid(method=method)
+		for mesh in self._meshes:
+			set_origin(mesh, centroid)
