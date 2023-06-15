@@ -51,13 +51,22 @@ def vertex_center(mesh):
 	return verts.mean(axis=0)
 
 def set_origin(mesh, vec):
-
 	if mesh.type == 'MESH':
-		delta = mathutils.Vector(vec) - mesh.location
+		delta = mesh.location - mathutils.Vector(vec)
 		delta_object = mesh.matrix_world.inverted() @ delta
-		mesh.data.transform(mathutils.Matrix.Translation(-delta_object)) # Move the mesh vertices in the opposite direction
-		mesh.location += delta_object
+		mesh.data.transform(mathutils.Matrix.Translation(delta_object))  # Move the mesh vertices in the opposite direction
+		mesh.location -= delta_object
 		bpy.context.view_layer.update()
+
+def handle_vec(vec, expected_length=3):
+	"""Check ven is expected_length. Convert from tuple or ndarray to mathutils.Vector """
+	if isinstance(vec, (tuple, list)):
+		vec = mathutils.Vector(vec)
+	elif isinstance(vec, np.ndarray):
+		vec = mathutils.Vector(vec.tolist())
+	assert len(vec) == expected_length, "Vector must be length {}".format(expected_length)
+	return vec
+
 
 class Mesh:
 	def __init__(self, obj, material=None, scene=None, class_id=None):
@@ -276,8 +285,13 @@ class Mesh:
 	@location.setter
 	def location(self, location):
 		"""Set location of object"""
-		assert len(location) == 3, f"Location must be a tuple of length 3, got {len(location)}"
+		location = handle_vec(location, 3)
 		self.set_position(*location)
+
+	def translate(self, translation):
+		"""Translate object"""
+		translation = handle_vec(translation, 3)
+		self.obj.location += translation
 
 	def delete(self, delete_materials=True):
 		"""Clear mesh from scene & mesh data"""
