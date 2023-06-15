@@ -1,6 +1,7 @@
 # First, make sure Blender has been set up properly
+import sys
 from .utils.blender_setup import check_blender_install
-check_blender_install() # check install here
+check_blender_install(blendersynth_from_local='--local' in sys.argv) # check install here
 
 def fix_blender_install(local=False):
 	check_blender_install(force_all=True, blendersynth_from_local=local)

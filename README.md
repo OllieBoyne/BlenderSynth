@@ -21,11 +21,19 @@ If Blender is not in your PATH, you will need to specify the path to your Blende
 
 From pip:
 
-```pip install blendersynth```
+```
+pip install blendersynth
+python -c "import blendersynth"
+```
 
 Or from local clone:
 
-`python setup.py install`
+```
+git clone https://github.com/OllieBoyne/BlenderSynth
+cd BlenderSynth
+python setup.py install
+python -c "import blendersynth" --local
+```
 
 ## Quickstart
 
