@@ -242,8 +242,8 @@ class Mesh:
 					bpy.ops.transform.rotate(value=val, orient_axis=ax)
 
 	def set_position(self, x, y, z):
-		for m in self._meshes:
-			m.location = (x, y, z)
+		with SelectObjects(self._meshes + self._other_objects):
+			bpy.ops.transform.translate(value=(x, y, z))
 
 	def set_minimum_to(self, axis='Z', pos=0):
 		"""Set minimum of object to a given position"""
