@@ -28,16 +28,18 @@ default_ids = {
 }
 
 def get_child_meshes(obj):
-	"""Given an object, return all meshes that are children of it. Recursively searches children of children"""
+	"""Given an object, return all meshes that are children of it. Recursively searches children of children.
+	Also returns any child objects that aren't meshes"""
 	if obj.type == 'MESH':
-		return [obj]
-	elif obj.type == 'EMPTY':
-		meshes = []
-		for child in obj.children:
-			meshes += get_child_meshes(child)
-		return meshes
+		return [obj], []
 	else:
-		return []
+		meshes, other = [], [obj]
+		for child in obj.children:
+			child_meshes, child_other = get_child_meshes(child)
+			meshes += child_meshes
+			other += child_other
+
+		return meshes, other
 
 def bounds_center(mesh):
 	"""Get center of bounding box in world space"""
@@ -85,7 +87,7 @@ class Mesh:
 
 		self.scene = scene
 		self.obj = obj
-		self._meshes = get_child_meshes(obj)
+		self._meshes, self._other_objects = get_child_meshes(obj)
 
 		# Must have a material, create if not passed
 		if material is None:
@@ -298,6 +300,10 @@ class Mesh:
 		mesh_names = [m.name for m in self._meshes]
 		for mesh in self._meshes:
 			bpy.data.objects.remove(mesh, do_unlink=True)
+
+		# remove any non-mesh objects
+		for obj in self._other_objects:
+			bpy.data.objects.remove(obj, do_unlink=True)
 
 		# Also remove its mesh data from bpy.data.meshes
 		for mname in mesh_names:
