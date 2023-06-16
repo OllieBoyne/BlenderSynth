@@ -1,10 +1,11 @@
 import os.path
 
 import bpy
-from .utils import GetNewObject
+from .utils import GetNewObject, SelectObjects
 from .aov import AOV
 import numpy as np
 import mathutils
+from mathutils import Vector, Matrix, Euler
 
 _primitives ={
 	"cube": bpy.ops.mesh.primitive_cube_add,
@@ -190,6 +191,16 @@ class Mesh:
 		return cls.from_glb(gltf_loc, class_id=class_id)
 
 
+	@property
+	def origin(self):
+		"""Get origin as origin of first mesh"""
+		return self._meshes[0].location
+
+	@origin.setter
+	def origin(self, origin):
+		"""Set origin of object"""
+		self._meshes[0].location = origin
+
 	def get_all_vertices(self, ref_frame='WORLD'):
 		verts = np.array([vert.co[:] + (1,) for vert in self.obj.data.vertices]).T
 
@@ -224,10 +235,11 @@ class Mesh:
 			aov.add_to_shader(shader_node_tree)
 
 
-	def set_euler_rotation(self, x, y, z):
-		for m in self._meshes:
-			m.rotation_mode = 'XYZ'
-			m.rotation_euler = (x, y, z)
+	def set_euler_rotation(self, rot):
+		with SelectObjects(self._meshes + self._other_objects):
+			for ax, val in zip('XYZ', rot):
+				if val != 0:
+					bpy.ops.transform.rotate(value=val, orient_axis=ax)
 
 	def set_position(self, x, y, z):
 		for m in self._meshes:
@@ -256,17 +268,17 @@ class Mesh:
 
 	@property
 	def scale(self):
-		"""Return scale of object"""
+		"""Return scale of primary mesh."""
 		return self._meshes[0].scale
 
 	@scale.setter
 	def scale(self, scale):
-		"""Set scale of object"""
+		"""Set scale of all meshes (scales about origin)"""
 		if isinstance(scale, (int, float)):
 			scale = (scale, scale, scale)
 
-		for m in self._meshes:
-			m.scale = scale
+		with SelectObjects(self._meshes + self._other_objects):
+			bpy.ops.transform.resize(value=scale)
 
 	@property
 	def rotation_euler(self):
@@ -277,7 +289,7 @@ class Mesh:
 	def rotation_euler(self, rotation):
 		"""Set euler rotation of object"""
 		assert len(rotation) == 3, f"Rotation must be a tuple of length 3, got {len(rotation)}"
-		self.set_euler_rotation(*rotation)
+		self.set_euler_rotation(rotation)
 
 	@property
 	def location(self):
