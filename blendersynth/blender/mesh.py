@@ -70,6 +70,14 @@ def handle_vec(vec, expected_length=3):
 	assert len(vec) == expected_length, "Vector must be length {}".format(expected_length)
 	return vec
 
+def euler_from(a: mathutils.Euler, b: mathutils.Euler):
+	"""Get euler rotation from a to b"""
+	return (b.to_matrix() @ a.to_matrix().inverted()).to_euler()
+
+def euler_add(a: mathutils.Euler, b: mathutils.Euler):
+	"""Compute euler rotation of a, followed by b"""
+	return (a.to_matrix() @ b.to_matrix()).to_euler()
+
 
 class Mesh:
 	def __init__(self, obj, material=None, scene=None, class_id=None):
@@ -105,6 +113,13 @@ class Mesh:
 		# CLASS - Define class based on type of object (e.g. primitive)
 		# can be overriden at any point
 		self.set_class_id(class_id)
+
+		self.assigned_aovs = []
+
+		# we want to be able to manage scale, rotation and location separately from the children meshes
+		self._scale = Vector((1, 1, 1))
+		self._rotation_euler = Euler((0, 0, 0))
+		self._location = Vector((0, 0, 0))
 
 	def set_class_id(self, class_id):
 		assert isinstance(class_id, int), f"Class ID must be an integer, not {type(class_id)}"
@@ -229,21 +244,14 @@ class Mesh:
 
 	def assign_aov(self, aov: AOV):
 		"""Assign AOV to object. Applies to all materials"""
-		for material in self.materials:
-			shader_node_tree = material.node_tree
-			assert shader_node_tree is not None, "Material must have a node tree"
-			aov.add_to_shader(shader_node_tree)
+		if aov not in self.assigned_aovs:
+			for material in self.materials:
+				shader_node_tree = material.node_tree
+				assert shader_node_tree is not None, "Material must have a node tree"
+				aov.add_to_shader(shader_node_tree)
 
+		self.assigned_aovs.append(aov)
 
-	def set_euler_rotation(self, rot):
-		with SelectObjects(self._meshes + self._other_objects):
-			for ax, val in zip('XYZ', rot):
-				if val != 0:
-					bpy.ops.transform.rotate(value=val, orient_axis=ax)
-
-	def set_position(self, x, y, z):
-		with SelectObjects(self._meshes + self._other_objects):
-			bpy.ops.transform.translate(value=(x, y, z))
 
 	def set_minimum_to(self, axis='Z', pos=0):
 		"""Set minimum of object to a given position"""
@@ -269,7 +277,7 @@ class Mesh:
 	@property
 	def scale(self):
 		"""Return scale of primary mesh."""
-		return self._meshes[0].scale
+		return self._scale
 
 	@scale.setter
 	def scale(self, scale):
@@ -277,35 +285,66 @@ class Mesh:
 		if isinstance(scale, (int, float)):
 			scale = (scale, scale, scale)
 
+		resize_fac = np.array(scale) / np.array(self.scale)
+
 		with SelectObjects(self._meshes + self._other_objects):
-			bpy.ops.transform.resize(value=scale)
+			bpy.ops.transform.resize(value=resize_fac)
+
+		self._scale = scale
 
 	@property
 	def rotation_euler(self):
 		"""Return euler rotation of object"""
-		return self._meshes[0].rotation_euler
+		return self._rotation_euler
 
 	@rotation_euler.setter
 	def rotation_euler(self, rotation):
 		"""Set euler rotation of object"""
 		assert len(rotation) == 3, f"Rotation must be a tuple of length 3, got {len(rotation)}"
-		self.set_euler_rotation(rotation)
+		rotation = Euler(rotation, 'XYZ')
+		diff = euler_from(self.rotation_euler, rotation)
+
+		with SelectObjects(self._meshes + self._other_objects):
+			for ax, val in zip('XYZ', diff):
+				if val != 0:
+					bpy.ops.transform.rotate(value=val, orient_axis=ax)
+
+		self._rotation_euler = rotation
 
 	@property
 	def location(self):
 		"""Return location of object"""
-		return self._meshes[0].location
+		return self._location
 
 	@location.setter
 	def location(self, location):
 		"""Set location of object"""
 		location = handle_vec(location, 3)
-		self.set_position(*location)
+
+		translation = location - self.location
+		with SelectObjects(self._meshes + self._other_objects):
+			bpy.ops.transform.translate(value=translation)
+
+		self._location = location
 
 	def translate(self, translation):
 		"""Translate object"""
 		translation = handle_vec(translation, 3)
-		self.obj.location += translation
+		self.location += translation
+
+	def rotate_by(self, rotation):
+		"""Add a rotation to the object. Must be in XYZ order, euler angles, radians."""
+		rotation = handle_vec(rotation, 3)
+		new_rotation = euler_add(self.rotation_euler, Euler(rotation, 'XYZ'))
+		self.rotation_euler = new_rotation
+
+	def scale_by(self, scale):
+		"""Scale object"""
+		if isinstance(scale, (int, float)):
+			scale = (scale, scale, scale)
+
+		scale = handle_vec(scale, 3)
+		self.scale = self._scale * scale
 
 	def delete(self, delete_materials=True):
 		"""Clear mesh from scene & mesh data"""

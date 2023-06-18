@@ -64,4 +64,7 @@ class World():
 	def set_hdri_intensity(self, intensity = 1.):
 		self.world_nodes["Background"].inputs[1].default_value = intensity  # HDRI lighting
 
+	def set_transparent(self, transparent=True):
+		bpy.context.scene.render.film_transparent = transparent
+
 world = World()
