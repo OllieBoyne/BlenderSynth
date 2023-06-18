@@ -136,7 +136,7 @@ class Mesh:
 		return cls(obj, class_id=class_id)
 
 	@classmethod
-	def from_primitive(cls, name='cube', scale=None, class_id=None, **kwargs):
+	def from_primitive(cls, name='cube', scale=None, location=None, rotation_euler=None, class_id=None, **kwargs):
 		"""Create object from primitive"""
 		assert name in _primitives, f"Primitive `{name}` not found. Options are: {list(_primitives.keys())}"
 
@@ -149,8 +149,9 @@ class Mesh:
 
 		obj = cls(importer.imported_obj, class_id=class_id)
 
-		if scale is not None:  # handle scale separately so can be a single value
-			obj.scale = scale
+		if scale is not None: obj.scale = scale
+		if location is not None: obj.location = location
+		if rotation_euler is not None: obj.rotation_euler = rotation_euler
 
 		return obj
 
@@ -217,7 +218,7 @@ class Mesh:
 		self._meshes[0].location = origin
 
 	def get_all_vertices(self, ref_frame='WORLD'):
-		verts = np.array([vert.co[:] + (1,) for vert in self.obj.data.vertices]).T
+		verts = np.array([vert.co[:] + (1,) for mesh in self._meshes for vert in mesh.data.vertices]).T
 
 		if ref_frame == 'LOCAL':
 			pass
@@ -239,7 +240,8 @@ class Mesh:
 
 	def assign_pass_index(self, index: int):
 		"""Assign pass index to object. This can be used when mask rendering."""
-		self.obj.pass_index = index
+		for mesh in self._meshes:
+			mesh.pass_index = index
 		return index
 
 	def assign_aov(self, aov: AOV):
@@ -256,7 +258,9 @@ class Mesh:
 	def set_minimum_to(self, axis='Z', pos=0):
 		"""Set minimum of object to a given position"""
 		min_pos = self.get_all_vertices('WORLD')[:, 'XYZ'.index(axis)].min()
-		self.obj.location['XYZ'.index(axis)] += pos - min_pos
+		trans_vec = np.zeros(3)
+		trans_vec['XYZ'.index(axis)] = pos - min_pos
+		self.translate(trans_vec)
 
 	# @property
 	# def bound_box(self):
@@ -330,7 +334,7 @@ class Mesh:
 	def translate(self, translation):
 		"""Translate object"""
 		translation = handle_vec(translation, 3)
-		self.location += translation
+		self.location = self.location + translation
 
 	def rotate_by(self, rotation):
 		"""Add a rotation to the object. Must be in XYZ order, euler angles, radians."""
