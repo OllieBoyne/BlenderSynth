@@ -1,6 +1,7 @@
 import bpy
 import numpy as np
 import mathutils
+from .utils import handle_vec
 
 def look_at_rotation(obj_camera, at=mathutils.Vector((0, 0, 0)), up=mathutils.Vector((0, 1, 0))):
 	"""	Rotate camera to look at 'at', with 'up' maintained"""
@@ -71,5 +72,9 @@ class Camera:
 		self.euler = euler
 
 	def place_and_look_at(self, pos, at, up=mathutils.Vector((0, 1, 0))):
+		pos = handle_vec(pos)
+		at = handle_vec(at)
+		up = handle_vec(up)
+
 		self.location = pos
 		self.look_at(at, up)

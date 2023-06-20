@@ -1,11 +1,11 @@
 import os.path
 
 import bpy
-from .utils import GetNewObject, SelectObjects
+from .utils import GetNewObject, SelectObjects, handle_vec
 from .aov import AOV
 import numpy as np
 import mathutils
-from mathutils import Vector, Matrix, Euler
+from mathutils import Vector, Euler
 
 _primitives ={
 	"cube": bpy.ops.mesh.primitive_cube_add,
@@ -61,14 +61,6 @@ def set_origin(mesh, vec):
 		mesh.location -= delta_object
 		bpy.context.view_layer.update()
 
-def handle_vec(vec, expected_length=3):
-	"""Check ven is expected_length. Convert from tuple or ndarray to mathutils.Vector """
-	if isinstance(vec, (tuple, list)):
-		vec = mathutils.Vector(vec)
-	elif isinstance(vec, np.ndarray):
-		vec = mathutils.Vector(vec.tolist())
-	assert len(vec) == expected_length, "Vector must be length {}".format(expected_length)
-	return vec
 
 def euler_from(a: mathutils.Euler, b: mathutils.Euler):
 	"""Get euler rotation from a to b"""
