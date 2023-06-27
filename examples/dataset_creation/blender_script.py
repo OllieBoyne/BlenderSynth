@@ -28,8 +28,8 @@ comp.define_output(cam_normals_aov, os.path.join('example_dataset', 'normal'))  
 # Now iterate through and generate dataset
 for i, (fname, input) in enumerate(inputs):
 	# Set the pose of the monkey
-	monkey.set_euler_rotation(*input['euler'])
-	monkey.set_position(*input['location'])
+	monkey.rotation_euler = input['euler']
+	monkey.location = input['location']
 
 	# Render - set the output filename to match the json filename (e.g. 0001.json -> 0001.png)
 	comp.update_filename('Image', fname)

@@ -3,6 +3,7 @@ import os
 from .blender_threading import BlenderThreadManager, list_split
 from ..utils.blender_setup.blender_locator import get_blender_path
 from copy import deepcopy
+from ..file.tempfiles import cleanup_temp_files as cleanup
 
 from sys import platform
 if platform == "linux" or platform == "linux2" or platform == "darwin":
@@ -94,3 +95,5 @@ def execute_jobs(script, json_src, output_directory, num_threads=1,
 
 	Runner(script, json_src, output_directory, num_threads, print_to_stdout=print_to_stdout,
 			**script_kwargs)
+
+	cleanup()
