@@ -4,7 +4,7 @@ from blendersynth.utils.blender_setup.blender_locator import find_blender_python
 
 from time import perf_counter
 
-dependencies = ['imageio', 'numpy', 'appdirs', 'tqdm']
+dependencies = ['imageio', 'numpy', 'appdirs', 'tqdm', 'opencv-python']
 
 def check_module(python_executable, module_name):
 	try:

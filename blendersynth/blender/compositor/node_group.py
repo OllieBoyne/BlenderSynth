@@ -27,7 +27,6 @@ class CompositorNodeGroup:
 		return self.gn.outputs
 
 	def input(self, name):
-		# return self.input_node.outputs[name]
 		return self.inputs[name]
 
 	def output(self, name):
@@ -35,3 +34,6 @@ class CompositorNodeGroup:
 
 	def __str__(self):
 		return f"CompositorNodeGroup({self.name})"
+
+	def update(self, camera=None, scene=None):
+		pass

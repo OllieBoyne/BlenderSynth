@@ -2,6 +2,8 @@ import bpy
 import numpy as np
 import mathutils
 
+from bpy_extras.object_utils import world_to_camera_view
+
 
 class GetNewObject():
 	def __init__(self, scene):

@@ -261,14 +261,10 @@ class Mesh:
 
 	@property
 	def matrix_world(self):
-		"""Return world matrix of object(s)"""
+		"""Return world matrix of object(s).
+		"""
 		bpy.context.evaluated_depsgraph_get() # required to update object matrix
-
-		if len(self._meshes) == 1:
-			return self.obj.matrix_world
-
-		else:
-			return [m.matrix_world for m in self._meshes]
+		return self._meshes[0].matrix_world
 
 	@property
 	def scale(self):
@@ -389,3 +385,28 @@ class Mesh:
 		centroid = self.centroid(method=method)
 		for mesh in self._meshes:
 			set_origin(mesh, centroid)
+
+	def get_keypoints(self, idxs=None, position=None):
+		"""Return 3D keypoint positions in world coordinates, given either:
+
+		idxs: list of indices or ndarray of keypoints to project (only valid for single-mesh objects)
+		position: 3D position of keypoints to project - in LOCAL object coordinates
+
+		:return N list of Vectors of keypoints in world space, where N is the number of keypoints:
+		"""
+
+		assert (idxs is not None) ^ (position is not None), "Must provide either idxs or position, but not both."
+
+
+		if idxs is not None:
+			assert len(self._meshes) == 1, "Can only project keypoints by index for single-mesh objects."
+			kps3d = [self.matrix_world @ self._meshes[0].data.vertices[i].co for i in idxs]
+
+		elif position is not None:
+			kps3d = [self.matrix_world @ p for p in position]
+
+		return kps3d
+
+	@property
+	def name(self):
+		return self._meshes[0].name

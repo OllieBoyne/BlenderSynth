@@ -28,6 +28,7 @@ if get_blender_path() == sys.argv[0]:  # if blender is running this script
 	from .blender.light import Light
 	from .blender.camera import Camera
 	from . import annotations
+	from .file.tempfiles import cleanup_temp_files as cleanup
 
 	# set render engine to cycles
 	render.set_engine('CYCLES')

@@ -37,7 +37,7 @@ python -c "import blendersynth" --local
 
 ## Quickstart
 
-For a quick overview of creating a render: `examples/quickstart.py`
+For an overview of creating the renders in the splash graphic: `examples/example.py`
 
 For an overview of creating a dataset: `examples/dataset_creation`
 

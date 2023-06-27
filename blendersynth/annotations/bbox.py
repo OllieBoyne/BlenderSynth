@@ -3,6 +3,7 @@ from .utils import project_points
 import mathutils
 import numpy as np
 from ..blender.mesh import Mesh
+from typing import List
 
 BBOX_FMTS = ['x1y1x2y2', 'xywh']
 
@@ -46,3 +47,11 @@ def bounding_box(object: Mesh, camera: bpy.types.Camera = None,
 
 	else:
 		raise ValueError(f'Invalid return_fmt: {return_fmt}. Must be one of {BBOX_FMTS}')
+
+def bounding_boxes(objects: List[Mesh], camera: bpy.types.Camera = None,
+				 scene:bpy.types.Scene=None,
+				 return_fmt='x1y1x2y2', normalized=False, invert_y=True):
+	"""Get the bounding boxes of multiple objects in image space."""
+
+	return [bounding_box(obj, camera=camera, scene=scene, return_fmt=return_fmt,
+						   normalized=normalized, invert_y=invert_y) for obj in objects]

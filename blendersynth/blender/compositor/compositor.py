@@ -1,13 +1,17 @@
 import bpy
+import numpy as np
 from ..utils import get_node_by_name
 import os
 import shutil
-from ..render import render
+from ..render import render, render_depth
 from .node_group import CompositorNodeGroup
 from ..aov import AOV
 from ..mesh import Mesh
 from .mask_overlay import MaskOverlay
-from .shape_overlays import BBoxOverlays
+from .visuals import DepthVis
+from .image_overlay import KeypointsOverlay, BoundingBoxOverlay
+
+
 from typing import Union, List
 from ...utils.node_arranger import tidy_tree
 
@@ -101,25 +105,56 @@ class Compositor:
 		self.tidy_tree()
 		return self.mask_nodes[index]
 
-	def get_bounding_box_visual(self, objs: Union[Mesh, List[Mesh]], col=(1., 0., 0.), thickness=0.01) -> BBoxOverlays:
-		"""Given a single Mesh instance, or a list of Mesh instances, return a CompositorNodeGroup,
-		which will render the bounding box of the object(s)
+	def get_bounding_box_visual(self, col=(0., 0., 255., 255.), thickness=5) -> BoundingBoxOverlay:
+		"""
+		return a CompositorNodeGroup,
+		which will render the bounding boxes of the objects
 
-		:param objs: Mesh instance, or list of Mesh instances
-		:param col: (3,) or (N, 3) Color(s) of bounding box(es)
+		:param col: (3,) or (N, 3) Color(s) of bounding box(es) [in BGR]
 		:param thickness: (,) or (N,) Thickness(es) of bounding box(es)
 		"""
 
-		if isinstance(objs, Mesh):
-			objs = [objs]
-
-		cng = BBoxOverlays(f"Bounding Box Visual - {len(objs)}", self.node_tree, objs, col=col, thickness=thickness)
+		cng = BoundingBoxOverlay(f"Bounding Box Visual", self.node_tree, col=col, thickness=thickness)
 		self.node_tree.links.new(self.render_layers_node.outputs['Image'], cng.input('Image'))
 
 		if 'BBox' in self.overlays:
 			raise ValueError("Only allowed one BBox overlay (it can contain multiple objects).")
 
 		self.overlays['BBox'] = cng
+
+		self.tidy_tree()
+		return cng
+
+	def get_keypoints_visual(self) -> KeypointsOverlay:
+		"""
+		Initialize a keypoints overlay node
+		"""
+
+		cng = KeypointsOverlay(f"Keypoints Visual", self.node_tree)
+		self.node_tree.links.new(self.render_layers_node.outputs['Image'], cng.input('Image'))
+
+		if 'Keypoints' in self.overlays:
+			raise ValueError("Only allowed one Keypoints overlay.")
+
+		self.overlays['Keypoints'] = cng
+
+		self.tidy_tree()
+		return cng
+
+	def get_depth_visual(self, max_depth=1, col=(255, 255, 255)):
+		"""Get depth visual, which normalizes depth values so max_depth = col,
+		and any values below that are depth/max_depth * col.
+
+		Col = 0-255 RGB or RGBA"""
+
+		if 'Depth' not in self.render_layers_node.outputs:
+			render_depth()
+
+		# convert col to 0-1, RGBA
+		col = ([i/255 for i in col] + [1])[:4]
+
+		cng = DepthVis(self.node_tree, max_depth=max_depth, col=col)
+		self.node_tree.links.new(self.render_layers_node.outputs['Depth'], cng.input('Depth'))
 
 		self.tidy_tree()
 		return cng
@@ -232,8 +267,29 @@ class Compositor:
 		for aov in self.aovs:
 			aov.update()
 
-	def render(self):
+	def render(self, camera=None, scene=None, overlay_kwargs=None):
 		"""Render the scene"""
+		if overlay_kwargs is None:
+			overlay_kwargs = {}
+
+		if scene is None:
+			scene = bpy.context.scene
+
+		if camera is None:
+			camera = scene.camera
+
+		for k in overlay_kwargs.keys():
+			assert k in self.overlays, f"overlay_kwarg {k} not in overlays: {[*self.overlays.keys()]}."
+
+		for oname, overlay in self.overlays.items():
+			args = overlay_kwargs.get(oname, {})
+			if isinstance(args, dict):
+				overlay.update(camera=camera, scene=scene, **args)  # multi kwargs
+			else:
+				overlay.update(args, camera=camera, scene=scene)  # single arg
+
+
 		self.update_aovs()
+
 		render()
 		self.fix_namings()
