@@ -1,7 +1,10 @@
 import bpy
 import numpy as np
 import mathutils
-from .utils import handle_vec
+from .utils import handle_vec, SelectObjects
+from typing import Union
+from .mesh import Mesh
+from .curve import Curve
 
 def look_at_rotation(obj_camera, at=mathutils.Vector((0, 0, 0)), up=mathutils.Vector((0, 1, 0))):
 	"""	Rotate camera to look at 'at', with 'up' maintained"""
@@ -78,3 +81,60 @@ class Camera:
 
 		self.location = pos
 		self.look_at(at, up)
+
+	def track_to(self, obj: Union[Mesh, bpy.types.Object]):
+		"""Track camera to object"""
+		if isinstance(obj, Mesh):
+			obj = obj.obj
+
+		constraint = self.camera.constraints.new('TRACK_TO')
+		constraint.target = obj
+		constraint.track_axis = 'TRACK_NEGATIVE_Z'
+		constraint.up_axis = 'UP_Y'
+		self.update()
+
+	def untrack(self):
+		"""Remove track to constraint"""
+		constraint = self.camera.constraints.get('Track To')
+		self.camera.constraints.remove(constraint)
+		self.update()
+
+	def follow_path(self, path: Curve,	zero=True,
+					animate=True, frame_start=0, frame_end=250, start_frac=0, end_frac=1):
+		"""Follow path, with optional animation setting.
+
+		path: Curve object to follow
+		zero: Reset camera location to 0,0,0 before following path
+		"""
+		constraint = self.camera.constraints.new('FOLLOW_PATH')
+		constraint.target = path.path
+		constraint.forward_axis = 'TRACK_NEGATIVE_Z'
+		constraint.up_axis = 'UP_Y'
+
+		if zero:
+			self.location = (0, 0, 0)
+
+		if animate:
+			self.animate_path(frame_start, frame_end, start_frac, end_frac)
+
+		# if there is are any track constraints, place this constraint first
+		# so that the camera is not rotated by the track constraint
+		track_constraint_idx = self.camera.constraints.find('Track To')
+		if track_constraint_idx > -1:
+			self.camera.constraints.move(track_constraint_idx, track_constraint_idx+1)
+
+		self.update()
+
+	def animate_path(self, frame_start=0, frame_end=250, start_frac=0, end_frac=1):
+		"""Animate camera along path, setting 'influence' of follow path constraint"""
+
+		constraint = self.camera.constraints.get('Follow Path')
+		if constraint is None:
+			raise ValueError("Camera does not have a 'Follow Path' constraint")
+
+		constraint.offset = start_frac * 100
+		constraint.keyframe_insert(data_path='offset', frame=frame_start)
+		constraint.offset = end_frac * 100
+		constraint.keyframe_insert(data_path='offset', frame=frame_end)
+
+		self.update()

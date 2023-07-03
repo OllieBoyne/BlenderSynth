@@ -1,7 +1,10 @@
 import bpy
 
-def render():
-	bpy.ops.render.render(write_still=True)
+def render(animation=False):
+	if animation:
+		bpy.ops.render.render(animation=True)
+	else:
+		bpy.ops.render.render(write_still=True)
 
 def set_engine(engine):
 	bpy.context.scene.render.engine = engine
@@ -16,3 +19,8 @@ def set_cycles_samples(samples):
 
 def render_depth():
 	bpy.context.view_layer.use_pass_z = True  # enable depth pass
+
+def set_transparent(scene=None):
+	if scene is None:
+		scene = bpy.context.scene
+	scene.render.film_transparent = True

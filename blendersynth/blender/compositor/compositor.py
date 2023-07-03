@@ -267,7 +267,8 @@ class Compositor:
 		for aov in self.aovs:
 			aov.update()
 
-	def render(self, camera=None, scene=None, overlay_kwargs=None):
+	def render(self, camera=None, scene=None, overlay_kwargs=None,
+			   animation=False, frame_start=0, frame_end=250):
 		"""Render the scene"""
 		if overlay_kwargs is None:
 			overlay_kwargs = {}
@@ -291,5 +292,11 @@ class Compositor:
 
 		self.update_aovs()
 
-		render()
-		self.fix_namings()
+		if animation:
+			scene.frame_start = frame_start
+			scene.frame_end = frame_end
+
+		render(animation=animation)
+
+		if not animation:
+			self.fix_namings()

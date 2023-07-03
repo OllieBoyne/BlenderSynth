@@ -18,14 +18,14 @@ _primitives ={
 }
 
 default_ids = {
-	'prim_cube': 0,
-	'prim_sphere': 1,
-	'prim_cylinder': 2,
-	'prim_plane': 3,
-	'prim_cone': 4,
-	'prim_monkey': 5,
-	'prim_torus': 6,
-	'loaded_mesh': 7,
+	'loaded_mesh': 0,
+	'prim_cube': 1,
+	'prim_sphere': 2,
+	'prim_cylinder': 3,
+	'prim_plane': 4,
+	'prim_cone': 5,
+	'prim_monkey': 6,
+	'prim_torus': 7,
 }
 
 def get_child_meshes(obj):

@@ -35,17 +35,16 @@ python setup.py install
 python -c "import blendersynth" --local
 ```
 
-## Quickstart
+## Examples
 
-For an overview of creating the renders in the splash graphic: `examples/example.py`
+[See here](examples/examples.md) for usage examples.
 
-For an overview of creating a dataset: `examples/dataset_creation`
+Note that `bsyn` imports all `bpy` functionality, so you can call any `bpy` function as if you would normally.
 
 ## Contributions
 
 This project is currently in Beta. Please let me know what new features you would like, or feel free to make a pull request!
 
-Note that `bsyn` imports all `bpy` functionality, so you can call any `bpy` function as if you would normally.
 
 ## Troubleshooting
 

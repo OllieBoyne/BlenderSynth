@@ -18,6 +18,7 @@ if get_blender_path() == sys.argv[0]:  # if blender is running this script
 	import bpy
 	from bpy import *
 	from .blender.mesh import Mesh
+	from .blender.curve import Curve
 	from .blender import render
 	from .blender.compositor.compositor import Compositor
 	from .blender import aov
