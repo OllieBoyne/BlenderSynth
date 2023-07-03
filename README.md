@@ -37,7 +37,7 @@ python -c "import blendersynth" --local
 
 ## Examples
 
-[See here](examples/examples.md) for usage examples.
+[See here](examples) for usage examples.
 
 Note that `bsyn` imports all `bpy` functionality, so you can call any `bpy` function as if you would normally.
 
