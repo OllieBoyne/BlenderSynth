@@ -26,7 +26,7 @@ object.assign_aov(normal_aov)
 comp.define_output('Image', directory='animation/rgb', file_name='rgb', mode='image')  # render RGB layer (note mode='image')
 comp.define_output(normal_aov, directory='animation/normal', file_name='normals', mode='image')  # render RGB layer (note mode='image')
 
-# comp.render(animation=True, frame_end=num_frames)
+comp.render(animation=True, frame_end=num_frames)
 
 # convert rendered frames to video
 bsyn.file.frames_to_video(directory='animation/rgb', output_loc='animation/rgb.mp4', frame_rate=24, delete_images=False)
