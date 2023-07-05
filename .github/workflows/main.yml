@@ -42,12 +42,11 @@ jobs:
         run: cp -r docs/_build/* .deploy/
 
       - name: Commit and push
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd .deploy
           git config user.email "action@github.com" --local
           git config user.name "GitHub Action" --local
           git add .
           git commit -m "Update documentation" -a || true
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/OllieBoyne/BlenderSynth.git
           git push origin gh-pages --force
