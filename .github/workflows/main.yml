@@ -25,6 +25,10 @@ jobs:
           pip install sphinx
           pip install sphinx_rtd_theme
           pip install sphinx_autodoc_typehints
+          pip install appdirs
+          pip install numpy
+          pip install tqdm
+          pip install ffmpeg-python
 
       - name: Build docs
         run: |
