@@ -167,13 +167,15 @@ class Compositor:
 		Supports changing view output.
 
 		This should only be called once per output (NOT inside a loop).
-		Inside the loop, only
+		Inside the loop, only call `update_filename` or `update_directory`
 
 		:mode: if 'image', export in sRGB color space. If 'data', export in raw linear color space
 
-		:input_node: if string, will get the input_data from that key in the render_layers_node
-		:input_data: if CompositorNodeGroup, will use that node as input
-		:input_data: if AOV, will use that AOV as input (storing AOV)
+		:input_data: Can take one of three forms:
+			- `string`, will get the input_data from that key in the render_layers_node
+			- `CompositorNodeGroup`, will use that node as input
+			- `AOV`, will use that AOV as input (storing AOV)
+
 		:name: Name of output. If not given, will take the str representation of input_data
 		"""
 

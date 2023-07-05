@@ -1,0 +1,47 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install sphinx
+
+      - name: Build docs
+        run: |
+          chmod +x ./docs/build_docs.sh
+          ./docs/build_docs.sh
+
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: .deploy
+
+      - name: Copy docs to gh-pages branch
+        run: cp -r docs/_build/* .deploy/
+
+      - name: Commit and push
+        run: |
+          cd .deploy
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Update documentation" -a || true
+          git push origin gh-pages
