@@ -6,8 +6,14 @@ from typing import Union
 from .mesh import Mesh
 from .curve import Curve
 
-def look_at_rotation(obj_camera, at=mathutils.Vector((0, 0, 0)), up=mathutils.Vector((0, 1, 0))):
-	"""	Rotate camera to look at 'at', with 'up' maintained"""
+def look_at_rotation(obj_camera:bpy.types.Object,
+					 at:mathutils.Vector=mathutils.Vector((0, 0, 0)),
+					 up:mathutils.Vector=mathutils.Vector((0, 1, 0))) -> mathutils.Euler:
+	"""	Rotate camera to look at 'at', with 'up' maintained.
+
+	:param obj_camera: Camera object
+	:param at: Point to look at
+	:param up: Up vector"""
 
 	camera_position = obj_camera.location
 
@@ -25,7 +31,8 @@ def look_at_rotation(obj_camera, at=mathutils.Vector((0, 0, 0)), up=mathutils.Ve
 	return euler
 
 class Camera:
-	def __init__(self, camera=None):
+	"""Camera object, to handle movement, tracking, etc."""
+	def __init__(self, camera:bpy.types.Object=None):
 		if camera is None:
 			camera = bpy.context.scene.camera
 
@@ -37,7 +44,7 @@ class Camera:
 
 	@property
 	def fov(self):
-		"""Return FOV in degrees"""
+		"""Field of view in degrees"""
 		return self.camera.data.angle * 180/np.pi
 
 	@property
@@ -99,12 +106,15 @@ class Camera:
 		self.camera.constraints.remove(constraint)
 		self.update()
 
-	def follow_path(self, path: Curve,	zero=True,
-					animate=True, frames=(0,250), fracs=(0, 1)):
+	def follow_path(self, path: Curve,	zero:bool=True,
+					animate:bool=True, frames:tuple=(0,250), fracs:tuple=(0, 1)):
 		"""Follow path, with optional animation setting.
 
-		path: Curve object to follow
-		zero: Reset camera location to 0,0,0 before following path
+		:param path: Curve object
+		:param zero: If True, set camera location to (0, 0, 0) [aligns camera with path]
+		:param animate: If True, animate camera along path
+		:param frames: tuple of keyframes to animate at - length N
+		:param fracs: tuple of fractions along path to animate at - length N
 		"""
 		constraint = self.camera.constraints.new('FOLLOW_PATH')
 		constraint.target = path.path
@@ -126,7 +136,7 @@ class Camera:
 
 		self.update()
 
-	def animate_path(self, frames=(0,250), fracs=(0, 1)):
+	def animate_path(self, frames:tuple=(0,250), fracs:tuple=(0, 1)):
 		"""Animate camera along path.
 
 		:param frames: tuple of keyframes to animate at - length N
@@ -138,11 +148,11 @@ class Camera:
 		for frame, frac in zip(frames, fracs):
 			self.path_keyframe(frame, frac)
 
-	def path_keyframe(self, frame, offset):
+	def path_keyframe(self, frame: int, offset: float):
 		"""Set keyframe for camera path offset
 
-		frame: frame number
-		offset: offset fraction (0-1)
+		:param frame: Frame number
+		:param offset: Offset fraction (0-1)
 		"""
 		constraint = self.camera.constraints.get('Follow Path')
 		if constraint is None:

@@ -1,11 +1,16 @@
 import bpy
 import numpy as np
 import mathutils
-
-from bpy_extras.object_utils import world_to_camera_view
+from typing import Union
 
 
 class GetNewObject():
+	"""Context manager for getting the newly imported object(s) to the scene.
+
+	On exit, will return the newly imported object(s).
+
+	Assumes that either (1) only one object is imported, or (2) there is a hierarchy to the imported objects, and the top level object is the one to return."""
+
 	def __init__(self, scene):
 		self.scene = scene
 		self.imported_obj = None
@@ -32,9 +37,14 @@ class GetNewObject():
 			assert parent_obj is not None, "Multiple objects loaded,  but no parent object found..."
 			self.imported_obj = parent_obj
 
-class SelectObjects():
-	"""Context manager for selecting objects"""
-	def __init__(self, objects):
+
+class SelectObjects:
+	"""Context manager for selecting objects.
+	On exit, will reselect the objects that were selected before entering the context."""
+
+	def __init__(self, objects: list):
+		"""Initialize with a list of objects to select
+		:param objects: list of bpy.types.Object"""
 		self.objects = objects
 
 	def __enter__(self):
@@ -53,8 +63,14 @@ class SelectObjects():
 		for obj in self.old_objs:
 			obj.select_set(True)
 
-def get_node_by_name(node_tree: bpy.types.NodeTree, key: str, raise_error=False):
-	"""Given a nodetree and a key, return the first node found with label matching key"""
+
+def get_node_by_name(node_tree: bpy.types.NodeTree, key: str, raise_error=False) -> bpy.types.Node:
+	"""Given a nodetree and a key, return the first node found with label matching key.
+
+	:param node_tree: Node tree to search
+	:param key: Key to search for
+	:param raise_error: If True, raise KeyError if key not found
+	:return: Node with matching label"""
 	for node in node_tree.nodes:
 		if node.name == key:
 			return node
@@ -63,8 +79,13 @@ def get_node_by_name(node_tree: bpy.types.NodeTree, key: str, raise_error=False)
 		raise KeyError(f"Key {key} not found in node tree!\nLabels are: {[n.name for n in node_tree.nodes]}")
 
 
-def handle_vec(vec, expected_length=3):
-	"""Check ven is expected_length. Convert from tuple or ndarray to mathutils.Vector """
+def handle_vec(vec: Union[tuple, list, np.ndarray], expected_length: int = 3) -> mathutils.Vector:
+	"""Check `vec` is expected_length. Convert from tuple or ndarray to mathutils.Vector.
+
+	:param vec: Vector to check
+	:param expected_length: Expected length of vector
+	"""
+
 	if isinstance(vec, (tuple, list)):
 		vec = mathutils.Vector(vec)
 	elif isinstance(vec, np.ndarray):
