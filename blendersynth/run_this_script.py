@@ -3,7 +3,7 @@ import subprocess
 import inspect
 import sys
 from .utils.blender_setup.blender_locator import get_blender_path
-from file.tempfiles import cleanup_temp_files as cleanup
+from .file.tempfiles import cleanup_temp_files as cleanup
 
 def run_this_script(debug=False):
 	"""Run the current script from Blender"""
