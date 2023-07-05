@@ -11,14 +11,14 @@ object = bsyn.Mesh.from_primitive('monkey')
 bsyn.render.set_cycles_samples(10)
 bsyn.render.set_resolution(512, 512)
 bsyn.render.set_transparent()  # Enable transparent background
-num_frames = 100
+num_frames = 50
 
 
 # Set the 'animation' to be the rotation of the camera
 camera = bsyn.Camera()
 camera.track_to(object)  # look at monkey
 circular_path = bsyn.Curve('circle', scale=5, location=(0, 0, 1))
-camera.follow_path(circular_path, frame_end=num_frames)  # set to follow circular path
+camera.follow_path(circular_path, frames=(0, num_frames), fracs=(0, 0.5))  # set to follow circular path
 
 normal_aov = bsyn.aov.NormalsAOV(ref_frame='CAMERA', polarity=[-1, 1, -1])
 object.assign_aov(normal_aov)

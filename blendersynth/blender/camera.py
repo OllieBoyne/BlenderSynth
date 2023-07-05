@@ -100,7 +100,7 @@ class Camera:
 		self.update()
 
 	def follow_path(self, path: Curve,	zero=True,
-					animate=True, frame_start=0, frame_end=250, start_frac=0, end_frac=1):
+					animate=True, frames=(0,250), fracs=(0, 1)):
 		"""Follow path, with optional animation setting.
 
 		path: Curve object to follow
@@ -110,12 +110,13 @@ class Camera:
 		constraint.target = path.path
 		constraint.forward_axis = 'TRACK_NEGATIVE_Z'
 		constraint.up_axis = 'UP_Y'
+		constraint.use_fixed_location = True  # ensures that offset factor is in 0-1 range
 
 		if zero:
 			self.location = (0, 0, 0)
 
 		if animate:
-			self.animate_path(frame_start, frame_end, start_frac, end_frac)
+			self.animate_path(frames, fracs)
 
 		# if there is are any track constraints, place this constraint first
 		# so that the camera is not rotated by the track constraint
@@ -125,16 +126,29 @@ class Camera:
 
 		self.update()
 
-	def animate_path(self, frame_start=0, frame_end=250, start_frac=0, end_frac=1):
-		"""Animate camera along path, setting 'influence' of follow path constraint"""
+	def animate_path(self, frames=(0,250), fracs=(0, 1)):
+		"""Animate camera along path.
 
+		:param frames: tuple of keyframes to animate at - length N
+		:param fracs: tuple of fractions along path to animate at - length N
+		"""
+
+		assert len(frames) == len(fracs), f"frames and fracs must be same length - got {len(frames)} and {len(fracs)}"
+
+		for frame, frac in zip(frames, fracs):
+			self.path_keyframe(frame, frac)
+
+	def path_keyframe(self, frame, offset):
+		"""Set keyframe for camera path offset
+
+		frame: frame number
+		offset: offset fraction (0-1)
+		"""
 		constraint = self.camera.constraints.get('Follow Path')
 		if constraint is None:
 			raise ValueError("Camera does not have a 'Follow Path' constraint")
 
-		constraint.offset = start_frac * 100
-		constraint.keyframe_insert(data_path='offset', frame=frame_start)
-		constraint.offset = end_frac * 100
-		constraint.keyframe_insert(data_path='offset', frame=frame_end)
+		constraint.offset_factor = offset
+		constraint.keyframe_insert(data_path='offset_factor', frame=frame)
 
 		self.update()
