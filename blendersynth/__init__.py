@@ -18,7 +18,7 @@ from .run.run_this_script import run_this_script
 import sys
 from .utils.blender_setup.blender_locator import get_blender_path
 
-if building_docs or get_blender_path() == sys.argv[0]:  # if blender is running this script
+if building_docs or get_blender_path() == sys.argv[0]:  # if blender is running this script, or if building docs
 	import bpy
 	from bpy import *
 	from .blender.mesh import Mesh
