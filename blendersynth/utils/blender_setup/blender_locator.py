@@ -82,8 +82,7 @@ def get_blender_path(_blender_path=None):
 		blender_path = shutil.which("blender")
 
 	else:
-		blender_path = input("Blender not found in PATH or Environment Variable.\n"
-							 "Please provide path to blender executable: ")
+		blender_path = input("Blender not found in PATH or Environment Variable.\nPlease provide path to blender executable: ")
 
 	blender_path = os.path.abspath(blender_path)  # make sure it's absolute path
 
