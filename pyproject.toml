@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=42", "wheel", "appdirs>=1.4.4", "numpy", "tqdm"]
+requires = ["setuptools>=42", "wheel", "appdirs>=1.4.4", "numpy", "tqdm", "ffmpeg-python"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "blendersynth"
-version = "0.0.7"
+version = "0.0.3"
 authors = [
   { name="Ollie Boyne", email="ollieboyne@gmail.com" },
 ]
