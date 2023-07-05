@@ -38,3 +38,9 @@ html_static_path = ['_static']
 html_theme_options = {
     'navigation_depth': 2,
 }
+
+# Set input to no-op, so that the blender install doesn't try to prompt for input
+import builtins
+def no_op(*args, **kwargs):
+    pass
+builtins.input = no_op
