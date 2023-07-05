@@ -42,6 +42,8 @@ jobs:
         run: cp -r docs/_build/* .deploy/
 
       - name: Commit and push
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd .deploy
           git config user.email "action@github.com" --local
