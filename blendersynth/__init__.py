@@ -9,7 +9,7 @@ def fix_blender_install(local=False):
 def fix_blender_modules(local=False):
 	check_blender_install(force_install_dependencies=True, blendersynth_from_local=local)
 
-from .run_this_script import run_this_script
+from run.run_this_script import run_this_script
 
 import sys
 from .utils.blender_setup.blender_locator import get_blender_path
