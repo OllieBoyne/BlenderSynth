@@ -2,7 +2,9 @@
 import sys
 from .utils.blender_setup import check_blender_install
 
-if 'sphinx' not in sys.modules:  # don't check install if building docs
+building_docs = 'sphinx' in sys.modules
+
+if not building_docs:
 	check_blender_install(blendersynth_from_local='--local' in sys.argv) # check install here
 
 def fix_blender_install(local=False):
@@ -16,7 +18,7 @@ from .run.run_this_script import run_this_script
 import sys
 from .utils.blender_setup.blender_locator import get_blender_path
 
-if get_blender_path() == sys.argv[0]:  # if blender is running this script
+if building_docs or get_blender_path() == sys.argv[0]:  # if blender is running this script
 	import bpy
 	from bpy import *
 	from .blender.mesh import Mesh
