@@ -82,8 +82,46 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-run-run">
-<h1>blendersynth.run.run<a class="headerlink" href="#blendersynth-run-run" title="Permalink to this heading"></a></h1>
+  <section id="module-blendersynth.run.run">
+<span id="blendersynth-run-run"></span><h1>blendersynth.run.run<a class="headerlink" href="#module-blendersynth.run.run" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.run.run.BlenderCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.run.run.</span></span><span class="sig-name descname"><span class="pre">BlenderCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blender_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.run.run.BlenderCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Construct command for running blender script</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.run.run.BlenderCommand.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.run.run.BlenderCommand.copy" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the command</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.run.run.BlenderCommand.set_job">
+<span class="sig-name descname"><span class="pre">set_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.run.run.BlenderCommand.set_job" title="Permalink to this definition"></a></dt>
+<dd><p>Receives list of json files, adds as , separated string to command</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.run.run.BlenderCommand.set_logger">
+<span class="sig-name descname"><span class="pre">set_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_loc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.run.run.BlenderCommand.set_logger" title="Permalink to this definition"></a></dt>
+<dd><p>Set file for logging</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.run.run.execute_jobs">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.run.run.</span></span><span class="sig-name descname"><span class="pre">execute_jobs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">script</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_src</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_to_stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">script_kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.run.run.execute_jobs" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_src</strong> – N sized list of .json files, each with info about the given job. OR a directory containing .json files,
+which will be used as the jsons</p></li>
+<li><p><strong>num_threads</strong> – threads to run in parallel (default = 1)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
