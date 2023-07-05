@@ -1,0 +1,38 @@
+blendersynth.file
+=========================
+blendersynth.file.frames_to_video
+----------------------------------------
+
+.. automodule:: blendersynth.file.frames_to_video
+   :imported-members:
+   :members:
+   :undoc-members:
+   :show-inheritance:	
+
+blendersynth.file.tempfiles
+----------------------------------------
+
+.. automodule:: blendersynth.file.tempfiles
+   :imported-members:
+   :members:
+   :undoc-members:
+   :show-inheritance:	
+
+blendersynth.file.dataset_inputs
+----------------------------------------
+
+.. automodule:: blendersynth.file.dataset_inputs
+   :imported-members:
+   :members:
+   :undoc-members:
+   :show-inheritance:	
+
+blendersynth.file.dataset_outputs
+----------------------------------------
+
+.. automodule:: blendersynth.file.dataset_outputs
+   :imported-members:
+   :members:
+   :undoc-members:
+   :show-inheritance:	
+

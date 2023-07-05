@@ -1,0 +1,20 @@
+blendersynth.utils
+=========================
+blendersynth.utils.node_arranger
+----------------------------------------
+
+.. automodule:: blendersynth.utils.node_arranger
+   :imported-members:
+   :members:
+   :undoc-members:
+   :show-inheritance:	
+
+blendersynth.utils.blender_setup
+----------------------------------------
+
+.. automodule:: blendersynth.utils.blender_setup
+   :imported-members:
+   :members:
+   :undoc-members:
+   :show-inheritance:	
+
