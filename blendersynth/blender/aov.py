@@ -6,6 +6,11 @@ from ..utils.node_arranger import tidy_tree
 ref_frames = ['CAMERA', 'WORLD', 'OBJECT']
 
 class AOV:
+	"""A generic Arbitrary Output Value.
+	An AOV is a float or color value that can be output from a shader to the renderer.
+	See `Blender docs <https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html>`_ for more info.
+	"""
+
 	AOV_TYPE = 'COLOR'
 	def __init__(self, name=None, **kwargs):
 		if name is None:

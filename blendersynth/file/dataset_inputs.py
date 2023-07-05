@@ -1,5 +1,6 @@
 """When constructing a dataset, the INPUTS object below will
 return an iterable with read's in sys.argv's `--jobs` jsons."""
+
 import sys
 import json
 import os
@@ -7,6 +8,10 @@ import os
 import logging
 
 class INPUTS:
+	"""This class is used to iterate over the JSONs passed in via `--jobs` in sys.argv."""
+	jsons = None
+	"""List of JSON files passed in via `--jobs` in sys.argv."""
+
 	def __init__(self):
 		self.jsons = sys.argv[sys.argv.index('--jobs') + 1].split(',')
 		log_loc = sys.argv[sys.argv.index('--log') + 1]

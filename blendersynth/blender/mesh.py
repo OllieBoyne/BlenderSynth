@@ -7,7 +7,7 @@ import numpy as np
 import mathutils
 from mathutils import Vector, Euler
 
-_primitives ={
+_primitives = {
 	"cube": bpy.ops.mesh.primitive_cube_add,
 	"sphere": bpy.ops.mesh.primitive_uv_sphere_add,
 	"cylinder": bpy.ops.mesh.primitive_cylinder_add,
@@ -72,6 +72,10 @@ def euler_add(a: mathutils.Euler, b: mathutils.Euler):
 
 
 class Mesh:
+	"""A mesh object. Can be a single mesh, or a hierarchy of meshes."""
+	primitive_list = list(_primitives.keys())
+	"""List of available primitives"""
+
 	def __init__(self, obj, material=None, scene=None, class_id=None):
 		"""
 		:param obj: Receives either a single mesh, or an empty with children empty & meshes
@@ -122,14 +126,30 @@ class Mesh:
 
 
 	@classmethod
-	def from_scene(cls, key, class_id=None):
-		"""Create object from scene"""
+	def from_scene(cls, key, class_id=None) -> 'Mesh':
+		"""Create object from named object in scene.
+
+		:param key: Name of object in scene
+		:param class_id: Class ID to assign to object
+
+		:return: Mesh loaded from scene"""
 		obj = bpy.data.objects[key]
 		return cls(obj, class_id=class_id)
 
 	@classmethod
-	def from_primitive(cls, name='cube', scale=None, location=None, rotation_euler=None, class_id=None, **kwargs):
-		"""Create object from primitive"""
+	def from_primitive(cls, name='cube', scale=None, location=None, rotation_euler=None, class_id=None, **kwargs) -> 'Mesh':
+		"""Create Mesh from primitive.
+		
+		:param name: Name of primitive to create. See :attr:`~blendersynth.blender.Mesh.primitive_list` for options
+		:param scale: Scale of object
+		:param location: Location of object
+		:param rotation_euler: Rotation of object
+		:param class_id: Class ID to assign to object
+		:param kwargs: Additional arguments to pass to primitive (see `bpy.ops.mesh.primitive_cube_add <https://docs.blender.org/api/current/bpy.ops.mesh.html#bpy.ops.mesh.primitive_cube_add>`_, etc.)
+
+		:return: Mesh object created from primitive
+		"""
+
 		assert name in _primitives, f"Primitive `{name}` not found. Options are: {list(_primitives.keys())}"
 
 		importer = GetNewObject(bpy.context.scene)

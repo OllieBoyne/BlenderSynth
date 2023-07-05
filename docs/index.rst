@@ -10,9 +10,9 @@ Welcome to BlenderSynth's documentation!
    :maxdepth: 2
    :caption: API
 
-   api/blendersynth.file
    api/blendersynth.annotations
    api/blendersynth.blender
+   api/blendersynth.file
    api/blendersynth.run
    api/blendersynth.utils
 

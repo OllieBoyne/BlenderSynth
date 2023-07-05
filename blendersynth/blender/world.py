@@ -1,7 +1,9 @@
 import bpy
 from ..utils.node_arranger import tidy_tree
 
+
 class World():
+	"""World object - for managing world nodes, HDRIs, etc."""
 
 	def __init__(self):
 		self.mode = 'Color'
@@ -41,7 +43,8 @@ class World():
 			return
 
 		# Link the nodes
-		self.hdri_link = self.node_tree.links.new(self.node_texture.outputs["Color"], self.node_background.inputs["Color"])
+		self.hdri_link = self.node_tree.links.new(self.node_texture.outputs["Color"],
+												  self.node_background.inputs["Color"])
 		tidy_tree(self.node_tree)
 
 		self.mode = 'HDRI'
@@ -61,10 +64,11 @@ class World():
 		self.setup_hdri()
 		self.world_nodes['Environment Texture'].image = bpy.data.images.load(pth)
 
-	def set_hdri_intensity(self, intensity = 1.):
+	def set_hdri_intensity(self, intensity=1.):
 		self.world_nodes["Background"].inputs[1].default_value = intensity  # HDRI lighting
 
 	def set_transparent(self, transparent=True):
 		bpy.context.scene.render.film_transparent = transparent
+
 
 world = World()
