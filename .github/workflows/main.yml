@@ -44,8 +44,8 @@ jobs:
       - name: Commit and push
         run: |
           cd .deploy
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config user.email "action@github.com" --local
+          git config user.name "GitHub Action" --local
           git add .
           git commit -m "Update documentation" -a || true
-          git push origin gh-pages
+          git push origin gh-pages --force
