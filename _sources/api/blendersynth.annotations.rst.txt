@@ -1,29 +1,10 @@
 blendersynth.annotations
-=========================
-blendersynth.annotations.utils
-----------------------------------------
+========================
 
-.. automodule:: blendersynth.annotations.utils
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
 
-blendersynth.annotations.keypoints
-----------------------------------------
+.. toctree::
+	:maxdepth: 1
 
-.. automodule:: blendersynth.annotations.keypoints
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
-blendersynth.annotations.bbox
-----------------------------------------
-
-.. automodule:: blendersynth.annotations.bbox
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
+	blendersynth.annotations.bbox
+	blendersynth.annotations.keypoints
+	blendersynth.annotations.utils

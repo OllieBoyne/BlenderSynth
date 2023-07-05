@@ -1,0 +1,6 @@
+blendersynth.utils.node_arranger
+================================
+
+
+.. automodule:: blendersynth.utils.node_arranger
+	:members:

@@ -1,38 +1,11 @@
 blendersynth.run
-=========================
-blendersynth.run.blender_threading
-----------------------------------------
+================
 
-.. automodule:: blendersynth.run.blender_threading
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
 
-blendersynth.run.run
-----------------------------------------
+.. toctree::
+	:maxdepth: 1
 
-.. automodule:: blendersynth.run.run
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
-blendersynth.run.blender_interface
-----------------------------------------
-
-.. automodule:: blendersynth.run.blender_interface
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
-blendersynth.run.run_this_script
-----------------------------------------
-
-.. automodule:: blendersynth.run.run_this_script
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
+	blendersynth.run.blender_interface
+	blendersynth.run.blender_threading
+	blendersynth.run.run
+	blendersynth.run.run_this_script

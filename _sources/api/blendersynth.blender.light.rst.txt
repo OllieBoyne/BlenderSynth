@@ -1,0 +1,6 @@
+blendersynth.blender.light
+==========================
+
+
+.. automodule:: blendersynth.blender.light
+	:members:

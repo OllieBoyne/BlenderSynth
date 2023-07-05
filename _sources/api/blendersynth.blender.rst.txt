@@ -1,83 +1,15 @@
 blendersynth.blender
-=========================
-blendersynth.blender.world
-----------------------------------------
+====================
 
-.. automodule:: blendersynth.blender.world
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
 
-blendersynth.blender.aov
-----------------------------------------
+.. toctree::
+	:maxdepth: 1
 
-.. automodule:: blendersynth.blender.aov
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
-blendersynth.blender.camera
-----------------------------------------
-
-.. automodule:: blendersynth.blender.camera
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
-blendersynth.blender.mesh
-----------------------------------------
-
-.. automodule:: blendersynth.blender.mesh
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
-blendersynth.blender.render
-----------------------------------------
-
-.. automodule:: blendersynth.blender.render
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
-blendersynth.blender.curve
-----------------------------------------
-
-.. automodule:: blendersynth.blender.curve
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
-blendersynth.blender.utils
-----------------------------------------
-
-.. automodule:: blendersynth.blender.utils
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
-blendersynth.blender.light
-----------------------------------------
-
-.. automodule:: blendersynth.blender.light
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
-blendersynth.blender.compositor
-----------------------------------------
-
-.. automodule:: blendersynth.blender.compositor
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
+	blendersynth.blender.aov
+	blendersynth.blender.camera
+	blendersynth.blender.curve
+	blendersynth.blender.light
+	blendersynth.blender.mesh
+	blendersynth.blender.render
+	blendersynth.blender.utils
+	blendersynth.blender.world

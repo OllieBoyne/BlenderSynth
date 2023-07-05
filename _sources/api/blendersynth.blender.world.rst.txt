@@ -1,0 +1,6 @@
+blendersynth.blender.world
+==========================
+
+
+.. automodule:: blendersynth.blender.world
+	:members:

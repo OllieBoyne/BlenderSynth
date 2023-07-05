@@ -1,0 +1,6 @@
+blendersynth.blender.aov
+========================
+
+
+.. automodule:: blendersynth.blender.aov
+	:members:

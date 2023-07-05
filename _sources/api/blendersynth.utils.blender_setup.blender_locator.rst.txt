@@ -1,0 +1,6 @@
+blendersynth.utils.blender_setup.blender_locator
+================================================
+
+
+.. automodule:: blendersynth.utils.blender_setup.blender_locator
+	:members:

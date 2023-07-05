@@ -1,0 +1,6 @@
+blendersynth.run.run
+====================
+
+
+.. automodule:: blendersynth.run.run
+	:members:

@@ -1,0 +1,6 @@
+blendersynth.annotations.keypoints
+==================================
+
+
+.. automodule:: blendersynth.annotations.keypoints
+	:members:

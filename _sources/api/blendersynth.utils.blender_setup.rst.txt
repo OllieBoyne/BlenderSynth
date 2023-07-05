@@ -1,0 +1,10 @@
+blendersynth.utils.blender_setup
+================================
+
+
+.. toctree::
+	:maxdepth: 1
+
+	blendersynth.utils.blender_setup.blender_locator
+	blendersynth.utils.blender_setup.blender_python_path
+	blendersynth.utils.blender_setup.check_blender_install

@@ -1,0 +1,6 @@
+blendersynth.blender.render
+===========================
+
+
+.. automodule:: blendersynth.blender.render
+	:members:

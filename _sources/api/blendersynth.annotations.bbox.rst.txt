@@ -1,0 +1,6 @@
+blendersynth.annotations.bbox
+=============================
+
+
+.. automodule:: blendersynth.annotations.bbox
+	:members:

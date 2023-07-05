@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blendersynth.blender &mdash; BlenderSynth 2023 documentation</title>
+  <title>blendersynth.annotations.utils &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="blendersynth.blender.aov" href="blendersynth.blender.aov.html" />
-    <link rel="prev" title="blendersynth.annotations.utils" href="blendersynth.annotations.utils.html" /> 
+    <link rel="next" title="blendersynth.blender" href="blendersynth.blender.html" />
+    <link rel="prev" title="blendersynth.annotations.keypoints" href="blendersynth.annotations.keypoints.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,18 +44,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.annotations.html">blendersynth.annotations</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">blendersynth.blender</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="blendersynth.blender.aov.html">blendersynth.blender.aov</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blendersynth.blender.camera.html">blendersynth.blender.camera</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blendersynth.blender.curve.html">blendersynth.blender.curve</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blendersynth.blender.light.html">blendersynth.blender.light</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blendersynth.blender.mesh.html">blendersynth.blender.mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blendersynth.blender.render.html">blendersynth.blender.render</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blendersynth.blender.utils.html">blendersynth.blender.utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blendersynth.blender.world.html">blendersynth.blender.world</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.annotations.html">blendersynth.annotations</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="blendersynth.annotations.bbox.html">blendersynth.annotations.bbox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blendersynth.annotations.keypoints.html">blendersynth.annotations.keypoints</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">blendersynth.annotations.utils</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.html">blendersynth.blender</a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.file.html">blendersynth.file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.run.html">blendersynth.run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.html">blendersynth.utils</a></li>
@@ -75,9 +70,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">blendersynth.blender</li>
+          <li class="breadcrumb-item"><a href="blendersynth.annotations.html">blendersynth.annotations</a></li>
+      <li class="breadcrumb-item active">blendersynth.annotations.utils</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/blendersynth.blender.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/blendersynth.annotations.utils.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -85,28 +81,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-blender">
-<h1>blendersynth.blender<a class="headerlink" href="#blendersynth-blender" title="Permalink to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.aov.html">blendersynth.blender.aov</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.camera.html">blendersynth.blender.camera</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.curve.html">blendersynth.blender.curve</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.light.html">blendersynth.blender.light</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.mesh.html">blendersynth.blender.mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.render.html">blendersynth.blender.render</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.utils.html">blendersynth.blender.utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.world.html">blendersynth.blender.world</a></li>
-</ul>
-</div>
+  <section id="blendersynth-annotations-utils">
+<h1>blendersynth.annotations.utils<a class="headerlink" href="#blendersynth-annotations-utils" title="Permalink to this heading"></a></h1>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="blendersynth.annotations.utils.html" class="btn btn-neutral float-left" title="blendersynth.annotations.utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="blendersynth.blender.aov.html" class="btn btn-neutral float-right" title="blendersynth.blender.aov" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="blendersynth.annotations.keypoints.html" class="btn btn-neutral float-left" title="blendersynth.annotations.keypoints" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="blendersynth.blender.html" class="btn btn-neutral float-right" title="blendersynth.blender" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

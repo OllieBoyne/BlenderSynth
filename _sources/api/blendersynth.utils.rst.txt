@@ -1,20 +1,9 @@
 blendersynth.utils
-=========================
-blendersynth.utils.node_arranger
-----------------------------------------
+==================
 
-.. automodule:: blendersynth.utils.node_arranger
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
 
-blendersynth.utils.blender_setup
-----------------------------------------
+.. toctree::
+	:maxdepth: 1
 
-.. automodule:: blendersynth.utils.blender_setup
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:	
-
+	blendersynth.utils.blender_setup
+	blendersynth.utils.node_arranger

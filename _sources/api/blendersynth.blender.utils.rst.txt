@@ -1,0 +1,6 @@
+blendersynth.blender.utils
+==========================
+
+
+.. automodule:: blendersynth.blender.utils
+	:members:
