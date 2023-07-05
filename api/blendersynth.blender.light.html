@@ -86,8 +86,66 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-blender-light">
-<h1>blendersynth.blender.light<a class="headerlink" href="#blendersynth-blender-light" title="Permalink to this heading"></a></h1>
+  <section id="module-blendersynth.blender.light">
+<span id="blendersynth-blender-light"></span><h1>blendersynth.blender.light<a class="headerlink" href="#module-blendersynth.blender.light" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.blender.light.Light">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.light.</span></span><span class="sig-name descname"><span class="pre">Light</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">light</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.light.Light" title="Permalink to this definition"></a></dt>
+<dd><p>Light object, for managing lights in the scene</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.light.Light.create">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">light_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'POINT'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Light'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1.0,</span> <span class="pre">1.0,</span> <span class="pre">1.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.light.Light.create" title="Permalink to this definition"></a></dt>
+<dd><p>Create a new light object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>light_type</strong> – Type of light to create (see <a class="reference internal" href="#blendersynth.blender.light.Light.light_types" title="blendersynth.blender.light.Light.light_types"><code class="xref py py-attr docutils literal notranslate"><span class="pre">light_types</span></code></a>)</p></li>
+<li><p><strong>name</strong> – Name of light</p></li>
+<li><p><strong>intensity</strong> – Intensity of light</p></li>
+<li><p><strong>color</strong> – Color of light</p></li>
+<li><p><strong>location</strong> – Location of light</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#blendersynth.blender.light.Light" title="blendersynth.blender.light.Light"><code class="xref py py-class docutils literal notranslate"><span class="pre">Light</span></code></a> object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.light.Light.from_scene">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.light.Light.from_scene" title="Permalink to this definition"></a></dt>
+<dd><p>Create object from scene key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> – Key of object in scene</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#blendersynth.blender.light.Light" title="blendersynth.blender.light.Light"><code class="xref py py-class docutils literal notranslate"><span class="pre">Light</span></code></a> object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blendersynth.blender.light.Light.light_types">
+<span class="sig-name descname"><span class="pre">light_types</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['POINT',</span> <span class="pre">'SUN',</span> <span class="pre">'SPOT',</span> <span class="pre">'AREA']</span></em><a class="headerlink" href="#blendersynth.blender.light.Light.light_types" title="Permalink to this definition"></a></dt>
+<dd><p>List of available light types</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.light.Light.location">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location</span></span><a class="headerlink" href="#blendersynth.blender.light.Light.location" title="Permalink to this definition"></a></dt>
+<dd><p>Location of light</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.light.Light.rotation_euler">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation_euler</span></span><a class="headerlink" href="#blendersynth.blender.light.Light.rotation_euler" title="Permalink to this definition"></a></dt>
+<dd><p>Rotation of light in euler XYZ angles</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

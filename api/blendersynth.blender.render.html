@@ -86,8 +86,73 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-blender-render">
-<h1>blendersynth.blender.render<a class="headerlink" href="#blendersynth-blender-render" title="Permalink to this heading"></a></h1>
+  <section id="module-blendersynth.blender.render">
+<span id="blendersynth-blender-render"></span><h1>blendersynth.blender.render<a class="headerlink" href="#module-blendersynth.blender.render" title="Permalink to this heading"></a></h1>
+<dl class="py data">
+<dt class="sig sig-object py" id="blendersynth.blender.render.ENGINES">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.render.</span></span><span class="sig-name descname"><span class="pre">ENGINES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['BLENDER_EEVEE',</span> <span class="pre">'BLENDER_WORKBENCH',</span> <span class="pre">'CYCLES']</span></em><a class="headerlink" href="#blendersynth.blender.render.ENGINES" title="Permalink to this definition"></a></dt>
+<dd><p>List of valid render engines</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.render.render">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.render.</span></span><span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">animation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.render.render" title="Permalink to this definition"></a></dt>
+<dd><p>Render the scene</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>animation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, render the animation. Otherwise, render a single frame.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.render.render_depth">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.render.</span></span><span class="sig-name descname"><span class="pre">render_depth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.render.render_depth" title="Permalink to this definition"></a></dt>
+<dd><p>Enable the depth pass of the renderer</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.render.set_cycles_samples">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.render.</span></span><span class="sig-name descname"><span class="pre">set_cycles_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samples</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.render.set_cycles_samples" title="Permalink to this definition"></a></dt>
+<dd><p>Set the number of samples for the Cycles renderer</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.render.set_engine">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.render.</span></span><span class="sig-name descname"><span class="pre">set_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.render.set_engine" title="Permalink to this definition"></a></dt>
+<dd><p>Set the render engine</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>engine</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The render engine to use. See <a class="reference internal" href="#blendersynth.blender.render.ENGINES" title="blendersynth.blender.render.ENGINES"><code class="xref py py-data docutils literal notranslate"><span class="pre">ENGINES</span></code></a> for valid options.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.render.set_resolution">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.render.</span></span><span class="sig-name descname"><span class="pre">set_resolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.render.set_resolution" title="Permalink to this definition"></a></dt>
+<dd><p>Set the render resolution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The width of the image in pixels</p></li>
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The height of the image in pixels</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.render.set_transparent">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.render.</span></span><span class="sig-name descname"><span class="pre">set_transparent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.render.set_transparent" title="Permalink to this definition"></a></dt>
+<dd><p>Set the background of the scene to transparent</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scene</strong> – The scene to set the background of. If None, use the active scene.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

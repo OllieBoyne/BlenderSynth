@@ -86,8 +86,61 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-blender-utils">
-<h1>blendersynth.blender.utils<a class="headerlink" href="#blendersynth-blender-utils" title="Permalink to this heading"></a></h1>
+  <section id="module-blendersynth.blender.utils">
+<span id="blendersynth-blender-utils"></span><h1>blendersynth.blender.utils<a class="headerlink" href="#module-blendersynth.blender.utils" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.blender.utils.GetNewObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">GetNewObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.utils.GetNewObject" title="Permalink to this definition"></a></dt>
+<dd><p>Context manager for getting the newly imported object(s) to the scene.</p>
+<p>On exit, will return the newly imported object(s).</p>
+<p>Assumes that either (1) only one object is imported, or (2) there is a hierarchy to the imported objects, and the top level object is the one to return.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.blender.utils.SelectObjects">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">SelectObjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objects</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.utils.SelectObjects" title="Permalink to this definition"></a></dt>
+<dd><p>Context manager for selecting objects.
+On exit, will reselect the objects that were selected before entering the context.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.utils.get_node_by_name">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">get_node_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.utils.get_node_by_name" title="Permalink to this definition"></a></dt>
+<dd><p>Given a nodetree and a key, return the first node found with label matching key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node_tree</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">NodeTree</span></code>) – Node tree to search</p></li>
+<li><p><strong>key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Key to search for</p></li>
+<li><p><strong>raise_error</strong> – If True, raise KeyError if key not found</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Node with matching label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.utils.handle_vec">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">handle_vec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.utils.handle_vec" title="Permalink to this definition"></a></dt>
+<dd><p>Check <cite>vec</cite> is expected_length. Convert from tuple or ndarray to mathutils.Vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vec</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]) – Vector to check</p></li>
+<li><p><strong>expected_length</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Expected length of vector</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

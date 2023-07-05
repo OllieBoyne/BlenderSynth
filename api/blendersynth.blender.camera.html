@@ -86,8 +86,95 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-blender-camera">
-<h1>blendersynth.blender.camera<a class="headerlink" href="#blendersynth-blender-camera" title="Permalink to this heading"></a></h1>
+  <section id="module-blendersynth.blender.camera">
+<span id="blendersynth-blender-camera"></span><h1>blendersynth.blender.camera<a class="headerlink" href="#module-blendersynth.blender.camera" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.blender.camera.Camera">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.camera.</span></span><span class="sig-name descname"><span class="pre">Camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.Camera" title="Permalink to this definition"></a></dt>
+<dd><p>Camera object, to handle movement, tracking, etc.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.animate_path">
+<span class="sig-name descname"><span class="pre">animate_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">250)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.Camera.animate_path" title="Permalink to this definition"></a></dt>
+<dd><p>Animate camera along path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frames</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of keyframes to animate at - length N</p></li>
+<li><p><strong>fracs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of fractions along path to animate at - length N</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.follow_path">
+<span class="sig-name descname"><span class="pre">follow_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">250)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.Camera.follow_path" title="Permalink to this definition"></a></dt>
+<dd><p>Follow path, with optional animation setting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<a class="reference internal" href="blendersynth.blender.curve.html#blendersynth.blender.curve.Curve" title="blendersynth.blender.curve.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curve</span></code></a>) – Curve object</p></li>
+<li><p><strong>zero</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, set camera location to (0, 0, 0) [aligns camera with path]</p></li>
+<li><p><strong>animate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, animate camera along path</p></li>
+<li><p><strong>frames</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of keyframes to animate at - length N</p></li>
+<li><p><strong>fracs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of fractions along path to animate at - length N</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.fov">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fov</span></span><a class="headerlink" href="#blendersynth.blender.camera.Camera.fov" title="Permalink to this definition"></a></dt>
+<dd><p>Field of view in degrees</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.path_keyframe">
+<span class="sig-name descname"><span class="pre">path_keyframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.Camera.path_keyframe" title="Permalink to this definition"></a></dt>
+<dd><p>Set keyframe for camera path offset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Frame number</p></li>
+<li><p><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Offset fraction (0-1)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.track_to">
+<span class="sig-name descname"><span class="pre">track_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.Camera.track_to" title="Permalink to this definition"></a></dt>
+<dd><p>Track camera to object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.untrack">
+<span class="sig-name descname"><span class="pre">untrack</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.Camera.untrack" title="Permalink to this definition"></a></dt>
+<dd><p>Remove track to constraint</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.camera.look_at_rotation">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.camera.</span></span><span class="sig-name descname"><span class="pre">look_at_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_camera</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.look_at_rotation" title="Permalink to this definition"></a></dt>
+<dd><p>Rotate camera to look at ‘at’, with ‘up’ maintained.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj_camera</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Object</span></code>) – Camera object</p></li>
+<li><p><strong>at</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>) – Point to look at</p></li>
+<li><p><strong>up</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>) – Up vector</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Euler</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
