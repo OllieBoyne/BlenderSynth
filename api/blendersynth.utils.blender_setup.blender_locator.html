@@ -81,8 +81,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-utils-blender-setup-blender-locator">
-<h1>blendersynth.utils.blender_setup.blender_locator<a class="headerlink" href="#blendersynth-utils-blender-setup-blender-locator" title="Permalink to this heading"></a></h1>
+  <section id="module-blendersynth.utils.blender_setup.blender_locator">
+<span id="blendersynth-utils-blender-setup-blender-locator"></span><h1>blendersynth.utils.blender_setup.blender_locator<a class="headerlink" href="#module-blendersynth.utils.blender_setup.blender_locator" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.get_blender_path">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">get_blender_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_blender_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.get_blender_path" title="Permalink to this definition"></a></dt>
+<dd><p>Get blender path in following order of precedence:
+1. Input arg to function
+2. In config file
+3. Environment variable BLENDER_PATH
+4. Blender in PATH
+5. Ask user for path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.read_from_config">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">read_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BLENDER_SETUP'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.read_from_config" title="Permalink to this definition"></a></dt>
+<dd><p>Load config, and read value from cfg[section]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.remove_config">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">remove_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.remove_config" title="Permalink to this definition"></a></dt>
+<dd><p>Remove config file</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.remove_from_config">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">remove_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BLENDER_SETUP'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.remove_from_config" title="Permalink to this definition"></a></dt>
+<dd><p>Load config, and remove key from cfg[section]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.write_to_config">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">write_to_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BLENDER_SETUP'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.write_to_config" title="Permalink to this definition"></a></dt>
+<dd><p>Load config, and write key value pair to cfg[section]</p>
+</dd></dl>
+
 </section>
 
 
