@@ -11,12 +11,12 @@ config_dir = appdirs.user_config_dir(appname, appauthor)
 config_file = os.path.join(config_dir, "config.ini")
 
 
-def is_blender_in_path():
+def is_blender_in_path() -> bool:
 	"""Check if blender is in the PATH (i.e. can be run from the command line with 'blender')"""
 	return shutil.which("blender") is not None
 
 
-def find_blender_python(blender_path: str):
+def find_blender_python(blender_path: str) -> str:
 	"""Given a blender executable, find the python interpreter it uses
 
 	:param blender_path: path to blender executable"""
@@ -47,6 +47,7 @@ def find_blender_python(blender_path: str):
 
 def validate_blender_path(blender_path: str) -> bool:
 	"""Check if `blender_path` is a valid blender executable.
+
 	:param blender_path: path to blender executable"""
 	if os.access(blender_path, os.X_OK):
 		return True
@@ -54,14 +55,19 @@ def validate_blender_path(blender_path: str) -> bool:
 	return False
 
 
-def get_blender_path(_blender_path:str=None):
+def get_blender_path(_blender_path: str = None) -> str:
 	"""Get a valid blender executable path.
 
 	To achieve this, checks in the following locations:
+
 	1) Input argument `_blender_path` (if given)
+
 	2) Config file stored in user's `appdirs.user_config_dir`
+
 	3) Environment variable `BLENDER_PATH`
+
 	4) Blender in PATH
+
 	5) Ask user for path
 
 	It will end as soon as a valid path is found. If the input path is not valid, it will raise an error.
