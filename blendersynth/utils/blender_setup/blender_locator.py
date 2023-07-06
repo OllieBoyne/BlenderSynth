@@ -10,33 +10,33 @@ appauthor = "BlenderSynth"
 config_dir = appdirs.user_config_dir(appname, appauthor)
 config_file = os.path.join(config_dir, "config.ini")
 
+
 def is_blender_in_path():
+	"""Check if blender is in the PATH (i.e. can be run from the command line with 'blender')"""
 	return shutil.which("blender") is not None
 
-def find_blender_python(blender_path):
+
+def find_blender_python(blender_path: str):
+	"""Given a blender executable, find the python interpreter it uses
+
+	:param blender_path: path to blender executable"""
 
 	if read_from_config('BLENDER_PYTHON_PATH') is not None:
 		return read_from_config('BLENDER_PYTHON_PATH')
 
-	targ_script = os.path.abspath(os.path.join(os.path.dirname(__file__), 'blender_python_path.py'))
+	# get blender to run script to find python path
+	try:
+		targ_script = os.path.abspath(os.path.join(os.path.dirname(__file__), 'blender_python_path.py'))
+		output = subprocess.check_output([blender_path, "--background", "--python", targ_script])
+	except subprocess.CalledProcessError as e:
+		raise Exception(f"Issues with finding blender python path. Error: {e}")
 
-	# open file as read & write
-	with open('___python.txt', 'w') as f:
-		try:
-			subprocess.check_call([blender_path, "--background", "--python",
-							  targ_script], stdout=f)
-		except subprocess.CalledProcessError as e:
-			raise Exception(f"Issues with finding blender python path. Error: {e}")
-
-
+	# read output to find python path
 	out = None
-	with open('___python.txt', 'r') as f:
-		for l in f.readlines():
-			if "PYTHON INTERPRETER" in l:
-				out = l.split(": ")[1].strip()
-				break
-
-	os.remove('___python.txt')
+	for l in output.decode('utf-8').split('\n'):
+		if "PYTHON INTERPRETER" in l:
+			out = l.split(": ")[1].strip()
+			break
 
 	if out is not None:
 		write_to_config('BLENDER_PYTHON_PATH', out)
@@ -44,19 +44,29 @@ def find_blender_python(blender_path):
 
 	raise Exception("Could not find Python interpreter for Blender.")
 
-def validate_blender_path(blender_path):
+
+def validate_blender_path(blender_path: str) -> bool:
+	"""Check if `blender_path` is a valid blender executable.
+	:param blender_path: path to blender executable"""
 	if os.access(blender_path, os.X_OK):
 		return True
 
 	return False
 
-def get_blender_path(_blender_path=None):
-	"""Get blender path in following order of precedence:
-	1. Input arg to function
-	2. In config file
-	3. Environment variable BLENDER_PATH
-	4. Blender in PATH
-	5. Ask user for path
+
+def get_blender_path(_blender_path:str=None):
+	"""Get a valid blender executable path.
+
+	To achieve this, checks in the following locations:
+	1) Input argument `_blender_path` (if given)
+	2) Config file stored in user's `appdirs.user_config_dir`
+	3) Environment variable `BLENDER_PATH`
+	4) Blender in PATH
+	5) Ask user for path
+
+	It will end as soon as a valid path is found. If the input path is not valid, it will raise an error.
+
+	:param _blender_path: path to blender executable
 	"""
 
 	cfg_result = read_from_config('BLENDER_PATH')
@@ -66,7 +76,7 @@ def get_blender_path(_blender_path=None):
 		if validate_blender_path(_blender_path):
 			blender_path = _blender_path
 
-		elif validate_blender_path(_blender_path + '.exe'): # add .exe if not there (helps os.access checking)
+		elif validate_blender_path(_blender_path + '.exe'):  # add .exe if not there (helps os.access checking)
 			blender_path = _blender_path + '.exe'
 
 		else:
@@ -82,7 +92,8 @@ def get_blender_path(_blender_path=None):
 		blender_path = shutil.which("blender")
 
 	else:
-		blender_path = input("Blender not found in PATH or Environment Variable.\nPlease provide path to blender executable: ")
+		blender_path = input(
+			"Blender not found in PATH or Environment Variable.\nPlease provide path to blender executable: ")
 
 	blender_path = os.path.abspath(blender_path)  # make sure it's absolute path
 
@@ -95,6 +106,7 @@ def get_blender_path(_blender_path=None):
 
 	write_to_config('BLENDER_PATH', blender_path)
 	return blender_path
+
 
 def write_to_config(key, value, section='BLENDER_SETUP'):
 	"""Load config, and write key value pair to cfg[section]"""
@@ -111,6 +123,7 @@ def write_to_config(key, value, section='BLENDER_SETUP'):
 	with open(config_file, 'w') as configfile:
 		config.write(configfile)
 
+
 def read_from_config(key, section='BLENDER_SETUP'):
 	"""Load config, and read value from cfg[section]"""
 	config = configparser.ConfigParser()
@@ -125,6 +138,7 @@ def read_from_config(key, section='BLENDER_SETUP'):
 		return None
 
 	return config[section][key]
+
 
 def remove_from_config(key, section='BLENDER_SETUP'):
 	"""Load config, and remove key from cfg[section]"""
@@ -143,6 +157,7 @@ def remove_from_config(key, section='BLENDER_SETUP'):
 
 	with open(config_file, 'w') as configfile:
 		config.write(configfile)
+
 
 def remove_config():
 	"""Remove config file"""
