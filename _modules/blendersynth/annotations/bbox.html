@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>blendersynth.annotations.bbox &mdash; BlenderSynth 2023 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            BlenderSynth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.annotations.html">blendersynth.annotations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.blender.html">blendersynth.blender</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.file.html">blendersynth.file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.run.html">blendersynth.run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.utils.html">blendersynth.utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">BlenderSynth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">blendersynth.annotations.bbox</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for blendersynth.annotations.bbox</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">bpy</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">project_points</span>
+<span class="kn">import</span> <span class="nn">mathutils</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..blender.mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="n">BBOX_FMTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1y1x2y2&#39;</span><span class="p">,</span> <span class="s1">&#39;xywh&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="bounding_box"><a class="viewcode-back" href="../../../api/blendersynth.annotations.bbox.html#blendersynth.annotations.bbox.bounding_box">[docs]</a><span class="k">def</span> <span class="nf">bounding_box</span><span class="p">(</span><span class="nb">object</span><span class="p">:</span> <span class="n">Mesh</span><span class="p">,</span> <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+				 <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+				 <span class="n">return_fmt</span><span class="o">=</span><span class="s1">&#39;x1y1x2y2&#39;</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">invert_y</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Get the bounding box of an object in camera space.</span>
+<span class="sd">	Achieve this by projecting all vertices of the object to the image plane,</span>
+<span class="sd">	and taking the min/max of the resulting coordinates.</span>
+
+<span class="sd">	:param object: Mesh</span>
+<span class="sd">	:param camera: bpy.types.Camera (if None, use bpy.context.scene.camera)</span>
+<span class="sd">	:param scene: bpy.types.Scene (if None, use bpy.context.scene)</span>
+<span class="sd">	:param return_fmt: str, one of [&#39;x1y1x2y2&#39;, &#39;xywh&#39;]</span>
+<span class="sd">	:param normalized: bool, if True, return normalized coordinates (0-1) instead of pixel coordinates</span>
+<span class="sd">	:param invert_y: bool, if True, y is measured from the top of the image, otherwise from the bottom (Blender measures from bottom)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">if</span> <span class="n">camera</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="n">camera</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">camera</span>
+
+	<span class="k">if</span> <span class="n">scene</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="n">scene</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span>
+
+	<span class="n">verts</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">get_all_vertices</span><span class="p">(</span><span class="s1">&#39;WORLD&#39;</span><span class="p">)</span>
+	<span class="n">coords_2d</span> <span class="o">=</span> <span class="n">project_points</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">invert_y</span><span class="o">=</span><span class="n">invert_y</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">normalized</span><span class="p">:</span>
+		<span class="n">coords_2d</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
+		<span class="n">coords_2d</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
+
+	<span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span> <span class="o">=</span> <span class="n">coords_2d</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+	<span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">coords_2d</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+	<span class="k">if</span> <span class="n">return_fmt</span> <span class="o">==</span> <span class="s1">&#39;x1y1x2y2&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span>
+
+	<span class="k">elif</span> <span class="n">return_fmt</span> <span class="o">==</span> <span class="s1">&#39;xywh&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span>
+
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid return_fmt: </span><span class="si">{</span><span class="n">return_fmt</span><span class="si">}</span><span class="s1">. Must be one of </span><span class="si">{</span><span class="n">BBOX_FMTS</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="bounding_boxes"><a class="viewcode-back" href="../../../api/blendersynth.annotations.bbox.html#blendersynth.annotations.bbox.bounding_boxes">[docs]</a><span class="k">def</span> <span class="nf">bounding_boxes</span><span class="p">(</span><span class="n">objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Mesh</span><span class="p">],</span> <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+				 <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+				 <span class="n">return_fmt</span><span class="o">=</span><span class="s1">&#39;x1y1x2y2&#39;</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">invert_y</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Get the bounding boxes of multiple objects in image space.&quot;&quot;&quot;</span>
+
+	<span class="k">return</span> <span class="p">[</span><span class="n">bounding_box</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="n">camera</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="n">scene</span><span class="p">,</span> <span class="n">return_fmt</span><span class="o">=</span><span class="n">return_fmt</span><span class="p">,</span>
+						   <span class="n">normalized</span><span class="o">=</span><span class="n">normalized</span><span class="p">,</span> <span class="n">invert_y</span><span class="o">=</span><span class="n">invert_y</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">]</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ollie Boyne.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

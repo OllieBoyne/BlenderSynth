@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>blendersynth.blender.camera &mdash; BlenderSynth 2023 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            BlenderSynth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.annotations.html">blendersynth.annotations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.blender.html">blendersynth.blender</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.file.html">blendersynth.file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.run.html">blendersynth.run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.utils.html">blendersynth.utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">BlenderSynth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">blendersynth.blender.camera</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for blendersynth.blender.camera</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">bpy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">mathutils</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">handle_vec</span><span class="p">,</span> <span class="n">SelectObjects</span>
+<span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span><span class="p">,</span> <span class="n">animatable_property</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">.mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">.curve</span> <span class="kn">import</span> <span class="n">Curve</span>
+
+<div class="viewcode-block" id="look_at_rotation"><a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.look_at_rotation">[docs]</a><span class="k">def</span> <span class="nf">look_at_rotation</span><span class="p">(</span><span class="n">obj_camera</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">,</span>
+					 <span class="n">at</span><span class="p">:</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="o">=</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+					 <span class="n">up</span><span class="p">:</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="o">=</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;	Rotate camera to look at &#39;at&#39;, with &#39;up&#39; maintained.</span>
+
+<span class="sd">	:param obj_camera: Camera object</span>
+<span class="sd">	:param at: Point to look at</span>
+<span class="sd">	:param up: Up vector&quot;&quot;&quot;</span>
+
+	<span class="n">camera_position</span> <span class="o">=</span> <span class="n">obj_camera</span><span class="o">.</span><span class="n">location</span>
+
+	<span class="n">z_axis</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span><span class="n">at</span> <span class="o">-</span> <span class="n">camera_position</span><span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>  <span class="c1"># Blender forwards is &#39;-z&#39;, so use -ve here</span>
+	<span class="n">x_axis</span> <span class="o">=</span> <span class="n">up</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">z_axis</span><span class="p">)</span>
+	<span class="n">y_axis</span> <span class="o">=</span> <span class="n">z_axis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">x_axis</span><span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>
+	<span class="n">is_close</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">5e-3</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x_axis</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">is_close</span><span class="p">:</span>
+		<span class="n">replacement</span> <span class="o">=</span> <span class="n">y_axis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">z_axis</span><span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>
+		<span class="n">x_axis</span> <span class="o">=</span>  <span class="n">replacement</span>
+
+	<span class="n">R</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">y_axis</span><span class="p">,</span> <span class="n">z_axis</span><span class="p">])</span><span class="o">.</span><span class="n">transposed</span><span class="p">()</span>
+	<span class="n">euler</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
+	<span class="k">return</span> <span class="n">euler</span></div>
+
+<div class="viewcode-block" id="Camera"><a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera">[docs]</a><span class="k">class</span> <span class="nc">Camera</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Camera object, to handle movement, tracking, etc.&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">camera</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">camera</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">camera</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">camera</span> <span class="o">=</span> <span class="n">camera</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">camera</span>
+
+	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">evaluated_depsgraph_get</span><span class="p">()</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">fov</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Field of view in degrees&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">angle</span> <span class="o">*</span> <span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+	<span class="nd">@fov</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">fov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fov</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">set_fov</span><span class="p">(</span><span class="n">fov</span><span class="p">)</span>
+
+	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;lens&#39;</span><span class="p">,</span> <span class="n">use_data_object</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># FOV is not animatable, so keyframe focal length instead</span>
+	<span class="k">def</span> <span class="nf">set_fov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fov</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">fov</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">location</span>
+
+	<span class="nd">@location</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">rotation_euler</span>
+
+	<span class="nd">@rotation_euler</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">euler</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">(</span><span class="n">euler</span><span class="p">)</span>
+
+	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;rotation_euler&#39;</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">set_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">euler</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">euler</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">matrix_world</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">matrix_world</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span>
+
+
+	<span class="k">def</span> <span class="nf">look_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span> <span class="n">up</span><span class="o">=</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">euler</span> <span class="o">=</span> <span class="n">look_at_rotation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">place_and_rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">euler</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">pos</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">euler</span> <span class="o">=</span> <span class="n">euler</span>
+
+	<span class="k">def</span> <span class="nf">place_and_look_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">up</span><span class="o">=</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))):</span>
+		<span class="n">pos</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+		<span class="n">at</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">at</span><span class="p">)</span>
+		<span class="n">up</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">up</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">pos</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">look_at</span><span class="p">(</span><span class="n">at</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Camera.track_to"><a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.track_to">[docs]</a>	<span class="k">def</span> <span class="nf">track_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Track camera to object&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
+			<span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">obj</span>
+
+		<span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;TRACK_TO&#39;</span><span class="p">)</span>
+		<span class="n">constraint</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">obj</span>
+		<span class="n">constraint</span><span class="o">.</span><span class="n">track_axis</span> <span class="o">=</span> <span class="s1">&#39;TRACK_NEGATIVE_Z&#39;</span>
+		<span class="n">constraint</span><span class="o">.</span><span class="n">up_axis</span> <span class="o">=</span> <span class="s1">&#39;UP_Y&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Camera.untrack"><a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.untrack">[docs]</a>	<span class="k">def</span> <span class="nf">untrack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Remove track to constraint&quot;&quot;&quot;</span>
+		<span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Track To&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Camera.follow_path"><a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.follow_path">[docs]</a>	<span class="k">def</span> <span class="nf">follow_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Curve</span><span class="p">,</span>	<span class="n">zero</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+					<span class="n">animate</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">250</span><span class="p">),</span> <span class="n">fracs</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Follow path, with optional animation setting.</span>
+
+<span class="sd">		:param path: Curve object</span>
+<span class="sd">		:param zero: If True, set camera location to (0, 0, 0) [aligns camera with path]</span>
+<span class="sd">		:param animate: If True, animate camera along path</span>
+<span class="sd">		:param frames: tuple of keyframes to animate at - length N</span>
+<span class="sd">		:param fracs: tuple of fractions along path to animate at - length N</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;FOLLOW_PATH&#39;</span><span class="p">)</span>
+		<span class="n">constraint</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">path</span>
+		<span class="n">constraint</span><span class="o">.</span><span class="n">forward_axis</span> <span class="o">=</span> <span class="s1">&#39;TRACK_NEGATIVE_Z&#39;</span>
+		<span class="n">constraint</span><span class="o">.</span><span class="n">up_axis</span> <span class="o">=</span> <span class="s1">&#39;UP_Y&#39;</span>
+		<span class="n">constraint</span><span class="o">.</span><span class="n">use_fixed_location</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># ensures that offset factor is in 0-1 range</span>
+
+		<span class="k">if</span> <span class="n">zero</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">animate</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">animate_path</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">fracs</span><span class="p">)</span>
+
+		<span class="c1"># if there is are any track constraints, place this constraint first</span>
+		<span class="c1"># so that the camera is not rotated by the track constraint</span>
+		<span class="n">track_constraint_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Track To&#39;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">track_constraint_idx</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">track_constraint_idx</span><span class="p">,</span> <span class="n">track_constraint_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Camera.animate_path"><a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.animate_path">[docs]</a>	<span class="k">def</span> <span class="nf">animate_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">250</span><span class="p">),</span> <span class="n">fracs</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Animate camera along path.</span>
+
+<span class="sd">		:param frames: tuple of keyframes to animate at - length N</span>
+<span class="sd">		:param fracs: tuple of fractions along path to animate at - length N</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">fracs</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;frames and fracs must be same length - got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fracs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+		<span class="k">for</span> <span class="n">frame</span><span class="p">,</span> <span class="n">frac</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">fracs</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">path_keyframe</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">frac</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Camera.path_keyframe"><a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.path_keyframe">[docs]</a>	<span class="k">def</span> <span class="nf">path_keyframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set keyframe for camera path offset</span>
+
+<span class="sd">		:param frame: Frame number</span>
+<span class="sd">		:param offset: Offset fraction (0-1)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Follow Path&#39;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">constraint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Camera does not have a &#39;Follow Path&#39; constraint&quot;</span><span class="p">)</span>
+
+		<span class="n">constraint</span><span class="o">.</span><span class="n">offset_factor</span> <span class="o">=</span> <span class="n">offset</span>
+		<span class="n">constraint</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;offset_factor&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ollie Boyne.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

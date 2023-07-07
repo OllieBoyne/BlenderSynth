@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>blendersynth.run.run &mdash; BlenderSynth 2023 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            BlenderSynth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.annotations.html">blendersynth.annotations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.blender.html">blendersynth.blender</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.file.html">blendersynth.file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.run.html">blendersynth.run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.utils.html">blendersynth.utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">BlenderSynth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">blendersynth.run.run</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for blendersynth.run.run</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">.blender_threading</span> <span class="kn">import</span> <span class="n">BlenderThreadManager</span><span class="p">,</span> <span class="n">list_split</span>
+<span class="kn">from</span> <span class="nn">..utils.blender_setup.blender_locator</span> <span class="kn">import</span> <span class="n">get_blender_path</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">..file.tempfiles</span> <span class="kn">import</span> <span class="n">cleanup_temp_files</span> <span class="k">as</span> <span class="n">cleanup</span>
+
+<span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">platform</span>
+<span class="k">if</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux&quot;</span> <span class="ow">or</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux2&quot;</span> <span class="ow">or</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;darwin&quot;</span><span class="p">:</span>
+	<span class="n">nul_text</span> <span class="o">=</span> <span class="s1">&#39;/dev/null&#39;</span>
+<span class="k">elif</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
+	<span class="n">nul_text</span> <span class="o">=</span> <span class="s1">&#39;nul&#39;</span>
+
+
+
+
+
+<div class="viewcode-block" id="BlenderCommand"><a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand">[docs]</a><span class="k">class</span> <span class="nc">BlenderCommand</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Construct command for running blender script&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blender_loc</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">blender_loc</span> <span class="o">=</span> <span class="n">blender_loc</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">background</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="p">[</span><span class="n">blender_loc</span><span class="p">,</span> <span class="s2">&quot;--background&quot;</span> <span class="k">if</span> <span class="n">background</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+
+	<span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="n">command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;--python&quot;</span><span class="p">,</span> <span class="n">script</span><span class="p">]</span>
+		<span class="n">command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--&quot;</span><span class="p">]</span>
+		<span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+			<span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+		<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+			<span class="n">command</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;--</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="n">command</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span>
+
+<div class="viewcode-block" id="BlenderCommand.copy"><a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand.copy">[docs]</a>	<span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return a copy of the command&quot;&quot;&quot;</span>
+		<span class="n">cmd</span> <span class="o">=</span> <span class="n">BlenderCommand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blender_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="p">)</span>
+		<span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">]</span>
+		<span class="k">return</span> <span class="n">cmd</span></div>
+
+<div class="viewcode-block" id="BlenderCommand.set_job"><a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand.set_job">[docs]</a>	<span class="k">def</span> <span class="nf">set_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_list</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Receives list of json files, adds as , separated string to command&quot;&quot;&quot;</span>
+		<span class="n">cmd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--jobs&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">job_list</span><span class="p">)]</span>
+		<span class="k">return</span> <span class="n">cmd</span></div>
+
+<div class="viewcode-block" id="BlenderCommand.set_logger"><a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand.set_logger">[docs]</a>	<span class="k">def</span> <span class="nf">set_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set file for logging&quot;&quot;&quot;</span>
+		<span class="n">cmd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--log&quot;</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">]</span>
+		<span class="k">return</span> <span class="n">cmd</span></div></div>
+
+<span class="k">class</span> <span class="nc">Runner</span><span class="p">:</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="n">jsons</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+				 <span class="n">print_to_stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+				 <span class="o">**</span><span class="n">script_kwargs</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		:param jsons: N sized list of .json files, each with info about the given job</span>
+<span class="sd">		:param num_threads: threads to run in parallel (default = 1)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">jsons</span> <span class="o">=</span> <span class="n">jsons</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span> <span class="o">=</span> <span class="n">num_threads</span>
+
+		<span class="c1"># Split the jsons into num_threads chunks</span>
+		<span class="n">json_chunks</span> <span class="o">=</span> <span class="n">list_split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jsons</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">)</span>
+
+		<span class="n">blender_loc</span> <span class="o">=</span> <span class="n">get_blender_path</span><span class="p">()</span>
+		<span class="n">command</span> <span class="o">=</span> <span class="n">BlenderCommand</span><span class="p">(</span><span class="n">blender_loc</span><span class="o">=</span><span class="n">blender_loc</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="n">command</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">script</span><span class="o">=</span><span class="n">script</span><span class="p">,</span> <span class="o">**</span><span class="n">script_kwargs</span><span class="p">)</span>
+
+		<span class="n">thread_manager</span> <span class="o">=</span> <span class="n">BlenderThreadManager</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">json_chunks</span><span class="p">,</span> <span class="n">print_to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
+											  <span class="n">output_directory</span><span class="o">=</span><span class="n">output_directory</span><span class="p">)</span>
+
+		<span class="n">thread_manager</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<div class="viewcode-block" id="execute_jobs"><a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.execute_jobs">[docs]</a><span class="k">def</span> <span class="nf">execute_jobs</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="n">json_src</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+				 <span class="n">print_to_stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">script_kwargs</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	:param json_src: N sized list of .json files, each with info about the given job. OR a directory containing .json files,</span>
+<span class="sd">		which will be used as the jsons</span>
+<span class="sd">	:param num_threads: threads to run in parallel (default = 1)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">assert</span> <span class="ow">not</span><span class="p">(</span><span class="n">num_threads</span><span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">print_to_stdout</span><span class="p">),</span> <span class="s2">&quot;Cannot print to stdout with multiple threads&quot;</span>
+	<span class="k">if</span> <span class="n">print_to_stdout</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Print to stdout not supported yet.&quot;</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">json_src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+		<span class="n">json_src</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">json_src</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">json_src</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">)])</span>
+
+	<span class="n">Runner</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="n">json_src</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">num_threads</span><span class="p">,</span> <span class="n">print_to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
+			<span class="o">**</span><span class="n">script_kwargs</span><span class="p">)</span>
+
+	<span class="n">cleanup</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ollie Boyne.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

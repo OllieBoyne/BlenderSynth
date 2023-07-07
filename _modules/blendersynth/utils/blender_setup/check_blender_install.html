@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>blendersynth.utils.blender_setup.check_blender_install &mdash; BlenderSynth 2023 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            BlenderSynth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/blendersynth.annotations.html">blendersynth.annotations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/blendersynth.blender.html">blendersynth.blender</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/blendersynth.file.html">blendersynth.file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/blendersynth.run.html">blendersynth.run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/blendersynth.utils.html">blendersynth.utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">BlenderSynth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">blendersynth.utils.blender_setup.check_blender_install</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for blendersynth.utils.blender_setup.check_blender_install</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">blendersynth.utils.blender_setup.blender_locator</span> <span class="kn">import</span> <span class="n">find_blender_python</span><span class="p">,</span> <span class="n">get_blender_path</span><span class="p">,</span> <span class="n">remove_config</span><span class="p">,</span> <span class="n">write_to_config</span><span class="p">,</span> <span class="n">read_from_config</span><span class="p">,</span> <span class="n">remove_from_config</span>
+
+<span class="n">dependencies</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;imageio&#39;</span><span class="p">,</span> <span class="s1">&#39;numpy&#39;</span><span class="p">,</span> <span class="s1">&#39;appdirs&#39;</span><span class="p">,</span> <span class="s1">&#39;tqdm&#39;</span><span class="p">,</span> <span class="s1">&#39;opencv-python&#39;</span><span class="p">,</span> <span class="s1">&#39;ffmpeg-python&#39;</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">check_module</span><span class="p">(</span><span class="n">python_executable</span><span class="p">,</span> <span class="n">module_name</span><span class="p">):</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="n">python_executable</span><span class="p">,</span> <span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;pip&#39;</span><span class="p">,</span> <span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="n">module_name</span><span class="p">],</span>
+							  <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
+		<span class="k">return</span> <span class="kc">True</span>
+	<span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">False</span>
+
+<span class="k">def</span> <span class="nf">install_module</span><span class="p">(</span><span class="n">python_executable</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">is_test_pypi</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+				   <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">upgrade</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+	<span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="n">python_executable</span><span class="p">,</span> <span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;pip&#39;</span><span class="p">]</span>
+	<span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;install&#39;</span><span class="p">]</span>
+	<span class="k">if</span> <span class="n">is_test_pypi</span><span class="p">:</span>
+		<span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="s1">&#39;https://test.pypi.org/simple/&#39;</span><span class="p">]</span>
+
+	<span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="n">module_name</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;==</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">version</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)]</span>
+	<span class="k">if</span> <span class="n">upgrade</span><span class="p">:</span>
+		<span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;--upgrade&#39;</span><span class="p">]</span>
+
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">commands</span><span class="p">)</span>
+	<span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not install </span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2"> via pip. Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="check_blender_install"><a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.check_blender_install.html#blendersynth.utils.blender_setup.check_blender_install.check_blender_install">[docs]</a><span class="k">def</span> <span class="nf">check_blender_install</span><span class="p">(</span><span class="n">force_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+						  <span class="n">force_find_blender</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+						  <span class="n">force_find_blender_python</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+						  <span class="n">force_install_dependencies</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+						  <span class="n">blendersynth_from_local</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Check if Blender is installed correctly and has all necessary packages.</span>
+<span class="sd">	If not, run first time setup.</span>
+
+<span class="sd">	On first time setup, will create a file, config.ini, in the user&#39;s config,</span>
+<span class="sd">	containing the necessary info.</span>
+
+<span class="sd">	Force: if True, will run first time setup (overwriting any existing config.ini)</span>
+<span class="sd">	regardless&quot;&quot;&quot;</span>
+
+	<span class="k">if</span> <span class="n">force_all</span><span class="p">:</span>
+		<span class="n">remove_config</span><span class="p">()</span> <span class="c1"># remove config file if it exists to force first time setup</span>
+
+	<span class="k">if</span> <span class="n">force_find_blender</span><span class="p">:</span> <span class="n">remove_from_config</span><span class="p">(</span><span class="s1">&#39;BLENDER_PATH&#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">force_find_blender_python</span><span class="p">:</span> <span class="n">remove_from_config</span><span class="p">(</span><span class="s1">&#39;BLENDER_PYTHON_PATH&#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">force_install_dependencies</span><span class="p">:</span> <span class="n">remove_from_config</span><span class="p">(</span><span class="s1">&#39;DEPENDENCIES_INSTALLED&#39;</span><span class="p">)</span>
+
+	<span class="n">blender_path</span> <span class="o">=</span> <span class="n">get_blender_path</span><span class="p">()</span>
+	<span class="n">python_path</span> <span class="o">=</span> <span class="n">find_blender_python</span><span class="p">(</span><span class="n">blender_path</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">read_from_config</span><span class="p">(</span><span class="s1">&#39;DEPENDENCIES_INSTALLED&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span><span class="p">:</span>
+		<span class="c1"># check if blender&#39;s python has all necessary packages</span>
+		<span class="k">for</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="n">dependencies</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">check_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
+				<span class="n">install_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="n">dependency</span><span class="p">)</span>
+
+		<span class="c1"># Install blendersynth package to blender&#39;s python</span>
+		<span class="k">if</span> <span class="n">blendersynth_from_local</span><span class="p">:</span>
+			<span class="c1"># Install from local setup.py</span>
+			<span class="n">setup_py_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;setup.py&#39;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s1">&#39;setup.py&#39;</span><span class="p">):</span>
+				<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find setup.py at </span><span class="si">{</span><span class="n">setup_py_loc</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+			<span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="n">python_path</span><span class="p">,</span> <span class="s1">&#39;setup.py&#39;</span><span class="p">,</span> <span class="s1">&#39;install&#39;</span><span class="p">])</span>
+
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># Install from pypi</span>
+			<span class="n">install_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="s1">&#39;blendersynth&#39;</span><span class="p">,</span> <span class="n">upgrade</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+		<span class="n">write_to_config</span><span class="p">(</span><span class="s1">&#39;DEPENDENCIES_INSTALLED&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ollie Boyne.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

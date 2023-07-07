@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>blendersynth.file.frames_to_video &mdash; BlenderSynth 2023 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            BlenderSynth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.annotations.html">blendersynth.annotations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.blender.html">blendersynth.blender</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.file.html">blendersynth.file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.run.html">blendersynth.run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.utils.html">blendersynth.utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">BlenderSynth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">blendersynth.file.frames_to_video</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for blendersynth.file.frames_to_video</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">.tempfiles</span> <span class="kn">import</span> <span class="n">create_temp_file</span>
+
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">import_module</span>
+<span class="n">ffmpeg</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="s1">&#39;ffmpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;ffmpeg-python&#39;</span><span class="p">)</span>
+
+
+<span class="n">valid_frames_exts</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;bmp&#39;</span><span class="p">,</span> <span class="s1">&#39;tiff&#39;</span><span class="p">,</span> <span class="s1">&#39;tif&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_frames_from_directory"><a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.get_frames_from_directory">[docs]</a><span class="k">def</span> <span class="nf">get_frames_from_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">exts</span><span class="o">=</span><span class="n">valid_frames_exts</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Return a list of all paths to files in directory which have a valid frame extension&quot;&quot;&quot;</span>
+	<span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span> <span class="ow">in</span> <span class="n">exts</span><span class="p">]</span>
+	<span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
+		<span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">files</span></div>
+
+
+<div class="viewcode-block" id="ffmpeg_input_from_files"><a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.ffmpeg_input_from_files">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_input_from_files</span><span class="p">(</span><span class="n">file_list</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Return ffmpeg input from list of files&quot;&quot;&quot;</span>
+	<span class="n">file_list_loc</span> <span class="o">=</span> <span class="n">create_temp_file</span><span class="p">(</span><span class="n">ext</span><span class="o">=</span><span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_list_loc</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+			<span class="n">abs_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+			<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;file &#39;</span><span class="si">{</span><span class="n">abs_file</span><span class="si">}</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">ffmpeg</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="n">file_list_loc</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">frame_rate</span><span class="p">),</span> <span class="n">f</span><span class="o">=</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="frames_to_video"><a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.frames_to_video">[docs]</a><span class="k">def</span> <span class="nf">frames_to_video</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">frame_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame_fmt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+					<span class="n">frame_rate</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">output_loc</span><span class="o">=</span><span class="s1">&#39;./output.mp4&#39;</span><span class="p">,</span> <span class="n">output_fmt</span><span class="o">=</span><span class="s1">&#39;mp4&#39;</span><span class="p">,</span> <span class="n">pix_fmt</span><span class="o">=</span><span class="s1">&#39;yuv420p&#39;</span><span class="p">,</span>
+					<span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">loglevel</span><span class="o">=</span><span class="s1">&#39;error&#39;</span><span class="p">,</span>
+					<span class="n">delete_images</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Need to input one of frame_list or frame_fmt or directory</span>
+
+<span class="sd">	:param frame_list: [optional] list of frames to concatenate into a video</span>
+<span class="sd">	:param frame_fmt: [optional] frame format to use as input</span>
+<span class="sd">	:param directory: [optional] directory to use as input (loads sorted images in directory)</span>
+
+<span class="sd">	:param frame_rate: frame rate of video</span>
+<span class="sd">	:param output_loc: video file location</span>
+<span class="sd">	:param output_fmt: video file format</span>
+<span class="sd">	:param pix_fmt: pixel format (see ffmpeg documentation, default yuv420p)</span>
+
+<span class="sd">	:param overwrite: overwrite existing video file</span>
+<span class="sd">	:param loglevel: ffmpeg loglevel (see ffmpeg documentation, default error)</span>
+
+<span class="sd">	:param delete_images: delete images after video is created</span>
+<span class="sd">	:return:</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">assert</span> <span class="n">args</span> <span class="o">==</span> <span class="p">(),</span> <span class="s1">&#39;frames_to_video() takes keyword arguments only&#39;</span>
+
+	<span class="c1"># Assert exactly 1 of frame_list, frame_fmt, directory is provided</span>
+	<span class="k">assert</span> <span class="nb">sum</span><span class="p">([</span><span class="n">frame_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">frame_fmt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+				<span class="n">directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Exactly one of frame_list, frame_fmt, directory must be provided&#39;</span>
+
+	<span class="n">vid_input</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="n">file_list</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">if</span> <span class="n">frame_list</span><span class="p">:</span>
+		<span class="k">assert</span> <span class="n">frame_list</span><span class="p">,</span> <span class="s1">&#39;No frames provided&#39;</span>
+		<span class="n">vid_input</span> <span class="o">=</span> <span class="n">ffmpeg_input_from_files</span><span class="p">(</span><span class="n">frame_list</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="n">frame_rate</span><span class="p">)</span>
+		<span class="n">file_list</span> <span class="o">=</span> <span class="n">frame_list</span>
+
+	<span class="k">elif</span> <span class="n">frame_fmt</span><span class="p">:</span>
+		<span class="n">vid_input</span> <span class="o">=</span> <span class="n">ffmpeg</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="n">frame_fmt</span><span class="p">)</span>
+
+		<span class="c1"># Get file list using glob (note: this does not match the exact frame format, so may not be fully robust)</span>
+		<span class="n">file_list</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;%\d*[df]&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">frame_fmt</span><span class="p">))</span>
+
+	<span class="k">elif</span> <span class="n">directory</span><span class="p">:</span>
+		<span class="n">file_list</span> <span class="o">=</span> <span class="n">get_frames_from_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+		<span class="k">assert</span> <span class="n">file_list</span><span class="p">,</span> <span class="s1">&#39;No valid frames found in directory&#39;</span>
+
+		<span class="n">vid_input</span> <span class="o">=</span> <span class="n">ffmpeg_input_from_files</span><span class="p">(</span><span class="n">file_list</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="n">frame_rate</span><span class="p">)</span>
+
+	<span class="p">(</span><span class="n">vid_input</span>
+		<span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">output_loc</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">output_fmt</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">frame_rate</span><span class="p">,</span> <span class="n">pix_fmt</span><span class="o">=</span><span class="n">pix_fmt</span><span class="p">)</span>
+		<span class="o">.</span><span class="n">global_args</span><span class="p">(</span><span class="s1">&#39;-loglevel&#39;</span><span class="p">,</span> <span class="n">loglevel</span><span class="p">)</span>
+		<span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">overwrite_output</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span>
+		<span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">delete_images</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+			<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+	<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Video created at &#39;</span> <span class="o">+</span> <span class="n">output_loc</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ollie Boyne.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
