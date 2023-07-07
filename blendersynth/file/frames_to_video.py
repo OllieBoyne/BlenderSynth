@@ -1,8 +1,11 @@
-import ffmpeg
 import os
 import glob
 import re
 from .tempfiles import create_temp_file
+
+from ..utils import import_module
+ffmpeg = import_module('ffmpeg', 'ffmpeg-python')
+
 
 valid_frames_exts = ('png', 'jpg', 'jpeg', 'bmp', 'tiff', 'tif')
 
