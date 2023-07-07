@@ -18,7 +18,8 @@ release = '2023'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.autodoc', 'sphinx_autodoc_typehints', 'sphinx.ext.viewcode']
+extensions = ['sphinx.ext.autodoc', 'sphinx_autodoc_typehints', 'sphinx.ext.viewcode',
+              'm2r2', 'sphinx.ext.napoleon']
 
 templates_path = ['_templates']
 source_dir = 'docs'
@@ -34,6 +35,11 @@ autodoc_mock_imports = ["bpy", "mathutils", "bpy_extras", "opencv-python", "cv2"
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+
 html_theme_options = {
-    'navigation_depth': 2,
+    'navigation_depth': 1,
+    'collapse_navigation': True,
 }
+
+source_suffix = ['.rst', '.md']
+m2r_parse_relative_links = True

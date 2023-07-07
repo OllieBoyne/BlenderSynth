@@ -24,7 +24,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install sphinx
           pip install sphinx_rtd_theme
-          pip install sphinx_autodoc_typehints
+          pip install m2r2
           pip install appdirs
           pip install numpy
           pip install tqdm

@@ -27,7 +27,7 @@ def manage_item(item, children):
 
 	new_file = os.path.join(api_dir, f'{item}.rst')
 
-	out_txt = f'{item}\n' + '=' * len(item) + '\n\n'
+	out_txt = f':code:`{item}`\n' + '=' * len(item) + '\n\n'
 
 	if children:
 		out_txt += f"""
