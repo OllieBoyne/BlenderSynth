@@ -1,0 +1,6 @@
+blendersynth.blender.bsyn_object
+================================
+
+
+.. automodule:: blendersynth.blender.bsyn_object
+	:members:

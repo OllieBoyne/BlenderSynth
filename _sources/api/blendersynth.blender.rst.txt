@@ -6,6 +6,7 @@ blendersynth.blender
 	:maxdepth: 1
 
 	blendersynth.blender.aov
+	blendersynth.blender.bsyn_object
 	blendersynth.blender.camera
 	blendersynth.blender.curve
 	blendersynth.blender.light
