@@ -5,7 +5,7 @@ from gen_api import tree as api_trees
 from shutil import copyfile
 
 # Path to the folders
-tutorial_path = "docs/tutorials"
+tutorial_path = "tutorials"
 example_path = "examples"
 api_path = "api"
 
@@ -60,8 +60,9 @@ def copy_python_script(src):
     os.makedirs(os.path.dirname(out_src), exist_ok=True)
 
     with open(out_src, "w") as f:
-        f.write(f":code:`{src}`\n")
-        f.write("=========\n\n")
+        top_line = f":code:`{src}`"
+        f.write(top_line + "\n")
+        f.write("=" * len(top_line) + "\n\n")
         f.write(f"""
 .. literalinclude:: ../{rel_to_docs(static_python_src)}
    :language: python
@@ -99,6 +100,6 @@ with open("docs/index.rst", "w") as f:
     f.write(f".. mdinclude:: {copy_markdown_file('README.md')}\n\n")
 
     # Write the toctrees
-    write_toctree(f, tutorial_header, tutorial_files)
+    # write_toctree(f, tutorial_header, tutorial_files)
     write_toctree(f, example_header, example_rst_files)
     write_toctree(f, api_header, api_files)
