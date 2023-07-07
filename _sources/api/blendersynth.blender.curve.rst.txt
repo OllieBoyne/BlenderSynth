@@ -1,5 +1,5 @@
 :code:`blendersynth.blender.curve`
-===================================
+=====================================
 
 
 .. automodule:: blendersynth.blender.curve

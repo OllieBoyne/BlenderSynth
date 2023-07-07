@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dataset creation &mdash; BlenderSynth 2023 documentation</title>
+  <title>&lt;no title&gt; &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -45,7 +45,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../python/file_formats/index.html"><code class="code docutils literal notranslate"><span class="pre">examples/file_formats</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python/animation.html"><code class="code docutils literal notranslate"><span class="pre">examples/animation.py</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python/dataset_creation/index.html"><code class="code docutils literal notranslate"><span class="pre">examples/dataset_creation</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/dataset_creation/index.html#dataset-creation">Dataset creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python/data_formats.html"><code class="code docutils literal notranslate"><span class="pre">examples/data_formats.py</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python/quickstart.html"><code class="code docutils literal notranslate"><span class="pre">examples/quickstart.py</span></code></a></li>
 </ul>
@@ -72,7 +71,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Dataset creation</li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/markdown/examples.dataset_creation.README.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -82,8 +81,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="dataset-creation">
-<h1>Dataset creation<a class="headerlink" href="#dataset-creation" title="Permalink to this heading"></a></h1>
+  <p><strong>Dataset creation</strong></p>
 <p>Here we show an example of how to create a large scale dataset. There are three important scripts:</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">blender_script.py</span></code> - This is the script that performs the rendering. It is called by the <code class="docutils literal notranslate"><span class="pre">create_dataset.py</span></code> script.</p></li>
@@ -91,7 +89,6 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">create_dataset.py</span></code> - This script calls the <code class="docutils literal notranslate"><span class="pre">blender_script.py</span></code> script to generate the dataset, managing threading.</p></li>
 </ol>
 <p>This is the most robust way to generate datasets. <code class="docutils literal notranslate"><span class="pre">generate_labels.py</span></code> could be managed inside <code class="docutils literal notranslate"><span class="pre">blender_script.py</span></code>, but you may run into issues of managing seeding between threads &amp; jobs, which is why generating it outside of the script is desirable.</p>
-</section>
 
 
            </div>

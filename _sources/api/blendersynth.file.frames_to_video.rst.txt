@@ -1,5 +1,5 @@
 :code:`blendersynth.file.frames_to_video`
-==========================================
+============================================
 
 
 .. automodule:: blendersynth.file.frames_to_video

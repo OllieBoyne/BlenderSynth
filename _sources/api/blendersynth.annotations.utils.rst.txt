@@ -1,5 +1,5 @@
 :code:`blendersynth.annotations.utils`
-=======================================
+=========================================
 
 
 .. automodule:: blendersynth.annotations.utils

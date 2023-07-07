@@ -1,5 +1,5 @@
 :code:`blendersynth.blender.mesh`
-==================================
+====================================
 
 
 .. automodule:: blendersynth.blender.mesh
