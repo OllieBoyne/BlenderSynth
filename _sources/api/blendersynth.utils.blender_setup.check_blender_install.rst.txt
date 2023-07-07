@@ -1,5 +1,5 @@
 :code:`blendersynth.utils.blender_setup.check_blender_install`
-======================================================
+===============================================================
 
 
 .. automodule:: blendersynth.utils.blender_setup.check_blender_install

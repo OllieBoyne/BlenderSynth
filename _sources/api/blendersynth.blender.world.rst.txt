@@ -1,5 +1,5 @@
 :code:`blendersynth.blender.world`
-==========================
+===================================
 
 
 .. automodule:: blendersynth.blender.world

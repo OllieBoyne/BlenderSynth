@@ -1,5 +1,5 @@
 :code:`blendersynth.file.dataset_outputs`
-=================================
+==========================================
 
 
 .. automodule:: blendersynth.file.dataset_outputs

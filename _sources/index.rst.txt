@@ -1,16 +1,19 @@
 .. mdinclude:: markdown/README.md
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :hidden:
    :caption: Examples
 
+   python/file_formats/index
+   python/dataset_creation/index
    python/animation
+   markdown/examples.README.md
    python/data_formats
    python/quickstart
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :hidden:
    :caption: API
 
