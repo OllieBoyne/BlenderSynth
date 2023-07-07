@@ -41,11 +41,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../python/file_formats/index.html"><code class="code docutils literal notranslate"><span class="pre">examples/file_formats</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../python/animation.html"><code class="code docutils literal notranslate"><span class="pre">examples/animation.py</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../python/dataset_creation/index.html"><code class="code docutils literal notranslate"><span class="pre">examples/dataset_creation</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../python/data_formats.html"><code class="code docutils literal notranslate"><span class="pre">examples/data_formats.py</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../python/quickstart.html"><code class="code docutils literal notranslate"><span class="pre">examples/quickstart.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/mesh_importing.html">Mesh importing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/output_data.html">Output data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/dataset_creation/index.html">Dataset creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/animation.html">Animation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -264,8 +264,8 @@
 		<span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="n">forward_axis</span><span class="p">,</span> <span class="n">up_axis</span><span class="p">):</span>
 			<span class="k">assert</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="s1">&#39;-X&#39;</span><span class="p">,</span> <span class="s1">&#39;-Y&#39;</span><span class="p">,</span> <span class="s1">&#39;-Z&#39;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Axis `</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">` not valid, must be one of X, Y, Z, -X, -Y, -Z&quot;</span>
 
-		<span class="n">forward_axis</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;NEGATIVE_&#39;</span><span class="p">)</span> <span class="c1"># e.g. -X -&gt; NEGATIVE_X</span>
-		<span class="n">up_axis</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;NEGATIVE_&#39;</span><span class="p">)</span>
+		<span class="n">forward_axis</span> <span class="o">=</span> <span class="n">forward_axis</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;NEGATIVE_&#39;</span><span class="p">)</span> <span class="c1"># e.g. -X -&gt; NEGATIVE_X</span>
+		<span class="n">up_axis</span> <span class="o">=</span> <span class="n">up_axis</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;NEGATIVE_&#39;</span><span class="p">)</span>
 
 		<span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">obj_loc</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj_loc</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.obj&#39;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;File `</span><span class="si">{</span><span class="n">obj_loc</span><span class="si">}</span><span class="s2">` not a valid .obj file&quot;</span>
 

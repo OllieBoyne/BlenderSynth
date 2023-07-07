@@ -1,5 +1,7 @@
-:code:`examples/animation.py`
-=============================
+Animation
+=========
+
+.. mdinclude:: ../markdown/examples.animation.md
 
 
 .. literalinclude:: ../_static/python/examples.animation.py

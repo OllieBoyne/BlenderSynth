@@ -1,0 +1,9 @@
+Output data
+===========
+
+.. mdinclude:: ../markdown/examples.output_data.md
+
+
+.. literalinclude:: ../_static/python/examples.output_data.py
+   :language: python
+	

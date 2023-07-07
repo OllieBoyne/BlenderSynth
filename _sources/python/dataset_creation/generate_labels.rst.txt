@@ -1,5 +1,5 @@
-:code:`examples/dataset_creation/generate_labels.py`
-====================================================
+Generate labels
+===============
 
 
 .. literalinclude:: ../../_static/python/examples.dataset_creation.generate_labels.py

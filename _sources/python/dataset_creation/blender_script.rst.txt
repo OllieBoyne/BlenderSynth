@@ -1,5 +1,5 @@
-:code:`examples/dataset_creation/blender_script.py`
-===================================================
+Blender script
+==============
 
 
 .. literalinclude:: ../../_static/python/examples.dataset_creation.blender_script.py

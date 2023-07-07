@@ -44,11 +44,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../python/file_formats/index.html"><code class="code docutils literal notranslate"><span class="pre">examples/file_formats</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/animation.html"><code class="code docutils literal notranslate"><span class="pre">examples/animation.py</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/dataset_creation/index.html"><code class="code docutils literal notranslate"><span class="pre">examples/dataset_creation</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/data_formats.html"><code class="code docutils literal notranslate"><span class="pre">examples/data_formats.py</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/quickstart.html"><code class="code docutils literal notranslate"><span class="pre">examples/quickstart.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/mesh_importing.html">Mesh importing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/output_data.html">Output data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/dataset_creation/index.html">Dataset creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/animation.html">Animation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -91,9 +91,31 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.world.</span></span><span class="sig-name descname"><span class="pre">World</span></span><a class="reference internal" href="../_modules/blendersynth/blender/world.html#World"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.world.World" title="Permalink to this definition"></a></dt>
 <dd><p>World object - for managing world nodes, HDRIs, etc.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.world.World.set_color">
+<span class="sig-name descname"><span class="pre">set_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/world.html#World.set_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.world.World.set_color" title="Permalink to this definition"></a></dt>
+<dd><p>Set the world color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>color</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>]) – RGB or RGBA color</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.world.World.set_hdri">
 <span class="sig-name descname"><span class="pre">set_hdri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/world.html#World.set_hdri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.world.World.set_hdri" title="Permalink to this definition"></a></dt>
-<dd><p>Set HDRI from image path</p>
+<dd><p>Set the HDRI image location</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Path to the HDRI image (.hdr or .exr)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.world.World.set_intensity">
+<span class="sig-name descname"><span class="pre">set_intensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intensity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/world.html#World.set_intensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.world.World.set_intensity" title="Permalink to this definition"></a></dt>
+<dd><p>Set the intensity of the color/HDRI</p>
 </dd></dl>
 
 </dd></dl>

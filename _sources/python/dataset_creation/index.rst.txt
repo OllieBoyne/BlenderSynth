@@ -1,5 +1,5 @@
-:code:`examples/dataset_creation`
-=================================
+Dataset creation
+================
 
 .. mdinclude:: ../../markdown/examples.dataset_creation.README.md
 

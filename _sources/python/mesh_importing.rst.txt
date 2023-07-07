@@ -1,0 +1,9 @@
+Mesh importing
+==============
+
+.. mdinclude:: ../markdown/examples.mesh_importing.md
+
+
+.. literalinclude:: ../_static/python/examples.mesh_importing.py
+   :language: python
+	

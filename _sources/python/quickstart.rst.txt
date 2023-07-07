@@ -1,5 +1,7 @@
-:code:`examples/quickstart.py`
-==============================
+Quickstart
+==========
+
+.. mdinclude:: ../markdown/examples.quickstart.md
 
 
 .. literalinclude:: ../_static/python/examples.quickstart.py

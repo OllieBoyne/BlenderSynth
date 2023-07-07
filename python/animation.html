@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>examples/animation.py &mdash; BlenderSynth 2023 documentation</title>
+  <title>Animation &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="examples/dataset_creation" href="dataset_creation/index.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="../markdown/examples.README.html" /> 
+    <link rel="next" title="&lt;no title&gt;" href="../markdown/examples.README.html" />
+    <link rel="prev" title="Generate labels" href="dataset_creation/generate_labels.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,11 +44,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="file_formats/index.html"><code class="code docutils literal notranslate"><span class="pre">examples/file_formats</span></code></a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="code docutils literal notranslate"><span class="pre">examples/animation.py</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="dataset_creation/index.html"><code class="code docutils literal notranslate"><span class="pre">examples/dataset_creation</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="data_formats.html"><code class="code docutils literal notranslate"><span class="pre">examples/data_formats.py</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html"><code class="code docutils literal notranslate"><span class="pre">examples/quickstart.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mesh_importing.html">Mesh importing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output_data.html">Output data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset_creation/index.html">Dataset creation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Animation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -73,7 +73,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">examples/animation.py</span></code></li>
+      <li class="breadcrumb-item active">Animation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/python/animation.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -83,8 +83,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="examples-animation-py">
-<h1><code class="code docutils literal notranslate"><span class="pre">examples/animation.py</span></code><a class="headerlink" href="#examples-animation-py" title="Permalink to this heading"></a></h1>
+  <section id="animation">
+<h1>Animation<a class="headerlink" href="#animation" title="Permalink to this heading"></a></h1>
+<p>In this example, we create the animation below, showing RGB &amp; normals:</p>
+<a class="reference external image-reference" href="../_static/images/resources%20animation_output.gif"><img alt="" src="../_images/resources%2520animation_output.gif" /></a>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Simple animation example&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># If called from Python, this will run the current script in Blender</span>
@@ -92,34 +94,33 @@
 
 <span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>  <span class="c1"># Create a new compositor - this manages all the render layers</span>
 
-<span class="nb">object</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_primitive</span><span class="p">(</span><span class="s1">&#39;monkey&#39;</span><span class="p">)</span>
+<span class="n">monkey</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_primitive</span><span class="p">(</span><span class="s1">&#39;monkey&#39;</span><span class="p">)</span>
 
 <span class="c1"># Set some render settings</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_cycles_samples</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_resolution</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
-<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_transparent</span><span class="p">()</span>  <span class="c1"># Enable transparent background</span>
 <span class="n">num_frames</span> <span class="o">=</span> <span class="mi">100</span>
 
 <span class="c1"># Set the &#39;animation&#39; to be the rotation of the camera</span>
 <span class="n">camera</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Camera</span><span class="p">()</span>
-<span class="n">camera</span><span class="o">.</span><span class="n">track_to</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>  <span class="c1"># look at monkey</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">track_to</span><span class="p">(</span><span class="n">monkey</span><span class="p">)</span>  <span class="c1"># look at monkey</span>
 <span class="n">circular_path</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Curve</span><span class="p">(</span><span class="s1">&#39;circle&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">camera</span><span class="o">.</span><span class="n">follow_path</span><span class="p">(</span><span class="n">circular_path</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_frames</span><span class="p">),</span> <span class="n">fracs</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>  <span class="c1"># set to follow circular path</span>
 
 <span class="c1"># Also animate the position, rotation and scale of the monkey</span>
-<span class="nb">object</span><span class="o">.</span><span class="n">set_location</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="nb">object</span><span class="o">.</span><span class="n">set_location</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
-<span class="nb">object</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="nb">object</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
-<span class="nb">object</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="nb">object</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">3.14159</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
+<span class="n">monkey</span><span class="o">.</span><span class="n">set_location</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">monkey</span><span class="o">.</span><span class="n">set_location</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
+<span class="n">monkey</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">monkey</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
+<span class="n">monkey</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">monkey</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">3.14159</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
 
 <span class="c1"># animate camera FOV</span>
 <span class="n">camera</span><span class="o">.</span><span class="n">set_fov</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">camera</span><span class="o">.</span><span class="n">set_fov</span><span class="p">(</span><span class="mi">120</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
 
 <span class="n">normal_aov</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">aov</span><span class="o">.</span><span class="n">NormalsAOV</span><span class="p">(</span><span class="n">ref_frame</span><span class="o">=</span><span class="s1">&#39;CAMERA&#39;</span><span class="p">,</span> <span class="n">polarity</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="nb">object</span><span class="o">.</span><span class="n">assign_aov</span><span class="p">(</span><span class="n">normal_aov</span><span class="p">)</span>
+<span class="n">monkey</span><span class="o">.</span><span class="n">assign_aov</span><span class="p">(</span><span class="n">normal_aov</span><span class="p">)</span>
 
 <span class="c1"># Define data outputs</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;animation/rgb&#39;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">)</span>  <span class="c1"># render RGB layer (note mode=&#39;image&#39;)</span>
@@ -128,9 +129,11 @@
 <span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">animation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame_end</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
 
 <span class="c1"># convert rendered frames to video</span>
-<span class="n">bsyn</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">frames_to_video</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s1">&#39;animation/rgb&#39;</span><span class="p">,</span> <span class="n">output_loc</span><span class="o">=</span><span class="s1">&#39;animation/rgb.mp4&#39;</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">delete_images</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">bsyn</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">frames_to_video</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s1">&#39;animation/normal&#39;</span><span class="p">,</span> <span class="n">output_loc</span><span class="o">=</span><span class="s1">&#39;animation/normal.mp4&#39;</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">delete_images</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">frames_to_video</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s1">&#39;animation/rgb&#39;</span><span class="p">,</span> <span class="n">output_loc</span><span class="o">=</span><span class="s1">&#39;animation/rgb.gif&#39;</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">delete_images</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_fmt</span><span class="o">=</span><span class="s1">&#39;gif&#39;</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">frames_to_video</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s1">&#39;animation/normal&#39;</span><span class="p">,</span> <span class="n">output_loc</span><span class="o">=</span><span class="s1">&#39;animation/normal.gif&#39;</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">delete_images</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_fmt</span><span class="o">=</span><span class="s1">&#39;gif&#39;</span><span class="p">)</span>
 
+<span class="c1"># combine into one gif for visualisation</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="s1">&#39;animation/rgb.gif&#39;</span><span class="p">,</span> <span class="s1">&#39;animation/normal.gif&#39;</span><span class="p">],</span> <span class="s1">&#39;animation/animation_output.gif&#39;</span><span class="p">)</span>
 
 </pre></div>
 </div>
@@ -140,8 +143,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../markdown/examples.README.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="dataset_creation/index.html" class="btn btn-neutral float-right" title="examples/dataset_creation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dataset_creation/generate_labels.html" class="btn btn-neutral float-left" title="Generate labels" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../markdown/examples.README.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

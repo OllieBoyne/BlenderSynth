@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>examples/quickstart.py &mdash; BlenderSynth 2023 documentation</title>
+  <title>Quickstart &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="blendersynth.annotations" href="../api/blendersynth.annotations.html" />
-    <link rel="prev" title="examples/data_formats.py" href="data_formats.html" /> 
+    <link rel="next" title="Mesh importing" href="mesh_importing.html" />
+    <link rel="prev" title="BlenderSynth" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,11 +44,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="file_formats/index.html"><code class="code docutils literal notranslate"><span class="pre">examples/file_formats</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="animation.html"><code class="code docutils literal notranslate"><span class="pre">examples/animation.py</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="dataset_creation/index.html"><code class="code docutils literal notranslate"><span class="pre">examples/dataset_creation</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="data_formats.html"><code class="code docutils literal notranslate"><span class="pre">examples/data_formats.py</span></code></a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="code docutils literal notranslate"><span class="pre">examples/quickstart.py</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mesh_importing.html">Mesh importing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output_data.html">Output data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset_creation/index.html">Dataset creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="animation.html">Animation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -73,7 +73,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">examples/quickstart.py</span></code></li>
+      <li class="breadcrumb-item active">Quickstart</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/python/quickstart.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -83,25 +83,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="examples-quickstart-py">
-<h1><code class="code docutils literal notranslate"><span class="pre">examples/quickstart.py</span></code><a class="headerlink" href="#examples-quickstart-py" title="Permalink to this heading"></a></h1>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+  <section id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading"></a></h1>
+<a class="reference external image-reference" href="../_static/images/resources%20quickstart.png"><img alt="" src="../_images/resources%2520quickstart.png" /></a>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Script showing the basics of using BlenderSynth&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># If called from Python, this will run the current script in Blender</span>
 <span class="c1"># If debug set to True, this will open Blender while running</span>
 
 <span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>  <span class="c1"># Create a new compositor - this manages all the render layers</span>
 
-<span class="c1"># We create a simple scene with a random selection of objects on a plane</span>
-<span class="nb">object</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_primitive</span><span class="p">(</span><span class="s1">&#39;monkey&#39;</span><span class="p">)</span>
+<span class="n">monkey</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_primitive</span><span class="p">(</span><span class="s1">&#39;monkey&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">rotation_euler</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>  <span class="c1"># Create a new mesh from a primitive</span>
+<span class="n">light</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Light</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;POINT&#39;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">intensity</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># Create a new light</span>
 
 <span class="c1"># Set some render settings</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_cycles_samples</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_resolution</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
-<span class="n">camera</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Camera</span><span class="p">()</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_resolution</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_transparent</span><span class="p">()</span>
 
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;quickstart&#39;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">)</span>  <span class="c1"># render RGB layer (note mode=&#39;image&#39;)</span>
-<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>  <span class="c1"># render all the different passes - see output folder for results</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">()</span> <span class="c1"># render the result</span>
 </pre></div>
 </div>
 </section>
@@ -110,8 +112,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="data_formats.html" class="btn btn-neutral float-left" title="examples/data_formats.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../api/blendersynth.annotations.html" class="btn btn-neutral float-right" title="blendersynth.annotations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="BlenderSynth" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mesh_importing.html" class="btn btn-neutral float-right" title="Mesh importing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
