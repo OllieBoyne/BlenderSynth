@@ -1,0 +1,7 @@
+:code:`examples/file_formats/obj.py`
+====================================
+
+
+.. literalinclude:: ../../_static/python/examples.file_formats.obj.py
+   :language: python
+	

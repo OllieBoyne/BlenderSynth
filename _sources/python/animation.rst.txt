@@ -2,5 +2,6 @@
 =============================
 
 
-.. literalinclude:: ../_static/python/examples%20animation.py
+.. literalinclude:: ../_static/python/examples.animation.py
    :language: python
+	

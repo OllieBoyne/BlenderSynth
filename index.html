@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; BlenderSynth 2023 documentation</title>
+  <title>BlenderSynth &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="blendersynth.annotations" href="api/blendersynth.annotations.html" /> 
+    <link rel="next" title="examples/file_formats" href="python/file_formats/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,7 +41,16 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">API</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="python/file_formats/index.html"><code class="code docutils literal notranslate"><span class="pre">examples/file_formats</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="python/animation.html"><code class="code docutils literal notranslate"><span class="pre">examples/animation.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="python/dataset_creation/index.html"><code class="code docutils literal notranslate"><span class="pre">examples/dataset_creation</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="python/dataset_creation/index.html#dataset-creation">Dataset creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python/data_formats.html"><code class="code docutils literal notranslate"><span class="pre">examples/data_formats.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="python/quickstart.html"><code class="code docutils literal notranslate"><span class="pre">examples/quickstart.py</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
@@ -64,7 +73,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">&lt;no title&gt;</li>
+      <li class="breadcrumb-item active">BlenderSynth</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -74,16 +83,65 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="toctree-wrapper compound">
+  <section id="blendersynth">
+<h1>BlenderSynth<a class="headerlink" href="#blendersynth" title="Permalink to this heading"></a></h1>
+<a class="reference external image-reference" href="_static/images/docs%20splash.png"><img alt="" src="_images/docs%2520splash.png" /></a>
+<p>Synthetic Blender pipeline - aimed at generating large synthetic datasets.</p>
+<p><a class="reference external" href="https://github.com/DLR-RM/BlenderProc">BlenderProc</a> is an incredibly useful tool for synthetic dataset generation. We aim here to provide an alternative that is (a) more specialised for uncommon data forms, and (b) runs faster for creating large scale datasets.</p>
+<p>We produce support for:</p>
+<ul class="simple">
+<li><p>Custom Shader <a class="reference external" href="https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html">AOVs</a> (eg. UVs, Normals, etc.)</p></li>
+<li><p>Multi-threading support</p></li>
+<li><p>Efficient run-speed</p></li>
+</ul>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Install <a class="reference external" href="https://www.blender.org">Blender</a></p></li>
+<li><p>Install blendersynth</p></li>
+</ol>
+<p>If Blender is not in your PATH, you will need to specify the path to your Blender installation on install.</p>
+<p>From pip:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">blendersynth</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;import blendersynth&quot;</span>
+</pre></div>
+</div>
+<p>Or from local clone:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">OllieBoyne</span><span class="o">/</span><span class="n">BlenderSynth</span>
+<span class="n">cd</span> <span class="n">BlenderSynth</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;import blendersynth&quot;</span> <span class="o">--</span><span class="n">local</span>
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/OllieBoyne/BlenderSynth/tree/main/examples">See here</a> for usage examples.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">bsyn</span></code> imports all <code class="docutils literal notranslate"><span class="pre">bpy</span></code> functionality, so you can call any <code class="docutils literal notranslate"><span class="pre">bpy</span></code> function as if you would normally.</p>
+</section>
+<section id="contributions">
+<h2>Contributions<a class="headerlink" href="#contributions" title="Permalink to this heading"></a></h2>
+<p>This project is currently in Beta. Please let me know what new features you would like, or feel free to make a pull request!</p>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading"></a></h2>
+<p>If any issues with the Blender scripts not having the correct modules, try <code class="docutils literal notranslate"><span class="pre">bsyn.fix_blender_modules()</span></code>, or to completely reconfigure Blender, <code class="docutils literal notranslate"><span class="pre">bsyn.fix_blender_install()</span></code>. If installing from local clone, use <code class="docutils literal notranslate"><span class="pre">local=True</span></code> argument to both.</p>
+</section>
+<section id="benchmarking">
+<h2>Benchmarking<a class="headerlink" href="#benchmarking" title="Permalink to this heading"></a></h2>
+<a class="reference external image-reference" href="_static/images/docs%20benchmark-1.png"><img alt="" src="_images/docs%2520benchmark-1.png" /></a>
+<div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
 </div>
+</section>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="api/blendersynth.annotations.html" class="btn btn-neutral float-right" title="blendersynth.annotations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="python/file_formats/index.html" class="btn btn-neutral float-right" title="examples/file_formats" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

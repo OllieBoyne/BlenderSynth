@@ -1,0 +1,7 @@
+:code:`examples/dataset_creation/create_dataset.py`
+===================================================
+
+
+.. literalinclude:: ../../_static/python/examples.dataset_creation.create_dataset.py
+   :language: python
+	

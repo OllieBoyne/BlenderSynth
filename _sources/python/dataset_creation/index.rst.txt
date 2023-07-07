@@ -1,0 +1,12 @@
+:code:`examples/dataset_creation`
+=================================
+
+.. mdinclude:: ../../markdown/examples.dataset_creation.README.md
+
+.. toctree::
+   :maxdepth: 2
+
+   blender_script
+   create_dataset
+   generate_labels
+

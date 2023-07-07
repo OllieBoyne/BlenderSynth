@@ -1,0 +1,7 @@
+:code:`examples/file_formats/glb.py`
+====================================
+
+
+.. literalinclude:: ../../_static/python/examples.file_formats.glb.py
+   :language: python
+	

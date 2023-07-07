@@ -6,9 +6,9 @@
    :caption: Examples
 
    python/file_formats/index
-   python/dataset_creation/index
-   python/animation
    markdown/examples.README.md
+   python/animation
+   python/dataset_creation/index
    python/data_formats
    python/quickstart
 

@@ -1,0 +1,9 @@
+:code:`examples/file_formats`
+=============================
+
+.. toctree::
+   :maxdepth: 2
+
+   glb
+   obj
+
