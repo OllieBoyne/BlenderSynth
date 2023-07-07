@@ -1,4 +1,5 @@
-"""We show loading of a GLB file into a scene"""
+"""We show loading of an OBJ file into a scene"""
+
 import blendersynth as bsyn
 bsyn.run_this_script(debug = False)
 
