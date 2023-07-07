@@ -2,6 +2,7 @@ import os.path
 
 import bpy
 from .utils import GetNewObject, SelectObjects, handle_vec
+from .bsyn_object import BsynObject, animatable_property
 from .aov import AOV
 import numpy as np
 import mathutils
@@ -71,7 +72,7 @@ def euler_add(a: mathutils.Euler, b: mathutils.Euler):
 	return (a.to_matrix() @ b.to_matrix()).to_euler()
 
 
-class Mesh:
+class Mesh(BsynObject):
 	"""A mesh object. Can be a single mesh, or a hierarchy of meshes."""
 	primitive_list = list(_primitives.keys())
 	"""List of available primitives"""
@@ -91,7 +92,7 @@ class Mesh:
 			scene = bpy.context.scene
 
 		self.scene = scene
-		self.obj = obj
+		self._object = obj
 		self._meshes, self._other_objects = get_child_meshes(obj)
 
 		# Must have a material, create if not passed
@@ -103,7 +104,7 @@ class Mesh:
 				mesh.data.materials.append(material)
 
 		# INSTANCING - Define InstanceID based on number of meshes in scene
-		self.obj['instance_id'] = scene.get('NUM_MESHES', 0)
+		self._object['instance_id'] = scene.get('NUM_MESHES', 0)
 		scene['NUM_MESHES'] = scene.get('NUM_MESHES', 0) + 1  # Increment number of meshes in scene
 
 		# CLASS - Define class based on type of object (e.g. primitive)
@@ -121,7 +122,7 @@ class Mesh:
 		assert isinstance(class_id, int), f"Class ID must be an integer, not {type(class_id)}"
 		assert class_id >= 0, f"Class ID must be >= 0, not {class_id}"
 
-		self.obj['class_id'] = class_id
+		self._object['class_id'] = class_id
 		self.scene['MAX_CLASSES'] = max(self.scene.get('MAX_CLASSES', 0), class_id)
 
 
@@ -274,11 +275,6 @@ class Mesh:
 		trans_vec['XYZ'.index(axis)] = pos - min_pos
 		self.translate(trans_vec)
 
-	# @property
-	# def bound_box(self):
-	# 	"""Return bounding box of object(s)"""
-	# 	return self.obj.bound_box
-
 	@property
 	def matrix_world(self):
 		"""Return world matrix of object(s).
@@ -286,31 +282,45 @@ class Mesh:
 		bpy.context.evaluated_depsgraph_get() # required to update object matrix
 		return self._meshes[0].matrix_world
 
+
 	@property
-	def scale(self):
-		"""Return scale of primary mesh."""
-		return self._scale
+	def location(self):
+		return self._location
 
-	@scale.setter
-	def scale(self, scale):
-		"""Set scale of all meshes (scales about origin)"""
-		if isinstance(scale, (int, float)):
-			scale = (scale, scale, scale)
+	@location.setter
+	def location(self, location):
+		self.set_location(location)
 
-		resize_fac = np.array(scale) / np.array(self.scale)
-
-		with SelectObjects(self._meshes + self._other_objects):
-			bpy.ops.transform.resize(value=resize_fac)
-
-		self._scale = scale
 
 	@property
 	def rotation_euler(self):
-		"""Return euler rotation of object"""
 		return self._rotation_euler
 
 	@rotation_euler.setter
 	def rotation_euler(self, rotation):
+		self.set_rotation_euler(rotation)
+
+	@property
+	def scale(self):
+		return self._scale
+
+	@scale.setter
+	def scale(self, scale):
+		self.set_scale(scale)
+
+	@animatable_property('location')
+	def set_location(self, location):
+		"""Set location of object"""
+		location = handle_vec(location, 3)
+
+		translation = location - self.location
+		with SelectObjects(self._meshes + self._other_objects):
+			bpy.ops.transform.translate(value=translation)
+
+		self._location = location
+
+	@animatable_property('rotation_euler')
+	def set_rotation_euler(self, rotation):
 		"""Set euler rotation of object"""
 		assert len(rotation) == 3, f"Rotation must be a tuple of length 3, got {len(rotation)}"
 		rotation = Euler(rotation, 'XYZ')
@@ -323,21 +333,22 @@ class Mesh:
 
 		self._rotation_euler = rotation
 
-	@property
-	def location(self):
-		"""Return location of object"""
-		return self._location
 
-	@location.setter
-	def location(self, location):
-		"""Set location of object"""
-		location = handle_vec(location, 3)
 
-		translation = location - self.location
+	@animatable_property('scale')
+	def set_scale(self, scale):
+		"""Set scale of object"""
+		if isinstance(scale, (int, float)):
+			scale = (scale, scale, scale)
+
+		resize_fac = np.array(scale) / np.array(self.scale)
+
 		with SelectObjects(self._meshes + self._other_objects):
-			bpy.ops.transform.translate(value=translation)
+			bpy.ops.transform.resize(value=resize_fac)
 
-		self._location = location
+		self._scale = scale
+
+
 
 	def translate(self, translation):
 		"""Translate object"""

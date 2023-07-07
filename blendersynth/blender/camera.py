@@ -2,6 +2,7 @@ import bpy
 import numpy as np
 import mathutils
 from .utils import handle_vec, SelectObjects
+from .bsyn_object import BsynObject, animatable_property
 from typing import Union
 from .mesh import Mesh
 from .curve import Curve
@@ -30,13 +31,14 @@ def look_at_rotation(obj_camera:bpy.types.Object,
 	euler = R.to_euler()
 	return euler
 
-class Camera:
+class Camera(BsynObject):
 	"""Camera object, to handle movement, tracking, etc."""
 	def __init__(self, camera:bpy.types.Object=None):
 		if camera is None:
 			camera = bpy.context.scene.camera
 
 		self.camera = camera
+		self._object = camera
 
 	def update(self):
 		bpy.context.view_layer.update()
@@ -47,21 +49,38 @@ class Camera:
 		"""Field of view in degrees"""
 		return self.camera.data.angle * 180/np.pi
 
+	@fov.setter
+	def fov(self, fov):
+		self.set_fov(fov)
+
+	@animatable_property('lens', use_data_object=True)  # FOV is not animatable, so keyframe focal length instead
+	def set_fov(self, fov):
+		self.camera.data.angle = fov * np.pi/180
+		self.update()
+
 	@property
 	def location(self):
 		return self.camera.location
 
 	@location.setter
 	def location(self, pos):
+		self.set_location(pos)
+
+	@property
+	def rotation_euler(self):
+		return self.camera.rotation_euler
+
+	@rotation_euler.setter
+	def rotation_euler(self, euler):
+		self.set_rotation_euler(euler)
+
+	@animatable_property('location')
+	def set_location(self, pos):
 		self.camera.location = mathutils.Vector(pos)
 		self.update()
 
-	@property
-	def euler(self):
-		return self.camera.rotation_euler
-
-	@euler.setter
-	def euler(self, euler):
+	@animatable_property('rotation_euler')
+	def set_rotation_euler(self, euler):
 		self.camera.rotation_euler = euler
 		self.update()
 

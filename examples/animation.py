@@ -19,6 +19,18 @@ camera.track_to(object)  # look at monkey
 circular_path = bsyn.Curve('circle', scale=5, location=(0, 0, 1))
 camera.follow_path(circular_path, frames=(0, num_frames), fracs=(0, 0.5))  # set to follow circular path
 
+# Also animate the position, rotation and scale of the monkey
+object.set_location((0, 0, -2), frame=0)
+object.set_location((0, 0, 2), frame=num_frames)
+object.set_scale(1, frame=0)
+object.set_scale(2, frame=num_frames)
+object.set_rotation_euler((0, 0, 0), frame=0)
+object.set_rotation_euler((0, 0, 3.14159/2), frame=num_frames)
+
+# animate camera FOV
+camera.set_fov(60, frame=0)
+camera.set_fov(120, frame=num_frames)
+
 normal_aov = bsyn.aov.NormalsAOV(ref_frame='CAMERA', polarity=[-1, 1, -1])
 object.assign_aov(normal_aov)
 
