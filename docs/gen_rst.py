@@ -87,7 +87,7 @@ def write_toctree(f, header, files):
     f.write("\n")
 
 # Get the files
-tutorial_files = get_files(tutorial_path, ".md")
+# tutorial_files = get_files(tutorial_path, ".md")
 
 example_files = get_files(example_path, ".py")
 example_rst_files = [copy_python_script(os.path.join(example_path, f"{file}.py")) for file in example_files]
