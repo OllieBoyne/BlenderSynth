@@ -1,6 +1,7 @@
 """Base class for all BlenderSynth objects."""
 
 class BsynObject:
+	"""Generic class for BlenderSynth objects."""
 	_object = None # corresponding blender object
 
 	@property
@@ -21,9 +22,6 @@ class BsynObject:
 def animatable_property(data_path:str, use_data_object:bool=False) -> callable:
 	"""Decorator that wraps around a function to take a frame number and value, and set the property at that frame.
 
-	:param: data_path: the data path of the property to set
-	:param: use_data_object: whether to use the data object or the object itself
-
 	example usage
 	@animatable('location')
 	def set_location(self, value):
@@ -36,7 +34,10 @@ def animatable_property(data_path:str, use_data_object:bool=False) -> callable:
 	obj.set_location((1, 2, 3), frame=10)
 
 	Which will call the set_location function, followed by
-	self.keyframe_insert(data_path='location', frame=10)
+	self.object.keyframe_insert(data_path='location', frame=10)
+
+	:param: data_path: the data path of the property to set
+	:param: use_data_object: whether to use the data object or the object itself
 	"""
 
 	def wrapper(func):

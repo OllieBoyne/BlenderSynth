@@ -9,7 +9,7 @@ os.makedirs(api_dir, exist_ok=True)
 
 tree = {
 	'annotations': ['bbox', 'keypoints', 'utils'],
-	'blender': ['aov', 'camera', 'curve', 'light', 'mesh', 'render', 'utils', 'world'],
+	'blender': ['aov', 'bsyn_object', 'camera', 'curve', 'light', 'mesh', 'render', 'utils', 'world'],
 	'file': ['dataset_inputs', 'dataset_outputs', 'frames_to_video', 'tempfiles'],
 	'run': ['blender_interface', 'blender_threading', 'run', 'run_this_script'],
 	'utils': {'blender_setup': ['blender_locator', 'blender_python_path', 'check_blender_install'],
