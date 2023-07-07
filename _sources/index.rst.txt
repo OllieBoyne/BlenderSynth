@@ -3,12 +3,6 @@
 .. toctree::
    :maxdepth: 1
    :hidden:
-   :caption: Tutorials
-
-
-.. toctree::
-   :maxdepth: 1
-   :hidden:
    :caption: Examples
 
    python/animation

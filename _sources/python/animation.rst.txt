@@ -1,0 +1,6 @@
+:code:`examples/animation.py`
+=============================
+
+
+.. literalinclude:: ../_static/python/examples%20animation.py
+   :language: python

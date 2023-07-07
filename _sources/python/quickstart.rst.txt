@@ -1,0 +1,6 @@
+:code:`examples/quickstart.py`
+==============================
+
+
+.. literalinclude:: ../_static/python/examples%20quickstart.py
+   :language: python

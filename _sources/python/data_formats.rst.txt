@@ -1,0 +1,6 @@
+:code:`examples/data_formats.py`
+================================
+
+
+.. literalinclude:: ../_static/python/examples%20data_formats.py
+   :language: python
