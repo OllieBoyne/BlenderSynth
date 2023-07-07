@@ -15,8 +15,23 @@ api_path = "api"
 tutorial_header = "Tutorials"
 api_header = "API"
 
+# preference for sorting, will defer to this where possible
+examples_sort_order = ['quickstart', 'mesh_importing', 'output_data', 'dataset_creation', 'animation']
 
+def get_sort_index(name, sort_order):
+    """Get the index of the first 'match' in the sort order, or the length of the sort order if no match.
+    a match is defined as the sort order being a substring of the name."""
+    for n, i in enumerate(sort_order):
+        if i in name:
+            return n
+    return len(sort_order)
 
+def sort_by(name, sort_order):
+    """Preferentially sort by the given sort order (by finding the first 'match' (see get_sort_index).
+    Where not possible, sort alphabetically."""
+
+    sorted_list = sorted(name, key=lambda x: (get_sort_index(x, sort_order), x))
+    return sorted_list
 
 def write_toctree(f, header, files):
     """Write a toctree to a file."""
@@ -30,8 +45,6 @@ def write_toctree(f, header, files):
 
 # Get the files
 # tutorial_files = get_files(tutorial_path, ".md")
-
-
 api_files = [os.path.join(api_path, f"blendersynth.{tree}") for tree in api_trees]
 
 # Write the index.rst
@@ -41,6 +54,5 @@ with open("docs/index.rst", "w") as f:
     f.write(f".. mdinclude:: {copy_markdown_file('README.md')}\n\n")
 
     # Write the toctrees
-    # write_toctree(f, tutorial_header, tutorial_files)
-    write_toctree(f, 'Examples', top_examples)
+    write_toctree(f, 'Examples', sort_by(top_examples, examples_sort_order))
     write_toctree(f, api_header, api_files)

@@ -49,8 +49,6 @@ for aov in [cam_normals_aov, instancing_aov, class_aov, UVAOV, NOCAOV]:
 	for obj in all_objects:
 		obj.assign_aov(aov)
 
-bsyn.world.set_color((0.2, 0.2, 0.6))
-
 # Now we assign our render passes to the compositor, telling it what files to output
 output_folder = 'data_formats'
 comp.define_output('Image', output_folder, file_name='rgb', mode='image')  # render RGB layer (note mode='image')

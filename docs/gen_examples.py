@@ -15,6 +15,17 @@ def is_script_directory(src):
 	subfolders_contain_scripts = any(is_script_directory(os.path.join(src, file)) for file in os.listdir(src) if os.path.isdir(os.path.join(src, file)))
 	return contains_scripts or subfolders_contain_scripts
 
+def format_script_name(src):
+	"""We want to format the name of scripts as viewed in the headers/sidebars in the following ways:
+
+	- Just get the name of the path/directory
+	- Sentence case
+	- Replace underscores with spaces
+	- Remove extension
+	"""
+
+	return os.path.splitext(os.path.basename(src))[0].replace("_", " ").capitalize()
+
 def copy_python_script(src):
 	"""
 	a) create rst in docs/python that links to the script properly.
@@ -37,12 +48,12 @@ def copy_python_script(src):
 		out_src = os.path.join(out_dir, "index.rst")
 
 		with open(out_src, "w") as f:
-			top_line = f":code:`{src}`"
+			top_line = format_script_name(src)
 			f.write(top_line + "\n")
 			f.write("=" * len(top_line) + "\n\n")
 
 			for s in sub_locs:
-				if s.lower().endswith(".md"):
+				if s.lower().endswith('readme.md'):
 					f.write(f".. mdinclude:: {s}\n\n")
 
 			f.write(".. toctree::\n")
@@ -65,16 +76,24 @@ def copy_python_script(src):
 		os.makedirs(os.path.dirname(out_src), exist_ok=True)
 
 		with open(out_src, "w") as f:
-			top_line = f":code:`{src}`"
+			top_line = format_script_name(src)
 			f.write(top_line + "\n")
 			f.write("=" * len(top_line) + "\n\n")
+
+			# if an .md file exists with the same name, include it
+			markdown_loc = src.replace(".py", ".md")
+			if not os.path.exists(markdown_loc): markdown_loc = markdown_loc.replace(".md", ".MD")  # may be capitalized
+			if os.path.exists(markdown_loc):
+				static_markdown = copy_markdown_file(markdown_loc, rel_dir=os.path.dirname(out_src))
+				f.write(f".. mdinclude:: {os.path.relpath(static_markdown, os.path.relpath(os.path.dirname(out_src), 'docs'))}\n\n")
+
 			f.write(f"""
 .. literalinclude:: {os.path.relpath(static_python_src, os.path.dirname(out_src))}
    :language: python
 	""")
 
-	elif src.lower().endswith('.md'):
-		return copy_markdown_file(src)
+	elif src.lower().endswith('readme.md'):
+		return copy_markdown_file(src, rel_dir=os.path.dirname(src))
 
 	else:
 		return None

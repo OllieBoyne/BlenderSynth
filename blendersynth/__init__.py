@@ -41,9 +41,10 @@ if building_docs or get_blender_path() == sys.argv[0]:  # if blender is running 
 	# common aliases
 	load_blend = bpy.ops.wm.open_mainfile
 
-	# Clear default cube
+	# Clear default cube and light
 	import bpy
 	bpy.data.objects['Cube'].select_set(True)
+	bpy.data.objects['Light'].select_set(True)
 	bpy.ops.object.delete()
 
 else:

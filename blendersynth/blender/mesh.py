@@ -181,8 +181,8 @@ class Mesh(BsynObject):
 		for axis in (forward_axis, up_axis):
 			assert axis in ('X', 'Y', 'Z', '-X', '-Y', '-Z'), f"Axis `{axis}` not valid, must be one of X, Y, Z, -X, -Y, -Z"
 
-		forward_axis = axis.replace('-', 'NEGATIVE_') # e.g. -X -> NEGATIVE_X
-		up_axis = axis.replace('-', 'NEGATIVE_')
+		forward_axis = forward_axis.replace('-', 'NEGATIVE_') # e.g. -X -> NEGATIVE_X
+		up_axis = up_axis.replace('-', 'NEGATIVE_')
 
 		assert os.path.isfile(obj_loc) and obj_loc.endswith('.obj'), f"File `{obj_loc}` not a valid .obj file"
 

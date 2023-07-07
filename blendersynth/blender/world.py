@@ -1,6 +1,6 @@
 import bpy
 from ..utils.node_arranger import tidy_tree
-
+from typing import Union
 
 class World():
 	"""World object - for managing world nodes, HDRIs, etc."""
@@ -13,6 +13,8 @@ class World():
 
 		self.hdri_link = None
 		self.setup_nodes()
+
+		self.set_color((0.051,) * 3)  # match blender's default world colour
 
 	def setup_nodes(self):
 
@@ -49,7 +51,11 @@ class World():
 
 		self.mode = 'HDRI'
 
-	def set_color(self, color):
+	def set_color(self, color: Union[list, tuple]):
+		"""Set the world color.
+
+		:param color: RGB or RGBA color"""
+
 		self.setup_color()
 
 		assert len(color) in [3, 4], "Color must be RGB or RGBA"
@@ -59,13 +65,17 @@ class World():
 
 		self.node_background.inputs["Color"].default_value = color
 
-	def set_hdri(self, pth):
-		"""Set HDRI from image path"""
+	def set_hdri(self, pth:str):
+		"""Set the HDRI image location
+
+		:param pth: Path to the HDRI image (.hdr or .exr)"""
+
 		self.setup_hdri()
 		self.world_nodes['Environment Texture'].image = bpy.data.images.load(pth)
 
-	def set_hdri_intensity(self, intensity=1.):
-		self.world_nodes["Background"].inputs[1].default_value = intensity  # HDRI lighting
+	def set_intensity(self, intensity:float=1.):
+		"""Set the intensity of the color/HDRI"""
+		self.world_nodes["Background"].inputs[1].default_value = intensity
 
 	def set_transparent(self, transparent=True):
 		bpy.context.scene.render.film_transparent = transparent

@@ -28,29 +28,31 @@ def get_files(path, extension):
 	return [os.path.splitext(f)[0] for f in os.listdir(path) if f.endswith(extension)]
 
 
-def copy_markdown_file(src):
-    """Copy over markdown file `src` to docs/markdown. For any references to images in the markdown file,
-    copy to static/images and update the markdown file accordingly."""
+def copy_markdown_file(src, rel_dir="docs"):
+	"""Copy over markdown file `src` to docs/markdown. For any references to images in the markdown file,
+	copy to static/images and update the markdown file accordingly.
+	If rel_dir, references in markdown file must be relative to it"""
 
-    out_src = os.path.join(markdown_dir, sep_conv(src, '.'))
-    with open(src, "r") as f:
-        lines = f.readlines()
+	out_src = os.path.join(markdown_dir, sep_conv(src, '.'))
+	with open(src, "r") as f:
+		lines = f.readlines()
 
-    # Copy over images
-    rel_dir = static_img_dir.replace("docs" + os.sep, "")
-    for i, line in enumerate(lines):
-        if line.startswith("!["):
-            image_name = line.split("(")[1].split(")")[0]
-            out_img_name = sep_conv(image_name)
-            copyfile(os.path.join(os.path.dirname(src), image_name), os.path.join(static_img_dir, out_img_name))
+	# Copy over images
+	for i, line in enumerate(lines):
+		if line.startswith("!["):
+			image_name = line.split("(")[1].split(")")[0]
+			out_img_name = sep_conv(image_name)
+			copyfile(os.path.join(os.path.dirname(src), image_name), os.path.join(static_img_dir, out_img_name))
 
-            lines[i] = line.replace(image_name, os.path.join(rel_dir, out_img_name))
+			static_rel = os.path.join(os.path.relpath(static_img_dir, rel_dir), out_img_name)
 
-    # Write to file
-    with open(out_src, "w") as f:
-        f.writelines(lines)
+			lines[i] = line.replace(image_name, static_rel)
 
-    return rel_to_docs(out_src)
+	# Write to file
+	with open(out_src, "w") as f:
+		f.writelines(lines)
+
+	return rel_to_docs(out_src)
 
 
 make_dirs([markdown_dir, static_img_dir])
