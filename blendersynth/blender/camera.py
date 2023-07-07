@@ -7,9 +7,10 @@ from typing import Union
 from .mesh import Mesh
 from .curve import Curve
 
-def look_at_rotation(obj_camera:bpy.types.Object,
-					 at:mathutils.Vector=mathutils.Vector((0, 0, 0)),
-					 up:mathutils.Vector=mathutils.Vector((0, 1, 0))) -> mathutils.Euler:
+
+def look_at_rotation(obj_camera: bpy.types.Object,
+					 at: mathutils.Vector = mathutils.Vector((0, 0, 0)),
+					 up: mathutils.Vector = mathutils.Vector((0, 1, 0))) -> mathutils.Euler:
 	"""	Rotate camera to look at 'at', with 'up' maintained.
 
 	:param obj_camera: Camera object
@@ -25,29 +26,65 @@ def look_at_rotation(obj_camera:bpy.types.Object,
 
 	if is_close:
 		replacement = y_axis.cross(z_axis).normalized()
-		x_axis =  replacement
+		x_axis = replacement
 
 	R = mathutils.Matrix([x_axis, y_axis, z_axis]).transposed()
 	euler = R.to_euler()
 	return euler
 
+
 class Camera(BsynObject):
 	"""Camera object, to handle movement, tracking, etc."""
-	def __init__(self, camera:bpy.types.Object=None):
+
+	def __init__(self, camera: bpy.types.Object = None):
 		if camera is None:
 			camera = bpy.context.scene.camera
 
 		self.camera = camera
 		self._object = camera
 
+	@classmethod
+	def create(cls, name: str = 'Camera',
+			   location: Union[list, tuple, np.ndarray] = None,
+			   rotation: Union[list, tuple, np.ndarray] = None) -> 'Camera':
+		"""Create a new camera object.
+
+		:param name: Name of camera
+		:param location: Location of camera
+		:param rotation_euler: Rotation of camera in euler angles"""
+
+		with SelectObjects():  # revert selection after creating camera
+			bpy.ops.object.camera_add(enter_editmode=False, align='VIEW')
+			camera = bpy.context.object
+			camera.name = name
+
+		cam = cls(camera)
+
+		if location is not None:
+			cam.set_location(location)
+
+		if rotation is not None:
+			cam.set_rotation_euler(rotation)
+
+		return cam
+
+	@classmethod
+	def from_scene(cls, name: str = 'Camera') -> 'Camera':
+		"""Create from a named camera in scene
+
+		:param name: Name of camera"""
+		assert name in bpy.data.objects, f'Camera {name} does not exist'
+		return cls(bpy.data.objects[name])
+
 	def update(self):
+		"""Update view layer and depsgraph"""
 		bpy.context.view_layer.update()
 		bpy.context.evaluated_depsgraph_get()
 
 	@property
 	def fov(self):
 		"""Field of view in degrees"""
-		return self.camera.data.angle * 180/np.pi
+		return self.camera.data.angle * 180 / np.pi
 
 	@fov.setter
 	def fov(self, fov):
@@ -55,7 +92,7 @@ class Camera(BsynObject):
 
 	@animatable_property('lens', use_data_object=True)  # FOV is not animatable, so keyframe focal length instead
 	def set_fov(self, fov):
-		self.camera.data.angle = fov * np.pi/180
+		self.camera.data.angle = fov * np.pi / 180
 		self.update()
 
 	@property
@@ -92,7 +129,6 @@ class Camera(BsynObject):
 	def data(self):
 		return self.camera.data
 
-
 	def look_at(self, at=mathutils.Vector((0, 0, 0)), up=mathutils.Vector((0, 1, 0))):
 		self.euler = look_at_rotation(self.camera, at, up)
 
@@ -125,8 +161,8 @@ class Camera(BsynObject):
 		self.camera.constraints.remove(constraint)
 		self.update()
 
-	def follow_path(self, path: Curve,	zero:bool=True,
-					animate:bool=True, frames:tuple=(0,250), fracs:tuple=(0, 1)):
+	def follow_path(self, path: Curve, zero: bool = True,
+					animate: bool = True, frames: tuple = (0, 250), fracs: tuple = (0, 1)):
 		"""Follow path, with optional animation setting.
 
 		:param path: Curve object
@@ -151,11 +187,11 @@ class Camera(BsynObject):
 		# so that the camera is not rotated by the track constraint
 		track_constraint_idx = self.camera.constraints.find('Track To')
 		if track_constraint_idx > -1:
-			self.camera.constraints.move(track_constraint_idx, track_constraint_idx+1)
+			self.camera.constraints.move(track_constraint_idx, track_constraint_idx + 1)
 
 		self.update()
 
-	def animate_path(self, frames:tuple=(0,250), fracs:tuple=(0, 1)):
+	def animate_path(self, frames: tuple = (0, 250), fracs: tuple = (0, 1)):
 		"""Animate camera along path.
 
 		:param frames: tuple of keyframes to animate at - length N

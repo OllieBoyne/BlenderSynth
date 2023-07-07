@@ -42,7 +42,7 @@ class SelectObjects:
 	"""Context manager for selecting objects.
 	On exit, will reselect the objects that were selected before entering the context."""
 
-	def __init__(self, objects: list):
+	def __init__(self, objects: list = ()):
 		"""Initialize with a list of objects to select
 		:param objects: list of bpy.types.Object"""
 		self.objects = objects
