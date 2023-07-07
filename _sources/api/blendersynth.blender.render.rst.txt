@@ -1,4 +1,4 @@
-blendersynth.blender.render
+:code:`blendersynth.blender.render`
 ===========================
 
 

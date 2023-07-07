@@ -1,4 +1,4 @@
-blendersynth.run.run_this_script
+:code:`blendersynth.run.run_this_script`
 ================================
 
 

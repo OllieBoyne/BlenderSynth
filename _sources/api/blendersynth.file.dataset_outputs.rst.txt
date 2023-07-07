@@ -1,4 +1,4 @@
-blendersynth.file.dataset_outputs
+:code:`blendersynth.file.dataset_outputs`
 =================================
 
 

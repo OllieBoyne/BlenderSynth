@@ -1,4 +1,4 @@
-blendersynth.run.run
+:code:`blendersynth.run.run`
 ====================
 
 

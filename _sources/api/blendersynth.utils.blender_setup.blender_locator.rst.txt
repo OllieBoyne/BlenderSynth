@@ -1,4 +1,4 @@
-blendersynth.utils.blender_setup.blender_locator
+:code:`blendersynth.utils.blender_setup.blender_locator`
 ================================================
 
 

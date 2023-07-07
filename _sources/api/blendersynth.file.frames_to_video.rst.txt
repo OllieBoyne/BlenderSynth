@@ -1,4 +1,4 @@
-blendersynth.file.frames_to_video
+:code:`blendersynth.file.frames_to_video`
 =================================
 
 

@@ -1,4 +1,4 @@
-blendersynth.annotations.keypoints
+:code:`blendersynth.annotations.keypoints`
 ==================================
 
 

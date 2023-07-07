@@ -1,4 +1,4 @@
-blendersynth.blender.camera
+:code:`blendersynth.blender.camera`
 ===========================
 
 

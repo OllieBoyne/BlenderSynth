@@ -1,4 +1,4 @@
-blendersynth.blender.curve
+:code:`blendersynth.blender.curve`
 ==========================
 
 

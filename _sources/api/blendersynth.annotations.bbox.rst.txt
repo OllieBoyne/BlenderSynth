@@ -1,4 +1,4 @@
-blendersynth.annotations.bbox
+:code:`blendersynth.annotations.bbox`
 =============================
 
 

@@ -1,4 +1,4 @@
-blendersynth.run.blender_threading
+:code:`blendersynth.run.blender_threading`
 ==================================
 
 

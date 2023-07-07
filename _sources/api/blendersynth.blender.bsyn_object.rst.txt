@@ -1,4 +1,4 @@
-blendersynth.blender.bsyn_object
+:code:`blendersynth.blender.bsyn_object`
 ================================
 
 

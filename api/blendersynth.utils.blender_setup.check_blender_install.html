@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.utils.blender_setup.check_blender_install &mdash; BlenderSynth 2023 documentation</title>
@@ -44,15 +44,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.annotations.html">blendersynth.annotations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.html">blendersynth.blender</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.file.html">blendersynth.file</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.run.html">blendersynth.run</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.utils.html">blendersynth.utils</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="blendersynth.utils.blender_setup.html">blendersynth.utils.blender_setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blendersynth.utils.node_arranger.html">blendersynth.utils.node_arranger</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
 </ul>
 
         </div>
@@ -69,9 +65,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="blendersynth.utils.html">blendersynth.utils</a></li>
-          <li class="breadcrumb-item"><a href="blendersynth.utils.blender_setup.html">blendersynth.utils.blender_setup</a></li>
-      <li class="breadcrumb-item active">blendersynth.utils.blender_setup.check_blender_install</li>
+          <li class="breadcrumb-item"><a href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
+          <li class="breadcrumb-item"><a href="blendersynth.utils.blender_setup.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup.check_blender_install</span></code></li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/api/blendersynth.utils.blender_setup.check_blender_install.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -81,9 +77,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.utils.blender_setup.check_blender_install">
-<span id="blendersynth-utils-blender-setup-check-blender-install"></span><h1>blendersynth.utils.blender_setup.check_blender_install<a class="headerlink" href="#module-blendersynth.utils.blender_setup.check_blender_install" title="Permalink to this heading"></a></h1>
-<dl class="py function">
+  <section id="blendersynth-utils-blender-setup-check-blender-install">
+<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup.check_blender_install</span></code><a class="headerlink" href="#blendersynth-utils-blender-setup-check-blender-install" title="Permalink to this heading"></a></h1>
+<span class="target" id="module-blendersynth.utils.blender_setup.check_blender_install"></span><dl class="py function">
 <dt class="sig sig-object py" id="blendersynth.utils.blender_setup.check_blender_install.check_blender_install">
 <span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.check_blender_install.</span></span><span class="sig-name descname"><span class="pre">check_blender_install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_find_blender</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_find_blender_python</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_install_dependencies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blendersynth_from_local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/check_blender_install.html#check_blender_install"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.check_blender_install.check_blender_install" title="Permalink to this definition"></a></dt>
 <dd><p>Check if Blender is installed correctly and has all necessary packages.

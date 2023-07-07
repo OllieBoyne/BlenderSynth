@@ -1,4 +1,4 @@
-blendersynth.utils.node_arranger
+:code:`blendersynth.utils.node_arranger`
 ================================
 
 

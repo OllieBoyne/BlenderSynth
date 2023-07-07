@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.annotations.bbox &mdash; BlenderSynth 2023 documentation</title>
@@ -44,16 +44,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.annotations.html">blendersynth.annotations</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">blendersynth.annotations.bbox</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blendersynth.annotations.keypoints.html">blendersynth.annotations.keypoints</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blendersynth.annotations.utils.html">blendersynth.annotations.utils</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.html">blendersynth.blender</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.file.html">blendersynth.file</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.run.html">blendersynth.run</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.html">blendersynth.utils</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
 </ul>
 
         </div>
@@ -70,8 +65,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="blendersynth.annotations.html">blendersynth.annotations</a></li>
-      <li class="breadcrumb-item active">blendersynth.annotations.bbox</li>
+          <li class="breadcrumb-item"><a href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations.bbox</span></code></li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/api/blendersynth.annotations.bbox.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -81,9 +76,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.annotations.bbox">
-<span id="blendersynth-annotations-bbox"></span><h1>blendersynth.annotations.bbox<a class="headerlink" href="#module-blendersynth.annotations.bbox" title="Permalink to this heading"></a></h1>
-<dl class="py function">
+  <section id="blendersynth-annotations-bbox">
+<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations.bbox</span></code><a class="headerlink" href="#blendersynth-annotations-bbox" title="Permalink to this heading"></a></h1>
+<span class="target" id="module-blendersynth.annotations.bbox"></span><dl class="py function">
 <dt class="sig sig-object py" id="blendersynth.annotations.bbox.bounding_box">
 <span class="sig-prename descclassname"><span class="pre">blendersynth.annotations.bbox.</span></span><span class="sig-name descname"><span class="pre">bounding_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x1y1x2y2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/annotations/bbox.html#bounding_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.annotations.bbox.bounding_box" title="Permalink to this definition"></a></dt>
 <dd><p>Get the bounding box of an object in camera space.

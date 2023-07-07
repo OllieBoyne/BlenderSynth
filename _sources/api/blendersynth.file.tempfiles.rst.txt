@@ -1,4 +1,4 @@
-blendersynth.file.tempfiles
+:code:`blendersynth.file.tempfiles`
 ===========================
 
 

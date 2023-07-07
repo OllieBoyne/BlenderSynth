@@ -1,4 +1,4 @@
-blendersynth.utils.blender_setup
+:code:`blendersynth.utils.blender_setup`
 ================================
 
 

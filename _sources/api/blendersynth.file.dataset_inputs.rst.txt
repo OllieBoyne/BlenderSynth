@@ -1,4 +1,4 @@
-blendersynth.file.dataset_inputs
+:code:`blendersynth.file.dataset_inputs`
 ================================
 
 

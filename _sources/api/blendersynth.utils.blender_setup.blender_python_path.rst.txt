@@ -1,4 +1,4 @@
-blendersynth.utils.blender_setup.blender_python_path
+:code:`blendersynth.utils.blender_setup.blender_python_path`
 ====================================================
 
 

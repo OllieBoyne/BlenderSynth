@@ -1,4 +1,4 @@
-blendersynth.utils
+:code:`blendersynth.utils`
 ==================
 
 

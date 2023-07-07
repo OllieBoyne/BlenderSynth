@@ -1,4 +1,4 @@
-blendersynth.file
+:code:`blendersynth.file`
 =================
 
 

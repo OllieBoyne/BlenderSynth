@@ -1,4 +1,4 @@
-blendersynth.run.blender_interface
+:code:`blendersynth.run.blender_interface`
 ==================================
 
 
