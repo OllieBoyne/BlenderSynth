@@ -29,6 +29,7 @@ jobs:
           pip install numpy
           pip install tqdm
           pip install ffmpeg-python
+          pip install sphinx_autodoc_typehints
 
       - name: Build docs
         run: |
