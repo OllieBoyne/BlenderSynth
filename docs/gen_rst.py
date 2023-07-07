@@ -2,8 +2,7 @@
 
 import os
 
-from docs.gen_utils import copy_markdown_file
-from gen_utils import make_dirs
+from gen_utils import copy_markdown_file
 from gen_api import tree as api_trees
 from gen_examples import generate_example_docs
 
