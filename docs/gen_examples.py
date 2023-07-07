@@ -46,7 +46,7 @@ def copy_python_script(src):
 					f.write(f".. mdinclude:: {s}\n\n")
 
 			f.write(".. toctree::\n")
-			f.write("   :maxdepth: 2\n\n")
+			f.write("   :maxdepth: 1\n\n")
 
 			for s in sub_locs:
 				if s.endswith(".rst"):

@@ -1,4 +1,4 @@
-# Dataset creation
+**Dataset creation**
 
 Here we show an example of how to create a large scale dataset. There are three important scripts:
 
