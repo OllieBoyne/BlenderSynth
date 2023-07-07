@@ -22,22 +22,26 @@ class BsynObject:
 def animatable_property(data_path:str, use_data_object:bool=False) -> callable:
 	"""Decorator that wraps around a function to take a frame number and value, and set the property at that frame.
 
-	example usage
-	@animatable('location')
-	def set_location(self, value):
-		self._location = value
+	example usage::
+
+		@animatable('location')
+		def set_location(self, value):
+			self._location = value
 
 	If you want to set the property at the current frame, use the setter as normal:
-	obj.set_location((1, 2, 3))
+
+	``obj.set_location((1, 2, 3))``
 
 	To set the property at a specific frame, use the decorator:
-	obj.set_location((1, 2, 3), frame=10)
+
+	``obj.set_location((1, 2, 3), frame=10)``
 
 	Which will call the set_location function, followed by
-	self.object.keyframe_insert(data_path='location', frame=10)
+	
+	``self.object.keyframe_insert(data_path='location', frame=10)``
 
-	:param: data_path: the data path of the property to set
-	:param: use_data_object: whether to use the data object or the object itself
+	:param data_path: the data path of the property to set
+	:param use_data_object: whether to use the data object or the object itself
 	"""
 
 	def wrapper(func):

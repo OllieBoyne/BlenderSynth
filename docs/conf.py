@@ -18,8 +18,7 @@ release = '2023'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.autodoc', 'sphinx_autodoc_typehints']
-			  # 'sphinx.ext.intersphinx', 'sphinx.ext.imgmath', 'sphinx.ext.viewcode', 'moduleoverview']
+extensions = ['sphinx.ext.autodoc', 'sphinx_autodoc_typehints', 'sphinx.ext.viewcode']
 
 templates_path = ['_templates']
 source_dir = 'docs'
