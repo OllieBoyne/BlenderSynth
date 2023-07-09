@@ -4,11 +4,15 @@ import mathutils
 import numpy as np
 
 
-def project_point_to_image(P: mathutils.Vector, scene, camera, invert_y=True):
+def project_point_to_image(P: mathutils.Vector, scene:bpy.types.Scene,
+						   camera:bpy.types.Camera, invert_y:bool=True):
 	"""Return 2D (x, y) image coordinates of a 3D point P.
 
-	invert_y: if True, y is measured from the top of the image, otherwise from the bottom
-	(Blender measures from bottom)"""
+	:param P: 3D point
+	:param scene: Blender scene
+	:param camera: Camera to project through
+	:param invert_y: if True, y is measured from the top of the image, otherwise from the bottom (Blender measures from bottom)"""
+
 	ndc_x, ndc_y, ndc_depth = world_to_camera_view(scene, camera, P)  # normalized device coords
 	imgx = scene.render.resolution_x * ndc_x
 
@@ -21,11 +25,12 @@ def project_point_to_image(P: mathutils.Vector, scene, camera, invert_y=True):
 	return imgx, imgy
 
 
-def project_points(points, scene, camera, invert_y=True):
+def project_points(points:np.ndarray, scene:bpy.types.Scene, camera:bpy.types.Camera, invert_y:bool=True):
 	"""Project points to image plane.
+
 	:param points: Nx3 matrix of points
-	:param scene: bpy.types.Scene
-	:param camera: bpy.types.Camera
+	:param scene: Blender scene
+	:param camera: Camera to project through
 	:param invert_y: if True, y is measured from the top of the image, otherwise from the bottom
 
 	:return: Nx2 matrix of 2D image coordinates"""

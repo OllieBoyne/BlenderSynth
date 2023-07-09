@@ -5,8 +5,10 @@ import sys
 from ..utils.blender_setup.blender_locator import get_blender_path
 from ..file.tempfiles import cleanup_temp_files as cleanup
 
-def run_this_script(debug=False):
-	"""Run the current script from Blender"""
+def run_this_script(debug:bool=False):
+	"""Run the script in which this function is called from Blender
+
+	:param debug: If True, open a Blender instance after all code is executed, otherwise run in background"""
 	blender_path = get_blender_path()
 	if blender_path != sys.argv[0]:  # if blender is not running this script
 

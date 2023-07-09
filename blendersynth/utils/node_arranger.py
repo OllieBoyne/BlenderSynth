@@ -1,4 +1,6 @@
-"""Space out nodes in the node editor."""
+"""Utilities for neatly arranging nodes in the node editor,
+to make debugging easier."""
+
 import bpy
 from collections import defaultdict
 from copy import copy
@@ -9,10 +11,12 @@ def get_source_nodes(node):
 		for link in i.links:
 			yield link.from_node
 
+
 def get_sink_nodes(node):
 	for o in node.outputs:
 		for link in o.links:
 			yield link.to_node
+
 
 def split_to_islands(nodes):
 	"""Given a node list, return a list of sets, each one being a fully disconnected island"""
@@ -86,7 +90,6 @@ def calc_depth(node_island):
 					node['depth'] = new_depth
 					depth_changed = True
 
-
 	# Normalize depths
 	min_depth = min(node['depth'] for node in node_island)
 	for node in node_island:
@@ -95,15 +98,19 @@ def calc_depth(node_island):
 	return node_island
 
 
-def tidy_tree(node_tree, dX = 400, dY = 200):
-	"""Search through tree, and position nodes in a grid"""
+def tidy_tree(node_tree: bpy.types.NodeTree, dX: int = 400, dY: int = 200):
+	"""Search through tree, positioning nodes in a grid based on their depth and connectivity.
+
+	:param node_tree: node tree to tidy
+	:param dX: horizontal distance between nodes
+	:param dY: vertical distance between nodes"""
 
 	nodes = node_tree.nodes
 	islands = split_to_islands(nodes)
 
-	y = 0 # track running height to manage multiple islands
+	y = 0  # track running height to manage multiple islands
 
-	height = defaultdict(int) # track height of each depth level
+	height = defaultdict(int)  # track height of each depth level
 	for island in islands:
 		island = calc_depth(island)
 
@@ -116,5 +123,3 @@ def tidy_tree(node_tree, dX = 400, dY = 200):
 			height[node['depth']] += dY
 
 		y += max(height.values()) + dY
-
-

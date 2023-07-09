@@ -9,7 +9,7 @@ BBOX_FMTS = ['x1y1x2y2', 'xywh']
 
 def bounding_box(object: Mesh, camera: bpy.types.Camera = None,
 				 scene:bpy.types.Scene=None,
-				 return_fmt='x1y1x2y2', normalized=False, invert_y=True):
+				 return_fmt:str='x1y1x2y2', normalized:bool=False, invert_y:bool=True) -> tuple:
 	"""Get the bounding box of an object in camera space.
 	Achieve this by projecting all vertices of the object to the image plane,
 	and taking the min/max of the resulting coordinates.
@@ -17,9 +17,9 @@ def bounding_box(object: Mesh, camera: bpy.types.Camera = None,
 	:param object: Mesh
 	:param camera: bpy.types.Camera (if None, use bpy.context.scene.camera)
 	:param scene: bpy.types.Scene (if None, use bpy.context.scene)
-	:param return_fmt: str, one of ['x1y1x2y2', 'xywh']
-	:param normalized: bool, if True, return normalized coordinates (0-1) instead of pixel coordinates
-	:param invert_y: bool, if True, y is measured from the top of the image, otherwise from the bottom (Blender measures from bottom)
+	:param return_fmt: one of ['x1y1x2y2', 'xywh']
+	:param normalized: if True, return normalized coordinates (0-1) instead of pixel coordinates
+	:param invert_y: if True, y is measured from the top of the image, otherwise from the bottom (Blender measures from bottom)
 	"""
 
 	if camera is None:
@@ -50,8 +50,16 @@ def bounding_box(object: Mesh, camera: bpy.types.Camera = None,
 
 def bounding_boxes(objects: List[Mesh], camera: bpy.types.Camera = None,
 				 scene:bpy.types.Scene=None,
-				 return_fmt='x1y1x2y2', normalized=False, invert_y=True):
-	"""Get the bounding boxes of multiple objects in image space."""
+				 return_fmt:str='x1y1x2y2', normalized:bool=False, invert_y:bool=True) -> List[tuple]:
+	"""Run `bounding_box` for multiple objects
+
+	:param objects: List of Mesh objects
+	:param camera: bpy.types.Camera (if None, use bpy.context.scene.camera)
+	:param scene: bpy.types.Scene (if None, use bpy.context.scene)
+	:param return_fmt: one of ['x1y1x2y2', 'xywh']
+	:param normalized: if True, return normalized coordinates (0-1) instead of pixel coordinates
+	:param invert_y: if True, y is measured from the top of the image, otherwise from the bottom (Blender measures from bottom)
+	"""
 
 	return [bounding_box(obj, camera=camera, scene=scene, return_fmt=return_fmt,
 						   normalized=normalized, invert_y=invert_y) for obj in objects]

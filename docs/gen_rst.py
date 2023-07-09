@@ -3,8 +3,8 @@
 import os
 
 from gen_utils import copy_markdown_file
-from gen_api import tree as api_trees
 from gen_examples import generate_example_docs
+from gen_utils import list_subfolders
 
 # Path to the folders
 tutorial_path = "tutorials"
@@ -45,7 +45,7 @@ def write_toctree(f, header, files):
 
 # Get the files
 # tutorial_files = get_files(tutorial_path, ".md")
-api_files = [os.path.join(api_path, f"blendersynth.{tree}") for tree in api_trees]
+api_files = [os.path.join(api_path, f"blendersynth.{f}") for f in sorted(list_subfolders('blendersynth'))]
 
 # Write the index.rst
 top_examples = generate_example_docs()

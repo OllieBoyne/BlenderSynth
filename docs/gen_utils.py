@@ -28,6 +28,14 @@ def get_files(path, extension):
 	return [os.path.splitext(f)[0] for f in os.listdir(path) if f.endswith(extension)]
 
 
+def list_scripts(src):
+	"""List all scripts in a directory."""
+	return [f for f in os.listdir(src) if f.endswith('.py') and not f.startswith('__')]
+
+def list_subfolders(src):
+	"""List all subfolders in a directory."""
+	return [f for f in os.listdir(src) if os.path.isdir(os.path.join(src, f)) and not f.startswith('__')]
+
 def copy_markdown_file(src, rel_dir="docs"):
 	"""Copy over markdown file `src` to docs/markdown. For any references to images in the markdown file,
 	copy to static/images and update the markdown file accordingly.
