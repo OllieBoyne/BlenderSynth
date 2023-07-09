@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>blendersynth.blender.compositor.image_overlay &mdash; BlenderSynth 2023 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            BlenderSynth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../python/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../python/mesh_importing.html">Mesh importing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../python/output_data.html">Output data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../python/dataset_creation/index.html">Dataset creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../python/animation.html">Animation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">BlenderSynth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">blendersynth.blender.compositor.image_overlay</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for blendersynth.blender.compositor.image_overlay</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Overlay RGB image in compositor&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.node_group</span> <span class="kn">import</span> <span class="n">CompositorNodeGroup</span>
+<span class="kn">import</span> <span class="nn">bpy</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">...file.tempfiles</span> <span class="kn">import</span> <span class="n">create_temp_file</span>
+
+<div class="viewcode-block" id="AlphaImageOverlay"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AlphaImageOverlay">[docs]</a><span class="k">class</span> <span class="nc">AlphaImageOverlay</span><span class="p">(</span><span class="n">CompositorNodeGroup</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Overlay an image on top of the render, using the alpha channel of the image as a mask&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;AlphaImageOverlay&#39;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Create a mix node which overlays an image on top of the input image.&quot;&quot;&quot;</span>
+
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
+
+		<span class="c1"># Set default width and height</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">1000</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">1000</span>
+		<span class="k">if</span> <span class="n">scene</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
+
+		<span class="c1"># define I/O</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;NodeSocketColor&#39;</span><span class="p">,</span> <span class="s1">&#39;Image&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;NodeSocketColor&#39;</span><span class="p">,</span> <span class="s1">&#39;Image&#39;</span><span class="p">)</span>
+
+		<span class="c1"># create nodes</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeImage&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeMixRGB&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sep_color_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeSepRGBA&#39;</span><span class="p">)</span>
+
+		<span class="c1"># link up internal nodes</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sep_color_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">])</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sep_color_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Fac&#39;</span><span class="p">])</span> <span class="c1"># alpha</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">])</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">create_img</span><span class="p">()</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">tidy</span><span class="p">()</span>
+
+	<span class="k">def</span> <span class="nf">create_img</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+		<span class="c1"># create temp image to draw keypoints on, with 8 random alphanumeric characters</span>
+		<span class="c1"># 8 random alphanum chars</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span> <span class="o">=</span> <span class="n">create_temp_file</span><span class="p">(</span><span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+
+		<span class="c1"># initialize as white</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
+		<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span>
+
+		<span class="c1"># connect this image to the overlay node</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span></div>
+
+
+<div class="viewcode-block" id="KeypointsOverlay"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay">[docs]</a><span class="k">class</span> <span class="nc">KeypointsOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Overlay which draws keypoints on top of the render.&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;KeypointsOverlay&#39;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
+
+<div class="viewcode-block" id="KeypointsOverlay.update"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay.update">[docs]</a>	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypoints</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Given [N x 3] keypoints, draw them onto a new temp image.&quot;&quot;&quot;</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
+
+		<span class="c1"># reset image to black, with alpha = 0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+		<span class="c1"># draw keypoints on image</span>
+		<span class="k">for</span> <span class="n">kp</span> <span class="ow">in</span> <span class="n">keypoints</span><span class="p">:</span>
+			<span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+		<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="BoundingBoxOverlay"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay">[docs]</a><span class="k">class</span> <span class="nc">BoundingBoxOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Overlay which draws bounding boxes on top of the render.&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;BoundingBoxOverlay&#39;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+				 <span class="n">col</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">col</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">thickness</span><span class="p">)</span>  <span class="c1"># cv2 requires int</span>
+
+<div class="viewcode-block" id="BoundingBoxOverlay.update"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay.update">[docs]</a>	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bboxes</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Given [N x 4] bounding boxes, draw them onto a new temp image.&quot;&quot;&quot;</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
+
+		<span class="c1"># reset image to black, with alpha = 0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+		<span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+			<span class="n">col</span> <span class="o">=</span> <span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">col</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">col</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">255</span><span class="p">)</span>
+
+		<span class="c1"># draw bounding boxes on image</span>
+		<span class="k">for</span> <span class="n">bbox</span> <span class="ow">in</span> <span class="n">bboxes</span><span class="p">:</span>
+			<span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">])),</span>
+						  <span class="n">col</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">)</span>
+
+		<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ollie Boyne.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

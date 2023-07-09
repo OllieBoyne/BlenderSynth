@@ -85,21 +85,20 @@
 
 <span class="kn">from</span> <span class="nn">.blender_threading</span> <span class="kn">import</span> <span class="n">BlenderThreadManager</span><span class="p">,</span> <span class="n">list_split</span>
 <span class="kn">from</span> <span class="nn">..utils.blender_setup.blender_locator</span> <span class="kn">import</span> <span class="n">get_blender_path</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">..file.tempfiles</span> <span class="kn">import</span> <span class="n">cleanup_temp_files</span> <span class="k">as</span> <span class="n">cleanup</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">platform</span>
+
 <span class="k">if</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux&quot;</span> <span class="ow">or</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux2&quot;</span> <span class="ow">or</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;darwin&quot;</span><span class="p">:</span>
 	<span class="n">nul_text</span> <span class="o">=</span> <span class="s1">&#39;/dev/null&#39;</span>
 <span class="k">elif</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
 	<span class="n">nul_text</span> <span class="o">=</span> <span class="s1">&#39;nul&#39;</span>
 
 
-
-
-
 <div class="viewcode-block" id="BlenderCommand"><a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand">[docs]</a><span class="k">class</span> <span class="nc">BlenderCommand</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Construct command for running blender script&quot;&quot;&quot;</span>
+
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blender_loc</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">blender_loc</span> <span class="o">=</span> <span class="n">blender_loc</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">background</span>
@@ -138,6 +137,7 @@
 		<span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--log&quot;</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">]</span>
 		<span class="k">return</span> <span class="n">cmd</span></div></div>
 
+
 <span class="k">class</span> <span class="nc">Runner</span><span class="p">:</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="n">jsons</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 				 <span class="n">print_to_stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -161,15 +161,21 @@
 
 		<span class="n">thread_manager</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-<div class="viewcode-block" id="execute_jobs"><a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.execute_jobs">[docs]</a><span class="k">def</span> <span class="nf">execute_jobs</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="n">json_src</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-				 <span class="n">print_to_stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">script_kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="execute_jobs"><a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.execute_jobs">[docs]</a><span class="k">def</span> <span class="nf">execute_jobs</span><span class="p">(</span><span class="n">script</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">json_src</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">num_threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+				 <span class="n">print_to_stdout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">script_kwargs</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Execute a script, given a list of jobs to execute.</span>
+
+<span class="sd">	:param script: path to script to execute</span>
 <span class="sd">	:param json_src: N sized list of .json files, each with info about the given job. OR a directory containing .json files,</span>
 <span class="sd">		which will be used as the jsons</span>
+<span class="sd">	:param output_directory: directory to save output files</span>
 <span class="sd">	:param num_threads: threads to run in parallel (default = 1)</span>
+<span class="sd">	:param print_to_stdout: If True, print to stdout instead of saving to file</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
-	<span class="k">assert</span> <span class="ow">not</span><span class="p">(</span><span class="n">num_threads</span><span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">print_to_stdout</span><span class="p">),</span> <span class="s2">&quot;Cannot print to stdout with multiple threads&quot;</span>
+	<span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span><span class="n">num_threads</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">print_to_stdout</span><span class="p">),</span> <span class="s2">&quot;Cannot print to stdout with multiple threads&quot;</span>
 	<span class="k">if</span> <span class="n">print_to_stdout</span><span class="p">:</span>
 		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Print to stdout not supported yet.&quot;</span><span class="p">)</span>
 
@@ -177,7 +183,7 @@
 		<span class="n">json_src</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">json_src</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">json_src</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">)])</span>
 
 	<span class="n">Runner</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="n">json_src</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">num_threads</span><span class="p">,</span> <span class="n">print_to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
-			<span class="o">**</span><span class="n">script_kwargs</span><span class="p">)</span>
+		   <span class="o">**</span><span class="n">script_kwargs</span><span class="p">)</span>
 
 	<span class="n">cleanup</span><span class="p">()</span></div>
 </pre></div>

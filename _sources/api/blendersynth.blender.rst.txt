@@ -8,6 +8,7 @@
 	blendersynth.blender.aov
 	blendersynth.blender.bsyn_object
 	blendersynth.blender.camera
+	blendersynth.blender.compositor
 	blendersynth.blender.curve
 	blendersynth.blender.light
 	blendersynth.blender.mesh

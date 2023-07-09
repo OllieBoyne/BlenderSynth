@@ -1,0 +1,6 @@
+:code:`blendersynth.blender.compositor.node_group`
+=====================================================
+
+
+.. automodule:: blendersynth.blender.compositor.node_group
+	:members:

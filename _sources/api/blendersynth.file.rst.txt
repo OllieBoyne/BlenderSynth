@@ -7,5 +7,6 @@
 
 	blendersynth.file.dataset_inputs
 	blendersynth.file.dataset_outputs
+	blendersynth.file.ffmpeg_utils
 	blendersynth.file.frames_to_video
 	blendersynth.file.tempfiles

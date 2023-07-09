@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blendersynth.annotations.keypoints &mdash; BlenderSynth 2023 documentation</title>
+  <title>blendersynth.blender.compositor.node_group &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="blendersynth.annotations.utils" href="blendersynth.annotations.utils.html" />
-    <link rel="prev" title="blendersynth.annotations.bbox" href="blendersynth.annotations.bbox.html" /> 
+    <link rel="next" title="blendersynth.blender.compositor.visuals" href="blendersynth.blender.compositor.visuals.html" />
+    <link rel="prev" title="blendersynth.blender.compositor.mask_overlay" href="blendersynth.blender.compositor.mask_overlay.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,8 +52,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
@@ -73,10 +73,11 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations.keypoints</span></code></li>
+          <li class="breadcrumb-item"><a href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+          <li class="breadcrumb-item"><a href="blendersynth.blender.compositor.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.compositor</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.compositor.node_group</span></code></li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/blendersynth.annotations.keypoints.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/blendersynth.blender.compositor.node_group.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -84,32 +85,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.annotations.keypoints">
-<span id="blendersynth-annotations-keypoints"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations.keypoints</span></code><a class="headerlink" href="#module-blendersynth.annotations.keypoints" title="Permalink to this heading"></a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.annotations.keypoints.project_keypoints">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.annotations.keypoints.</span></span><span class="sig-name descname"><span class="pre">project_keypoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points3d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/annotations/keypoints.html#project_keypoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.annotations.keypoints.project_keypoints" title="Permalink to this definition"></a></dt>
-<dd><p>Project 3D world points to 2D image coordinates.</p>
-<p>Projects using <a class="reference internal" href="blendersynth.annotations.utils.html#blendersynth.annotations.utils.project_points" title="blendersynth.annotations.utils.project_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">blendersynth.annotations.utils.project_points()</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>points3d</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>) – Nx3 array of 3D points</p></li>
-<li><p><strong>scene</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code>) – scene to use (if None, <cite>use bpy.context.scene</cite>)</p></li>
-<li><p><strong>camera</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code>) – camera to project through (if None, use <cite>bpy.context.scene.camera</cite>)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
+  <section id="module-blendersynth.blender.compositor.node_group">
+<span id="blendersynth-blender-compositor-node-group"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.compositor.node_group</span></code><a class="headerlink" href="#module-blendersynth.blender.compositor.node_group" title="Permalink to this heading"></a></h1>
+<p>Custom compositor node group</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="blendersynth.annotations.bbox.html" class="btn btn-neutral float-left" title="blendersynth.annotations.bbox" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="blendersynth.annotations.utils.html" class="btn btn-neutral float-right" title="blendersynth.annotations.utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="blendersynth.blender.compositor.mask_overlay.html" class="btn btn-neutral float-left" title="blendersynth.blender.compositor.mask_overlay" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="blendersynth.blender.compositor.visuals.html" class="btn btn-neutral float-right" title="blendersynth.blender.compositor.visuals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

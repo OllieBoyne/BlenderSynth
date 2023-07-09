@@ -1,0 +1,6 @@
+:code:`blendersynth.blender.compositor.compositor`
+=====================================================
+
+
+.. automodule:: blendersynth.blender.compositor.compositor
+	:members:

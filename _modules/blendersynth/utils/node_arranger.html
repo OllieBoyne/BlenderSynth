@@ -81,7 +81,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.utils.node_arranger</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Space out nodes in the node editor.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;Utilities for neatly arranging nodes in the node editor,</span>
+<span class="sd">to make debugging easier.&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">bpy</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
@@ -92,10 +94,12 @@
 		<span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
 			<span class="k">yield</span> <span class="n">link</span><span class="o">.</span><span class="n">from_node</span>
 
+
 <span class="k">def</span> <span class="nf">get_sink_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
 	<span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
 		<span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">o</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
 			<span class="k">yield</span> <span class="n">link</span><span class="o">.</span><span class="n">to_node</span>
+
 
 <div class="viewcode-block" id="split_to_islands"><a class="viewcode-back" href="../../../api/blendersynth.utils.node_arranger.html#blendersynth.utils.node_arranger.split_to_islands">[docs]</a><span class="k">def</span> <span class="nf">split_to_islands</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Given a node list, return a list of sets, each one being a fully disconnected island&quot;&quot;&quot;</span>
@@ -169,7 +173,6 @@
 					<span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_depth</span>
 					<span class="n">depth_changed</span> <span class="o">=</span> <span class="kc">True</span>
 
-
 	<span class="c1"># Normalize depths</span>
 	<span class="n">min_depth</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">)</span>
 	<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">:</span>
@@ -178,15 +181,19 @@
 	<span class="k">return</span> <span class="n">node_island</span></div>
 
 
-<div class="viewcode-block" id="tidy_tree"><a class="viewcode-back" href="../../../api/blendersynth.utils.node_arranger.html#blendersynth.utils.node_arranger.tidy_tree">[docs]</a><span class="k">def</span> <span class="nf">tidy_tree</span><span class="p">(</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">dX</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">dY</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Search through tree, and position nodes in a grid&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="tidy_tree"><a class="viewcode-back" href="../../../api/blendersynth.utils.node_arranger.html#blendersynth.utils.node_arranger.tidy_tree">[docs]</a><span class="k">def</span> <span class="nf">tidy_tree</span><span class="p">(</span><span class="n">node_tree</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeTree</span><span class="p">,</span> <span class="n">dX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">dY</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Search through tree, positioning nodes in a grid based on their depth and connectivity.</span>
+
+<span class="sd">	:param node_tree: node tree to tidy</span>
+<span class="sd">	:param dX: horizontal distance between nodes</span>
+<span class="sd">	:param dY: vertical distance between nodes&quot;&quot;&quot;</span>
 
 	<span class="n">nodes</span> <span class="o">=</span> <span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span>
 	<span class="n">islands</span> <span class="o">=</span> <span class="n">split_to_islands</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
 
-	<span class="n">y</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># track running height to manage multiple islands</span>
+	<span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># track running height to manage multiple islands</span>
 
-	<span class="n">height</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="c1"># track height of each depth level</span>
+	<span class="n">height</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>  <span class="c1"># track height of each depth level</span>
 	<span class="k">for</span> <span class="n">island</span> <span class="ow">in</span> <span class="n">islands</span><span class="p">:</span>
 		<span class="n">island</span> <span class="o">=</span> <span class="n">calc_depth</span><span class="p">(</span><span class="n">island</span><span class="p">)</span>
 
@@ -199,8 +206,6 @@
 			<span class="n">height</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">dY</span>
 
 		<span class="n">y</span> <span class="o">+=</span> <span class="nb">max</span><span class="p">(</span><span class="n">height</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="n">dY</span></div>
-
-
 </pre></div>
 
            </div>

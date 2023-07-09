@@ -5,5 +5,6 @@
 .. toctree::
 	:maxdepth: 1
 
+	blendersynth.utils.blender_importer
 	blendersynth.utils.blender_setup
 	blendersynth.utils.node_arranger

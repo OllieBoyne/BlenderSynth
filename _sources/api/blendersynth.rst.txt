@@ -1,0 +1,12 @@
+:code:`blendersynth`
+=======================
+
+
+.. toctree::
+	:maxdepth: 1
+
+	blendersynth.annotations
+	blendersynth.blender
+	blendersynth.file
+	blendersynth.run
+	blendersynth.utils
