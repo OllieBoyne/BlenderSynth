@@ -12,11 +12,11 @@ class World():
 		self.world_nodes = self.node_tree.nodes
 
 		self.hdri_link = None
-		self.setup_nodes()
+		self._setup_nodes()
 
 		self.set_color((0.051,) * 3)  # match blender's default world colour
 
-	def setup_nodes(self):
+	def _setup_nodes(self):
 
 		nodes = self.world_nodes
 		nodes.clear()
@@ -29,7 +29,7 @@ class World():
 
 		tidy_tree(self.node_tree)
 
-	def setup_color(self):
+	def _setup_color(self):
 		if self.mode == 'Color':
 			return
 
@@ -40,7 +40,7 @@ class World():
 
 		self.mode = 'Color'
 
-	def setup_hdri(self):
+	def _setup_hdri(self):
 		if self.mode == 'HDRI':
 			return
 
@@ -56,7 +56,7 @@ class World():
 
 		:param color: RGB or RGBA color"""
 
-		self.setup_color()
+		self._setup_color()
 
 		assert len(color) in [3, 4], "Color must be RGB or RGBA"
 
@@ -70,11 +70,14 @@ class World():
 
 		:param pth: Path to the HDRI image (.hdr or .exr)"""
 
-		self.setup_hdri()
+		self._setup_hdri()
 		self.world_nodes['Environment Texture'].image = bpy.data.images.load(pth)
 
 	def set_intensity(self, intensity:float=1.):
-		"""Set the intensity of the color/HDRI"""
+		"""Set the intensity of the color/HDRI.
+
+		:param float: The intensity value
+		"""
 		self.world_nodes["Background"].inputs[1].default_value = intensity
 
 	def set_transparent(self, transparent=True):

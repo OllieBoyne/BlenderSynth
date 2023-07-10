@@ -7,6 +7,8 @@ from .aov import AOV
 import numpy as np
 import mathutils
 from mathutils import Vector, Euler
+from typing import Union, List
+from copy import deepcopy
 
 _primitives = {
 	"cube": bpy.ops.mesh.primitive_cube_add,
@@ -54,20 +56,12 @@ def vertex_center(mesh):
 	verts = np.array([mesh.matrix_world @ v.co for v in mesh.data.vertices])
 	return verts.mean(axis=0)
 
-def set_origin(mesh, vec):
-	if mesh.type == 'MESH':
-		delta = mesh.location - mathutils.Vector(vec)
-		delta_object = mesh.matrix_world.inverted() @ delta
-		mesh.data.transform(mathutils.Matrix.Translation(delta_object))  # Move the mesh vertices in the opposite direction
-		mesh.location -= delta_object
-		bpy.context.view_layer.update()
 
-
-def euler_from(a: mathutils.Euler, b: mathutils.Euler):
+def _euler_from(a: mathutils.Euler, b: mathutils.Euler):
 	"""Get euler rotation from a to b"""
 	return (b.to_matrix() @ a.to_matrix().inverted()).to_euler()
 
-def euler_add(a: mathutils.Euler, b: mathutils.Euler):
+def _euler_add(a: mathutils.Euler, b: mathutils.Euler):
 	"""Compute euler rotation of a, followed by b"""
 	return (a.to_matrix() @ b.to_matrix()).to_euler()
 
@@ -221,14 +215,37 @@ class Mesh(BsynObject):
 
 
 	@property
-	def origin(self):
-		"""Get origin as origin of first mesh"""
-		return self._meshes[0].location
+	def origin(self) -> Union[Vector, List[Vector]]:
+		"""
+		If single mesh, return Vector of origin.
+		If multiple meshes, return list of Vectors of centroid of each mesh."""
+		if len(self._meshes) == 1:
+			return self._meshes[0].location
+
+		else:
+			return [m.location for m in self._meshes]
 
 	@origin.setter
 	def origin(self, origin):
-		"""Set origin of object"""
-		self._meshes[0].location = origin
+		"""Set origin of object.
+		If single mesh, expects Vector.
+		If multiple meshes, expects list of Vectors"""
+
+		if len(self._meshes) == 1:
+			try:
+				vec = handle_vec(origin)
+			except ValueError:
+				raise ValueError(f"Error with setting origin. Expects a 3 long Vector. Received: {origin}")
+
+			self._meshes[0].location = vec
+
+		else:
+			for i in range(len(self._meshes)):
+				try:
+					vec = handle_vec(origin[i])
+					self._meshes[i].location = vec
+				except:
+					raise ValueError(f"Error with setting origin. Expects a list of {len(self._meshes)} 3-long Vector. Received: {origin}")
 
 	def get_all_vertices(self, ref_frame='WORLD'):
 		verts = np.array([vert.co[:] + (1,) for mesh in self._meshes for vert in mesh.data.vertices]).T
@@ -324,7 +341,7 @@ class Mesh(BsynObject):
 		"""Set euler rotation of object"""
 		assert len(rotation) == 3, f"Rotation must be a tuple of length 3, got {len(rotation)}"
 		rotation = Euler(rotation, 'XYZ')
-		diff = euler_from(self.rotation_euler, rotation)
+		diff = _euler_from(self.rotation_euler, rotation)
 
 		with SelectObjects(self._meshes + self._other_objects):
 			for ax, val in zip('XYZ', diff):
@@ -358,7 +375,7 @@ class Mesh(BsynObject):
 	def rotate_by(self, rotation):
 		"""Add a rotation to the object. Must be in XYZ order, euler angles, radians."""
 		rotation = handle_vec(rotation, 3)
-		new_rotation = euler_add(self.rotation_euler, Euler(rotation, 'XYZ'))
+		new_rotation = _euler_add(self.rotation_euler, Euler(rotation, 'XYZ'))
 		self.rotation_euler = new_rotation
 
 	def scale_by(self, scale):
@@ -369,8 +386,10 @@ class Mesh(BsynObject):
 		scale = handle_vec(scale, 3)
 		self.scale = self._scale * scale
 
-	def delete(self, delete_materials=True):
-		"""Clear mesh from scene & mesh data"""
+	def delete(self, delete_materials:bool=True):
+		"""Clear mesh from scene & mesh data.
+
+		:param delete_materials: Also delete object materials from scene"""
 		mesh_names = [m.name for m in self._meshes]
 		for mesh in self._meshes:
 			bpy.data.objects.remove(mesh, do_unlink=True)
@@ -392,38 +411,63 @@ class Mesh(BsynObject):
 			for material in self.materials:
 				bpy.data.materials.remove(material, do_unlink=True)
 
-	def centroid(self, method='vertex'):
+	def centroid(self, method:str='median') -> Vector:
 		"""
-		:param method: 'vertex' or 'bounds'
-		:return:
+		Return the centroid of the mesh(es)
+
+		:param method: See :attr:`~blendersynth.blender.mesh.Mesh.origin_to_centroid` for options.
+		:return: Centroid of the mesh(es). If multiple meshes, will average the centroids.
 		"""
-		centroids = []
 
-		for mesh in self._meshes:
-			if method == 'vertex':
-				centroids.append(vertex_center(mesh))
+		original_origins = deepcopy(self.origin)
+		self.origin_to_centroid(method=method)
+		centroid = deepcopy(self.origin)
+		self.origin = original_origins
 
-			elif method == 'bounds':
-				centroids.append(bounds_center(mesh))
+		if len(self._meshes) > 1:
+			return sum(centroid) / len(self._meshes)
 
-			else:
-				raise ValueError(f"Invalid method: {method}. Must be one of ['vertex', 'bounds']")
+		return centroid
 
-		return np.mean(centroids, axis=0)
+	def _set_origin_manual(self, origin:Vector, all_meshes=True):
+		"""Override to set origin manually. Should only be used by internal functions."""
+		if all_meshes:
+			for mesh in self._meshes:
+				mesh.location = origin
+		else:
+			self._meshes[0].location = origin
 
-	def origin_to_centroid(self, method='bounds'):
-		"""Move object origin to centroid"""
-		centroid = self.centroid(method=method)
-		for mesh in self._meshes:
-			set_origin(mesh, centroid)
+	def origin_to_centroid(self, method:str='bounds'):
+		"""Move object origin to centroid.
 
-	def get_keypoints(self, idxs=None, position=None):
+		Four methods available:
+
+		* 'bounds' - move the origin to the center of the bounds of the mesh
+		* 'median' - move the origin to the median point of the mesh
+		* 'com_volume' - move to the centre of mass of the volume of the mesh
+		* 'com_area' - Move to the centre of mass of the surface of the mesh
+
+		:param method: Selected method to move origin to centroid
+		"""
+
+		_valid_methods = ['bounds', 'median', 'com_volume', 'com_area']
+
+		_type_lookup = dict(bounds='ORIGIN_GEOMETRY', median='ORIGIN_GEOMETRY',
+					com_volume='ORIGIN_CENTER_OF_VOLUME',
+					com_area='ORIGIN_CENTER_OF_MASS')
+
+		center = 'BOUNDS' if method == 'bounds' else 'MEDIAN'
+
+		with SelectObjects(self._meshes + self._other_objects):
+			bpy.ops.object.origin_set(type=_type_lookup[method], center=center)
+
+	def get_keypoints(self, idxs:list=None, position:Union[np.ndarray, List[Vector]] = None) -> List[Vector]:
 		"""Return 3D keypoint positions in world coordinates, given either:
 
-		idxs: list of indices or ndarray of keypoints to project (only valid for single-mesh objects)
-		position: 3D position of keypoints to project - in LOCAL object coordinates
+		:param idxs: list of indices or ndarray of keypoints to project (only valid for single-mesh objects)
+		:param position: 3D position of keypoints to project - in LOCAL object coordinates
 
-		:return N list of Vectors of keypoints in world space, where N is the number of keypoints:
+		:return: N list of Vectors of keypoints in world space, where N is the number of keypoints
 		"""
 
 		assert (idxs is not None) ^ (position is not None), "Must provide either idxs or position, but not both."

@@ -1,7 +1,8 @@
+"""Context managers and operations for handling Blender"""
+
 import bpy
 import numpy as np
 import mathutils
-from typing import Union
 
 
 class GetNewObject():
@@ -79,7 +80,7 @@ def get_node_by_name(node_tree: bpy.types.NodeTree, key: str, raise_error=False)
 		raise KeyError(f"Key {key} not found in node tree!\nLabels are: {[n.name for n in node_tree.nodes]}")
 
 
-def handle_vec(vec: Union[tuple, list, np.ndarray], expected_length: int = 3) -> mathutils.Vector:
+def handle_vec(vec, expected_length: int = 3) -> mathutils.Vector:
 	"""Check `vec` is expected_length. Convert from tuple or ndarray to mathutils.Vector.
 
 	:param vec: Vector to check
@@ -90,5 +91,8 @@ def handle_vec(vec: Union[tuple, list, np.ndarray], expected_length: int = 3) ->
 		vec = mathutils.Vector(vec)
 	elif isinstance(vec, np.ndarray):
 		vec = mathutils.Vector(vec.tolist())
-	assert len(vec) == expected_length, "Vector must be length {}".format(expected_length)
+
+	if len(vec) != expected_length:
+		raise ValueError("Vector must be length {}".format(expected_length))
+
 	return vec
