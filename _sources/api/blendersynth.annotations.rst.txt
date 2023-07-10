@@ -5,6 +5,7 @@
 .. toctree::
 	:maxdepth: 1
 
+	blendersynth.annotations.axes
 	blendersynth.annotations.bbox
 	blendersynth.annotations.keypoints
 	blendersynth.annotations.utils

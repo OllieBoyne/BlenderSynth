@@ -1,0 +1,6 @@
+:code:`blendersynth.annotations.axes`
+========================================
+
+
+.. automodule:: blendersynth.annotations.axes
+	:members:

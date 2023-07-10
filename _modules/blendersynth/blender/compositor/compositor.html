@@ -46,6 +46,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../python/output_data.html">Output data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../python/dataset_creation/index.html">Dataset creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../python/animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../python/capturing_pose.html">Capturing pose</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -92,7 +93,7 @@
 <span class="kn">from</span> <span class="nn">..mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span> <span class="nn">.mask_overlay</span> <span class="kn">import</span> <span class="n">MaskOverlay</span>
 <span class="kn">from</span> <span class="nn">.visuals</span> <span class="kn">import</span> <span class="n">DepthVis</span>
-<span class="kn">from</span> <span class="nn">.image_overlay</span> <span class="kn">import</span> <span class="n">KeypointsOverlay</span><span class="p">,</span> <span class="n">BoundingBoxOverlay</span>
+<span class="kn">from</span> <span class="nn">.image_overlay</span> <span class="kn">import</span> <span class="n">KeypointsOverlay</span><span class="p">,</span> <span class="n">BoundingBoxOverlay</span><span class="p">,</span> <span class="n">AlphaImageOverlay</span><span class="p">,</span> <span class="n">AxesOverlay</span>
 
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
@@ -208,12 +209,19 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">tidy_tree</span><span class="p">()</span>
 		<span class="k">return</span> <span class="n">cng</span></div>
 
-<div class="viewcode-block" id="Compositor.get_keypoints_visual"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_keypoints_visual">[docs]</a>	<span class="k">def</span> <span class="nf">get_keypoints_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KeypointsOverlay</span><span class="p">:</span>
+<div class="viewcode-block" id="Compositor.get_keypoints_visual"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_keypoints_visual">[docs]</a>	<span class="k">def</span> <span class="nf">get_keypoints_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">marker</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">size</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+							 <span class="n">thickness</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KeypointsOverlay</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Initialize a keypoints overlay node</span>
+<span class="sd">		Initialize a keypoints overlay node.</span>
+
+<span class="sd">		:param marker: Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default &#39;x&#39;</span>
+<span class="sd">		:param size: Size of marker. Default 5</span>
+<span class="sd">		:param color: Color of marker, RGB or RGBA, default (0, 0, 255) (red)</span>
+<span class="sd">		:param thickness: Thickness of marker. Default 2</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 
-		<span class="n">cng</span> <span class="o">=</span> <span class="n">KeypointsOverlay</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Keypoints Visual&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span>
+		<span class="n">cng</span> <span class="o">=</span> <span class="n">KeypointsOverlay</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Keypoints Visual&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+							   <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
 
 		<span class="k">if</span> <span class="s1">&#39;Keypoints&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">:</span>
@@ -223,6 +231,44 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">tidy_tree</span><span class="p">()</span>
 		<span class="k">return</span> <span class="n">cng</span></div>
+
+<div class="viewcode-block" id="Compositor.get_axes_visual"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_axes_visual">[docs]</a>	<span class="k">def</span> <span class="nf">get_axes_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AxesOverlay</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Initialize an axes overlay node.</span>
+
+<span class="sd">		:param size: Size of axes. Default 100</span>
+<span class="sd">		:param thickness: Thickness of axes. Default 2</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">cng</span> <span class="o">=</span> <span class="n">AxesOverlay</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Axes Visual&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span>
+							   <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
+
+		<span class="k">if</span> <span class="s1">&#39;Axes&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only allowed one Axes overlay.&quot;</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">[</span><span class="s1">&#39;Axes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cng</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">tidy_tree</span><span class="p">()</span>
+		<span class="k">return</span> <span class="n">cng</span></div>
+
+<div class="viewcode-block" id="Compositor.stack_visuals"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.stack_visuals">[docs]</a>	<span class="k">def</span> <span class="nf">stack_visuals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">visuals</span><span class="p">:</span> <span class="n">AlphaImageOverlay</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AlphaImageOverlay</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Given a series of image overlays, stack them and return to be used as a single output node.</span>
+
+<span class="sd">		:param *visuals: Stack of overlays to add.&quot;&quot;&quot;</span>
+
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">visuals</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Requires at least 2 visuals to stack&quot;</span><span class="p">)</span>
+
+		<span class="c1"># No need to store these overlays separately in self.overlays, but need to check they&#39;re all present</span>
+		<span class="k">for</span> <span class="n">overlay</span> <span class="ow">in</span> <span class="n">visuals</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">overlay</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Visual </span><span class="si">{</span><span class="n">overlay</span><span class="si">}</span><span class="s2"> not found in Compositor. Make sure it was obtained via the Compositor.&quot;</span><span class="p">)</span>
+
+		<span class="c1"># Stack the output of the previous to the input of the next</span>
+		<span class="k">for</span> <span class="n">va</span><span class="p">,</span> <span class="n">vb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">visuals</span><span class="p">,</span> <span class="n">visuals</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">va</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">),</span> <span class="n">vb</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
+
+		<span class="k">return</span> <span class="n">visuals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Compositor.get_depth_visual"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_depth_visual">[docs]</a>	<span class="k">def</span> <span class="nf">get_depth_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Get depth visual, which normalizes depth values so max_depth = col,</span>

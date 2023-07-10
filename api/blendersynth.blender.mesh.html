@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../python/output_data.html">Output data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python/dataset_creation/index.html">Dataset creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python/animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/capturing_pose.html">Capturing pose</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -100,6 +101,12 @@
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.assign_pass_index">
 <span class="sig-name descname"><span class="pre">assign_pass_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.assign_pass_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.assign_pass_index" title="Permalink to this definition"></a></dt>
 <dd><p>Assign pass index to object. This can be used when mask rendering.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.axes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">axes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.axes" title="Permalink to this definition"></a></dt>
+<dd><p>Return 3x3 rotation matrix (normalized) to represent axes</p>
 </dd></dl>
 
 <dl class="py method">
@@ -171,7 +178,7 @@ causes issues with materials &amp; vertex ordering.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.from_scene">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.from_scene"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.from_scene" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.from_scene"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.from_scene" title="Permalink to this definition"></a></dt>
 <dd><p>Create object from named object in scene.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

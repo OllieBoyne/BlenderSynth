@@ -46,6 +46,7 @@
 <li class="toctree-l1"><a class="reference internal" href="python/output_data.html">Output data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python/dataset_creation/index.html">Dataset creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python/animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python/capturing_pose.html">Capturing pose</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -118,10 +119,10 @@
 </li>
       <li><a href="api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.animate_path">animate_path() (blendersynth.blender.camera.Camera method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/blendersynth.blender.aov.html#blendersynth.blender.aov.AOV">AOV (class in blendersynth.blender.aov)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.assign_aov">assign_aov() (blendersynth.blender.mesh.Mesh method)</a>
 </li>
       <li><a href="api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.assign_pass_index">assign_pass_index() (blendersynth.blender.mesh.Mesh method)</a>
@@ -129,6 +130,10 @@
       <li><a href="api/blendersynth.blender.aov.html#blendersynth.blender.aov.AttrAOV">AttrAOV (class in blendersynth.blender.aov)</a>
 </li>
       <li><a href="api/blendersynth.blender.aov.html#blendersynth.blender.aov.AttrRGBAOV">AttrRGBAOV (class in blendersynth.blender.aov)</a>
+</li>
+      <li><a href="api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.axes">axes (blendersynth.blender.mesh.Mesh property)</a>
+</li>
+      <li><a href="api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay">AxesOverlay (class in blendersynth.blender.compositor.image_overlay)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -138,6 +143,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand">BlenderCommand (class in blendersynth.run.run)</a>
 </li>
+      <li>
+    blendersynth.annotations.axes
+
+      <ul>
+        <li><a href="api/blendersynth.annotations.axes.html#module-blendersynth.annotations.axes">module</a>
+</li>
+      </ul></li>
       <li>
     blendersynth.annotations.bbox
 
@@ -250,6 +262,8 @@
         <li><a href="api/blendersynth.blender.utils.html#module-blendersynth.blender.utils">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     blendersynth.blender.world
 
@@ -257,8 +271,6 @@
         <li><a href="api/blendersynth.blender.world.html#module-blendersynth.blender.world">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     blendersynth.file.dataset_inputs
 
@@ -467,6 +479,10 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/blendersynth.annotations.axes.html#blendersynth.annotations.axes.get_axes">get_axes() (in module blendersynth.annotations.axes)</a>
+</li>
+      <li><a href="api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_axes_visual">get_axes_visual() (blendersynth.blender.compositor.compositor.Compositor method)</a>
+</li>
       <li><a href="api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.get_badfname">get_badfname() (in module blendersynth.blender.compositor.compositor)</a>
 </li>
       <li><a href="api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.get_blender_path">get_blender_path() (in module blendersynth.utils.blender_setup.blender_locator)</a>
@@ -486,6 +502,8 @@
       <li><a href="api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_keypoints_visual">get_keypoints_visual() (blendersynth.blender.compositor.compositor.Compositor method)</a>
 </li>
       <li><a href="api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_mask">get_mask() (blendersynth.blender.compositor.compositor.Compositor method)</a>
+</li>
+      <li><a href="api/blendersynth.annotations.axes.html#blendersynth.annotations.axes.get_multiple_axes">get_multiple_axes() (in module blendersynth.annotations.axes)</a>
 </li>
       <li><a href="api/blendersynth.blender.utils.html#blendersynth.blender.utils.get_node_by_name">get_node_by_name() (in module blendersynth.blender.utils)</a>
 </li>
@@ -571,6 +589,8 @@
     module
 
       <ul>
+        <li><a href="api/blendersynth.annotations.axes.html#module-blendersynth.annotations.axes">blendersynth.annotations.axes</a>
+</li>
         <li><a href="api/blendersynth.annotations.bbox.html#module-blendersynth.annotations.bbox">blendersynth.annotations.bbox</a>
 </li>
         <li><a href="api/blendersynth.annotations.keypoints.html#module-blendersynth.annotations.keypoints">blendersynth.annotations.keypoints</a>
@@ -746,6 +766,8 @@
 </li>
       <li><a href="api/blendersynth.utils.node_arranger.html#blendersynth.utils.node_arranger.split_to_islands">split_to_islands() (in module blendersynth.utils.node_arranger)</a>
 </li>
+      <li><a href="api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.stack_visuals">stack_visuals() (blendersynth.blender.compositor.compositor.Compositor method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -780,6 +802,8 @@
         <li><a href="api/blendersynth.blender.aov.html#blendersynth.blender.aov.NormalsAOV.update">(blendersynth.blender.aov.NormalsAOV method)</a>
 </li>
         <li><a href="api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.update">(blendersynth.blender.camera.Camera method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay.update">(blendersynth.blender.compositor.image_overlay.AxesOverlay method)</a>
 </li>
         <li><a href="api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay.update">(blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay method)</a>
 </li>

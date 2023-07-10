@@ -1,0 +1,9 @@
+Capturing pose
+==============
+
+.. mdinclude:: ../markdown/examples.capturing_pose.md
+
+
+.. literalinclude:: ../_static/python/examples.capturing_pose.py
+   :language: python
+	

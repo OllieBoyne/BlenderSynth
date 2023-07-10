@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../python/output_data.html">Output data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python/dataset_creation/index.html">Dataset creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python/animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/capturing_pose.html">Capturing pose</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -123,6 +124,23 @@ Fix that here</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.get_axes_visual">
+<span class="sig-name descname"><span class="pre">get_axes_visual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_axes_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_axes_visual" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize an axes overlay node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Size of axes. Default 100</p></li>
+<li><p><strong>thickness</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Thickness of axes. Default 2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay" title="blendersynth.blender.compositor.image_overlay.AxesOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">AxesOverlay</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.get_bounding_box_visual">
 <span class="sig-name descname"><span class="pre">get_bounding_box_visual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.0,</span> <span class="pre">0.0,</span> <span class="pre">255.0,</span> <span class="pre">255.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_bounding_box_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_bounding_box_visual" title="Permalink to this definition"></a></dt>
 <dd><p>return a CompositorNodeGroup,
@@ -150,11 +168,19 @@ and any values below that are depth/max_depth * col.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.get_keypoints_visual">
-<span class="sig-name descname"><span class="pre">get_keypoints_visual</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_keypoints_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_keypoints_visual" title="Permalink to this definition"></a></dt>
-<dd><p>Initialize a keypoints overlay node</p>
+<span class="sig-name descname"><span class="pre">get_keypoints_visual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">marker</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_keypoints_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_keypoints_visual" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize a keypoints overlay node.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay" title="blendersynth.blender.compositor.image_overlay.KeypointsOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeypointsOverlay</span></code></a></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>marker</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default ‘x’</p></li>
+<li><p><strong>size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Size of marker. Default 5</p></li>
+<li><p><strong>color</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – Color of marker, RGB or RGBA, default (0, 0, 255) (red)</p></li>
+<li><p><strong>thickness</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Thickness of marker. Default 2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay" title="blendersynth.blender.compositor.image_overlay.KeypointsOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeypointsOverlay</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -174,6 +200,21 @@ and any values below that are depth/max_depth * col.</p>
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.render">
 <span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.render" title="Permalink to this definition"></a></dt>
 <dd><p>Render the scene</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.stack_visuals">
+<span class="sig-name descname"><span class="pre">stack_visuals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">visuals</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.stack_visuals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.stack_visuals" title="Permalink to this definition"></a></dt>
+<dd><p>Given a series of image overlays, stack them and return to be used as a single output node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>*visuals</strong> – <p>Stack of overlays to add.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AlphaImageOverlay" title="blendersynth.blender.compositor.image_overlay.AlphaImageOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlphaImageOverlay</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

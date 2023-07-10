@@ -10,6 +10,7 @@
    python/output_data
    python/dataset_creation/index
    python/animation
+   python/capturing_pose
    markdown/examples.README.md
 
 .. toctree::

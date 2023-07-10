@@ -46,6 +46,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../python/output_data.html">Output data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python/dataset_creation/index.html">Dataset creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python/animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/capturing_pose.html">Capturing pose</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -99,8 +100,18 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_color</span><span class="p">((</span><span class="mf">0.051</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># match blender&#39;s default world colour</span>
 
+	<span class="k">def</span> <span class="nf">_check_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Node tree may have been wiped, eg by loading a new file.</span>
+<span class="sd">		Check if the nodes exist, and if not, recreate them.&quot;&quot;&quot;</span>
+
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">rna_type</span>
+		<span class="k">except</span> <span class="ne">ReferenceError</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
 	<span class="k">def</span> <span class="nf">_setup_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
+		<span class="bp">self</span><span class="o">.</span><span class="n">_check_exists</span><span class="p">()</span>
 		<span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span>
 		<span class="n">nodes</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
@@ -113,6 +124,8 @@
 		<span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="nf">_setup_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_check_exists</span><span class="p">()</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;Color&#39;</span><span class="p">:</span>
 			<span class="k">return</span>
 
@@ -124,6 +137,8 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;Color&#39;</span>
 
 	<span class="k">def</span> <span class="nf">_setup_hdri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_check_exists</span><span class="p">()</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;HDRI&#39;</span><span class="p">:</span>
 			<span class="k">return</span>
 
