@@ -9,7 +9,7 @@ from ..aov import AOV
 from ..mesh import Mesh
 from .mask_overlay import MaskOverlay
 from .visuals import DepthVis
-from .image_overlay import KeypointsOverlay, BoundingBoxOverlay
+from .image_overlay import KeypointsOverlay, BoundingBoxOverlay, AlphaImageOverlay, AxesOverlay
 
 
 from typing import Union, List
@@ -125,12 +125,19 @@ class Compositor:
 		self.tidy_tree()
 		return cng
 
-	def get_keypoints_visual(self) -> KeypointsOverlay:
+	def get_keypoints_visual(self, marker:str='x', color:tuple=(0, 0, 255), size:int=5,
+							 thickness:int=2) -> KeypointsOverlay:
 		"""
-		Initialize a keypoints overlay node
+		Initialize a keypoints overlay node.
+
+		:param marker: Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default 'x'
+		:param size: Size of marker. Default 5
+		:param color: Color of marker, RGB or RGBA, default (0, 0, 255) (red)
+		:param thickness: Thickness of marker. Default 2
 		"""
 
-		cng = KeypointsOverlay(f"Keypoints Visual", self.node_tree)
+		cng = KeypointsOverlay(f"Keypoints Visual", self.node_tree, marker=marker, color=color,
+							   size=size, thickness=thickness)
 		self.node_tree.links.new(self.render_layers_node.outputs['Image'], cng.input('Image'))
 
 		if 'Keypoints' in self.overlays:
@@ -140,6 +147,44 @@ class Compositor:
 
 		self.tidy_tree()
 		return cng
+
+	def get_axes_visual(self, size:int=1, thickness:int=2) -> AxesOverlay:
+		"""
+		Initialize an axes overlay node.
+
+		:param size: Size of axes. Default 100
+		:param thickness: Thickness of axes. Default 2
+		"""
+
+		cng = AxesOverlay(f"Axes Visual", self.node_tree,
+							   size=size, thickness=thickness)
+		self.node_tree.links.new(self.render_layers_node.outputs['Image'], cng.input('Image'))
+
+		if 'Axes' in self.overlays:
+			raise ValueError("Only allowed one Axes overlay.")
+
+		self.overlays['Axes'] = cng
+		self.tidy_tree()
+		return cng
+
+	def stack_visuals(self, *visuals: AlphaImageOverlay) -> AlphaImageOverlay:
+		"""Given a series of image overlays, stack them and return to be used as a single output node.
+
+		:param *visuals: Stack of overlays to add."""
+
+		if len(visuals) < 2:
+			raise ValueError("Requires at least 2 visuals to stack")
+
+		# No need to store these overlays separately in self.overlays, but need to check they're all present
+		for overlay in visuals:
+			if overlay not in self.overlays.values():
+				raise ValueError(f"Visual {overlay} not found in Compositor. Make sure it was obtained via the Compositor.")
+
+		# Stack the output of the previous to the input of the next
+		for va, vb in zip(visuals, visuals[1:]):
+			self.node_tree.links.new(va.output('Image'), vb.input('Image'))
+
+		return visuals[-1]
 
 	def get_depth_visual(self, max_depth=1, col=(255, 255, 255)):
 		"""Get depth visual, which normalizes depth values so max_depth = col,

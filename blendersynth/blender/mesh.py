@@ -121,7 +121,7 @@ class Mesh(BsynObject):
 
 
 	@classmethod
-	def from_scene(cls, key, class_id=None) -> 'Mesh':
+	def from_scene(cls, key, class_id=0) -> 'Mesh':
 		"""Create object from named object in scene.
 
 		:param key: Name of object in scene
@@ -299,6 +299,12 @@ class Mesh(BsynObject):
 		bpy.context.evaluated_depsgraph_get() # required to update object matrix
 		return self._meshes[0].matrix_world
 
+	@property
+	def axes(self) -> np.ndarray:
+		"""Return 3x3 rotation matrix (normalized) to represent axes"""
+		mat = np.array(self.matrix_world)[:3, :3]
+		mat = mat / np.linalg.norm(mat, axis=0)
+		return mat
 
 	@property
 	def location(self):

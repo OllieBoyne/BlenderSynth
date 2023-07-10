@@ -39,7 +39,8 @@ if building_docs or get_blender_path() == sys.argv[0]:  # if blender is running 
 	render.set_engine('CYCLES')
 
 	# common aliases
-	load_blend = bpy.ops.wm.open_mainfile
+	def load_blend(src):
+		return bpy.ops.wm.open_mainfile(filepath=src)
 
 	# Clear default cube and light
 	import bpy

@@ -6,6 +6,7 @@ bsyn.run_this_script(debug = False)  # If called from Python, this will run the 
 
 comp = bsyn.Compositor()  # Create a new compositor - this manages all the render layers
 
+# Generate some basic scene components. Alternatively, use bsyn.load_blend to load a .blend file
 monkey = bsyn.Mesh.from_primitive('monkey', scale=2, rotation_euler=(0, 0, -0.5))  # Create a new mesh from a primitive
 light = bsyn.Light.create('POINT', location=(0, -5, 0), intensity=100)  # Create a new light
 

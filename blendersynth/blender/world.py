@@ -16,8 +16,18 @@ class World():
 
 		self.set_color((0.051,) * 3)  # match blender's default world colour
 
+	def _check_exists(self):
+		"""Node tree may have been wiped, eg by loading a new file.
+		Check if the nodes exist, and if not, recreate them."""
+
+		try:
+			self.node_tree.rna_type
+		except ReferenceError:
+			self.__init__()
+
 	def _setup_nodes(self):
 
+		self._check_exists()
 		nodes = self.world_nodes
 		nodes.clear()
 
@@ -30,6 +40,8 @@ class World():
 		tidy_tree(self.node_tree)
 
 	def _setup_color(self):
+
+		self._check_exists()
 		if self.mode == 'Color':
 			return
 
@@ -41,6 +53,8 @@ class World():
 		self.mode = 'Color'
 
 	def _setup_hdri(self):
+
+		self._check_exists()
 		if self.mode == 'HDRI':
 			return
 

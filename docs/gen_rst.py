@@ -16,7 +16,7 @@ tutorial_header = "Tutorials"
 api_header = "API"
 
 # preference for sorting, will defer to this where possible
-examples_sort_order = ['quickstart', 'mesh_importing', 'output_data', 'dataset_creation', 'animation']
+examples_sort_order = ['quickstart', 'mesh_importing', 'output_data', 'dataset_creation', 'animation', 'capturing_pose']
 
 def get_sort_index(name, sort_order):
     """Get the index of the first 'match' in the sort order, or the length of the sort order if no match.
