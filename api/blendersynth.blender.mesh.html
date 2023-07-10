@@ -104,13 +104,17 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.centroid">
-<span class="sig-name descname"><span class="pre">centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vertex'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.centroid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.centroid" title="Permalink to this definition"></a></dt>
-<dd><dl class="field-list simple">
+<span class="sig-name descname"><span class="pre">centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.centroid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.centroid" title="Permalink to this definition"></a></dt>
+<dd><p>Return the centroid of the mesh(es)</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>method</strong> – ‘vertex’ or ‘bounds’</p>
+<dd class="field-odd"><p><strong>method</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – See <a class="reference internal" href="#blendersynth.blender.mesh.Mesh.origin_to_centroid" title="blendersynth.blender.mesh.Mesh.origin_to_centroid"><code class="xref py py-attr docutils literal notranslate"><span class="pre">origin_to_centroid</span></code></a> for options.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Centroid of the mesh(es). If multiple meshes, will average the centroids.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -118,7 +122,12 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.delete">
 <span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delete_materials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.delete" title="Permalink to this definition"></a></dt>
-<dd><p>Clear mesh from scene &amp; mesh data</p>
+<dd><p>Clear mesh from scene &amp; mesh data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>delete_materials</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Also delete object materials from scene</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -184,11 +193,19 @@ causes issues with materials &amp; vertex ordering.
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.get_keypoints">
 <span class="sig-name descname"><span class="pre">get_keypoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idxs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.get_keypoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.get_keypoints" title="Permalink to this definition"></a></dt>
 <dd><p>Return 3D keypoint positions in world coordinates, given either:</p>
-<p>idxs: list of indices or ndarray of keypoints to project (only valid for single-mesh objects)
-position: 3D position of keypoints to project - in LOCAL object coordinates</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return N list of Vectors of keypoints in world space, where N is the number of keypoints<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>idxs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>) – list of indices or ndarray of keypoints to project (only valid for single-mesh objects)</p></li>
+<li><p><strong>position</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>]]) – 3D position of keypoints to project - in LOCAL object coordinates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>N list of Vectors of keypoints in world space, where N is the number of keypoints</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -200,14 +217,27 @@ position: 3D position of keypoints to project - in LOCAL object coordinates</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.origin">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">origin</span></span><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.origin" title="Permalink to this definition"></a></dt>
-<dd><p>Get origin as origin of first mesh</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">mathutils.Vector</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.origin" title="Permalink to this definition"></a></dt>
+<dd><p>If single mesh, return Vector of origin.
+If multiple meshes, return list of Vectors of centroid of each mesh.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.origin_to_centroid">
 <span class="sig-name descname"><span class="pre">origin_to_centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bounds'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.origin_to_centroid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.origin_to_centroid" title="Permalink to this definition"></a></dt>
-<dd><p>Move object origin to centroid</p>
+<dd><p>Move object origin to centroid.</p>
+<p>Four methods available:</p>
+<ul class="simple">
+<li><p>‘bounds’ - move the origin to the center of the bounds of the mesh</p></li>
+<li><p>‘median’ - move the origin to the median point of the mesh</p></li>
+<li><p>‘com_volume’ - move to the centre of mass of the volume of the mesh</p></li>
+<li><p>‘com_area’ - Move to the centre of mass of the surface of the mesh</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>method</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Selected method to move origin to centroid</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -246,18 +276,6 @@ position: 3D position of keypoints to project - in LOCAL object coordinates</p>
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.bounds_center">
 <span class="sig-prename descclassname"><span class="pre">blendersynth.blender.mesh.</span></span><span class="sig-name descname"><span class="pre">bounds_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#bounds_center"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.bounds_center" title="Permalink to this definition"></a></dt>
 <dd><p>Get center of bounding box in world space</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.blender.mesh.euler_add">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.mesh.</span></span><span class="sig-name descname"><span class="pre">euler_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#euler_add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.euler_add" title="Permalink to this definition"></a></dt>
-<dd><p>Compute euler rotation of a, followed by b</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.blender.mesh.euler_from">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.mesh.</span></span><span class="sig-name descname"><span class="pre">euler_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#euler_from"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.euler_from" title="Permalink to this definition"></a></dt>
-<dd><p>Get euler rotation from a to b</p>
 </dd></dl>
 
 <dl class="py function">

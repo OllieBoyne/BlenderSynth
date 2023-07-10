@@ -95,11 +95,11 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">hdri_link</span> <span class="o">=</span> <span class="kc">None</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">setup_nodes</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_setup_nodes</span><span class="p">()</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_color</span><span class="p">((</span><span class="mf">0.051</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># match blender&#39;s default world colour</span>
 
-	<span class="k">def</span> <span class="nf">setup_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_setup_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
 		<span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span>
 		<span class="n">nodes</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
@@ -112,7 +112,7 @@
 
 		<span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">setup_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_setup_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;Color&#39;</span><span class="p">:</span>
 			<span class="k">return</span>
 
@@ -123,7 +123,7 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;Color&#39;</span>
 
-	<span class="k">def</span> <span class="nf">setup_hdri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_setup_hdri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;HDRI&#39;</span><span class="p">:</span>
 			<span class="k">return</span>
 
@@ -139,7 +139,7 @@
 
 <span class="sd">		:param color: RGB or RGBA color&quot;&quot;&quot;</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">setup_color</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_setup_color</span><span class="p">()</span>
 
 		<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;Color must be RGB or RGBA&quot;</span>
 
@@ -153,11 +153,14 @@
 
 <span class="sd">		:param pth: Path to the HDRI image (.hdr or .exr)&quot;&quot;&quot;</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">setup_hdri</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_setup_hdri</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">[</span><span class="s1">&#39;Environment Texture&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pth</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="World.set_intensity"><a class="viewcode-back" href="../../../api/blendersynth.blender.world.html#blendersynth.blender.world.World.set_intensity">[docs]</a>	<span class="k">def</span> <span class="nf">set_intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intensity</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set the intensity of the color/HDRI&quot;&quot;&quot;</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set the intensity of the color/HDRI.</span>
+
+<span class="sd">		:param float: The intensity value</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">[</span><span class="s2">&quot;Background&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">intensity</span></div>
 
 	<span class="k">def</span> <span class="nf">set_transparent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
