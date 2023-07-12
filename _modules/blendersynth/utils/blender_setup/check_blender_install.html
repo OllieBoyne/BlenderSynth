@@ -143,6 +143,10 @@
 			<span class="k">if</span> <span class="ow">not</span> <span class="n">check_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
 				<span class="n">install_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="n">dependency</span><span class="p">)</span>
 
+		<span class="c1"># First uninstall blendersynth if present (in case of updates)</span>
+		<span class="k">if</span> <span class="n">check_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="s1">&#39;blendersynth&#39;</span><span class="p">):</span>
+			<span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="n">python_path</span><span class="p">,</span> <span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;pip&#39;</span><span class="p">,</span> <span class="s1">&#39;uninstall&#39;</span><span class="p">,</span> <span class="s1">&#39;-y&#39;</span><span class="p">,</span> <span class="s1">&#39;blendersynth&#39;</span><span class="p">])</span>
+
 		<span class="c1"># Install blendersynth package to blender&#39;s python</span>
 		<span class="k">if</span> <span class="n">blendersynth_from_local</span><span class="p">:</span>
 			<span class="c1"># Install from local setup.py</span>

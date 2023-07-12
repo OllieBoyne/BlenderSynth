@@ -10,7 +10,8 @@ Synthetic Blender pipeline - aimed at generating large synthetic datasets.
 
 We produce support for:
 - Custom Shader [AOVs](https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html) (eg. UVs, Normals, etc.)
-- Multi-threading support
+- Fine-grained node control
+- Multi-threading
 - Efficient run-speed
 
 ## Installation
@@ -33,7 +34,7 @@ Or from local clone:
 ```
 git clone https://github.com/OllieBoyne/BlenderSynth
 cd BlenderSynth
-python setup.py install
+pip install .
 python -c "import blendersynth" --local
 ```
 
