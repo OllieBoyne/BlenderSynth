@@ -1,7 +1,7 @@
 import os.path
 
 import bpy
-from .utils import GetNewObject, SelectObjects, handle_vec
+from .utils import GetNewObject, SelectObjects, handle_vec, SetMode
 from .bsyn_object import BsynObject, animatable_property
 from .aov import AOV
 import numpy as np
@@ -31,6 +31,7 @@ default_ids = {
 	'prim_torus': 7,
 }
 
+
 def get_child_meshes(obj):
 	"""Given an object, return all meshes that are children of it. Recursively searches children of children.
 	Also returns any child objects that aren't meshes"""
@@ -45,11 +46,13 @@ def get_child_meshes(obj):
 
 		return meshes, other
 
+
 def bounds_center(mesh):
 	"""Get center of bounding box in world space"""
 	local_bbox_center = 0.125 * sum((mathutils.Vector(b) for b in mesh.bound_box), mathutils.Vector())
 	global_bbox_center = mesh.matrix_world @ local_bbox_center
 	return np.array(global_bbox_center)
+
 
 def vertex_center(mesh):
 	"""Get center of vertices in world space"""
@@ -60,6 +63,7 @@ def vertex_center(mesh):
 def _euler_from(a: mathutils.Euler, b: mathutils.Euler):
 	"""Get euler rotation from a to b"""
 	return (b.to_matrix() @ a.to_matrix().inverted()).to_euler()
+
 
 def _euler_add(a: mathutils.Euler, b: mathutils.Euler):
 	"""Compute euler rotation of a, followed by b"""
@@ -119,7 +123,6 @@ class Mesh(BsynObject):
 		self._object['class_id'] = class_id
 		self.scene['MAX_CLASSES'] = max(self.scene.get('MAX_CLASSES', 0), class_id)
 
-
 	@classmethod
 	def from_scene(cls, key, class_id=0) -> 'Mesh':
 		"""Create object from named object in scene.
@@ -132,7 +135,8 @@ class Mesh(BsynObject):
 		return cls(obj, class_id=class_id)
 
 	@classmethod
-	def from_primitive(cls, name='cube', scale=None, location=None, rotation_euler=None, class_id=None, **kwargs) -> 'Mesh':
+	def from_primitive(cls, name='cube', scale=None, location=None, rotation_euler=None, class_id=None,
+					   **kwargs) -> 'Mesh':
 		"""Create Mesh from primitive.
 		
 		:param name: Name of primitive to create. See :attr:`~blendersynth.blender.Mesh.primitive_list` for options
@@ -162,7 +166,6 @@ class Mesh(BsynObject):
 
 		return obj
 
-
 	@classmethod
 	def from_obj(cls, obj_loc, class_id=None,
 				 forward_axis='-Z', up_axis='Y'):
@@ -173,9 +176,10 @@ class Mesh(BsynObject):
 		(Changing vertex ordering makes the use of keypoints difficult.)
 		"""
 		for axis in (forward_axis, up_axis):
-			assert axis in ('X', 'Y', 'Z', '-X', '-Y', '-Z'), f"Axis `{axis}` not valid, must be one of X, Y, Z, -X, -Y, -Z"
+			assert axis in (
+			'X', 'Y', 'Z', '-X', '-Y', '-Z'), f"Axis `{axis}` not valid, must be one of X, Y, Z, -X, -Y, -Z"
 
-		forward_axis = forward_axis.replace('-', 'NEGATIVE_') # e.g. -X -> NEGATIVE_X
+		forward_axis = forward_axis.replace('-', 'NEGATIVE_')  # e.g. -X -> NEGATIVE_X
 		up_axis = up_axis.replace('-', 'NEGATIVE_')
 
 		assert os.path.isfile(obj_loc) and obj_loc.endswith('.obj'), f"File `{obj_loc}` not a valid .obj file"
@@ -186,7 +190,7 @@ class Mesh(BsynObject):
 		importer = GetNewObject(bpy.context.scene)
 		with importer:
 			bpy.ops.wm.obj_import(filepath=fname, directory=directory, filter_image=False,
-									 files=[{"name": fname}], forward_axis=forward_axis, up_axis=up_axis)
+								  files=[{"name": fname}], forward_axis=forward_axis, up_axis=up_axis)
 
 		if class_id is None:
 			class_id = default_ids['loaded_mesh']
@@ -197,7 +201,8 @@ class Mesh(BsynObject):
 	@classmethod
 	def from_glb(cls, glb_loc, class_id=None):
 		"""Load object from .glb file"""
-		assert os.path.isfile(glb_loc) and glb_loc.endswith(('.glb', '.gtlf')), f"File `{glb_loc}` not a valid .glb file"
+		assert os.path.isfile(glb_loc) and glb_loc.endswith(
+			('.glb', '.gtlf')), f"File `{glb_loc}` not a valid .glb file"
 
 		directory, fname = os.path.split(glb_loc)
 		importer = GetNewObject(bpy.context.scene)
@@ -213,6 +218,20 @@ class Mesh(BsynObject):
 	def from_gltf(cls, gltf_loc, class_id=None):
 		return cls.from_glb(gltf_loc, class_id=class_id)
 
+	@classmethod
+	def from_fbx(cls, fbx_loc, class_id=None):
+		"""Load object from .fbx file"""
+		assert os.path.isfile(fbx_loc) and fbx_loc.endswith('.fbx'), f"File `{fbx_loc}` not a valid .fbx file"
+
+		directory, fname = os.path.split(fbx_loc)
+		importer = GetNewObject(bpy.context.scene)
+		with importer:
+			bpy.ops.import_scene.fbx(filepath=fbx_loc, files=[{"name": fname}])
+
+		if class_id is None:
+			class_id = default_ids['loaded_mesh']
+
+		return cls(importer.imported_obj, class_id=class_id)
 
 	@property
 	def origin(self) -> Union[Vector, List[Vector]]:
@@ -245,7 +264,8 @@ class Mesh(BsynObject):
 					vec = handle_vec(origin[i])
 					self._meshes[i].location = vec
 				except:
-					raise ValueError(f"Error with setting origin. Expects a list of {len(self._meshes)} 3-long Vector. Received: {origin}")
+					raise ValueError(
+						f"Error with setting origin. Expects a list of {len(self._meshes)} 3-long Vector. Received: {origin}")
 
 	def get_all_vertices(self, ref_frame='WORLD'):
 		verts = np.array([vert.co[:] + (1,) for mesh in self._meshes for vert in mesh.data.vertices]).T
@@ -262,7 +282,6 @@ class Mesh(BsynObject):
 
 		verts = verts[:3, :] / verts[3, :]  # convert from homogeneous coordinates
 		return verts.T
-
 
 	@property
 	def materials(self):
@@ -284,7 +303,6 @@ class Mesh(BsynObject):
 
 		self.assigned_aovs.append(aov)
 
-
 	def set_minimum_to(self, axis='Z', pos=0):
 		"""Set minimum of object to a given position"""
 		min_pos = self.get_all_vertices('WORLD')[:, 'XYZ'.index(axis)].min()
@@ -296,7 +314,7 @@ class Mesh(BsynObject):
 	def matrix_world(self):
 		"""Return world matrix of object(s).
 		"""
-		bpy.context.evaluated_depsgraph_get() # required to update object matrix
+		bpy.context.evaluated_depsgraph_get()  # required to update object matrix
 		return self._meshes[0].matrix_world
 
 	@property
@@ -313,7 +331,6 @@ class Mesh(BsynObject):
 	@location.setter
 	def location(self, location):
 		self.set_location(location)
-
 
 	@property
 	def rotation_euler(self):
@@ -356,8 +373,6 @@ class Mesh(BsynObject):
 
 		self._rotation_euler = rotation
 
-
-
 	@animatable_property('scale')
 	def set_scale(self, scale):
 		"""Set scale of object"""
@@ -370,8 +385,6 @@ class Mesh(BsynObject):
 			bpy.ops.transform.resize(value=resize_fac)
 
 		self._scale = scale
-
-
 
 	def translate(self, translation):
 		"""Translate object"""
@@ -392,7 +405,7 @@ class Mesh(BsynObject):
 		scale = handle_vec(scale, 3)
 		self.scale = self._scale * scale
 
-	def delete(self, delete_materials:bool=True):
+	def delete(self, delete_materials: bool = True):
 		"""Clear mesh from scene & mesh data.
 
 		:param delete_materials: Also delete object materials from scene"""
@@ -417,7 +430,7 @@ class Mesh(BsynObject):
 			for material in self.materials:
 				bpy.data.materials.remove(material, do_unlink=True)
 
-	def centroid(self, method:str='median') -> Vector:
+	def centroid(self, method: str = 'median') -> Vector:
 		"""
 		Return the centroid of the mesh(es)
 
@@ -435,7 +448,7 @@ class Mesh(BsynObject):
 
 		return centroid
 
-	def _set_origin_manual(self, origin:Vector, all_meshes=True):
+	def _set_origin_manual(self, origin: Vector, all_meshes=True):
 		"""Override to set origin manually. Should only be used by internal functions."""
 		if all_meshes:
 			for mesh in self._meshes:
@@ -443,7 +456,7 @@ class Mesh(BsynObject):
 		else:
 			self._meshes[0].location = origin
 
-	def origin_to_centroid(self, method:str='bounds'):
+	def origin_to_centroid(self, method: str = 'bounds'):
 		"""Move object origin to centroid.
 
 		Four methods available:
@@ -459,15 +472,15 @@ class Mesh(BsynObject):
 		_valid_methods = ['bounds', 'median', 'com_volume', 'com_area']
 
 		_type_lookup = dict(bounds='ORIGIN_GEOMETRY', median='ORIGIN_GEOMETRY',
-					com_volume='ORIGIN_CENTER_OF_VOLUME',
-					com_area='ORIGIN_CENTER_OF_MASS')
+							com_volume='ORIGIN_CENTER_OF_VOLUME',
+							com_area='ORIGIN_CENTER_OF_MASS')
 
 		center = 'BOUNDS' if method == 'bounds' else 'MEDIAN'
 
 		with SelectObjects(self._meshes + self._other_objects):
 			bpy.ops.object.origin_set(type=_type_lookup[method], center=center)
 
-	def get_keypoints(self, idxs:list=None, position:Union[np.ndarray, List[Vector]] = None) -> List[Vector]:
+	def get_keypoints(self, idxs: list = None, position: Union[np.ndarray, List[Vector]] = None) -> List[Vector]:
 		"""Return 3D keypoint positions in world coordinates, given either:
 
 		:param idxs: list of indices or ndarray of keypoints to project (only valid for single-mesh objects)
@@ -477,7 +490,6 @@ class Mesh(BsynObject):
 		"""
 
 		assert (idxs is not None) ^ (position is not None), "Must provide either idxs or position, but not both."
-
 
 		if idxs is not None:
 			assert len(self._meshes) == 1, "Can only project keypoints by index for single-mesh objects."
@@ -491,3 +503,63 @@ class Mesh(BsynObject):
 	@property
 	def name(self):
 		return self._meshes[0].name
+
+	def get_armature(self, armature_name: str = None) -> bpy.types.Object:
+		"""Get armature.
+		If no name given, return first armature found.
+
+		:param armature_name: Name of armature to load."""
+
+		armatures = [obj for obj in self._other_objects if obj.type == 'ARMATURE']
+
+		if armature_name:
+			for arm in armatures:
+				if arm.name == armature_name:
+					return arm
+
+			raise KeyError(f"Armature `{armature_name}` not found.")
+
+		else:
+			if len(armatures) == 0:
+				raise ValueError("No armatures found.")
+
+			return armatures[0]
+
+	def get_bone(self, bone_name: str, armature_name: str = None) -> bpy.types.PoseBone:
+		"""
+		Get bone from armature.
+		:param bone_name:
+		:param armature_name: If not given, will load first available armature found
+		:return:
+		"""
+
+		armature = self.get_armature(armature_name)
+		try:
+			bone = armature.pose.bones[bone_name]
+		except KeyError:
+			raise KeyError(f"Bone `{bone_name}` not found in armature `{armature.name}`")
+		return bone
+
+	def pose_bone(self, bone_name: str, armature_name: str = None, rotation: Vector = None, location: Vector = None,
+				  frame: int = None):
+		"""Set the pose of a bone by giving a Euler XYZ rotation and/or location.
+
+		:param bone_name: Name of bone to pose
+		:param armature_name: Name of armature to use. If not given, will use first armature found.
+		:param rotation: Euler XYZ rotation in radians
+		:param location: Location in object space
+		:param frame: Frame to set pose on. If given, will insert keyframe here.
+		"""
+
+		with SetMode('POSE'):
+			bone = self.get_bone(bone_name, armature_name)
+			bone.rotation_mode = 'XYZ'
+			if rotation is not None:
+				bone.rotation_euler = rotation
+				if frame is not None:
+					bone.keyframe_insert(data_path='rotation_euler', frame=frame)
+
+			if location is not None:
+				bone.location = location
+				if frame is not None:
+					bone.keyframe_insert(data_path='location', frame=frame)

@@ -66,10 +66,10 @@ def check_blender_install(force_all=False,
 		# Install blendersynth package to blender's python
 		if blendersynth_from_local:
 			# Install from local setup.py
-			setup_py_loc = os.path.join(os.path.dirname(__file__), '..', '..', 'setup.py')
-			if not os.path.isfile('setup.py'):
+			setup_py_loc = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'setup.py')
+			if not os.path.isfile(setup_py_loc):
 				raise Exception(f"Could not find setup.py at {setup_py_loc}.")
-			subprocess.check_call([python_path, 'setup.py', 'install'])
+			subprocess.check_call([python_path, setup_py_loc, 'install'])
 
 		else:
 			# Install from pypi
