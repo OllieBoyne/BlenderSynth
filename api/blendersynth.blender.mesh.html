@@ -138,6 +138,12 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.from_fbx">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_fbx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fbx_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.from_fbx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.from_fbx" title="Permalink to this definition"></a></dt>
+<dd><p>Load object from .fbx file</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.from_glb">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_glb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">glb_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.from_glb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.from_glb" title="Permalink to this definition"></a></dt>
 <dd><p>Load object from .glb file</p>
@@ -197,6 +203,33 @@ causes issues with materials &amp; vertex ordering.
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.get_armature">
+<span class="sig-name descname"><span class="pre">get_armature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">armature_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.get_armature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.get_armature" title="Permalink to this definition"></a></dt>
+<dd><p>Get armature.
+If no name given, return first armature found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>armature_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of armature to load.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Object</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.get_bone">
+<span class="sig-name descname"><span class="pre">get_bone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bone_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">armature_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.get_bone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.get_bone" title="Permalink to this definition"></a></dt>
+<dd><p>Get bone from armature.
+:type bone_name: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
+:param bone_name:
+:type armature_name: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
+:param armature_name: If not given, will load first available armature found
+:rtype: <code class="xref py py-class docutils literal notranslate"><span class="pre">PoseBone</span></code>
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.get_keypoints">
 <span class="sig-name descname"><span class="pre">get_keypoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idxs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.get_keypoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.get_keypoints" title="Permalink to this definition"></a></dt>
 <dd><p>Return 3D keypoint positions in world coordinates, given either:</p>
@@ -243,6 +276,23 @@ If multiple meshes, return list of Vectors of centroid of each mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>method</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Selected method to move origin to centroid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.pose_bone">
+<span class="sig-name descname"><span class="pre">pose_bone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bone_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">armature_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.pose_bone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.pose_bone" title="Permalink to this definition"></a></dt>
+<dd><p>Set the pose of a bone by giving a Euler XYZ rotation and/or location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bone_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of bone to pose</p></li>
+<li><p><strong>armature_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of armature to use. If not given, will use first armature found.</p></li>
+<li><p><strong>rotation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>) – Euler XYZ rotation in radians</p></li>
+<li><p><strong>location</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>) – Location in object space</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Frame to set pose on. If given, will insert keyframe here.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

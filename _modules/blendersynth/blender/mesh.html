@@ -85,7 +85,7 @@
 <span></span><span class="kn">import</span> <span class="nn">os.path</span>
 
 <span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">GetNewObject</span><span class="p">,</span> <span class="n">SelectObjects</span><span class="p">,</span> <span class="n">handle_vec</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">GetNewObject</span><span class="p">,</span> <span class="n">SelectObjects</span><span class="p">,</span> <span class="n">handle_vec</span><span class="p">,</span> <span class="n">SetMode</span>
 <span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span><span class="p">,</span> <span class="n">animatable_property</span>
 <span class="kn">from</span> <span class="nn">.aov</span> <span class="kn">import</span> <span class="n">AOV</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -115,6 +115,7 @@
 	<span class="s1">&#39;prim_torus&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
 <span class="p">}</span>
 
+
 <div class="viewcode-block" id="get_child_meshes"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.get_child_meshes">[docs]</a><span class="k">def</span> <span class="nf">get_child_meshes</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Given an object, return all meshes that are children of it. Recursively searches children of children.</span>
 <span class="sd">	Also returns any child objects that aren&#39;t meshes&quot;&quot;&quot;</span>
@@ -129,11 +130,13 @@
 
 		<span class="k">return</span> <span class="n">meshes</span><span class="p">,</span> <span class="n">other</span></div>
 
+
 <div class="viewcode-block" id="bounds_center"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.bounds_center">[docs]</a><span class="k">def</span> <span class="nf">bounds_center</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Get center of bounding box in world space&quot;&quot;&quot;</span>
 	<span class="n">local_bbox_center</span> <span class="o">=</span> <span class="mf">0.125</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">((</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">bound_box</span><span class="p">),</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">())</span>
 	<span class="n">global_bbox_center</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">@</span> <span class="n">local_bbox_center</span>
 	<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">global_bbox_center</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="vertex_center"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.vertex_center">[docs]</a><span class="k">def</span> <span class="nf">vertex_center</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Get center of vertices in world space&quot;&quot;&quot;</span>
@@ -144,6 +147,7 @@
 <span class="k">def</span> <span class="nf">_euler_from</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Get euler rotation from a to b&quot;&quot;&quot;</span>
 	<span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">()</span> <span class="o">@</span> <span class="n">a</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">()</span><span class="o">.</span><span class="n">inverted</span><span class="p">())</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
+
 
 <span class="k">def</span> <span class="nf">_euler_add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Compute euler rotation of a, followed by b&quot;&quot;&quot;</span>
@@ -203,7 +207,6 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span><span class="p">[</span><span class="s1">&#39;class_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">class_id</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s1">&#39;MAX_CLASSES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;MAX_CLASSES&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">class_id</span><span class="p">)</span>
 
-
 <div class="viewcode-block" id="Mesh.from_scene"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_scene">[docs]</a>	<span class="nd">@classmethod</span>
 	<span class="k">def</span> <span class="nf">from_scene</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Create object from named object in scene.</span>
@@ -216,7 +219,8 @@
 		<span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="n">class_id</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Mesh.from_primitive"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_primitive">[docs]</a>	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">from_primitive</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rotation_euler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
+	<span class="k">def</span> <span class="nf">from_primitive</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rotation_euler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+					   <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Create Mesh from primitive.</span>
 <span class="sd">		</span>
 <span class="sd">		:param name: Name of primitive to create. See :attr:`~blendersynth.blender.Mesh.primitive_list` for options</span>
@@ -246,7 +250,6 @@
 
 		<span class="k">return</span> <span class="n">obj</span></div>
 
-
 <div class="viewcode-block" id="Mesh.from_obj"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_obj">[docs]</a>	<span class="nd">@classmethod</span>
 	<span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj_loc</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 				 <span class="n">forward_axis</span><span class="o">=</span><span class="s1">&#39;-Z&#39;</span><span class="p">,</span> <span class="n">up_axis</span><span class="o">=</span><span class="s1">&#39;Y&#39;</span><span class="p">):</span>
@@ -257,9 +260,10 @@
 <span class="sd">		(Changing vertex ordering makes the use of keypoints difficult.)</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="n">forward_axis</span><span class="p">,</span> <span class="n">up_axis</span><span class="p">):</span>
-			<span class="k">assert</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="s1">&#39;-X&#39;</span><span class="p">,</span> <span class="s1">&#39;-Y&#39;</span><span class="p">,</span> <span class="s1">&#39;-Z&#39;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Axis `</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">` not valid, must be one of X, Y, Z, -X, -Y, -Z&quot;</span>
+			<span class="k">assert</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span>
+			<span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="s1">&#39;-X&#39;</span><span class="p">,</span> <span class="s1">&#39;-Y&#39;</span><span class="p">,</span> <span class="s1">&#39;-Z&#39;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Axis `</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">` not valid, must be one of X, Y, Z, -X, -Y, -Z&quot;</span>
 
-		<span class="n">forward_axis</span> <span class="o">=</span> <span class="n">forward_axis</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;NEGATIVE_&#39;</span><span class="p">)</span> <span class="c1"># e.g. -X -&gt; NEGATIVE_X</span>
+		<span class="n">forward_axis</span> <span class="o">=</span> <span class="n">forward_axis</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;NEGATIVE_&#39;</span><span class="p">)</span>  <span class="c1"># e.g. -X -&gt; NEGATIVE_X</span>
 		<span class="n">up_axis</span> <span class="o">=</span> <span class="n">up_axis</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;NEGATIVE_&#39;</span><span class="p">)</span>
 
 		<span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">obj_loc</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj_loc</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.obj&#39;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;File `</span><span class="si">{</span><span class="n">obj_loc</span><span class="si">}</span><span class="s2">` not a valid .obj file&quot;</span>
@@ -270,7 +274,7 @@
 		<span class="n">importer</span> <span class="o">=</span> <span class="n">GetNewObject</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="p">)</span>
 		<span class="k">with</span> <span class="n">importer</span><span class="p">:</span>
 			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">wm</span><span class="o">.</span><span class="n">obj_import</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="n">fname</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span> <span class="n">filter_image</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-									 <span class="n">files</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">fname</span><span class="p">}],</span> <span class="n">forward_axis</span><span class="o">=</span><span class="n">forward_axis</span><span class="p">,</span> <span class="n">up_axis</span><span class="o">=</span><span class="n">up_axis</span><span class="p">)</span>
+								  <span class="n">files</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">fname</span><span class="p">}],</span> <span class="n">forward_axis</span><span class="o">=</span><span class="n">forward_axis</span><span class="p">,</span> <span class="n">up_axis</span><span class="o">=</span><span class="n">up_axis</span><span class="p">)</span>
 
 		<span class="k">if</span> <span class="n">class_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 			<span class="n">class_id</span> <span class="o">=</span> <span class="n">default_ids</span><span class="p">[</span><span class="s1">&#39;loaded_mesh&#39;</span><span class="p">]</span>
@@ -281,7 +285,8 @@
 <div class="viewcode-block" id="Mesh.from_glb"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_glb">[docs]</a>	<span class="nd">@classmethod</span>
 	<span class="k">def</span> <span class="nf">from_glb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">glb_loc</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Load object from .glb file&quot;&quot;&quot;</span>
-		<span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">glb_loc</span><span class="p">)</span> <span class="ow">and</span> <span class="n">glb_loc</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s1">&#39;.glb&#39;</span><span class="p">,</span> <span class="s1">&#39;.gtlf&#39;</span><span class="p">)),</span> <span class="sa">f</span><span class="s2">&quot;File `</span><span class="si">{</span><span class="n">glb_loc</span><span class="si">}</span><span class="s2">` not a valid .glb file&quot;</span>
+		<span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">glb_loc</span><span class="p">)</span> <span class="ow">and</span> <span class="n">glb_loc</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span>
+			<span class="p">(</span><span class="s1">&#39;.glb&#39;</span><span class="p">,</span> <span class="s1">&#39;.gtlf&#39;</span><span class="p">)),</span> <span class="sa">f</span><span class="s2">&quot;File `</span><span class="si">{</span><span class="n">glb_loc</span><span class="si">}</span><span class="s2">` not a valid .glb file&quot;</span>
 
 		<span class="n">directory</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">glb_loc</span><span class="p">)</span>
 		<span class="n">importer</span> <span class="o">=</span> <span class="n">GetNewObject</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="p">)</span>
@@ -297,6 +302,20 @@
 	<span class="k">def</span> <span class="nf">from_gltf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">gltf_loc</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_glb</span><span class="p">(</span><span class="n">gltf_loc</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="n">class_id</span><span class="p">)</span>
 
+<div class="viewcode-block" id="Mesh.from_fbx"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_fbx">[docs]</a>	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">from_fbx</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fbx_loc</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Load object from .fbx file&quot;&quot;&quot;</span>
+		<span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fbx_loc</span><span class="p">)</span> <span class="ow">and</span> <span class="n">fbx_loc</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.fbx&#39;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;File `</span><span class="si">{</span><span class="n">fbx_loc</span><span class="si">}</span><span class="s2">` not a valid .fbx file&quot;</span>
+
+		<span class="n">directory</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">fbx_loc</span><span class="p">)</span>
+		<span class="n">importer</span> <span class="o">=</span> <span class="n">GetNewObject</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="p">)</span>
+		<span class="k">with</span> <span class="n">importer</span><span class="p">:</span>
+			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">import_scene</span><span class="o">.</span><span class="n">fbx</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="n">fbx_loc</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">fname</span><span class="p">}])</span>
+
+		<span class="k">if</span> <span class="n">class_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">class_id</span> <span class="o">=</span> <span class="n">default_ids</span><span class="p">[</span><span class="s1">&#39;loaded_mesh&#39;</span><span class="p">]</span>
+
+		<span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">importer</span><span class="o">.</span><span class="n">imported_obj</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="n">class_id</span><span class="p">)</span></div>
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">origin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Vector</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector</span><span class="p">]]:</span>
@@ -329,7 +348,8 @@
 					<span class="n">vec</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">origin</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 					<span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">vec</span>
 				<span class="k">except</span><span class="p">:</span>
-					<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error with setting origin. Expects a list of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">)</span><span class="si">}</span><span class="s2"> 3-long Vector. Received: </span><span class="si">{</span><span class="n">origin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+					<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+						<span class="sa">f</span><span class="s2">&quot;Error with setting origin. Expects a list of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">)</span><span class="si">}</span><span class="s2"> 3-long Vector. Received: </span><span class="si">{</span><span class="n">origin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="nf">get_all_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref_frame</span><span class="o">=</span><span class="s1">&#39;WORLD&#39;</span><span class="p">):</span>
 		<span class="n">verts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vert</span><span class="o">.</span><span class="n">co</span><span class="p">[:]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span> <span class="k">for</span> <span class="n">vert</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
@@ -346,7 +366,6 @@
 
 		<span class="n">verts</span> <span class="o">=</span> <span class="n">verts</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span> <span class="n">verts</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># convert from homogeneous coordinates</span>
 		<span class="k">return</span> <span class="n">verts</span><span class="o">.</span><span class="n">T</span>
-
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">materials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -368,7 +387,6 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">assigned_aovs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aov</span><span class="p">)</span></div>
 
-
 <div class="viewcode-block" id="Mesh.set_minimum_to"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.set_minimum_to">[docs]</a>	<span class="k">def</span> <span class="nf">set_minimum_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set minimum of object to a given position&quot;&quot;&quot;</span>
 		<span class="n">min_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_vertices</span><span class="p">(</span><span class="s1">&#39;WORLD&#39;</span><span class="p">)[:,</span> <span class="s1">&#39;XYZ&#39;</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">axis</span><span class="p">)]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
@@ -380,7 +398,7 @@
 	<span class="k">def</span> <span class="nf">matrix_world</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Return world matrix of object(s).</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">evaluated_depsgraph_get</span><span class="p">()</span> <span class="c1"># required to update object matrix</span>
+		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">evaluated_depsgraph_get</span><span class="p">()</span>  <span class="c1"># required to update object matrix</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">matrix_world</span>
 
 	<span class="nd">@property</span>
@@ -397,7 +415,6 @@
 	<span class="nd">@location</span><span class="o">.</span><span class="n">setter</span>
 	<span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
-
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -440,8 +457,6 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">_rotation_euler</span> <span class="o">=</span> <span class="n">rotation</span>
 
-
-
 	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">)</span>
 	<span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set scale of object&quot;&quot;&quot;</span>
@@ -454,8 +469,6 @@
 			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">resize_fac</span><span class="p">)</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">scale</span>
-
-
 
 <div class="viewcode-block" id="Mesh.translate"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.translate">[docs]</a>	<span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">translation</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Translate object&quot;&quot;&quot;</span>
@@ -476,7 +489,7 @@
 		<span class="n">scale</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">*</span> <span class="n">scale</span></div>
 
-<div class="viewcode-block" id="Mesh.delete"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.delete">[docs]</a>	<span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delete_materials</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Mesh.delete"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.delete">[docs]</a>	<span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delete_materials</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Clear mesh from scene &amp; mesh data.</span>
 
 <span class="sd">		:param delete_materials: Also delete object materials from scene&quot;&quot;&quot;</span>
@@ -501,7 +514,7 @@
 			<span class="k">for</span> <span class="n">material</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">materials</span><span class="p">:</span>
 				<span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">material</span><span class="p">,</span> <span class="n">do_unlink</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Mesh.centroid"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.centroid">[docs]</a>	<span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
+<div class="viewcode-block" id="Mesh.centroid"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.centroid">[docs]</a>	<span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;median&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Return the centroid of the mesh(es)</span>
 
@@ -519,7 +532,7 @@
 
 		<span class="k">return</span> <span class="n">centroid</span></div>
 
-	<span class="k">def</span> <span class="nf">_set_origin_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span><span class="n">Vector</span><span class="p">,</span> <span class="n">all_meshes</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_set_origin_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">all_meshes</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Override to set origin manually. Should only be used by internal functions.&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="n">all_meshes</span><span class="p">:</span>
 			<span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">:</span>
@@ -527,7 +540,7 @@
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">origin</span>
 
-<div class="viewcode-block" id="Mesh.origin_to_centroid"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.origin_to_centroid">[docs]</a>	<span class="k">def</span> <span class="nf">origin_to_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;bounds&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Mesh.origin_to_centroid"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.origin_to_centroid">[docs]</a>	<span class="k">def</span> <span class="nf">origin_to_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;bounds&#39;</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Move object origin to centroid.</span>
 
 <span class="sd">		Four methods available:</span>
@@ -543,15 +556,15 @@
 		<span class="n">_valid_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bounds&#39;</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">,</span> <span class="s1">&#39;com_volume&#39;</span><span class="p">,</span> <span class="s1">&#39;com_area&#39;</span><span class="p">]</span>
 
 		<span class="n">_type_lookup</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="s1">&#39;ORIGIN_GEOMETRY&#39;</span><span class="p">,</span> <span class="n">median</span><span class="o">=</span><span class="s1">&#39;ORIGIN_GEOMETRY&#39;</span><span class="p">,</span>
-					<span class="n">com_volume</span><span class="o">=</span><span class="s1">&#39;ORIGIN_CENTER_OF_VOLUME&#39;</span><span class="p">,</span>
-					<span class="n">com_area</span><span class="o">=</span><span class="s1">&#39;ORIGIN_CENTER_OF_MASS&#39;</span><span class="p">)</span>
+							<span class="n">com_volume</span><span class="o">=</span><span class="s1">&#39;ORIGIN_CENTER_OF_VOLUME&#39;</span><span class="p">,</span>
+							<span class="n">com_area</span><span class="o">=</span><span class="s1">&#39;ORIGIN_CENTER_OF_MASS&#39;</span><span class="p">)</span>
 
 		<span class="n">center</span> <span class="o">=</span> <span class="s1">&#39;BOUNDS&#39;</span> <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;bounds&#39;</span> <span class="k">else</span> <span class="s1">&#39;MEDIAN&#39;</span>
 
 		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span><span class="p">):</span>
 			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">origin_set</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">_type_lookup</span><span class="p">[</span><span class="n">method</span><span class="p">],</span> <span class="n">center</span><span class="o">=</span><span class="n">center</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Mesh.get_keypoints"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.get_keypoints">[docs]</a>	<span class="k">def</span> <span class="nf">get_keypoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idxs</span><span class="p">:</span><span class="nb">list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span><span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector</span><span class="p">]:</span>
+<div class="viewcode-block" id="Mesh.get_keypoints"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.get_keypoints">[docs]</a>	<span class="k">def</span> <span class="nf">get_keypoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idxs</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector</span><span class="p">]:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Return 3D keypoint positions in world coordinates, given either:</span>
 
 <span class="sd">		:param idxs: list of indices or ndarray of keypoints to project (only valid for single-mesh objects)</span>
@@ -561,7 +574,6 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 
 		<span class="k">assert</span> <span class="p">(</span><span class="n">idxs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">position</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;Must provide either idxs or position, but not both.&quot;</span>
-
 
 		<span class="k">if</span> <span class="n">idxs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 			<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Can only project keypoints by index for single-mesh objects.&quot;</span>
@@ -574,7 +586,67 @@
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span></div>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+
+<div class="viewcode-block" id="Mesh.get_armature"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.get_armature">[docs]</a>	<span class="k">def</span> <span class="nf">get_armature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">armature_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Get armature.</span>
+<span class="sd">		If no name given, return first armature found.</span>
+
+<span class="sd">		:param armature_name: Name of armature to load.&quot;&quot;&quot;</span>
+
+		<span class="n">armatures</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;ARMATURE&#39;</span><span class="p">]</span>
+
+		<span class="k">if</span> <span class="n">armature_name</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">arm</span> <span class="ow">in</span> <span class="n">armatures</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">arm</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">armature_name</span><span class="p">:</span>
+					<span class="k">return</span> <span class="n">arm</span>
+
+			<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Armature `</span><span class="si">{</span><span class="n">armature_name</span><span class="si">}</span><span class="s2">` not found.&quot;</span><span class="p">)</span>
+
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">armatures</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No armatures found.&quot;</span><span class="p">)</span>
+
+			<span class="k">return</span> <span class="n">armatures</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Mesh.get_bone"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.get_bone">[docs]</a>	<span class="k">def</span> <span class="nf">get_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">armature_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Get bone from armature.</span>
+<span class="sd">		:param bone_name:</span>
+<span class="sd">		:param armature_name: If not given, will load first available armature found</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">armature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_armature</span><span class="p">(</span><span class="n">armature_name</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">bone</span> <span class="o">=</span> <span class="n">armature</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">bones</span><span class="p">[</span><span class="n">bone_name</span><span class="p">]</span>
+		<span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bone `</span><span class="si">{</span><span class="n">bone_name</span><span class="si">}</span><span class="s2">` not found in armature `</span><span class="si">{</span><span class="n">armature</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">bone</span></div>
+
+<div class="viewcode-block" id="Mesh.pose_bone"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.pose_bone">[docs]</a>	<span class="k">def</span> <span class="nf">pose_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">armature_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">Vector</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Vector</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+				  <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set the pose of a bone by giving a Euler XYZ rotation and/or location.</span>
+
+<span class="sd">		:param bone_name: Name of bone to pose</span>
+<span class="sd">		:param armature_name: Name of armature to use. If not given, will use first armature found.</span>
+<span class="sd">		:param rotation: Euler XYZ rotation in radians</span>
+<span class="sd">		:param location: Location in object space</span>
+<span class="sd">		:param frame: Frame to set pose on. If given, will insert keyframe here.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="k">with</span> <span class="n">SetMode</span><span class="p">(</span><span class="s1">&#39;POSE&#39;</span><span class="p">):</span>
+			<span class="n">bone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bone</span><span class="p">(</span><span class="n">bone_name</span><span class="p">,</span> <span class="n">armature_name</span><span class="p">)</span>
+			<span class="n">bone</span><span class="o">.</span><span class="n">rotation_mode</span> <span class="o">=</span> <span class="s1">&#39;XYZ&#39;</span>
+			<span class="k">if</span> <span class="n">rotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="n">bone</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">rotation</span>
+				<span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+					<span class="n">bone</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;rotation_euler&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="n">bone</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
+				<span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+					<span class="n">bone</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
