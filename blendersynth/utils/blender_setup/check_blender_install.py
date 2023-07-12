@@ -59,6 +59,10 @@ def check_blender_install(force_all=False,
 			if not check_module(python_path, dependency):
 				install_module(python_path, dependency)
 
+		# First uninstall blendersynth if present (in case of updates)
+		if check_module(python_path, 'blendersynth'):
+			subprocess.check_call([python_path, '-m', 'pip', 'uninstall', '-y', 'blendersynth'])
+
 		# Install blendersynth package to blender's python
 		if blendersynth_from_local:
 			# Install from local setup.py
