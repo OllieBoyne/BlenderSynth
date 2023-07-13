@@ -10,6 +10,8 @@ examples_dir = 'examples'
 
 make_dirs([static_python_dir, python_dir])
 
+always_caps_words = ['AOV'] # always capitalize these words
+
 def is_script_directory(src):
 	contains_scripts = any(file.endswith(".py") for file in os.listdir(src))
 	subfolders_contain_scripts = any(is_script_directory(os.path.join(src, file)) for file in os.listdir(src) if os.path.isdir(os.path.join(src, file)))
@@ -22,9 +24,12 @@ def format_script_name(src):
 	- Sentence case
 	- Replace underscores with spaces
 	- Remove extension
+	- Capitalize any words in always_caps_words
 	"""
 
-	return os.path.splitext(os.path.basename(src))[0].replace("_", " ").capitalize()
+	formatted = os.path.splitext(os.path.basename(src))[0].replace("_", " ").capitalize()
+	formatted = " ".join([s, s.upper()][s.upper() in always_caps_words] for s in formatted.split())
+	return formatted
 
 def copy_python_script(src):
 	"""

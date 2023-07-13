@@ -65,10 +65,11 @@ class World():
 
 		self.mode = 'HDRI'
 
-	def set_color(self, color: Union[list, tuple]):
+	def set_color(self, color: Union[list, tuple], affect_scene:bool=True):
 		"""Set the world color.
 
-		:param color: RGB or RGBA color"""
+		:param color: RGB or RGBA color
+		:param affect_scene: Toggle for whether color's lighting should affect the scene (if False, functions as a solid background color)"""
 
 		self._setup_color()
 
@@ -78,14 +79,18 @@ class World():
 			color = (*color, 1.0)
 
 		self.node_background.inputs["Color"].default_value = color
+		self._lighting_from_background(affect_scene)
 
-	def set_hdri(self, pth:str):
+	def set_hdri(self, pth:str, affect_scene:bool=True):
 		"""Set the HDRI image location
 
-		:param pth: Path to the HDRI image (.hdr or .exr)"""
+		:param pth: Path to the HDRI image (.hdr or .exr)
+		:param affect_scene: Toggle for whether color's lighting should affect the scene (if False, functions as a solid background color)"""
+
 
 		self._setup_hdri()
 		self.world_nodes['Environment Texture'].image = bpy.data.images.load(pth)
+		self._lighting_from_background(affect_scene)
 
 	def set_intensity(self, intensity:float=1.):
 		"""Set the intensity of the color/HDRI.
@@ -96,6 +101,10 @@ class World():
 
 	def set_transparent(self, transparent=True):
 		bpy.context.scene.render.film_transparent = transparent
+
+	def _lighting_from_background(self, val=True):
+		"""Change the ability for the background to influence lighting on the scene"""
+		self.world.cycles_visibility.diffuse = val
 
 
 world = World()
