@@ -5,7 +5,7 @@ import blendersynth as bsyn
 bsyn.run_this_script(debug=True)
 
 
-class DistToCubeAOV(bsyn.aov.AOV):
+class WorldPositionAOV(bsyn.aov.AOV):
 	def _add_to_shader(self, shader_node_tree):
 		# Define nodes to add
 		geometry_node = shader_node_tree.nodes.new('ShaderNodeNewGeometry')
@@ -27,7 +27,7 @@ class DistToCubeAOV(bsyn.aov.AOV):
 monkey = bsyn.Mesh.from_primitive('monkey', scale=2)
 light = bsyn.Light.create('POINT', location=(0, -5, 0), intensity=100)
 
-aov = DistToCubeAOV('dist_to_cube')
+aov = WorldPositionAOV('WorldPosition')
 monkey.assign_aov(aov)
 
 # Set up render parameters
