@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../python/dataset_creation/index.html">Dataset creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python/animation.html">Animation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python/capturing_pose.html">Capturing pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/custom_aov.html">Custom aov</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -116,7 +117,7 @@
 <span class="p">}</span>
 
 
-<div class="viewcode-block" id="get_child_meshes"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.get_child_meshes">[docs]</a><span class="k">def</span> <span class="nf">get_child_meshes</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_child_meshes</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Given an object, return all meshes that are children of it. Recursively searches children of children.</span>
 <span class="sd">	Also returns any child objects that aren&#39;t meshes&quot;&quot;&quot;</span>
 	<span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;MESH&#39;</span><span class="p">:</span>
@@ -124,24 +125,11 @@
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">meshes</span><span class="p">,</span> <span class="n">other</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[</span><span class="n">obj</span><span class="p">]</span>
 		<span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-			<span class="n">child_meshes</span><span class="p">,</span> <span class="n">child_other</span> <span class="o">=</span> <span class="n">get_child_meshes</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+			<span class="n">child_meshes</span><span class="p">,</span> <span class="n">child_other</span> <span class="o">=</span> <span class="n">_get_child_meshes</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 			<span class="n">meshes</span> <span class="o">+=</span> <span class="n">child_meshes</span>
 			<span class="n">other</span> <span class="o">+=</span> <span class="n">child_other</span>
 
-		<span class="k">return</span> <span class="n">meshes</span><span class="p">,</span> <span class="n">other</span></div>
-
-
-<div class="viewcode-block" id="bounds_center"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.bounds_center">[docs]</a><span class="k">def</span> <span class="nf">bounds_center</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Get center of bounding box in world space&quot;&quot;&quot;</span>
-	<span class="n">local_bbox_center</span> <span class="o">=</span> <span class="mf">0.125</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">((</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">bound_box</span><span class="p">),</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">())</span>
-	<span class="n">global_bbox_center</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">@</span> <span class="n">local_bbox_center</span>
-	<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">global_bbox_center</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="vertex_center"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.vertex_center">[docs]</a><span class="k">def</span> <span class="nf">vertex_center</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Get center of vertices in world space&quot;&quot;&quot;</span>
-	<span class="n">verts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">mesh</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">@</span> <span class="n">v</span><span class="o">.</span><span class="n">co</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">])</span>
-	<span class="k">return</span> <span class="n">verts</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+		<span class="k">return</span> <span class="n">meshes</span><span class="p">,</span> <span class="n">other</span>
 
 
 <span class="k">def</span> <span class="nf">_euler_from</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
@@ -175,7 +163,7 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="n">scene</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">obj</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span> <span class="o">=</span> <span class="n">get_child_meshes</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span> <span class="o">=</span> <span class="n">_get_child_meshes</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
 		<span class="c1"># Must have a material, create if not passed</span>
 		<span class="k">if</span> <span class="n">material</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

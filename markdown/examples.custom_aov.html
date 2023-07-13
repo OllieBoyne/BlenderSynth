@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blendersynth.utils.blender_setup &mdash; BlenderSynth 2023 documentation</title>
+  <title>&lt;no title&gt; &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -18,9 +18,7 @@
         <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="blendersynth.utils.blender_setup.blender_locator" href="blendersynth.utils.blender_setup.blender_locator.html" />
-    <link rel="prev" title="blendersynth.utils.blender_importer" href="blendersynth.utils.blender_importer.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,12 +51,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../python/custom_aov.html">Custom aov</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
 </ul>
 
         </div>
@@ -75,10 +73,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup</span></code></li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/blendersynth.utils.blender_setup.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/markdown/examples.custom_aov.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -86,24 +83,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-utils-blender-setup">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup</span></code><a class="headerlink" href="#blendersynth-utils-blender-setup" title="Permalink to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.blender_setup.blender_locator.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup.blender_locator</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.blender_setup.blender_python_path.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup.blender_python_path</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.blender_setup.check_blender_install.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup.check_blender_install</span></code></a></li>
-</ul>
-</div>
-</section>
+  <p>This script shows how to create a custom shader AOV - in this example, the XYZ position (normalized between -1 and 1) as RGB values.</p>
+<p>If you create a custom AOV that you think might be useful to others, consider making a pull request to add it to the default set of AOVs!</p>
+<p>Note: creating custom nodes requires a reasonable understanding of Blender’s node trees. It is often easier to make the trees in Blender to test them, and then implement them in code.</p>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="blendersynth.utils.blender_importer.html" class="btn btn-neutral float-left" title="blendersynth.utils.blender_importer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="blendersynth.utils.blender_setup.blender_locator.html" class="btn btn-neutral float-right" title="blendersynth.utils.blender_setup.blender_locator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

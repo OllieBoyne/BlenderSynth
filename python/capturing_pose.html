@@ -50,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="dataset_creation/index.html">Dataset creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="animation.html">Animation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Capturing pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_aov.html">Custom aov</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -92,38 +93,37 @@
 <span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 
+<span class="c1"># Load Blender script and set-up render properties</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">load_blend</span><span class="p">(</span><span class="s1">&#39;../resources/scenes/capturing_pose.blend&#39;</span><span class="p">)</span>  <span class="c1"># load from scene</span>
-
-<span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>  <span class="c1"># create compositor</span>
-
-<span class="n">monkey</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_scene</span><span class="p">(</span><span class="s1">&#39;Monkey&#39;</span><span class="p">)</span>
-<span class="n">cube</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_scene</span><span class="p">(</span><span class="s1">&#39;Cube&#39;</span><span class="p">)</span>
-
-<span class="n">bounding_box_visual</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">get_bounding_box_visual</span><span class="p">()</span>
-<span class="n">keypoints_visual</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">get_keypoints_visual</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>  <span class="c1"># Create a visual of keypoints</span>
-<span class="n">axis_visual</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">get_axes_visual</span><span class="p">()</span>
-
-<span class="n">visual</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">stack_visuals</span><span class="p">(</span><span class="n">bounding_box_visual</span><span class="p">,</span> <span class="n">keypoints_visual</span><span class="p">,</span> <span class="n">axis_visual</span><span class="p">)</span>
-
 <span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_resolution</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_cycles_samples</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 
-<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;pose&#39;</span><span class="p">)</span>
-<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">visual</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;visual&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;pose&#39;</span><span class="p">)</span>
+<span class="c1"># Get objects</span>
+<span class="n">monkey</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_scene</span><span class="p">(</span><span class="s1">&#39;Monkey&#39;</span><span class="p">)</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_scene</span><span class="p">(</span><span class="s1">&#39;Cube&#39;</span><span class="p">)</span>
 
-<span class="c1"># calculate bounding boxes</span>
+<span class="c1"># Define compositor and visuals</span>
+<span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>
+<span class="n">bounding_box_visual</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">get_bounding_box_visual</span><span class="p">()</span>
+<span class="n">keypoints_visual</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">get_keypoints_visual</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>  <span class="c1"># Create a visual of keypoints</span>
+<span class="n">axis_visual</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">get_axes_visual</span><span class="p">()</span>
+<span class="n">combined_visual</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">stack_visuals</span><span class="p">(</span><span class="n">bounding_box_visual</span><span class="p">,</span> <span class="n">keypoints_visual</span><span class="p">,</span> <span class="n">axis_visual</span><span class="p">)</span>
+
+<span class="c1"># Define outputs</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;pose&#39;</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">combined_visual</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;visual&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;pose&#39;</span><span class="p">)</span>
+
+<span class="c1"># Calculate bounding boxes</span>
 <span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="n">monkey</span><span class="p">,</span> <span class="n">cube</span><span class="p">]</span>
 <span class="n">bounding_boxes</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">bounding_boxes</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span>
 
-<span class="c1"># calculate object centres as keypoints</span>
+<span class="c1"># Calculate object centres as keypoints</span>
 <span class="n">keypoints</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">keypoints</span><span class="o">.</span><span class="n">project_keypoints</span><span class="p">([</span><span class="n">obj</span><span class="o">.</span><span class="n">centroid</span><span class="p">()</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">])</span>
 
-<span class="c1"># calculate axes in 2D. In 3D, use e.g. monkey.axes</span>
+<span class="c1"># Calculate axes in 2D. In 3D, use e.g. monkey.axes</span>
 <span class="n">axes</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">get_multiple_axes</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span>
 
-<span class="n">overlay_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">BBox</span><span class="o">=</span><span class="n">bounding_boxes</span><span class="p">,</span> <span class="n">Keypoints</span><span class="o">=</span><span class="n">keypoints</span><span class="p">,</span>
-					  <span class="n">Axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
-
+<span class="n">overlay_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">BBox</span><span class="o">=</span><span class="n">bounding_boxes</span><span class="p">,</span> <span class="n">Keypoints</span><span class="o">=</span><span class="n">keypoints</span><span class="p">,</span> <span class="n">Axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">overlay_kwargs</span><span class="o">=</span><span class="n">overlay_kwargs</span><span class="p">)</span>
 </pre></div>
 </div>

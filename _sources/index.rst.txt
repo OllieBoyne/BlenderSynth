@@ -12,6 +12,7 @@
    python/animation
    python/capturing_pose
    markdown/examples.README.md
+   python/custom_aov
 
 .. toctree::
    :maxdepth: 2

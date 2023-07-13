@@ -1,0 +1,9 @@
+Custom aov
+==========
+
+.. mdinclude:: ../markdown/examples.custom_aov.md
+
+
+.. literalinclude:: ../_static/python/examples.custom_aov.py
+   :language: python
+	
