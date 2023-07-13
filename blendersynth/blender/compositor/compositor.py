@@ -15,6 +15,8 @@ from .image_overlay import KeypointsOverlay, BoundingBoxOverlay, AlphaImageOverl
 from typing import Union, List
 from ...utils.node_arranger import tidy_tree
 
+from ..world import world
+
 # Mapping of file formats to extensions
 format_to_extension = {
 	'BMP': '.bmp',
@@ -56,7 +58,13 @@ def remove_ext(fname):
 class Compositor:
 	"""Compositor output - for handling file outputs, and managing Compositor node tree"""
 
-	def __init__(self, view_layer='ViewLayer'):
+	def __init__(self, view_layer='ViewLayer', background_color:tuple=None,
+				 rgb_color_space:str='Filmic sRGB'):
+		"""
+		:param view_layer: Name of View Layer to render
+		:param background_color: If given, RGB[A] tuple in range [0-1], will overwrite World background with solid color (while retaining lighting effects).
+		:param rgb_color_space: Color transform for RGB only.
+		"""
 		# Create compositor node tree
 		bpy.context.scene.use_nodes = True
 		self.node_tree = bpy.context.scene.node_tree
@@ -69,6 +77,15 @@ class Compositor:
 		self.overlays = {}
 		self.aovs = []  # List of AOVs (used to update before rendering)
 
+		# We set view transform to 'Raw' to avoid any gamma correction to all non-Image layers
+		bpy.context.scene.view_settings.view_transform = 'Raw'
+
+		# Socket to be used as RGB input for anything. Defined separately in case of applying overlays (e.g. background colour)
+		self._rgb_socket = get_node_by_name(self.node_tree, 'Render Layers').outputs['Image']
+		self._set_rgb_color_space(rgb_color_space)
+		if background_color is not None:
+			self._set_background_color(background_color)
+
 	def tidy_tree(self):
 		"""Tidy up node tree"""
 		tidy_tree(self.node_tree)
@@ -77,6 +94,13 @@ class Compositor:
 	def render_layers_node(self):
 		return get_node_by_name(self.node_tree, 'Render Layers')
 
+	def _get_render_layer_output(self, key:str):
+		"""Get output socket from Render Layers node"""
+		if key == 'Image': # special case
+			return self._rgb_socket
+		else:
+			return self.render_layers_node.outputs[key]
+
 	def get_mask(self, index, input_rgb: Union[str, CompositorNodeGroup], anti_aliasing=False) -> CompositorNodeGroup:
 		"""Get mask node from pass index. If not found, create new mask node"""
 		bpy.context.scene.view_layers[self.view_layer].use_pass_object_index = True  # Make sure object index is enabled
@@ -84,7 +108,7 @@ class Compositor:
 		if index not in self.mask_nodes:
 
 			if isinstance(input_rgb, str):
-				ip_node = self.render_layers_node.outputs[input_rgb]
+				ip_node = self._get_render_layer_output(input_rgb)
 
 			elif isinstance(input_rgb, CompositorNodeGroup):
 				ip_node = input_rgb.outputs['Image']
@@ -99,7 +123,7 @@ class Compositor:
 							  use_antialiasing=anti_aliasing)
 
 			self.node_tree.links.new(ip_node, cng.input('Image'))
-			self.node_tree.links.new(self.render_layers_node.outputs['IndexOB'], cng.input('IndexOB'))
+			self.node_tree.links.new(self._get_render_layer_output('IndexOB'), cng.input('IndexOB'))
 			self.mask_nodes[index] = cng
 
 		self.tidy_tree()
@@ -115,7 +139,7 @@ class Compositor:
 		"""
 
 		cng = BoundingBoxOverlay(f"Bounding Box Visual", self.node_tree, col=col, thickness=thickness)
-		self.node_tree.links.new(self.render_layers_node.outputs['Image'], cng.input('Image'))
+		self.node_tree.links.new(self._get_render_layer_output('Image'), cng.input('Image'))
 
 		if 'BBox' in self.overlays:
 			raise ValueError("Only allowed one BBox overlay (it can contain multiple objects).")
@@ -138,7 +162,7 @@ class Compositor:
 
 		cng = KeypointsOverlay(f"Keypoints Visual", self.node_tree, marker=marker, color=color,
 							   size=size, thickness=thickness)
-		self.node_tree.links.new(self.render_layers_node.outputs['Image'], cng.input('Image'))
+		self.node_tree.links.new(self._get_render_layer_output('Image'), cng.input('Image'))
 
 		if 'Keypoints' in self.overlays:
 			raise ValueError("Only allowed one Keypoints overlay.")
@@ -158,7 +182,7 @@ class Compositor:
 
 		cng = AxesOverlay(f"Axes Visual", self.node_tree,
 							   size=size, thickness=thickness)
-		self.node_tree.links.new(self.render_layers_node.outputs['Image'], cng.input('Image'))
+		self.node_tree.links.new(self._get_render_layer_output('Image'), cng.input('Image'))
 
 		if 'Axes' in self.overlays:
 			raise ValueError("Only allowed one Axes overlay.")
@@ -199,7 +223,7 @@ class Compositor:
 		col = ([i/255 for i in col] + [1])[:4]
 
 		cng = DepthVis(self.node_tree, max_depth=max_depth, col=col)
-		self.node_tree.links.new(self.render_layers_node.outputs['Depth'], cng.input('Depth'))
+		self.node_tree.links.new(self._get_render_layer_output('Depth'), cng.input('Depth'))
 
 		self.tidy_tree()
 		return cng
@@ -253,7 +277,7 @@ class Compositor:
 		node.name = node_name
 
 		if isinstance(input_data, str):
-			self.node_tree.links.new(self.render_layers_node.outputs[input_data], node.inputs['Image'])
+			self.node_tree.links.new(self._get_render_layer_output(input_data), node.inputs['Image'])
 
 		elif isinstance(input_data, CompositorNodeGroup):  # add overlay in between
 			self.node_tree.links.new(input_data.outputs[0], node.inputs['Image'])
@@ -347,3 +371,38 @@ class Compositor:
 
 		if not animation:
 			self.fix_namings()
+
+	def _set_rgb_color_space(self, color_space:str='Filmic sRGB'):
+		"""Color spaces are all handled manually within compositor (so that we keep
+		AOVs in raw space). So set the color space for RGB socket here."""
+
+		color_space_node = self.node_tree.nodes.new('CompositorNodeConvertColorSpace')
+		color_space_node.from_color_space = 'Linear'
+		color_space_node.to_color_space = color_space
+
+		self.node_tree.links.new(self._rgb_socket, color_space_node.inputs[0])
+		self._rgb_socket = color_space_node.outputs[0]
+
+	def _set_background_color(self, color:tuple=(0, 0, 0)):
+		"""Set a solid background color, instead of transparent.
+		Will remove the visuals of existing world background (but not the lighting effects).
+
+		:param color: RGBA color, in range [0, 1]
+		"""
+
+		world.set_transparent()
+
+		rgba = color
+		if len(rgba) == 3:
+			rgba = (*rgba, 1)
+
+		rgb_node = self.node_tree.nodes.new('CompositorNodeRGB')
+		rgb_node.outputs[0].default_value = rgba
+
+		mix_node = self.node_tree.nodes.new('CompositorNodeMixRGB')
+
+		self.node_tree.links.new(self._rgb_socket, mix_node.inputs[2])
+		self.node_tree.links.new(rgb_node.outputs[0], mix_node.inputs[1])
+
+		self.node_tree.links.new(self._get_render_layer_output('Alpha'), mix_node.inputs['Fac'])
+		self._rgb_socket = mix_node.outputs['Image']

@@ -2,7 +2,7 @@
 
 import blendersynth as bsyn
 
-bsyn.run_this_script(debug=False)
+bsyn.run_this_script(debug=True)
 
 
 class DistToCubeAOV(bsyn.aov.AOV):
@@ -33,10 +33,9 @@ monkey.assign_aov(aov)
 # Set up render parameters
 bsyn.render.set_resolution(256, 256)
 bsyn.render.set_cycles_samples(10)
-bsyn.render.set_transparent()
 
 # Define outputs & render
-comp = bsyn.Compositor()
+comp = bsyn.Compositor(background_color=(1, 1, 1))
 comp.define_output('Image', file_name='rgb', directory='custom_aov')
 comp.define_output(aov, file_name='position', directory='custom_aov')
 comp.render()
