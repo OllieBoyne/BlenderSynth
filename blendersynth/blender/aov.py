@@ -5,6 +5,10 @@ from ..utils.node_arranger import tidy_tree
 
 ref_frames = ['CAMERA', 'WORLD', 'OBJECT']
 
+# Acceptable socket types for AOV colors & nodes
+_socket_color_types = (bpy.types.NodeSocketVector, bpy.types.NodeSocketColor)
+_socket_value_types = (bpy.types.NodeSocketFloat, bpy.types.NodeSocketInt)
+
 class AOV:
 	"""A generic Arbitrary Output Value.
 	An AOV is a float or color value that can be output from a shader to the renderer.
@@ -17,6 +21,7 @@ class AOV:
 			name = self.__class__.__name__
 
 		self.name = name
+		self._aov = None
 		self._add_to_view_layer()
 
 	def _add_to_view_layer(self, view_layer=None):
@@ -30,14 +35,31 @@ class AOV:
 
 		aov = view_layer.aovs.add()
 		aov.name = self.name
-		aov.type = self.AOV_TYPE
+		self._aov = aov
+
 
 	def add_to_shader(self, shader_node_tree):
 		"""Add AOV to shader node tree"""
-		self._add_to_shader(shader_node_tree)
+		# add_to_shader must return output socket to connect to node
+		out_socket = self._add_to_shader(shader_node_tree)
+
+		# check node socket is correct type
+		AOV_TYPE = None
+		if isinstance(out_socket, _socket_color_types):
+			AOV_TYPE = 'COLOR'
+		elif isinstance(out_socket, _socket_value_types):
+			AOV_TYPE = 'VALUE'
+		else:
+			raise ValueError(f"Output of _add_to_layer must be in {_socket_color_types} if Color or {_socket_value_types} if value. Got: `{type(out_socket)}`")
+
+		shader_aov_node = shader_node_tree.nodes.new('ShaderNodeOutputAOV')
+		shader_aov_node.name = self.name
+		shader_node_tree.links.new(out_socket, shader_aov_node.inputs[AOV_TYPE.title()])
+
+		self._aov.type = self.AOV_TYPE
 		tidy_tree(shader_node_tree)
 
-	def _add_to_shader(self, shader_node_tree):
+	def _add_to_shader(self, shader_node_tree) -> bpy.types.NodeSocket:
 		raise NotImplementedError
 
 	def update(self):
@@ -71,8 +93,6 @@ class NormalsAOV(AOV):
 		geom_node = shader_node_tree.nodes.new('ShaderNodeNewGeometry')
 		vec_transform = shader_node_tree.nodes.new('ShaderNodeVectorTransform')
 		map_range_node = shader_node_tree.nodes.new('ShaderNodeMapRange')
-		shader_aov_node = shader_node_tree.nodes.new('ShaderNodeOutputAOV')
-		shader_aov_node.name = self.name
 
 		vec_transform.vector_type = 'NORMAL'
 		vec_transform.convert_to = self.ref_frame
@@ -93,7 +113,8 @@ class NormalsAOV(AOV):
 		shader_node_tree.links.new(geom_node.outputs['True Normal'], vec_transform.inputs['Vector'])
 		shader_node_tree.links.new(vec_transform.outputs['Vector'], map_range_node.inputs['Vector'])
 		shader_node_tree.links.new(map_range_node.outputs['Vector'], sep_xyz_node.inputs['Vector'])
-		shader_node_tree.links.new(comb_xyz_node.outputs['Vector'], shader_aov_node.inputs['Color'])
+
+		return comb_xyz_node.outputs['Vector']
 
 	def update(self, scene=None):
 		"""Some AOVs may need render_time updates from scene context, hence this method"""
@@ -105,21 +126,14 @@ class NOCAOV(AOV):
 
 	def _add_to_shader(self, shader_node_tree):
 		texcon_node = shader_node_tree.nodes.new('ShaderNodeTexCoord')
-		shader_aov_node = shader_node_tree.nodes.new('ShaderNodeOutputAOV')
-		shader_aov_node.name = self.name
-
-		shader_node_tree.links.new(texcon_node.outputs['Generated'], shader_aov_node.inputs['Color'])
-
+		return texcon_node.outputs['Generated']
 
 class UVAOV(AOV):
 	"""UV coordinates"""
 
 	def _add_to_shader(self, shader_node_tree):
 		texcon_node = shader_node_tree.nodes.new('ShaderNodeTexCoord')
-		shader_aov_node = shader_node_tree.nodes.new('ShaderNodeOutputAOV')
-		shader_aov_node.name = self.name
-
-		shader_node_tree.links.new(texcon_node.outputs['UV'], shader_aov_node.inputs['Color'])
+		return texcon_node.outputs['UV']
 
 
 class AttrAOV(AOV):
@@ -131,11 +145,7 @@ class AttrAOV(AOV):
 		attr_node = shader_node_tree.nodes.new('ShaderNodeAttribute')
 		attr_node.attribute_type = self.attribute_type
 		attr_node.attribute_name = self.attribute_name
-
-		shader_aov_node = shader_node_tree.nodes.new('ShaderNodeOutputAOV')
-		shader_aov_node.name = self.name
-
-		shader_node_tree.links.new(attr_node.outputs['Instance Index'], shader_aov_node.inputs['Value'])
+		return attr_node.outputs['Instance Index']
 
 class InstanceIDAOV(AttrAOV):
 	"""Instance ID - given to each object on creation.
@@ -199,11 +209,8 @@ class AttrRGBAOV(AOV):
 		group_node = shader_node_tree.nodes.new('ShaderNodeGroup')
 		group_node.node_tree = self.group
 
-		shader_aov_node = shader_node_tree.nodes.new('ShaderNodeOutputAOV')
-		shader_aov_node.name = self.name
-
 		shader_node_tree.links.new(attr_node.outputs['Fac'], group_node.inputs['Index'])
-		shader_node_tree.links.new(group_node.outputs['Color'], shader_aov_node.inputs['Color'])
+		return group_node.outputs['Color']
 
 	def update(self):
 		self.div_node.inputs[1].default_value = self.N

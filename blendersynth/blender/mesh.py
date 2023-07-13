@@ -32,7 +32,7 @@ default_ids = {
 }
 
 
-def get_child_meshes(obj):
+def _get_child_meshes(obj):
 	"""Given an object, return all meshes that are children of it. Recursively searches children of children.
 	Also returns any child objects that aren't meshes"""
 	if obj.type == 'MESH':
@@ -40,24 +40,11 @@ def get_child_meshes(obj):
 	else:
 		meshes, other = [], [obj]
 		for child in obj.children:
-			child_meshes, child_other = get_child_meshes(child)
+			child_meshes, child_other = _get_child_meshes(child)
 			meshes += child_meshes
 			other += child_other
 
 		return meshes, other
-
-
-def bounds_center(mesh):
-	"""Get center of bounding box in world space"""
-	local_bbox_center = 0.125 * sum((mathutils.Vector(b) for b in mesh.bound_box), mathutils.Vector())
-	global_bbox_center = mesh.matrix_world @ local_bbox_center
-	return np.array(global_bbox_center)
-
-
-def vertex_center(mesh):
-	"""Get center of vertices in world space"""
-	verts = np.array([mesh.matrix_world @ v.co for v in mesh.data.vertices])
-	return verts.mean(axis=0)
 
 
 def _euler_from(a: mathutils.Euler, b: mathutils.Euler):
@@ -91,7 +78,7 @@ class Mesh(BsynObject):
 
 		self.scene = scene
 		self._object = obj
-		self._meshes, self._other_objects = get_child_meshes(obj)
+		self._meshes, self._other_objects = _get_child_meshes(obj)
 
 		# Must have a material, create if not passed
 		if material is None:
