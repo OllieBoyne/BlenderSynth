@@ -1,4 +1,4 @@
-Custom aov
+Custom AOV
 ==========
 
 .. mdinclude:: ../markdown/examples.custom_aov.md

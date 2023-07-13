@@ -11,8 +11,8 @@
    python/dataset_creation/index
    python/animation
    python/capturing_pose
-   markdown/examples.README.md
    python/custom_aov
+   markdown/examples.README.md
 
 .. toctree::
    :maxdepth: 2

@@ -47,7 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../python/dataset_creation/index.html">Dataset creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python/animation.html">Animation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python/capturing_pose.html">Capturing pose</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../python/custom_aov.html">Custom aov</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/custom_aov.html">Custom AOV</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -150,10 +150,11 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;HDRI&#39;</span>
 
-<div class="viewcode-block" id="World.set_color"><a class="viewcode-back" href="../../../api/blendersynth.blender.world.html#blendersynth.blender.world.World.set_color">[docs]</a>	<span class="k">def</span> <span class="nf">set_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]):</span>
+<div class="viewcode-block" id="World.set_color"><a class="viewcode-back" href="../../../api/blendersynth.blender.world.html#blendersynth.blender.world.World.set_color">[docs]</a>	<span class="k">def</span> <span class="nf">set_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">],</span> <span class="n">affect_scene</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set the world color.</span>
 
-<span class="sd">		:param color: RGB or RGBA color&quot;&quot;&quot;</span>
+<span class="sd">		:param color: RGB or RGBA color</span>
+<span class="sd">		:param affect_scene: Toggle for whether color&#39;s lighting should affect the scene (if False, functions as a solid background color)&quot;&quot;&quot;</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">_setup_color</span><span class="p">()</span>
 
@@ -162,15 +163,19 @@
 		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
 			<span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">color</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_background</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Color&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">color</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">node_background</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Color&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">color</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_lighting_from_background</span><span class="p">(</span><span class="n">affect_scene</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="World.set_hdri"><a class="viewcode-back" href="../../../api/blendersynth.blender.world.html#blendersynth.blender.world.World.set_hdri">[docs]</a>	<span class="k">def</span> <span class="nf">set_hdri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pth</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="World.set_hdri"><a class="viewcode-back" href="../../../api/blendersynth.blender.world.html#blendersynth.blender.world.World.set_hdri">[docs]</a>	<span class="k">def</span> <span class="nf">set_hdri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pth</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">affect_scene</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set the HDRI image location</span>
 
-<span class="sd">		:param pth: Path to the HDRI image (.hdr or .exr)&quot;&quot;&quot;</span>
+<span class="sd">		:param pth: Path to the HDRI image (.hdr or .exr)</span>
+<span class="sd">		:param affect_scene: Toggle for whether color&#39;s lighting should affect the scene (if False, functions as a solid background color)&quot;&quot;&quot;</span>
+
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">_setup_hdri</span><span class="p">()</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">[</span><span class="s1">&#39;Environment Texture&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pth</span><span class="p">)</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">[</span><span class="s1">&#39;Environment Texture&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pth</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_lighting_from_background</span><span class="p">(</span><span class="n">affect_scene</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="World.set_intensity"><a class="viewcode-back" href="../../../api/blendersynth.blender.world.html#blendersynth.blender.world.World.set_intensity">[docs]</a>	<span class="k">def</span> <span class="nf">set_intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intensity</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set the intensity of the color/HDRI.</span>
@@ -180,7 +185,11 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">[</span><span class="s2">&quot;Background&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">intensity</span></div>
 
 	<span class="k">def</span> <span class="nf">set_transparent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">film_transparent</span> <span class="o">=</span> <span class="n">transparent</span></div>
+		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">film_transparent</span> <span class="o">=</span> <span class="n">transparent</span>
+
+	<span class="k">def</span> <span class="nf">_lighting_from_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Change the ability for the background to influence lighting on the scene&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">cycles_visibility</span><span class="o">.</span><span class="n">diffuse</span> <span class="o">=</span> <span class="n">val</span></div>
 
 
 <span class="n">world</span> <span class="o">=</span> <span class="n">World</span><span class="p">()</span>
