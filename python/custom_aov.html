@@ -89,12 +89,13 @@
 <h1>Custom aov<a class="headerlink" href="#custom-aov" title="Permalink to this heading"></a></h1>
 <p>This script shows how to create a custom shader AOV - in this example, the XYZ position (normalized between -1 and 1) as RGB values.</p>
 <p>If you create a custom AOV that you think might be useful to others, consider making a pull request to add it to the default set of AOVs!</p>
+<a class="reference external image-reference" href="../_static/images/resources%20custom_aov.png"><img alt="" src="../_images/resources%2520custom_aov.png" /></a>
 <p>Note: creating custom nodes requires a reasonable understanding of Blender’s node trees. It is often easier to make the trees in Blender to test them, and then implement them in code.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Create a custom AOV based on distance to cube.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
 
-<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">DistToCubeAOV</span><span class="p">(</span><span class="n">bsyn</span><span class="o">.</span><span class="n">aov</span><span class="o">.</span><span class="n">AOV</span><span class="p">):</span>
@@ -125,10 +126,9 @@
 <span class="c1"># Set up render parameters</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_resolution</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_cycles_samples</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_transparent</span><span class="p">()</span>
 
 <span class="c1"># Define outputs &amp; render</span>
-<span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>
+<span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">(</span><span class="n">background_color</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;custom_aov&#39;</span><span class="p">)</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">aov</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;custom_aov&#39;</span><span class="p">)</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>

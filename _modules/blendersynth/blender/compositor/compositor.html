@@ -100,6 +100,8 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">from</span> <span class="nn">...utils.node_arranger</span> <span class="kn">import</span> <span class="n">tidy_tree</span>
 
+<span class="kn">from</span> <span class="nn">..world</span> <span class="kn">import</span> <span class="n">world</span>
+
 <span class="c1"># Mapping of file formats to extensions</span>
 <span class="n">format_to_extension</span> <span class="o">=</span> <span class="p">{</span>
 	<span class="s1">&#39;BMP&#39;</span><span class="p">:</span> <span class="s1">&#39;.bmp&#39;</span><span class="p">,</span>
@@ -141,7 +143,13 @@
 <div class="viewcode-block" id="Compositor"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor">[docs]</a><span class="k">class</span> <span class="nc">Compositor</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Compositor output - for handling file outputs, and managing Compositor node tree&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view_layer</span><span class="o">=</span><span class="s1">&#39;ViewLayer&#39;</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view_layer</span><span class="o">=</span><span class="s1">&#39;ViewLayer&#39;</span><span class="p">,</span> <span class="n">background_color</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+				 <span class="n">rgb_color_space</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;Filmic sRGB&#39;</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		:param view_layer: Name of View Layer to render</span>
+<span class="sd">		:param background_color: If given, RGB[A] tuple in range [0-1], will overwrite World background with solid color (while retaining lighting effects).</span>
+<span class="sd">		:param rgb_color_space: Color transform for RGB only.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="c1"># Create compositor node tree</span>
 		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">use_nodes</span> <span class="o">=</span> <span class="kc">True</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">node_tree</span>
@@ -154,6 +162,15 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">overlays</span> <span class="o">=</span> <span class="p">{}</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">aovs</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List of AOVs (used to update before rendering)</span>
 
+		<span class="c1"># We set view transform to &#39;Raw&#39; to avoid any gamma correction to all non-Image layers</span>
+		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">view_settings</span><span class="o">.</span><span class="n">view_transform</span> <span class="o">=</span> <span class="s1">&#39;Raw&#39;</span>
+
+		<span class="c1"># Socket to be used as RGB input for anything. Defined separately in case of applying overlays (e.g. background colour)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">get_node_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="s1">&#39;Render Layers&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_rgb_color_space</span><span class="p">(</span><span class="n">rgb_color_space</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">background_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_set_background_color</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
+
 <div class="viewcode-block" id="Compositor.tidy_tree"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.tidy_tree">[docs]</a>	<span class="k">def</span> <span class="nf">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Tidy up node tree&quot;&quot;&quot;</span>
 		<span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span></div>
@@ -162,6 +179,13 @@
 	<span class="k">def</span> <span class="nf">render_layers_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="n">get_node_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="s1">&#39;Render Layers&#39;</span><span class="p">)</span>
 
+	<span class="k">def</span> <span class="nf">_get_render_layer_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Get output socket from Render Layers node&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;Image&#39;</span><span class="p">:</span> <span class="c1"># special case</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
 <div class="viewcode-block" id="Compositor.get_mask"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_mask">[docs]</a>	<span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">input_rgb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">],</span> <span class="n">anti_aliasing</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompositorNodeGroup</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Get mask node from pass index. If not found, create new mask node&quot;&quot;&quot;</span>
 		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">view_layers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">view_layer</span><span class="p">]</span><span class="o">.</span><span class="n">use_pass_object_index</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Make sure object index is enabled</span>
@@ -169,7 +193,7 @@
 		<span class="k">if</span> <span class="n">index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_nodes</span><span class="p">:</span>
 
 			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_rgb</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-				<span class="n">ip_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">input_rgb</span><span class="p">]</span>
+				<span class="n">ip_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="n">input_rgb</span><span class="p">)</span>
 
 			<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_rgb</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">):</span>
 				<span class="n">ip_node</span> <span class="o">=</span> <span class="n">input_rgb</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">]</span>
@@ -184,7 +208,7 @@
 							  <span class="n">use_antialiasing</span><span class="o">=</span><span class="n">anti_aliasing</span><span class="p">)</span>
 
 			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">ip_node</span><span class="p">,</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;IndexOB&#39;</span><span class="p">],</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;IndexOB&#39;</span><span class="p">))</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s1">&#39;IndexOB&#39;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;IndexOB&#39;</span><span class="p">))</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">mask_nodes</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">cng</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">tidy_tree</span><span class="p">()</span>
@@ -200,7 +224,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 
 		<span class="n">cng</span> <span class="o">=</span> <span class="n">BoundingBoxOverlay</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bounding Box Visual&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
 
 		<span class="k">if</span> <span class="s1">&#39;BBox&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only allowed one BBox overlay (it can contain multiple objects).&quot;</span><span class="p">)</span>
@@ -223,7 +247,7 @@
 
 		<span class="n">cng</span> <span class="o">=</span> <span class="n">KeypointsOverlay</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Keypoints Visual&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
 							   <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
 
 		<span class="k">if</span> <span class="s1">&#39;Keypoints&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only allowed one Keypoints overlay.&quot;</span><span class="p">)</span>
@@ -243,7 +267,7 @@
 
 		<span class="n">cng</span> <span class="o">=</span> <span class="n">AxesOverlay</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Axes Visual&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span>
 							   <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
 
 		<span class="k">if</span> <span class="s1">&#39;Axes&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only allowed one Axes overlay.&quot;</span><span class="p">)</span>
@@ -284,7 +308,7 @@
 		<span class="n">col</span> <span class="o">=</span> <span class="p">([</span><span class="n">i</span><span class="o">/</span><span class="mi">255</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">])[:</span><span class="mi">4</span><span class="p">]</span>
 
 		<span class="n">cng</span> <span class="o">=</span> <span class="n">DepthVis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Depth&#39;</span><span class="p">],</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Depth&#39;</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s1">&#39;Depth&#39;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Depth&#39;</span><span class="p">))</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">tidy_tree</span><span class="p">()</span>
 		<span class="k">return</span> <span class="n">cng</span></div>
@@ -338,7 +362,7 @@
 		<span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">node_name</span>
 
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">input_data</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">])</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="n">input_data</span><span class="p">),</span> <span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">])</span>
 
 		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">):</span>  <span class="c1"># add overlay in between</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">])</span>
@@ -431,7 +455,42 @@
 		<span class="n">render</span><span class="p">(</span><span class="n">animation</span><span class="o">=</span><span class="n">animation</span><span class="p">)</span>
 
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">animation</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">fix_namings</span><span class="p">()</span></div></div>
+			<span class="bp">self</span><span class="o">.</span><span class="n">fix_namings</span><span class="p">()</span></div>
+
+	<span class="k">def</span> <span class="nf">_set_rgb_color_space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_space</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;Filmic sRGB&#39;</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Color spaces are all handled manually within compositor (so that we keep</span>
+<span class="sd">		AOVs in raw space). So set the color space for RGB socket here.&quot;&quot;&quot;</span>
+
+		<span class="n">color_space_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeConvertColorSpace&#39;</span><span class="p">)</span>
+		<span class="n">color_space_node</span><span class="o">.</span><span class="n">from_color_space</span> <span class="o">=</span> <span class="s1">&#39;Linear&#39;</span>
+		<span class="n">color_space_node</span><span class="o">.</span><span class="n">to_color_space</span> <span class="o">=</span> <span class="n">color_space</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span><span class="p">,</span> <span class="n">color_space_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">color_space_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+	<span class="k">def</span> <span class="nf">_set_background_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set a solid background color, instead of transparent.</span>
+<span class="sd">		Will remove the visuals of existing world background (but not the lighting effects).</span>
+
+<span class="sd">		:param color: RGBA color, in range [0, 1]</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">world</span><span class="o">.</span><span class="n">set_transparent</span><span class="p">()</span>
+
+		<span class="n">rgba</span> <span class="o">=</span> <span class="n">color</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+			<span class="n">rgba</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">rgba</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+		<span class="n">rgb_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeRGB&#39;</span><span class="p">)</span>
+		<span class="n">rgb_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">rgba</span>
+
+		<span class="n">mix_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeMixRGB&#39;</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span><span class="p">,</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">rgb_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s1">&#39;Alpha&#39;</span><span class="p">),</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Fac&#39;</span><span class="p">])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">]</span></div>
 </pre></div>
 
            </div>
