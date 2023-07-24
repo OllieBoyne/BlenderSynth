@@ -8,7 +8,7 @@ from .mesh import Mesh
 from .curve import Curve
 
 
-def look_at_rotation(obj_camera: bpy.types.Object,
+def _look_at_rotation(obj_camera: bpy.types.Object,
 					 at: mathutils.Vector = mathutils.Vector((0, 0, 0)),
 					 up: mathutils.Vector = mathutils.Vector((0, 1, 0))) -> mathutils.Euler:
 	"""	Rotate camera to look at 'at', with 'up' maintained.
@@ -129,8 +129,26 @@ class Camera(BsynObject):
 	def data(self):
 		return self.camera.data
 
-	def look_at(self, at=mathutils.Vector((0, 0, 0)), up=mathutils.Vector((0, 1, 0))):
-		self.euler = look_at_rotation(self.camera, at, up)
+	def look_at(self, at:mathutils.Vector=mathutils.Vector((0, 0, 0)), up:mathutils.Vector=mathutils.Vector((0, 0, 1))):
+		"""Look at a point in space, with up vector.
+
+		:param at: Point to look at
+		:param up: Up vector"""
+		at = handle_vec(at, 3)
+		up = handle_vec(up, 3)
+
+		self.rotation_euler = _look_at_rotation(self.camera, at, up)
+
+	def look_at_object(self, obj: Union[Mesh, bpy.types.Object], up:mathutils.Vector=mathutils.Vector((0, 1, 0))):
+		"""Look at an object, with up vector.
+
+		:param obj: Object to look at
+		:param up: Up vector"""
+
+		if isinstance(obj, Mesh):
+			obj = obj.obj
+
+		self.look_at(obj.location, up)
 
 	def place_and_rotate(self, pos, euler):
 		self.location = pos

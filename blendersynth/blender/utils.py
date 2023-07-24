@@ -66,18 +66,30 @@ class SelectObjects:
 
 
 class SetMode:
-	"""Context manager for changing the mode of Blender (e.g.) to 'Pose',
+	"""Context manager for changing the mode of a specific object in Blender (e.g., to 'POSE'),
 	returning to the original mode on exit."""
-	def __init__(self, target_mode):
+
+	def __init__(self, target_mode:str, object:bpy.types.Object=None):
+		"""Initialize with the target mode and object
+		:param target_mode: Mode to set the object to
+		:param object: bpy.types.Object to set the mode of"""
 		self.target_mode = target_mode.upper()
 		self.original_mode = None
+		self.obj = object
+		self.original_active_object = None
 
 	def __enter__(self):
+		self.original_active_object = bpy.context.view_layer.objects.active
+
+		if self.obj:
+			bpy.context.view_layer.objects.active = self.obj
+
 		self.original_mode = bpy.context.object.mode
 		bpy.ops.object.mode_set(mode=self.target_mode)
 
 	def __exit__(self, type, value, traceback):
 		bpy.ops.object.mode_set(mode=self.original_mode)
+		bpy.context.view_layer.objects.active = self.original_active_object
 
 
 def get_node_by_name(node_tree: bpy.types.NodeTree, key: str, raise_error=False) -> bpy.types.Node:

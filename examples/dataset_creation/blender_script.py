@@ -7,7 +7,11 @@ import blendersynth as bsyn
 import sys
 import os
 
-inputs = bsyn.INPUTS()  # This is an iterable of the jsons passed in via run.py. Also manages progress bar.
+# When debugging, you can use the following two lines instead of inputs = bsyn.Inputs()
+# bsyn.run_this_script(debug=True)
+# inputs = bsyn.DebugInputs(<path to test json file>)
+
+inputs = bsyn.Inputs()  # This is an iterable of the jsons passed in via run.py. Also manages progress bar.
 
 # Create the scene
 monkey = bsyn.Mesh.from_primitive('monkey')  # Create Monkey object
@@ -26,18 +30,17 @@ comp.define_output('Image', os.path.join('example_dataset', 'rgb'))  # render RG
 comp.define_output(cam_normals_aov, os.path.join('example_dataset', 'normal'))  # render normals layer
 
 # Now iterate through and generate dataset
-for i, (fname, input) in enumerate(inputs):
+for i, (fname, input_data) in enumerate(inputs):
 	# Set the pose of the monkey
-	monkey.rotation_euler = input['euler']
-	monkey.location = input['location']
+	monkey.rotation_euler = input_data['euler']
+	monkey.location = input_data['location']
 
 	# Render - set the output filename to match the json filename (e.g. 0001.json -> 0001.png)
-	comp.update_filename('Image', fname)
-	comp.update_filename(cam_normals_aov, fname)
-	# to change directory, comp.update_directory
+	# see Compositor.update_filename or Compositor.update_directory for alternative functionality
+	comp.update_all_filenames(fname)
 	comp.render()
 
 	# Save the pose and lighting as an output json
-	output = {**input}  # items to save to output label
+	output = {**input_data}  # items to save to output label
 	output['bbox'] = bsyn.annotations.bounding_box(monkey, return_fmt='xywh')
 	bsyn.file.save_label(output, f'example_dataset/label/{fname}.json')

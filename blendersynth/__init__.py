@@ -27,7 +27,7 @@ if building_docs or get_blender_path() == sys.argv[0]:  # if blender is running 
 	from .blender import render
 	from .blender.compositor.compositor import Compositor
 	from .blender import aov
-	from .file.dataset_inputs import INPUTS
+	from .file.dataset_inputs import Inputs, DebugInputs
 	from . import file
 	from .run.blender_interface import log_event
 	from .blender.world import world

@@ -307,11 +307,22 @@ class Compositor:
 		self.tidy_tree()
 		return name
 
-	def update_filename(self, key, fname):
-		"""Reassign the filename (not directory) for a given file output node"""
+	def update_filename(self, key: str, fname: str):
+		"""Reassign the filename (not directory) for a given file output node.
+
+		:param key: key of output, as given in `define_output`
+		:param fname: new filename, without extension"""
 		fname = remove_ext(fname)
 		node = self.file_output_nodes[str(key)]
 		node.file_slots[0].path = fname
+
+	def update_all_filenames(self, fname:str):
+		"""Reassign all filenames (not directories) for all file output nodes.
+
+		:param fname: new filename, without extension"""
+		fname = remove_ext(fname)
+		for node in self.file_output_nodes.values():
+			node.file_slots[0].path = fname
 
 	def update_directory(self, key, directory):
 		"""Reassign the directory for a given file output node"""

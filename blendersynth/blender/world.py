@@ -81,16 +81,20 @@ class World():
 		self.node_background.inputs["Color"].default_value = color
 		self._lighting_from_background(affect_scene)
 
-	def set_hdri(self, pth:str, affect_scene:bool=True):
+	def set_hdri(self, pth:str, affect_scene:bool=True, intensity:float=None):
 		"""Set the HDRI image location
 
 		:param pth: Path to the HDRI image (.hdr or .exr)
-		:param affect_scene: Toggle for whether color's lighting should affect the scene (if False, functions as a solid background color)"""
+		:param affect_scene: Toggle for whether color's lighting should affect the scene (if False, functions as a solid background color)
+		:param intensity: [Optional] Set the intensity of the HDRI lighting"""
 
 
 		self._setup_hdri()
 		self.world_nodes['Environment Texture'].image = bpy.data.images.load(pth)
 		self._lighting_from_background(affect_scene)
+
+		if intensity:
+			self.set_intensity(intensity)
 
 	def set_intensity(self, intensity:float=1.):
 		"""Set the intensity of the color/HDRI.

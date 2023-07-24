@@ -7,7 +7,7 @@ import os
 
 import logging
 
-class INPUTS:
+class Inputs:
 	"""This class is used to iterate over the JSONs passed in via `--jobs` in sys.argv."""
 	jsons = None
 	"""List of JSON files passed in via `--jobs` in sys.argv."""
@@ -32,3 +32,9 @@ class INPUTS:
 
 	def __len__(self):
 		return len(self.jsons)
+
+class DebugInputs(Inputs):
+	"""Class to emulate the Inputs class, for a single JSON for testing."""
+	def __init__(self, json_loc):
+		self.jsons = [json_loc]
+

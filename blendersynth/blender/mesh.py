@@ -99,9 +99,9 @@ class Mesh(BsynObject):
 		self.assigned_aovs = []
 
 		# we want to be able to manage scale, rotation and location separately from the children meshes
-		self._scale = Vector((1, 1, 1))
-		self._rotation_euler = Euler((0, 0, 0))
-		self._location = Vector((0, 0, 0))
+		self._scale = obj.scale
+		self._rotation_euler = obj.rotation_euler
+		self._location = obj.location
 
 	def set_class_id(self, class_id):
 		assert isinstance(class_id, int), f"Class ID must be an integer, not {type(class_id)}"
@@ -527,26 +527,31 @@ class Mesh(BsynObject):
 			raise KeyError(f"Bone `{bone_name}` not found in armature `{armature.name}`")
 		return bone
 
-	def pose_bone(self, bone_name: str, armature_name: str = None, rotation: Vector = None, location: Vector = None,
-				  frame: int = None):
+	def pose_bone(self, bone: Union[str, bpy.types.PoseBone], rotation: Vector = None, location: Vector = None,
+				  armature_name: str = None, frame: int = None):
 		"""Set the pose of a bone by giving a Euler XYZ rotation and/or location.
 
-		:param bone_name: Name of bone to pose
-		:param armature_name: Name of armature to use. If not given, will use first armature found.
+		:param bone: Name of bone to pose, or PoseBone object
 		:param rotation: Euler XYZ rotation in radians
 		:param location: Location in object space
+		:param armature_name: Name of armature to use. If not given, will use first armature found.
 		:param frame: Frame to set pose on. If given, will insert keyframe here.
 		"""
 
-		with SetMode('POSE'):
-			bone = self.get_bone(bone_name, armature_name)
-			bone.rotation_mode = 'XYZ'
-			if rotation is not None:
-				bone.rotation_euler = rotation
-				if frame is not None:
-					bone.keyframe_insert(data_path='rotation_euler', frame=frame)
 
-			if location is not None:
-				bone.location = location
-				if frame is not None:
-					bone.keyframe_insert(data_path='location', frame=frame)
+		with SelectObjects(self._meshes + self._other_objects):
+			armature = self.get_armature(armature_name)
+			with SetMode('POSE', object = armature):
+				if isinstance(bone, str):
+					bone = self.get_bone(bone, armature_name)
+
+				bone.rotation_mode = 'XYZ'
+				if rotation is not None:
+					bone.rotation_euler = rotation
+					if frame is not None:
+						bone.keyframe_insert(data_path='rotation_euler', frame=frame)
+
+				if location is not None:
+					bone.location = location
+					if frame is not None:
+						bone.keyframe_insert(data_path='location', frame=frame)
