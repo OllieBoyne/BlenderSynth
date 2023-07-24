@@ -1,0 +1,9 @@
+Texturing
+=========
+
+.. mdinclude:: ../markdown/examples.texturing.md
+
+
+.. literalinclude:: ../_static/python/examples.texturing.py
+   :language: python
+	

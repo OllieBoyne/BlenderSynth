@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mesh importing &mdash; BlenderSynth 2023 documentation</title>
+  <title>Texturing &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Texturing" href="texturing.html" />
-    <link rel="prev" title="Quickstart" href="quickstart.html" /> 
+    <link rel="next" title="Output data" href="output_data.html" />
+    <link rel="prev" title="Mesh importing" href="mesh_importing.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,8 +45,8 @@
               <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Mesh importing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="texturing.html">Texturing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mesh_importing.html">Mesh importing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Texturing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_data.html">Output data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dataset_creation/index.html">Dataset creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="animation.html">Animation</a></li>
@@ -76,9 +76,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Mesh importing</li>
+      <li class="breadcrumb-item active">Texturing</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/python/mesh_importing.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/python/texturing.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -86,18 +86,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="mesh-importing">
-<h1>Mesh importing<a class="headerlink" href="#mesh-importing" title="Permalink to this heading"></a></h1>
-<p>Here, we import and render a mesh from an <code class="docutils literal notranslate"><span class="pre">.obj</span></code> file with a texture.</p>
-<p>For importing other file types, see the <a class="reference external" href="https://ollieboyne.github.io/BlenderSynth/api/blendersynth.blender.mesh.html">Mesh class</a>.</p>
-<a class="reference external image-reference" href="../_static/images/resources%20mesh_importing_output.png"><img alt="" src="../_images/resources%2520mesh_importing_output.png" /></a>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;In this example, we will import a mesh from a .obj file and render it with a material.&quot;&quot;&quot;</span>
+  <section id="texturing">
+<h1>Texturing<a class="headerlink" href="#texturing" title="Permalink to this heading"></a></h1>
+<p>Here, we show how to load an image texture as a material.</p>
+<a class="reference external image-reference" href="../_static/images/resources%20texturing.png"><img alt="" src="../_images/resources%2520texturing.png" /></a>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Here, we show texture importing&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Load a OBJ file</span>
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="s1">&#39;../resources/monkeys/obj/monkey.obj&#39;</span><span class="p">)</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_primitive</span><span class="p">(</span><span class="s1">&#39;monkey&#39;</span><span class="p">)</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Material</span><span class="o">.</span><span class="n">from_image</span><span class="p">(</span><span class="s1">&#39;../resources/monkeys/green_checkerboard.png&#39;</span><span class="p">)</span>  <span class="c1"># load texture</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># change the scaling of the UV texture</span>
+
 <span class="n">bsyn</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">set_color</span><span class="p">((</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">))</span>
 
 <span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_cycles_samples</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -108,7 +110,7 @@
 
 <span class="c1"># render</span>
 <span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>
-<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="s1">&#39;obj&#39;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="s1">&#39;texturing&#39;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">)</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -118,8 +120,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="texturing.html" class="btn btn-neutral float-right" title="Texturing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="mesh_importing.html" class="btn btn-neutral float-left" title="Mesh importing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="output_data.html" class="btn btn-neutral float-right" title="Output data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

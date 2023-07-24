@@ -1,0 +1,4 @@
+Here, we show how to load an image texture as a material.
+
+![](../_static/images/resources%20texturing.png)
+

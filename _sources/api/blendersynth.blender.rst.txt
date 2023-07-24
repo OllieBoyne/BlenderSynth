@@ -11,6 +11,7 @@
 	blendersynth.blender.compositor
 	blendersynth.blender.curve
 	blendersynth.blender.light
+	blendersynth.blender.material
 	blendersynth.blender.mesh
 	blendersynth.blender.render
 	blendersynth.blender.utils
