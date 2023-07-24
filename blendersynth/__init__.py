@@ -7,11 +7,12 @@ building_docs = 'sphinx' in sys.modules
 if not building_docs:
 	check_blender_install(blendersynth_from_local='--local' in sys.argv) # check install here
 
-def fix_blender_install(local=False):
-	check_blender_install(force_all=True, blendersynth_from_local=local)
+def fix_blender_install(local=False, editable=False):
+	check_blender_install(force_all=True, blendersynth_from_local=local, blendersynth_editable=editable)
 
-def fix_blender_modules(local=False):
-	check_blender_install(force_install_dependencies=True, blendersynth_from_local=local)
+def fix_blender_modules(local=False, editable=False):
+	check_blender_install(force_install_dependencies=True, blendersynth_from_local=local,
+						  blendersynth_editable=editable)
 
 from .run.run_this_script import run_this_script
 

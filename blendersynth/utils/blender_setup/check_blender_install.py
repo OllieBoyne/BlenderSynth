@@ -13,12 +13,15 @@ def check_module(python_executable, module_name):
 		return False
 
 def install_module(python_executable, module_name, is_test_pypi=False,
-				   version=None, upgrade=True):
+				   version=None, upgrade=True, editable=False):
 
 	commands = [python_executable, '-m', 'pip']
 	commands += ['install']
 	if is_test_pypi:
 		commands += ['-i', 'https://test.pypi.org/simple/']
+
+	if editable:
+		commands += ['-e']
 
 	commands += [module_name + (f"=={version}" if version is not None else "")]
 	if upgrade:
@@ -33,7 +36,8 @@ def check_blender_install(force_all=False,
 						  force_find_blender=False,
 						  force_find_blender_python=False,
 						  force_install_dependencies=False,
-						  blendersynth_from_local=False):
+						  blendersynth_from_local=False,
+						  blendersynth_editable=False):
 	"""Check if Blender is installed correctly and has all necessary packages.
 	If not, run first time setup.
 
@@ -67,9 +71,8 @@ def check_blender_install(force_all=False,
 		if blendersynth_from_local:
 			# Install from local setup.py
 			setup_py_loc = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'setup.py')
-			if not os.path.isfile(setup_py_loc):
-				raise Exception(f"Could not find setup.py at {setup_py_loc}.")
-			subprocess.check_call([python_path, setup_py_loc, 'install'])
+			directory_loc = os.path.dirname(setup_py_loc)
+			install_module(python_path, directory_loc, editable=blendersynth_editable)
 
 		else:
 			# Install from pypi

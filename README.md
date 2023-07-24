@@ -51,7 +51,7 @@ This project is currently in Beta. Please let me know what new features you woul
 
 ## Troubleshooting
 
-If any issues with the Blender scripts not having the correct modules, try `bsyn.fix_blender_modules()`, or to completely reconfigure Blender, `bsyn.fix_blender_install()`. If installing from local clone, use `local=True` argument to both.
+If any issues with the Blender scripts not having the correct modules, try `bsyn.fix_blender_modules()`, or to completely reconfigure Blender, `bsyn.fix_blender_install()`. If installing from local clone, use `local=True` argument to both. If you are making changes to the local clone, use `editable=True` to install in editable mode.
 
 ## Benchmarking
 
