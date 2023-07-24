@@ -151,18 +151,30 @@
 
 
 <div class="viewcode-block" id="SetMode"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.SetMode">[docs]</a><span class="k">class</span> <span class="nc">SetMode</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Context manager for changing the mode of Blender (e.g.) to &#39;Pose&#39;,</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Context manager for changing the mode of a specific object in Blender (e.g., to &#39;POSE&#39;),</span>
 <span class="sd">	returning to the original mode on exit.&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_mode</span><span class="p">):</span>
+
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_mode</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Initialize with the target mode and object</span>
+<span class="sd">		:param target_mode: Mode to set the object to</span>
+<span class="sd">		:param object: bpy.types.Object to set the mode of&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">target_mode</span> <span class="o">=</span> <span class="n">target_mode</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">original_mode</span> <span class="o">=</span> <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="nb">object</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">original_active_object</span> <span class="o">=</span> <span class="kc">None</span>
 
 	<span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">original_active_object</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span>
+
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">:</span>
+			<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span>
+
 		<span class="bp">self</span><span class="o">.</span><span class="n">original_mode</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">mode</span>
 		<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">mode_set</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target_mode</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">mode_set</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">original_mode</span><span class="p">)</span></div>
+		<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">mode_set</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">original_mode</span><span class="p">)</span>
+		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_active_object</span></div>
 
 
 <div class="viewcode-block" id="get_node_by_name"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.get_node_by_name">[docs]</a><span class="k">def</span> <span class="nf">get_node_by_name</span><span class="p">(</span><span class="n">node_tree</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeTree</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Node</span><span class="p">:</span>

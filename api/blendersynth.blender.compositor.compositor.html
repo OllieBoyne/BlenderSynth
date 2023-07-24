@@ -225,6 +225,17 @@ and any values below that are depth/max_depth * col.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.update_all_filenames">
+<span class="sig-name descname"><span class="pre">update_all_filenames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.update_all_filenames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.update_all_filenames" title="Permalink to this definition"></a></dt>
+<dd><p>Reassign all filenames (not directories) for all file output nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fname</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – new filename, without extension</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.update_aovs">
 <span class="sig-name descname"><span class="pre">update_aovs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.update_aovs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.update_aovs" title="Permalink to this definition"></a></dt>
 <dd><p>Update any AOVs that are connected to the render layers node</p>
@@ -239,7 +250,15 @@ and any values below that are depth/max_depth * col.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.update_filename">
 <span class="sig-name descname"><span class="pre">update_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.update_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.update_filename" title="Permalink to this definition"></a></dt>
-<dd><p>Reassign the filename (not directory) for a given file output node</p>
+<dd><p>Reassign the filename (not directory) for a given file output node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – key of output, as given in <cite>define_output</cite></p></li>
+<li><p><strong>fname</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – new filename, without extension</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

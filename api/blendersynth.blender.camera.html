@@ -162,6 +162,34 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.look_at">
+<span class="sig-name descname"><span class="pre">look_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/camera.html#Camera.look_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.camera.Camera.look_at" title="Permalink to this definition"></a></dt>
+<dd><p>Look at a point in space, with up vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>at</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>) – Point to look at</p></li>
+<li><p><strong>up</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>) – Up vector</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.look_at_object">
+<span class="sig-name descname"><span class="pre">look_at_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/camera.html#Camera.look_at_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.camera.Camera.look_at_object" title="Permalink to this definition"></a></dt>
+<dd><p>Look at an object, with up vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh" title="blendersynth.blender.mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Object</span></code>]) – Object to look at</p></li>
+<li><p><strong>up</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>) – Up vector</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.path_keyframe">
 <span class="sig-name descname"><span class="pre">path_keyframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/camera.html#Camera.path_keyframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.camera.Camera.path_keyframe" title="Permalink to this definition"></a></dt>
 <dd><p>Set keyframe for camera path offset</p>
@@ -193,24 +221,6 @@
 <dd><p>Update view layer and depsgraph</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.blender.camera.look_at_rotation">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.camera.</span></span><span class="sig-name descname"><span class="pre">look_at_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_camera</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/camera.html#look_at_rotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.camera.look_at_rotation" title="Permalink to this definition"></a></dt>
-<dd><p>Rotate camera to look at ‘at’, with ‘up’ maintained.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>obj_camera</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Object</span></code>) – Camera object</p></li>
-<li><p><strong>at</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>) – Point to look at</p></li>
-<li><p><strong>up</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>) – Up vector</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Euler</span></code></p>
-</dd>
-</dl>
 </dd></dl>
 
 </section>

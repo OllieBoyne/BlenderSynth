@@ -97,7 +97,11 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="n">inputs</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">INPUTS</span><span class="p">()</span>  <span class="c1"># This is an iterable of the jsons passed in via run.py. Also manages progress bar.</span>
+<span class="c1"># When debugging, you can use the following two lines instead of inputs = bsyn.Inputs()</span>
+<span class="c1"># bsyn.run_this_script(debug=True)</span>
+<span class="c1"># inputs = bsyn.DebugInputs(&lt;path to test json file&gt;)</span>
+
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Inputs</span><span class="p">()</span>  <span class="c1"># This is an iterable of the jsons passed in via run.py. Also manages progress bar.</span>
 
 <span class="c1"># Create the scene</span>
 <span class="n">monkey</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_primitive</span><span class="p">(</span><span class="s1">&#39;monkey&#39;</span><span class="p">)</span>  <span class="c1"># Create Monkey object</span>
@@ -116,19 +120,18 @@
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">cam_normals_aov</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;example_dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;normal&#39;</span><span class="p">))</span>  <span class="c1"># render normals layer</span>
 
 <span class="c1"># Now iterate through and generate dataset</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="nb">input</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">input_data</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
 	<span class="c1"># Set the pose of the monkey</span>
-	<span class="n">monkey</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s1">&#39;euler&#39;</span><span class="p">]</span>
-	<span class="n">monkey</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span>
+	<span class="n">monkey</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">[</span><span class="s1">&#39;euler&#39;</span><span class="p">]</span>
+	<span class="n">monkey</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span>
 
 	<span class="c1"># Render - set the output filename to match the json filename (e.g. 0001.json -&gt; 0001.png)</span>
-	<span class="n">comp</span><span class="o">.</span><span class="n">update_filename</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
-	<span class="n">comp</span><span class="o">.</span><span class="n">update_filename</span><span class="p">(</span><span class="n">cam_normals_aov</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
-	<span class="c1"># to change directory, comp.update_directory</span>
+	<span class="c1"># see Compositor.update_filename or Compositor.update_directory for alternative functionality</span>
+	<span class="n">comp</span><span class="o">.</span><span class="n">update_all_filenames</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
 	<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
 
 	<span class="c1"># Save the pose and lighting as an output json</span>
-	<span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="nb">input</span><span class="p">}</span>  <span class="c1"># items to save to output label</span>
+	<span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">input_data</span><span class="p">}</span>  <span class="c1"># items to save to output label</span>
 	<span class="n">output</span><span class="p">[</span><span class="s1">&#39;bbox&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">bounding_box</span><span class="p">(</span><span class="n">monkey</span><span class="p">,</span> <span class="n">return_fmt</span><span class="o">=</span><span class="s1">&#39;xywh&#39;</span><span class="p">)</span>
 	<span class="n">bsyn</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">save_label</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;example_dataset/label/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s1">.json&#39;</span><span class="p">)</span>
 </pre></div>

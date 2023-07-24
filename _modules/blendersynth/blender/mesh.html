@@ -184,9 +184,9 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">assigned_aovs</span> <span class="o">=</span> <span class="p">[]</span>
 
 		<span class="c1"># we want to be able to manage scale, rotation and location separately from the children meshes</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_rotation_euler</span> <span class="o">=</span> <span class="n">Euler</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">scale</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_rotation_euler</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">location</span>
 
 	<span class="k">def</span> <span class="nf">set_class_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_id</span><span class="p">):</span>
 		<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">class_id</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Class ID must be an integer, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">class_id</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -612,29 +612,34 @@
 			<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bone `</span><span class="si">{</span><span class="n">bone_name</span><span class="si">}</span><span class="s2">` not found in armature `</span><span class="si">{</span><span class="n">armature</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
 		<span class="k">return</span> <span class="n">bone</span></div>
 
-<div class="viewcode-block" id="Mesh.pose_bone"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.pose_bone">[docs]</a>	<span class="k">def</span> <span class="nf">pose_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">armature_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">Vector</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Vector</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-				  <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Mesh.pose_bone"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.pose_bone">[docs]</a>	<span class="k">def</span> <span class="nf">pose_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">],</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">Vector</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Vector</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+				  <span class="n">armature_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set the pose of a bone by giving a Euler XYZ rotation and/or location.</span>
 
-<span class="sd">		:param bone_name: Name of bone to pose</span>
-<span class="sd">		:param armature_name: Name of armature to use. If not given, will use first armature found.</span>
+<span class="sd">		:param bone: Name of bone to pose, or PoseBone object</span>
 <span class="sd">		:param rotation: Euler XYZ rotation in radians</span>
 <span class="sd">		:param location: Location in object space</span>
+<span class="sd">		:param armature_name: Name of armature to use. If not given, will use first armature found.</span>
 <span class="sd">		:param frame: Frame to set pose on. If given, will insert keyframe here.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 
-		<span class="k">with</span> <span class="n">SetMode</span><span class="p">(</span><span class="s1">&#39;POSE&#39;</span><span class="p">):</span>
-			<span class="n">bone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bone</span><span class="p">(</span><span class="n">bone_name</span><span class="p">,</span> <span class="n">armature_name</span><span class="p">)</span>
-			<span class="n">bone</span><span class="o">.</span><span class="n">rotation_mode</span> <span class="o">=</span> <span class="s1">&#39;XYZ&#39;</span>
-			<span class="k">if</span> <span class="n">rotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-				<span class="n">bone</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">rotation</span>
-				<span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-					<span class="n">bone</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;rotation_euler&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
 
-			<span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-				<span class="n">bone</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
-				<span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-					<span class="n">bone</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div></div>
+		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span><span class="p">):</span>
+			<span class="n">armature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_armature</span><span class="p">(</span><span class="n">armature_name</span><span class="p">)</span>
+			<span class="k">with</span> <span class="n">SetMode</span><span class="p">(</span><span class="s1">&#39;POSE&#39;</span><span class="p">,</span> <span class="nb">object</span> <span class="o">=</span> <span class="n">armature</span><span class="p">):</span>
+				<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+					<span class="n">bone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bone</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">armature_name</span><span class="p">)</span>
+
+				<span class="n">bone</span><span class="o">.</span><span class="n">rotation_mode</span> <span class="o">=</span> <span class="s1">&#39;XYZ&#39;</span>
+				<span class="k">if</span> <span class="n">rotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+					<span class="n">bone</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">rotation</span>
+					<span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+						<span class="n">bone</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;rotation_euler&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+
+				<span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+					<span class="n">bone</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
+					<span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+						<span class="n">bone</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
