@@ -23,6 +23,7 @@ if building_docs or get_blender_path() == sys.argv[0]:  # if blender is running 
 	import bpy
 	from bpy import *
 	from .blender.mesh import Mesh
+	from .blender.material import Material
 	from .blender.curve import Curve
 	from .blender import render
 	from .blender.compositor.compositor import Compositor

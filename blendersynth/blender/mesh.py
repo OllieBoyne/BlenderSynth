@@ -3,6 +3,7 @@ import os.path
 import bpy
 from .utils import GetNewObject, SelectObjects, handle_vec, SetMode
 from .bsyn_object import BsynObject, animatable_property
+from .material import Material
 from .aov import AOV
 import numpy as np
 import mathutils
@@ -65,7 +66,7 @@ class Mesh(BsynObject):
 	def __init__(self, obj, material=None, scene=None, class_id=None):
 		"""
 		:param obj: Receives either a single mesh, or an empty with children empty & meshes
-		:param material:
+		:param material: bpy.types.Material to assign to the mesh
 		:param scene:
 
 		If obj contains multiple meshes, they will all be assigned the same material, and must act as a single object
@@ -80,13 +81,14 @@ class Mesh(BsynObject):
 		self._object = obj
 		self._meshes, self._other_objects = _get_child_meshes(obj)
 
-		# Must have a material, create if not passed
-		if material is None:
-			material = bpy.data.materials.new(name='Material')
-			material.use_nodes = True
+		# Manage materials here
+		if material is not None:
+			self._material = Material.from_blender_material(material)
+		else:
+			self._material = Material('NewMaterial')
 
-			for mesh in self._meshes:
-				mesh.data.materials.append(material)
+		for mesh in self._meshes:
+			mesh.data.materials.append(self._material.object)
 
 		# INSTANCING - Define InstanceID based on number of meshes in scene
 		self._object['instance_id'] = scene.get('NUM_MESHES', 0)
@@ -555,3 +557,14 @@ class Mesh(BsynObject):
 					bone.location = location
 					if frame is not None:
 						bone.keyframe_insert(data_path='location', frame=frame)
+
+	@property
+	def material(self):
+		return self._material
+
+	@material.setter
+	def material(self, material: Material):
+		self._material = material
+		for mesh in self._meshes:
+			mesh.data.materials.clear()
+			mesh.data.materials.append(material.object)

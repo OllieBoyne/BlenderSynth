@@ -13,11 +13,7 @@ bsyn.render.set_resolution(256, 256)
 camera = bsyn.Camera()
 camera.set_fov(20)  # zoom in
 
-# render RGB and camera normals
+# render
 comp = bsyn.Compositor()
-cam_normals_aov = bsyn.aov.NormalsAOV('cam_normals', ref_frame='CAMERA', polarity=[-1, 1, -1])
-mesh.assign_aov(cam_normals_aov)
-
 comp.define_output('Image', 'obj', file_name='rgb', mode='image')
-
 comp.render()

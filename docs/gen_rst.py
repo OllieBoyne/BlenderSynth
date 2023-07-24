@@ -16,7 +16,7 @@ tutorial_header = "Tutorials"
 api_header = "API"
 
 # preference for sorting, will defer to this where possible
-examples_sort_order = ['quickstart', 'mesh_importing', 'output_data', 'dataset_creation', 'animation', 'capturing_pose',
+examples_sort_order = ['quickstart', 'mesh_importing', 'texturing', 'output_data', 'dataset_creation', 'animation', 'capturing_pose',
                        'custom_aov']
 
 def get_sort_index(name, sort_order):
