@@ -98,12 +98,15 @@
 		<span class="k">return</span> <span class="kc">False</span>
 
 <span class="k">def</span> <span class="nf">install_module</span><span class="p">(</span><span class="n">python_executable</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">is_test_pypi</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-				   <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">upgrade</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+				   <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">upgrade</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">editable</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
 	<span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="n">python_executable</span><span class="p">,</span> <span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;pip&#39;</span><span class="p">]</span>
 	<span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;install&#39;</span><span class="p">]</span>
 	<span class="k">if</span> <span class="n">is_test_pypi</span><span class="p">:</span>
 		<span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="s1">&#39;https://test.pypi.org/simple/&#39;</span><span class="p">]</span>
+
+	<span class="k">if</span> <span class="n">editable</span><span class="p">:</span>
+		<span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;-e&#39;</span><span class="p">]</span>
 
 	<span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="n">module_name</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;==</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">version</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)]</span>
 	<span class="k">if</span> <span class="n">upgrade</span><span class="p">:</span>
@@ -118,7 +121,8 @@
 						  <span class="n">force_find_blender</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 						  <span class="n">force_find_blender_python</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 						  <span class="n">force_install_dependencies</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-						  <span class="n">blendersynth_from_local</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+						  <span class="n">blendersynth_from_local</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+						  <span class="n">blendersynth_editable</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Check if Blender is installed correctly and has all necessary packages.</span>
 <span class="sd">	If not, run first time setup.</span>
 
@@ -152,9 +156,8 @@
 		<span class="k">if</span> <span class="n">blendersynth_from_local</span><span class="p">:</span>
 			<span class="c1"># Install from local setup.py</span>
 			<span class="n">setup_py_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;setup.py&#39;</span><span class="p">)</span>
-			<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">setup_py_loc</span><span class="p">):</span>
-				<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find setup.py at </span><span class="si">{</span><span class="n">setup_py_loc</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-			<span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="n">python_path</span><span class="p">,</span> <span class="n">setup_py_loc</span><span class="p">,</span> <span class="s1">&#39;install&#39;</span><span class="p">])</span>
+			<span class="n">directory_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">setup_py_loc</span><span class="p">)</span>
+			<span class="n">install_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="n">directory_loc</span><span class="p">,</span> <span class="n">editable</span><span class="o">=</span><span class="n">blendersynth_editable</span><span class="p">)</span>
 
 		<span class="k">else</span><span class="p">:</span>
 			<span class="c1"># Install from pypi</span>
