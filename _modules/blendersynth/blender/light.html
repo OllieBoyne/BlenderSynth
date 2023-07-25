@@ -89,7 +89,7 @@
 <span class="kn">import</span> <span class="nn">bpy</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">GetNewObject</span><span class="p">,</span> <span class="n">animatable_property</span>
 <span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">types</span>
 
 <span class="n">LIGHT_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POINT&#39;</span><span class="p">,</span> <span class="s1">&#39;SUN&#39;</span><span class="p">,</span> <span class="s1">&#39;SPOT&#39;</span><span class="p">,</span> <span class="s1">&#39;AREA&#39;</span><span class="p">]</span>
 
@@ -113,7 +113,8 @@
 		<span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Light.create"><a class="viewcode-back" href="../../../api/blendersynth.blender.light.html#blendersynth.blender.light.Light.create">[docs]</a>	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">light_type</span><span class="o">=</span><span class="s1">&#39;POINT&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Light&#39;</span><span class="p">,</span> <span class="n">intensity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+	<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">light_type</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;POINT&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;Light&#39;</span><span class="p">,</span> <span class="n">intensity</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+			   <span class="n">color</span><span class="p">:</span><span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">location</span><span class="p">:</span><span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Create a new Light object</span>
 
 <span class="sd">		:param light_type: Type of light to create (see :attr:`~blendersynth.blender.light.Light.light_types`)</span>
@@ -148,6 +149,11 @@
 
 	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;energy&#39;</span><span class="p">,</span> <span class="n">use_data_object</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 	<span class="k">def</span> <span class="nf">set_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set energy of light source</span>
+
+<span class="sd">		:param value: Energy of light source</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">value</span>
 
 	<span class="nd">@property</span>
@@ -160,7 +166,11 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">use_data_object</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">set_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set color of light source</span>
+
+<span class="sd">		:param value: RGB[A] color</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">value</span></div>
 </pre></div>
 

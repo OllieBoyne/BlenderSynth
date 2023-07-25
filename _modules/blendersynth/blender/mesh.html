@@ -185,7 +185,7 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s1">&#39;MAX_CLASSES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;MAX_CLASSES&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">class_id</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Mesh.from_scene"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_scene">[docs]</a>	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">from_scene</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
+	<span class="k">def</span> <span class="nf">from_scene</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Create object from named object in scene.</span>
 
 <span class="sd">		:param key: Name of object in scene</span>
@@ -228,9 +228,15 @@
 		<span class="k">return</span> <span class="n">obj</span></div>
 
 <div class="viewcode-block" id="Mesh.from_obj"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_obj">[docs]</a>	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj_loc</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-				 <span class="n">forward_axis</span><span class="o">=</span><span class="s1">&#39;-Z&#39;</span><span class="p">,</span> <span class="n">up_axis</span><span class="o">=</span><span class="s1">&#39;Y&#39;</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj_loc</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+				 <span class="n">forward_axis</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;-Z&#39;</span><span class="p">,</span> <span class="n">up_axis</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;Y&#39;</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Load object from .obj file.</span>
+
+<span class="sd">		:param obj_loc: Location of .obj file</span>
+<span class="sd">		:param class_id: Class ID to assign to object</span>
+<span class="sd">		:param forward_axis: Axis to use as forward axis</span>
+<span class="sd">		:param up_axis: Axis to use as up axis</span>
+
 
 <span class="sd">		Note: we use bpy.ops.wm.obj_import instead of bpy.ops.import_scene.obj because the latter</span>
 <span class="sd">		causes issues with materials &amp; vertex ordering.</span>
@@ -260,8 +266,12 @@
 		<span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="n">class_id</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Mesh.from_glb"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_glb">[docs]</a>	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">from_glb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">glb_loc</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Load object from .glb file&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">from_glb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">glb_loc</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Load object from .glb file.</span>
+
+<span class="sd">		:param glb_loc: Location of .glb file</span>
+<span class="sd">		:param class_id: Class ID to assign to object</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">glb_loc</span><span class="p">)</span> <span class="ow">and</span> <span class="n">glb_loc</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span>
 			<span class="p">(</span><span class="s1">&#39;.glb&#39;</span><span class="p">,</span> <span class="s1">&#39;.gtlf&#39;</span><span class="p">)),</span> <span class="sa">f</span><span class="s2">&quot;File `</span><span class="si">{</span><span class="n">glb_loc</span><span class="si">}</span><span class="s2">` not a valid .glb file&quot;</span>
 
@@ -275,13 +285,17 @@
 
 		<span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">importer</span><span class="o">.</span><span class="n">imported_obj</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="n">class_id</span><span class="p">)</span></div>
 
-	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">from_gltf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">gltf_loc</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_glb</span><span class="p">(</span><span class="n">gltf_loc</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="n">class_id</span><span class="p">)</span>
+<div class="viewcode-block" id="Mesh.from_gltf"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_gltf">[docs]</a>	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">from_gltf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">gltf_loc</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Alias for :meth:`~blendersynth.blender.Mesh.from_glb`&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_glb</span><span class="p">(</span><span class="n">gltf_loc</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="n">class_id</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Mesh.from_fbx"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_fbx">[docs]</a>	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">from_fbx</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fbx_loc</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Load object from .fbx file&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">from_fbx</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fbx_loc</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Load object from .fbx file.</span>
+
+<span class="sd">		:param fbx_loc: Location of .fbx file</span>
+<span class="sd">		:param class_id: Class ID to assign to object&quot;&quot;&quot;</span>
 		<span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fbx_loc</span><span class="p">)</span> <span class="ow">and</span> <span class="n">fbx_loc</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.fbx&#39;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;File `</span><span class="si">{</span><span class="n">fbx_loc</span><span class="si">}</span><span class="s2">` not a valid .fbx file&quot;</span>
 
 		<span class="n">directory</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">fbx_loc</span><span class="p">)</span>

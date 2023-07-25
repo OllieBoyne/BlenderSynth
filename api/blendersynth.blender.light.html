@@ -126,11 +126,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>light_type</strong> – Type of light to create (see <a class="reference internal" href="#blendersynth.blender.light.Light.light_types" title="blendersynth.blender.light.Light.light_types"><code class="xref py py-attr docutils literal notranslate"><span class="pre">light_types</span></code></a>)</p></li>
-<li><p><strong>name</strong> – Name of light</p></li>
-<li><p><strong>intensity</strong> – Intensity of light</p></li>
-<li><p><strong>color</strong> – Color of light</p></li>
-<li><p><strong>location</strong> – Location of light</p></li>
+<li><p><strong>light_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Type of light to create (see <a class="reference internal" href="#blendersynth.blender.light.Light.light_types" title="blendersynth.blender.light.Light.light_types"><code class="xref py py-attr docutils literal notranslate"><span class="pre">light_types</span></code></a>)</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of light</p></li>
+<li><p><strong>intensity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Intensity of light</p></li>
+<li><p><strong>color</strong> (<em>blendersynth.utils.types.VectorLike</em>) – Color of light</p></li>
+<li><p><strong>location</strong> (<em>blendersynth.utils.types.VectorLike</em>) – Location of light</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -229,9 +229,13 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.light.Light.set_color">
 <span class="sig-name descname"><span class="pre">set_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.light.Light.set_color" title="Permalink to this definition"></a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Set color of light source</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – RGB[A] color</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -239,9 +243,16 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.light.Light.set_energy">
 <span class="sig-name descname"><span class="pre">set_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.light.Light.set_energy" title="Permalink to this definition"></a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Set energy of light source</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Energy of light source</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
 </dd>
 </dl>
 </dd></dl>

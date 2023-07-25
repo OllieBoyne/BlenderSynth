@@ -173,19 +173,51 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.from_fbx">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_fbx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fbx_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.from_fbx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.from_fbx" title="Permalink to this definition"></a></dt>
-<dd><p>Load object from .fbx file</p>
+<dd><p>Load object from .fbx file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fbx_loc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Location of .fbx file</p></li>
+<li><p><strong>class_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Class ID to assign to object</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.from_glb">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_glb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">glb_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.from_glb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.from_glb" title="Permalink to this definition"></a></dt>
-<dd><p>Load object from .glb file</p>
+<dd><p>Load object from .glb file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>glb_loc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Location of .glb file</p></li>
+<li><p><strong>class_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Class ID to assign to object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.from_gltf">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_gltf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gltf_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.from_gltf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.from_gltf" title="Permalink to this definition"></a></dt>
+<dd><p>Alias for <code class="xref py py-meth docutils literal notranslate"><span class="pre">from_glb()</span></code></p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.from_obj">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forward_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-Z'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Y'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.from_obj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.from_obj" title="Permalink to this definition"></a></dt>
 <dd><p>Load object from .obj file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj_loc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Location of .obj file</p></li>
+<li><p><strong>class_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Class ID to assign to object</p></li>
+<li><p><strong>forward_axis</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Axis to use as forward axis</p></li>
+<li><p><strong>up_axis</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Axis to use as up axis</p></li>
+</ul>
+</dd>
+</dl>
 <p>Note: we use bpy.ops.wm.obj_import instead of bpy.ops.import_scene.obj because the latter
 causes issues with materials &amp; vertex ordering.
 (Changing vertex ordering makes the use of keypoints difficult.)</p>
@@ -222,8 +254,8 @@ causes issues with materials &amp; vertex ordering.
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>key</strong> – Name of object in scene</p></li>
-<li><p><strong>class_id</strong> – Class ID to assign to object</p></li>
+<li><p><strong>key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of object in scene</p></li>
+<li><p><strong>class_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Class ID to assign to object</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
