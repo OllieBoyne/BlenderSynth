@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.blender.world
 	:members:
+	:inherited-members:

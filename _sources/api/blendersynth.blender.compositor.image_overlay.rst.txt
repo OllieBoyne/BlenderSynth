@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.blender.compositor.image_overlay
 	:members:
+	:inherited-members:

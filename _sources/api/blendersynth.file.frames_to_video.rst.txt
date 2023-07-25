@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.file.frames_to_video
 	:members:
+	:inherited-members:

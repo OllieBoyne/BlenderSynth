@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.blender.curve
 	:members:
+	:inherited-members:

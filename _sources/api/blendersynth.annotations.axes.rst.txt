@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.annotations.axes
 	:members:
+	:inherited-members:

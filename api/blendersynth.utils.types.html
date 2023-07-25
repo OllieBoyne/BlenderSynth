@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blendersynth.utils &mdash; BlenderSynth 2023 documentation</title>
+  <title>blendersynth.utils.types &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="blendersynth.utils.blender_importer" href="blendersynth.utils.blender_importer.html" />
-    <link rel="prev" title="blendersynth.run.run_this_script" href="blendersynth.run.run_this_script.html" /> 
+    <link rel="prev" title="blendersynth.utils.node_arranger" href="blendersynth.utils.node_arranger.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -59,7 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
 </ul>
 
         </div>
@@ -76,9 +75,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></li>
+          <li class="breadcrumb-item"><a href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.types</span></code></li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/blendersynth.utils.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/blendersynth.utils.types.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -86,24 +86,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-utils">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code><a class="headerlink" href="#blendersynth-utils" title="Permalink to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.blender_importer.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_importer</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.blender_setup.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.node_arranger.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.node_arranger</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.types.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.types</span></code></a></li>
+  <section id="module-blendersynth.utils.types">
+<span id="blendersynth-utils-types"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.types</span></code><a class="headerlink" href="#module-blendersynth.utils.types" title="Permalink to this heading"></a></h1>
+<dl class="py data">
+<dt class="sig sig-object py" id="blendersynth.utils.types.VectorLike">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.types.</span></span><span class="sig-name descname"><span class="pre">VectorLike</span></span><a class="headerlink" href="#blendersynth.utils.types.VectorLike" title="Permalink to this definition"></a></dt>
+<dd><p>A type hint that represents vector-like objects. Can be any of:</p>
+<ul class="simple">
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">mathutils.Vector</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p></li>
 </ul>
-</div>
+<p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>]</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="blendersynth.utils.types.VectorLikeOrScalar">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.types.</span></span><span class="sig-name descname"><span class="pre">VectorLikeOrScalar</span></span><a class="headerlink" href="#blendersynth.utils.types.VectorLikeOrScalar" title="Permalink to this definition"></a></dt>
+<dd><p>A type hint that represents vector-like objects. Can be any of:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p></li>
+</ul>
+<p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</p>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="blendersynth.run.run_this_script.html" class="btn btn-neutral float-left" title="blendersynth.run.run_this_script" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="blendersynth.utils.blender_importer.html" class="btn btn-neutral float-right" title="blendersynth.utils.blender_importer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="blendersynth.utils.node_arranger.html" class="btn btn-neutral float-left" title="blendersynth.utils.node_arranger" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

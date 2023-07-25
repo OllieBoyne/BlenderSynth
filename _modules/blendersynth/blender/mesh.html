@@ -87,8 +87,8 @@
 <span></span><span class="kn">import</span> <span class="nn">os.path</span>
 
 <span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">GetNewObject</span><span class="p">,</span> <span class="n">SelectObjects</span><span class="p">,</span> <span class="n">handle_vec</span><span class="p">,</span> <span class="n">SetMode</span>
-<span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span><span class="p">,</span> <span class="n">animatable_property</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">GetNewObject</span><span class="p">,</span> <span class="n">SelectObjects</span><span class="p">,</span> <span class="n">handle_vec</span><span class="p">,</span> <span class="n">SetMode</span><span class="p">,</span> <span class="n">animatable_property</span>
+<span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span>
 <span class="kn">from</span> <span class="nn">.material</span> <span class="kn">import</span> <span class="n">Material</span>
 <span class="kn">from</span> <span class="nn">.aov</span> <span class="kn">import</span> <span class="n">AOV</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -134,15 +134,6 @@
 		<span class="k">return</span> <span class="n">meshes</span><span class="p">,</span> <span class="n">other</span>
 
 
-<span class="k">def</span> <span class="nf">_euler_from</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Get euler rotation from a to b&quot;&quot;&quot;</span>
-	<span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">()</span> <span class="o">@</span> <span class="n">a</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">()</span><span class="o">.</span><span class="n">inverted</span><span class="p">())</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">_euler_add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Compute euler rotation of a, followed by b&quot;&quot;&quot;</span>
-	<span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">()</span> <span class="o">@</span> <span class="n">b</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
-
 
 <div class="viewcode-block" id="Mesh"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh">[docs]</a><span class="k">class</span> <span class="nc">Mesh</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;A mesh object. Can be a single mesh, or a hierarchy of meshes.&quot;&quot;&quot;</span>
@@ -185,11 +176,6 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_class_id</span><span class="p">(</span><span class="n">class_id</span><span class="p">)</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">assigned_aovs</span> <span class="o">=</span> <span class="p">[]</span>
-
-		<span class="c1"># we want to be able to manage scale, rotation and location separately from the children meshes</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">scale</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_rotation_euler</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">location</span>
 
 	<span class="k">def</span> <span class="nf">set_class_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_id</span><span class="p">):</span>
 		<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">class_id</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Class ID must be an integer, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">class_id</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -343,20 +329,22 @@
 						<span class="sa">f</span><span class="s2">&quot;Error with setting origin. Expects a list of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">)</span><span class="si">}</span><span class="s2"> 3-long Vector. Received: </span><span class="si">{</span><span class="n">origin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="nf">get_all_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref_frame</span><span class="o">=</span><span class="s1">&#39;WORLD&#39;</span><span class="p">):</span>
-		<span class="n">verts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vert</span><span class="o">.</span><span class="n">co</span><span class="p">[:]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span> <span class="k">for</span> <span class="n">vert</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
-
-		<span class="k">if</span> <span class="n">ref_frame</span> <span class="o">==</span> <span class="s1">&#39;LOCAL&#39;</span><span class="p">:</span>
-			<span class="k">pass</span>
-
-		<span class="k">elif</span> <span class="n">ref_frame</span> <span class="o">==</span> <span class="s1">&#39;WORLD&#39;</span><span class="p">:</span>
-			<span class="n">world_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="p">)</span>
-			<span class="n">verts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">world_matrix</span><span class="p">,</span> <span class="n">verts</span><span class="p">)</span>
-
-		<span class="k">else</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">ref_frame</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;LOCAL&#39;</span><span class="p">,</span> <span class="s1">&#39;WORLD&#39;</span><span class="p">}:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid ref_frame: </span><span class="si">{</span><span class="n">ref_frame</span><span class="si">}</span><span class="s2">. Must be one of [&#39;LOCAL&#39;, &#39;WORLD&#39;]&quot;</span><span class="p">)</span>
 
-		<span class="n">verts</span> <span class="o">=</span> <span class="n">verts</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span> <span class="n">verts</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># convert from homogeneous coordinates</span>
-		<span class="k">return</span> <span class="n">verts</span><span class="o">.</span><span class="n">T</span>
+		<span class="n">verts</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">:</span>
+			<span class="n">mesh_verts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vert</span><span class="o">.</span><span class="n">co</span> <span class="k">for</span> <span class="n">vert</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">])</span>
+
+			<span class="k">if</span> <span class="n">ref_frame</span> <span class="o">==</span> <span class="s1">&#39;WORLD&#39;</span><span class="p">:</span>
+				<span class="n">mesh_verts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">matrix_world</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">mesh_verts</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">mesh_verts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))))</span>
+
+			<span class="n">verts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mesh_verts</span><span class="p">)</span>
+
+		<span class="n">verts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">verts</span> <span class="o">/=</span> <span class="n">verts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># convert from homogeneous coordinates</span>
+		<span class="k">return</span> <span class="n">verts</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">materials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -385,100 +373,6 @@
 		<span class="n">trans_vec</span><span class="p">[</span><span class="s1">&#39;XYZ&#39;</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">axis</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">min_pos</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">trans_vec</span><span class="p">)</span></div>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">matrix_world</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return world matrix of object(s).</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">evaluated_depsgraph_get</span><span class="p">()</span>  <span class="c1"># required to update object matrix</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">matrix_world</span>
-
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">axes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return 3x3 rotation matrix (normalized) to represent axes&quot;&quot;&quot;</span>
-		<span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="p">)[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
-		<span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-		<span class="k">return</span> <span class="n">mat</span>
-
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_location</span>
-
-	<span class="nd">@location</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
-
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rotation_euler</span>
-
-	<span class="nd">@rotation_euler</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span>
-
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span>
-
-	<span class="nd">@scale</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
-
-	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set location of object&quot;&quot;&quot;</span>
-		<span class="n">location</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-
-		<span class="n">translation</span> <span class="o">=</span> <span class="n">location</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
-		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span><span class="p">):</span>
-			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">translation</span><span class="p">)</span>
-
-		<span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">location</span>
-
-	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;rotation_euler&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set euler rotation of object&quot;&quot;&quot;</span>
-		<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Rotation must be a tuple of length 3, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-		<span class="n">rotation</span> <span class="o">=</span> <span class="n">Euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="s1">&#39;XYZ&#39;</span><span class="p">)</span>
-		<span class="n">diff</span> <span class="o">=</span> <span class="n">_euler_from</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span><span class="p">,</span> <span class="n">rotation</span><span class="p">)</span>
-
-		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span><span class="p">):</span>
-			<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="s1">&#39;XYZ&#39;</span><span class="p">,</span> <span class="n">diff</span><span class="p">):</span>
-				<span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-					<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">orient_axis</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-
-		<span class="bp">self</span><span class="o">.</span><span class="n">_rotation_euler</span> <span class="o">=</span> <span class="n">rotation</span>
-
-	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set scale of object&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-			<span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
-
-		<span class="n">resize_fac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
-
-		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span><span class="p">):</span>
-			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">resize_fac</span><span class="p">)</span>
-
-		<span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">scale</span>
-
-<div class="viewcode-block" id="Mesh.translate"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.translate">[docs]</a>	<span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">translation</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Translate object&quot;&quot;&quot;</span>
-		<span class="n">translation</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">translation</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">+</span> <span class="n">translation</span></div>
-
-<div class="viewcode-block" id="Mesh.rotate_by"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.rotate_by">[docs]</a>	<span class="k">def</span> <span class="nf">rotate_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Add a rotation to the object. Must be in XYZ order, euler angles, radians.&quot;&quot;&quot;</span>
-		<span class="n">rotation</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-		<span class="n">new_rotation</span> <span class="o">=</span> <span class="n">_euler_add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span><span class="p">,</span> <span class="n">Euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="s1">&#39;XYZ&#39;</span><span class="p">))</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">new_rotation</span></div>
-
-<div class="viewcode-block" id="Mesh.scale_by"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.scale_by">[docs]</a>	<span class="k">def</span> <span class="nf">scale_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Scale object&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-			<span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
-
-		<span class="n">scale</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">*</span> <span class="n">scale</span></div>
 
 <div class="viewcode-block" id="Mesh.delete"><a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.delete">[docs]</a>	<span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delete_materials</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Clear mesh from scene &amp; mesh data.</span>

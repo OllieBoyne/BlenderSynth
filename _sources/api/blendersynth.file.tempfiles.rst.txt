@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.file.tempfiles
 	:members:
+	:inherited-members:

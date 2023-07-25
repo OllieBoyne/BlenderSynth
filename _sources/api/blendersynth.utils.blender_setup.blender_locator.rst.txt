@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.utils.blender_setup.blender_locator
 	:members:
+	:inherited-members:

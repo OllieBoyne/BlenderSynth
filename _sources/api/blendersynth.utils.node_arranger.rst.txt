@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.utils.node_arranger
 	:members:
+	:inherited-members:

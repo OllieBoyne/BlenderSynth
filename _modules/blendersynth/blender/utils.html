@@ -85,10 +85,25 @@
              
   <h1>Source code for blendersynth.blender.utils</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Context managers and operations for handling Blender&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
 
 <span class="kn">import</span> <span class="nn">bpy</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">mathutils</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="c1"># define Blender Array type</span>
+<span class="n">blender_array_type</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span>
+<span class="n">blender_array_or_scalar</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">blender_array_type</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">_euler_from</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Get euler rotation from a to b&quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">()</span> <span class="o">@</span> <span class="n">a</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">()</span><span class="o">.</span><span class="n">inverted</span><span class="p">())</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">_euler_add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Compute euler rotation of a, followed by b&quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">()</span> <span class="o">@</span> <span class="n">b</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="GetNewObject"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.GetNewObject">[docs]</a><span class="k">class</span> <span class="nc">GetNewObject</span><span class="p">():</span>
@@ -209,6 +224,94 @@
 		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Vector must be length </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">expected_length</span><span class="p">))</span>
 
 	<span class="k">return</span> <span class="n">vec</span></div>
+
+
+<div class="viewcode-block" id="animatable_property"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.animatable_property">[docs]</a><span class="k">def</span> <span class="nf">animatable_property</span><span class="p">(</span><span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_data_object</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">callable</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Decorator that wraps around a function to take a frame number and value, and set the property at that frame.</span>
+
+<span class="sd">	example usage::</span>
+
+<span class="sd">		@animatable(&#39;location&#39;)</span>
+<span class="sd">		def set_location(self, value):</span>
+<span class="sd">			self._location = value</span>
+
+<span class="sd">	If you want to set the property at the current frame, use the setter as normal:</span>
+
+<span class="sd">	``obj.set_location((1, 2, 3))``</span>
+
+<span class="sd">	To set the property at a specific frame, use the decorator:</span>
+
+<span class="sd">	``obj.set_location((1, 2, 3), frame=10)``</span>
+
+<span class="sd">	Which will call the set_location function, followed by</span>
+
+<span class="sd">	``self.object.keyframe_insert(data_path=&#39;location&#39;, frame=10)``</span>
+
+<span class="sd">	:param data_path: the data path of the property to set</span>
+<span class="sd">	:param use_data_object: whether to use the data object or the object itself</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+
+		<span class="n">original_sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+		<span class="n">original_params</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">original_sig</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+		<span class="k">def</span> <span class="nf">subwrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s1">&#39;BsynObject&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+			<span class="n">frame</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">frame</span>
+			<span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="nb">object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">use_data_object</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">data</span>
+				<span class="nb">object</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+
+
+		<span class="c1"># store original parameters here - we need them for type hinting</span>
+		<span class="n">param_types</span> <span class="o">=</span> <span class="p">{</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">param</span><span class="o">.</span><span class="n">annotation</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">original_params</span><span class="p">}</span>
+
+		<span class="c1"># remove type hints from signature as they will be added to the docstring. Add frame = None</span>
+		<span class="n">new_params</span> <span class="o">=</span> \
+			<span class="p">[</span><span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">POSITIONAL_OR_KEYWORD</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">param</span><span class="o">.</span><span class="n">default</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">original_params</span><span class="p">]</span> <span class="o">+</span> \
+			<span class="p">[</span><span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">POSITIONAL_OR_KEYWORD</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)]</span>
+
+		<span class="n">subwrapper</span><span class="o">.</span><span class="n">__signature__</span> <span class="o">=</span> <span class="n">original_sig</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="n">new_params</span><span class="p">)</span>
+
+		<span class="c1"># We need to make the following updates to the docstring:</span>
+		<span class="c1"># Add parameter &#39;frame&#39; (matching indent)</span>
+		<span class="c1"># Copy type hints from signature (to overcome the lack of sphinx autodoc for runtime docstrings)</span>
+		<span class="n">doc_lines</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">line_gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span> <span class="c1"># generator of all lines</span>
+		<span class="n">indentation</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+		<span class="n">started_params</span> <span class="o">=</span> <span class="kc">False</span>
+		<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">line_gen</span><span class="p">:</span>
+			<span class="n">line_starts_with_params</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;:param&quot;</span><span class="p">)</span>
+			<span class="n">doc_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">line_starts_with_params</span> <span class="ow">and</span> <span class="n">started_params</span><span class="p">:</span> <span class="c1"># end of param block</span>
+				<span class="k">break</span>
+
+			<span class="k">if</span> <span class="n">line_starts_with_params</span><span class="p">:</span>
+				<span class="n">indentation</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="n">line</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;:param&quot;</span><span class="p">)]</span>
+				<span class="n">name</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s1">&#39;param &#39;</span><span class="p">)</span>
+				<span class="n">param_type</span> <span class="o">=</span> <span class="n">param_types</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">_empty</span><span class="p">)</span>
+				<span class="k">if</span> <span class="n">param_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">inspect</span><span class="o">.</span><span class="n">_empty</span><span class="p">:</span>  <span class="c1"># If the parameter has a type hint</span>
+					<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">param_type</span><span class="p">,</span> <span class="s1">&#39;__name__&#39;</span><span class="p">):</span>
+						<span class="n">class_name</span> <span class="o">=</span> <span class="n">param_type</span><span class="o">.</span><span class="vm">__name__</span>
+
+					<span class="k">else</span><span class="p">:</span> <span class="c1"># get class name e.g. blendersynth.utils.Object</span>
+						<span class="n">class_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">param_type</span><span class="p">)</span>
+
+					<span class="n">doc_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">indentation</span><span class="si">}</span><span class="s1">:type </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: :class:`~</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s1">`&#39;</span><span class="p">)</span>
+
+		<span class="c1"># add frame param</span>
+		<span class="n">doc_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">indentation</span><span class="si">}</span><span class="s2">:param frame: Optional frame for animating </span><span class="se">\n</span><span class="si">{</span><span class="n">indentation</span><span class="si">}</span><span class="s2">:type frame: :class:`~int`&quot;</span><span class="p">)</span>
+
+		<span class="c1"># add rest of lines</span>
+		<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">line_gen</span><span class="p">:</span>
+			<span class="n">doc_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+		<span class="n">subwrapper</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">doc_lines</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">subwrapper</span>
+
+	<span class="k">return</span> <span class="n">wrapper</span></div>
 </pre></div>
 
            </div>

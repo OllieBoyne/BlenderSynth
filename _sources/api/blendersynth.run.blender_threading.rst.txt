@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.run.blender_threading
 	:members:
+	:inherited-members:

@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.annotations.bbox
 	:members:
+	:inherited-members:

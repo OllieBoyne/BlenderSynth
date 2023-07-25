@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.blender.bsyn_object
 	:members:
+	:inherited-members:

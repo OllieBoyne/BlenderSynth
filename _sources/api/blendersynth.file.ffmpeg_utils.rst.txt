@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.file.ffmpeg_utils
 	:members:
+	:inherited-members:

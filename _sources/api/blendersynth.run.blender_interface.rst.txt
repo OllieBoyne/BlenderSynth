@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.run.blender_interface
 	:members:
+	:inherited-members:

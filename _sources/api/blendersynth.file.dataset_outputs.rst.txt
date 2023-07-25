@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.file.dataset_outputs
 	:members:
+	:inherited-members:

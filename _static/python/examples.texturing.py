@@ -3,7 +3,6 @@
 import blendersynth as bsyn
 bsyn.run_this_script(debug = False)
 
-# Load a OBJ file
 mesh = bsyn.Mesh.from_primitive('monkey')
 mesh.material = bsyn.Material.from_image('../resources/monkeys/green_checkerboard.png')  # load texture
 mesh.material.scale = 2  # change the scaling of the UV texture

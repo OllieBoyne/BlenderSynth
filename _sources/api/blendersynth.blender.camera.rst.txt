@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.blender.camera
 	:members:
+	:inherited-members:

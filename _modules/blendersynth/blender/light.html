@@ -87,20 +87,20 @@
 <span></span><span class="kn">import</span> <span class="nn">copy</span>
 
 <span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">GetNewObject</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">GetNewObject</span><span class="p">,</span> <span class="n">animatable_property</span>
+<span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 
 <span class="n">LIGHT_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POINT&#39;</span><span class="p">,</span> <span class="s1">&#39;SUN&#39;</span><span class="p">,</span> <span class="s1">&#39;SPOT&#39;</span><span class="p">,</span> <span class="s1">&#39;AREA&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="Light"><a class="viewcode-back" href="../../../api/blendersynth.blender.light.html#blendersynth.blender.light.Light">[docs]</a><span class="k">class</span> <span class="nc">Light</span><span class="p">:</span>
+<div class="viewcode-block" id="Light"><a class="viewcode-back" href="../../../api/blendersynth.blender.light.html#blendersynth.blender.light.Light">[docs]</a><span class="k">class</span> <span class="nc">Light</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Light object, for managing lights in the scene&quot;&quot;&quot;</span>
 	<span class="n">light_types</span> <span class="o">=</span> <span class="n">LIGHT_TYPES</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;List of available light types&quot;&quot;&quot;</span>
 
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">light</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">light</span>
-		<span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">light</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>  <span class="c1"># copy over attributes from light</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">light</span>
 
 <div class="viewcode-block" id="Light.from_scene"><a class="viewcode-back" href="../../../api/blendersynth.blender.light.html#blendersynth.blender.light.Light.from_scene">[docs]</a>	<span class="nd">@classmethod</span>
 	<span class="k">def</span> <span class="nf">from_scene</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
@@ -114,7 +114,7 @@
 
 <div class="viewcode-block" id="Light.create"><a class="viewcode-back" href="../../../api/blendersynth.blender.light.html#blendersynth.blender.light.Light.create">[docs]</a>	<span class="nd">@classmethod</span>
 	<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">light_type</span><span class="o">=</span><span class="s1">&#39;POINT&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Light&#39;</span><span class="p">,</span> <span class="n">intensity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Create a new light object</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Create a new Light object</span>
 
 <span class="sd">		:param light_type: Type of light to create (see :attr:`~blendersynth.blender.light.Light.light_types`)</span>
 <span class="sd">		:param name: Name of light</span>
@@ -135,25 +135,33 @@
 		<span class="n">light</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
 		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">light</span><span class="p">)</span>
 
-		<span class="k">return</span> <span class="n">light</span></div>
+		<span class="k">return</span> <span class="n">Light</span><span class="p">(</span><span class="n">light</span><span class="p">)</span></div>
 
 	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Rotation of light in euler XYZ angles&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span>
+	<span class="k">def</span> <span class="nf">energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Energy of light source&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">energy</span>
 
-	<span class="nd">@rotation_euler</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">value</span>
+	<span class="nd">@energy</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">set_energy</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;energy&#39;</span><span class="p">,</span> <span class="n">use_data_object</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">set_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">value</span>
 
 	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Location of light&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">location</span>
+	<span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Color of light source&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">color</span>
 
-	<span class="nd">@location</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">value</span></div>
+	<span class="nd">@color</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">use_data_object</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">set_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">value</span></div>
 </pre></div>
 
            </div>

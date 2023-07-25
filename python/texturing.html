@@ -95,7 +95,6 @@
 <span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 
-<span class="c1"># Load a OBJ file</span>
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_primitive</span><span class="p">(</span><span class="s1">&#39;monkey&#39;</span><span class="p">)</span>
 <span class="n">mesh</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Material</span><span class="o">.</span><span class="n">from_image</span><span class="p">(</span><span class="s1">&#39;../resources/monkeys/green_checkerboard.png&#39;</span><span class="p">)</span>  <span class="c1"># load texture</span>
 <span class="n">mesh</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># change the scaling of the UV texture</span>

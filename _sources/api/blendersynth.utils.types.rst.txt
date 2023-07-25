@@ -1,0 +1,7 @@
+:code:`blendersynth.utils.types`
+===================================
+
+
+.. automodule:: blendersynth.utils.types
+	:members:
+	:inherited-members:

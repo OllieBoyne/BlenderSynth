@@ -113,6 +113,35 @@ returning to the original mode on exit.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.utils.animatable_property">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">animatable_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#animatable_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.animatable_property" title="Permalink to this definition"></a></dt>
+<dd><p>Decorator that wraps around a function to take a frame number and value, and set the property at that frame.</p>
+<p>example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@animatable</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">value</span>
+</pre></div>
+</div>
+<p>If you want to set the property at the current frame, use the setter as normal:</p>
+<p><code class="docutils literal notranslate"><span class="pre">obj.set_location((1,</span> <span class="pre">2,</span> <span class="pre">3))</span></code></p>
+<p>To set the property at a specific frame, use the decorator:</p>
+<p><code class="docutils literal notranslate"><span class="pre">obj.set_location((1,</span> <span class="pre">2,</span> <span class="pre">3),</span> <span class="pre">frame=10)</span></code></p>
+<p>Which will call the set_location function, followed by</p>
+<p><code class="docutils literal notranslate"><span class="pre">self.object.keyframe_insert(data_path='location',</span> <span class="pre">frame=10)</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the data path of the property to set</p></li>
+<li><p><strong>use_data_object</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – whether to use the data object or the object itself</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="blendersynth.blender.utils.get_node_by_name">
 <span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">get_node_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#get_node_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.get_node_by_name" title="Permalink to this definition"></a></dt>
 <dd><p>Given a nodetree and a key, return the first node found with label matching key.</p>

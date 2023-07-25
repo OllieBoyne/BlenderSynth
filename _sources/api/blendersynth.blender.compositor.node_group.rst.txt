@@ -4,3 +4,4 @@
 
 .. automodule:: blendersynth.blender.compositor.node_group
 	:members:
+	:inherited-members:
