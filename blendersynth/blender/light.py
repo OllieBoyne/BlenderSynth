@@ -1,20 +1,20 @@
 import copy
 
 import bpy
-from .utils import GetNewObject
+from .utils import GetNewObject, animatable_property
+from .bsyn_object import BsynObject
 from copy import deepcopy
 
 LIGHT_TYPES = ['POINT', 'SUN', 'SPOT', 'AREA']
 
 
-class Light:
+class Light(BsynObject):
 	"""Light object, for managing lights in the scene"""
 	light_types = LIGHT_TYPES
 	"""List of available light types"""
 
 	def __init__(self, light):
-		self.obj = light
-		self.__dict__ = copy.deepcopy(light.__dict__)  # copy over attributes from light
+		self._object = light
 
 	@classmethod
 	def from_scene(cls, key):
@@ -28,7 +28,7 @@ class Light:
 
 	@classmethod
 	def create(cls, light_type='POINT', name='Light', intensity=1.0, color=(1.0, 1.0, 1.0), location=(0, 0, 0)):
-		"""Create a new light object
+		"""Create a new Light object
 
 		:param light_type: Type of light to create (see :attr:`~blendersynth.blender.light.Light.light_types`)
 		:param name: Name of light
@@ -49,22 +49,30 @@ class Light:
 		light.location = location
 		bpy.context.collection.objects.link(light)
 
-		return light
+		return Light(light)
 
 	@property
-	def rotation_euler(self):
-		"""Rotation of light in euler XYZ angles"""
-		return self.obj.rotation_euler
+	def energy(self):
+		"""Energy of light source"""
+		return self.obj.data.energy
 
-	@rotation_euler.setter
-	def rotation_euler(self, value):
-		self.obj.rotation_euler = value
+	@energy.setter
+	def energy(self, value):
+		self.set_energy(value)
+
+	@animatable_property('energy', use_data_object=True)
+	def set_energy(self, value: float):
+		self.obj.data.energy = value
 
 	@property
-	def location(self):
-		"""Location of light"""
-		return self.obj.location
+	def color(self):
+		"""Color of light source"""
+		return self.obj.data.color
 
-	@location.setter
-	def location(self, value):
-		self.obj.location = value
+	@color.setter
+	def color(self, value):
+		self.set_color(value)
+
+	@animatable_property('color', use_data_object=True)
+	def set_color(self, value):
+		self.obj.data.color = value

@@ -40,6 +40,7 @@ def manage_item(src):
 		out_txt += f"""
 .. automodule:: {fname}
 	:members:
+	:inherited-members:
 """
 
 	with open(new_file, 'w') as f:

@@ -23,12 +23,18 @@ class Material(BsynObject):
 			self.output = mat.node_tree.nodes.new(type="ShaderNodeOutputMaterial")
 			mat.node_tree.links.new(self.shader.outputs[0], self.output.inputs['Surface'])
 
+		else:
+			self.shader = None
+			self.output = mat.node_tree.nodes['Material Output']
+
 		mat.use_nodes = True
 		self._object = mat
 
 		self.node_tree = mat.node_tree
 		self.nodes = self.node_tree.nodes
 		self.links = self.node_tree.links
+
+		self._image_nodes = {}  # dict of shader input socket : image node
 
 		# set-up scaling
 		self._add_scaling_node()
@@ -53,12 +59,14 @@ class Material(BsynObject):
 
 		return mat
 
-	def add_source(self, image_loc:str, input_name:str='Base Color', use_global_scale:bool=True):
+	def add_source(self, image_loc:str, input_name:str='Base Color', use_global_scale:bool=True,
+				   allow_duplicate:bool=False):
 		"""
 		Add an image texture node to the material node tree, and connect it to the specified input of the Shader.
 		:param image_loc: Image location
 		:param input_name: Input socket name of the Shader to connect the image texture node to
 		:param use_global_scale: Flag to scale the image texture node by the global scale
+		:param allow_duplicate: Flag to allow duplicate image texture nodes (by default, a node to the same input will overwrite any previous)
 		:return:
 		"""
 		# Get the nodes in the material node tree
@@ -70,18 +78,27 @@ class Material(BsynObject):
 		if not principled:
 			raise ValueError("add_source requires a Principled BSDF node in the material node tree")
 
-		# Create image texture node
-		tex_image = nodes.new('ShaderNodeTexImage')
-		tex_image.image = bpy.data.images.load(image_loc)
+		if input_name in self._image_nodes and not allow_duplicate:
+			tex_image_node = self._image_nodes[input_name]
+		else:
+			tex_image_node = nodes.new('ShaderNodeTexImage')
 
-		# Connect the image texture node to the specified input of the Principled BSDF
-		links.new(tex_image.outputs['Color'], principled.inputs[input_name])
+		tex_image_node.image = bpy.data.images.load(image_loc)
+		self._image_nodes[input_name] = tex_image_node
+
+		if input_name == 'Displacement':
+			# Connect to the 'Displacement' socket of the output node
+			links.new(tex_image_node.outputs['Color'], self.output.inputs['Displacement'])
+
+		else:
+			# Connect the image texture node to the specified input of the Principled BSDF
+			links.new(tex_image_node.outputs['Color'], principled.inputs[input_name])
 
 		if use_global_scale:
-			links.new(self._texture_scaling_socket, tex_image.inputs['Vector'])
+			links.new(self._texture_scaling_socket, tex_image_node.inputs['Vector'])
 
 		if 'color' not in input_name.lower():
-			tex_image.image.colorspace_settings.name = 'Non-Color'
+			tex_image_node.image.colorspace_settings.name = 'Non-Color'
 
 		tidy_tree(self.node_tree)
 

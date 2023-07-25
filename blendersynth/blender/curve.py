@@ -1,5 +1,5 @@
 import bpy
-from .utils import GetNewObject, SelectObjects, handle_vec
+from .bsyn_object import BsynObject
 
 prims = {
 	'circle': bpy.ops.curve.primitive_bezier_circle_add,
@@ -7,7 +7,7 @@ prims = {
 	'path': bpy.ops.curve.primitive_nurbs_path_add,
 }
 
-class Curve:
+class Curve(BsynObject):
 	"""Blender path object"""
 	def __init__(self, path_type='circle', scale=1, location=(0, 0, 0), rotation=(0, 0, 0)):
 		"""Create a new path:
@@ -16,6 +16,7 @@ class Curve:
 
 		self.path = None
 		self._create_path(path_type)
+		self._object = self.path
 
 		self.scale = scale
 		self.location = location
@@ -24,30 +25,3 @@ class Curve:
 	def _create_path(self, path_type):
 		prims[path_type]()
 		self.path = bpy.context.object
-
-	@property
-	def location(self):
-		return self.path.location
-
-	@location.setter
-	def location(self, pos):
-		self.path.location = handle_vec(pos)
-
-	@property
-	def rotation(self):
-		return self.path.rotation_euler
-
-	@rotation.setter
-	def rotation(self, rot):
-		self.path.rotation_euler = handle_vec(rot)
-
-	@property
-	def scale(self):
-		return self.path.scale
-
-	@scale.setter
-	def scale(self, scale):
-		if isinstance(scale, (int, float)):
-			scale = (scale, scale, scale)
-
-		self.path.scale = handle_vec(scale)

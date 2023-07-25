@@ -1,8 +1,8 @@
 import os.path
 
 import bpy
-from .utils import GetNewObject, SelectObjects, handle_vec, SetMode
-from .bsyn_object import BsynObject, animatable_property
+from .utils import GetNewObject, SelectObjects, handle_vec, SetMode, animatable_property
+from .bsyn_object import BsynObject
 from .material import Material
 from .aov import AOV
 import numpy as np
@@ -48,15 +48,6 @@ def _get_child_meshes(obj):
 		return meshes, other
 
 
-def _euler_from(a: mathutils.Euler, b: mathutils.Euler):
-	"""Get euler rotation from a to b"""
-	return (b.to_matrix() @ a.to_matrix().inverted()).to_euler()
-
-
-def _euler_add(a: mathutils.Euler, b: mathutils.Euler):
-	"""Compute euler rotation of a, followed by b"""
-	return (a.to_matrix() @ b.to_matrix()).to_euler()
-
 
 class Mesh(BsynObject):
 	"""A mesh object. Can be a single mesh, or a hierarchy of meshes."""
@@ -99,11 +90,6 @@ class Mesh(BsynObject):
 		self.set_class_id(class_id)
 
 		self.assigned_aovs = []
-
-		# we want to be able to manage scale, rotation and location separately from the children meshes
-		self._scale = obj.scale
-		self._rotation_euler = obj.rotation_euler
-		self._location = obj.location
 
 	def set_class_id(self, class_id):
 		assert isinstance(class_id, int), f"Class ID must be an integer, not {type(class_id)}"
@@ -257,20 +243,22 @@ class Mesh(BsynObject):
 						f"Error with setting origin. Expects a list of {len(self._meshes)} 3-long Vector. Received: {origin}")
 
 	def get_all_vertices(self, ref_frame='WORLD'):
-		verts = np.array([vert.co[:] + (1,) for mesh in self._meshes for vert in mesh.data.vertices]).T
-
-		if ref_frame == 'LOCAL':
-			pass
-
-		elif ref_frame == 'WORLD':
-			world_matrix = np.array(self.matrix_world)
-			verts = np.dot(world_matrix, verts)
-
-		else:
+		if ref_frame not in {'LOCAL', 'WORLD'}:
 			raise ValueError(f"Invalid ref_frame: {ref_frame}. Must be one of ['LOCAL', 'WORLD']")
 
-		verts = verts[:3, :] / verts[3, :]  # convert from homogeneous coordinates
-		return verts.T
+		verts = []
+
+		for mesh in self._meshes:
+			mesh_verts = np.array([vert.co for vert in mesh.data.vertices])
+
+			if ref_frame == 'WORLD':
+				mesh_verts = np.dot(mesh.matrix_world, np.vstack((mesh_verts.T, np.ones(mesh_verts.shape[0]))))
+
+			verts.append(mesh_verts)
+
+		verts = np.concatenate(verts, axis=1)
+		verts /= verts[3]  # convert from homogeneous coordinates
+		return verts[:3].T
 
 	@property
 	def materials(self):
@@ -299,100 +287,6 @@ class Mesh(BsynObject):
 		trans_vec['XYZ'.index(axis)] = pos - min_pos
 		self.translate(trans_vec)
 
-	@property
-	def matrix_world(self):
-		"""Return world matrix of object(s).
-		"""
-		bpy.context.evaluated_depsgraph_get()  # required to update object matrix
-		return self._meshes[0].matrix_world
-
-	@property
-	def axes(self) -> np.ndarray:
-		"""Return 3x3 rotation matrix (normalized) to represent axes"""
-		mat = np.array(self.matrix_world)[:3, :3]
-		mat = mat / np.linalg.norm(mat, axis=0)
-		return mat
-
-	@property
-	def location(self):
-		return self._location
-
-	@location.setter
-	def location(self, location):
-		self.set_location(location)
-
-	@property
-	def rotation_euler(self):
-		return self._rotation_euler
-
-	@rotation_euler.setter
-	def rotation_euler(self, rotation):
-		self.set_rotation_euler(rotation)
-
-	@property
-	def scale(self):
-		return self._scale
-
-	@scale.setter
-	def scale(self, scale):
-		self.set_scale(scale)
-
-	@animatable_property('location')
-	def set_location(self, location):
-		"""Set location of object"""
-		location = handle_vec(location, 3)
-
-		translation = location - self.location
-		with SelectObjects(self._meshes + self._other_objects):
-			bpy.ops.transform.translate(value=translation)
-
-		self._location = location
-
-	@animatable_property('rotation_euler')
-	def set_rotation_euler(self, rotation):
-		"""Set euler rotation of object"""
-		assert len(rotation) == 3, f"Rotation must be a tuple of length 3, got {len(rotation)}"
-		rotation = Euler(rotation, 'XYZ')
-		diff = _euler_from(self.rotation_euler, rotation)
-
-		with SelectObjects(self._meshes + self._other_objects):
-			for ax, val in zip('XYZ', diff):
-				if val != 0:
-					bpy.ops.transform.rotate(value=val, orient_axis=ax)
-
-		self._rotation_euler = rotation
-
-	@animatable_property('scale')
-	def set_scale(self, scale):
-		"""Set scale of object"""
-		if isinstance(scale, (int, float)):
-			scale = (scale, scale, scale)
-
-		resize_fac = np.array(scale) / np.array(self.scale)
-
-		with SelectObjects(self._meshes + self._other_objects):
-			bpy.ops.transform.resize(value=resize_fac)
-
-		self._scale = scale
-
-	def translate(self, translation):
-		"""Translate object"""
-		translation = handle_vec(translation, 3)
-		self.location = self.location + translation
-
-	def rotate_by(self, rotation):
-		"""Add a rotation to the object. Must be in XYZ order, euler angles, radians."""
-		rotation = handle_vec(rotation, 3)
-		new_rotation = _euler_add(self.rotation_euler, Euler(rotation, 'XYZ'))
-		self.rotation_euler = new_rotation
-
-	def scale_by(self, scale):
-		"""Scale object"""
-		if isinstance(scale, (int, float)):
-			scale = (scale, scale, scale)
-
-		scale = handle_vec(scale, 3)
-		self.scale = self._scale * scale
 
 	def delete(self, delete_materials: bool = True):
 		"""Clear mesh from scene & mesh data.

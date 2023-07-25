@@ -1,8 +1,23 @@
 """Context managers and operations for handling Blender"""
+import inspect
 
 import bpy
 import numpy as np
 import mathutils
+from typing import Union, List, Tuple
+
+# define Blender Array type
+blender_array_type = Union[List[float], mathutils.Vector, np.ndarray, Tuple[float, ...], Tuple[int, ...]]
+blender_array_or_scalar = Union[blender_array_type, int, float]
+
+def _euler_from(a: mathutils.Euler, b: mathutils.Euler):
+	"""Get euler rotation from a to b"""
+	return (b.to_matrix() @ a.to_matrix().inverted()).to_euler()
+
+
+def _euler_add(a: mathutils.Euler, b: mathutils.Euler):
+	"""Compute euler rotation of a, followed by b"""
+	return (a.to_matrix() @ b.to_matrix()).to_euler()
 
 
 class GetNewObject():
@@ -123,3 +138,91 @@ def handle_vec(vec, expected_length: int = 3) -> mathutils.Vector:
 		raise ValueError("Vector must be length {}".format(expected_length))
 
 	return vec
+
+
+def animatable_property(data_path: str, use_data_object: bool = False) -> callable:
+	"""Decorator that wraps around a function to take a frame number and value, and set the property at that frame.
+
+	example usage::
+
+		@animatable('location')
+		def set_location(self, value):
+			self._location = value
+
+	If you want to set the property at the current frame, use the setter as normal:
+
+	``obj.set_location((1, 2, 3))``
+
+	To set the property at a specific frame, use the decorator:
+
+	``obj.set_location((1, 2, 3), frame=10)``
+
+	Which will call the set_location function, followed by
+
+	``self.object.keyframe_insert(data_path='location', frame=10)``
+
+	:param data_path: the data path of the property to set
+	:param use_data_object: whether to use the data object or the object itself
+	"""
+
+	def wrapper(func):
+
+		original_sig = inspect.signature(func)
+		original_params = list(original_sig.parameters.values())
+
+		def subwrapper(self: 'BsynObject', value, *args, frame=None, **kwargs):
+			frame = args[0] if len(args) > 0 else frame
+			func(self, value, **kwargs)
+			if frame is not None:
+				object = self.object if not use_data_object else self.object.data
+				object.keyframe_insert(data_path=data_path, frame=frame)
+
+
+		# store original parameters here - we need them for type hinting
+		param_types = {param.name: param.annotation for param in original_params}
+
+		# remove type hints from signature as they will be added to the docstring. Add frame = None
+		new_params = \
+			[inspect.Parameter(param.name, inspect.Parameter.POSITIONAL_OR_KEYWORD, default=param.default) for param in original_params] + \
+			[inspect.Parameter("frame", inspect.Parameter.POSITIONAL_OR_KEYWORD, default=None)]
+
+		subwrapper.__signature__ = original_sig.replace(parameters=new_params)
+
+		# We need to make the following updates to the docstring:
+		# Add parameter 'frame' (matching indent)
+		# Copy type hints from signature (to overcome the lack of sphinx autodoc for runtime docstrings)
+		doc_lines = []
+		line_gen = (line for line in (func.__doc__ or '').split("\n")) # generator of all lines
+		indentation = ''
+		started_params = False
+		for line in line_gen:
+			line_starts_with_params = line.lstrip().startswith(":param")
+			doc_lines.append(line)
+			if not line_starts_with_params and started_params: # end of param block
+				break
+
+			if line_starts_with_params:
+				indentation = line[:line.index(":param")]
+				name = line.split(':')[1].strip().removeprefix('param ')
+				param_type = param_types.get(name, inspect._empty)
+				if param_type is not inspect._empty:  # If the parameter has a type hint
+					if hasattr(param_type, '__name__'):
+						class_name = param_type.__name__
+
+					else: # get class name e.g. blendersynth.utils.Object
+						class_name = str(param_type)
+
+					doc_lines.append(f'{indentation}:type {name}: :class:`~{class_name}`')
+
+		# add frame param
+		doc_lines.append(f"\n{indentation}:param frame: Optional frame for animating \n{indentation}:type frame: :class:`~int`")
+
+		# add rest of lines
+		for line in line_gen:
+			doc_lines.append(line)
+
+		subwrapper.__doc__ = "\n".join(doc_lines)
+
+		return subwrapper
+
+	return wrapper
