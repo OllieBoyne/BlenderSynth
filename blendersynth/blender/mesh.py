@@ -99,7 +99,7 @@ class Mesh(BsynObject):
 		self.scene['MAX_CLASSES'] = max(self.scene.get('MAX_CLASSES', 0), class_id)
 
 	@classmethod
-	def from_scene(cls, key, class_id=0) -> 'Mesh':
+	def from_scene(cls, key:str, class_id:int=0) -> 'Mesh':
 		"""Create object from named object in scene.
 
 		:param key: Name of object in scene
@@ -142,9 +142,15 @@ class Mesh(BsynObject):
 		return obj
 
 	@classmethod
-	def from_obj(cls, obj_loc, class_id=None,
-				 forward_axis='-Z', up_axis='Y'):
+	def from_obj(cls, obj_loc:str, class_id:int=None,
+				 forward_axis:str='-Z', up_axis:str='Y'):
 		"""Load object from .obj file.
+
+		:param obj_loc: Location of .obj file
+		:param class_id: Class ID to assign to object
+		:param forward_axis: Axis to use as forward axis
+		:param up_axis: Axis to use as up axis
+
 
 		Note: we use bpy.ops.wm.obj_import instead of bpy.ops.import_scene.obj because the latter
 		causes issues with materials & vertex ordering.
@@ -174,8 +180,12 @@ class Mesh(BsynObject):
 		return cls(obj, class_id=class_id)
 
 	@classmethod
-	def from_glb(cls, glb_loc, class_id=None):
-		"""Load object from .glb file"""
+	def from_glb(cls, glb_loc:str, class_id:int=None):
+		"""Load object from .glb file.
+
+		:param glb_loc: Location of .glb file
+		:param class_id: Class ID to assign to object
+		"""
 		assert os.path.isfile(glb_loc) and glb_loc.endswith(
 			('.glb', '.gtlf')), f"File `{glb_loc}` not a valid .glb file"
 
@@ -190,12 +200,16 @@ class Mesh(BsynObject):
 		return cls(importer.imported_obj, class_id=class_id)
 
 	@classmethod
-	def from_gltf(cls, gltf_loc, class_id=None):
+	def from_gltf(cls, gltf_loc:str, class_id:int=None):
+		"""Alias for :meth:`~blendersynth.blender.Mesh.from_glb`"""
 		return cls.from_glb(gltf_loc, class_id=class_id)
 
 	@classmethod
-	def from_fbx(cls, fbx_loc, class_id=None):
-		"""Load object from .fbx file"""
+	def from_fbx(cls, fbx_loc:str, class_id:int=None):
+		"""Load object from .fbx file.
+
+		:param fbx_loc: Location of .fbx file
+		:param class_id: Class ID to assign to object"""
 		assert os.path.isfile(fbx_loc) and fbx_loc.endswith('.fbx'), f"File `{fbx_loc}` not a valid .fbx file"
 
 		directory, fname = os.path.split(fbx_loc)

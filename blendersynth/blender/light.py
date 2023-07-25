@@ -3,7 +3,7 @@ import copy
 import bpy
 from .utils import GetNewObject, animatable_property
 from .bsyn_object import BsynObject
-from copy import deepcopy
+from ..utils import types
 
 LIGHT_TYPES = ['POINT', 'SUN', 'SPOT', 'AREA']
 
@@ -27,7 +27,8 @@ class Light(BsynObject):
 		return cls(obj)
 
 	@classmethod
-	def create(cls, light_type='POINT', name='Light', intensity=1.0, color=(1.0, 1.0, 1.0), location=(0, 0, 0)):
+	def create(cls, light_type:str='POINT', name:str='Light', intensity:float=1.0,
+			   color:types.VectorLikeAlias=(1.0, 1.0, 1.0), location:types.VectorLikeAlias=(0, 0, 0)):
 		"""Create a new Light object
 
 		:param light_type: Type of light to create (see :attr:`~blendersynth.blender.light.Light.light_types`)
@@ -62,6 +63,11 @@ class Light(BsynObject):
 
 	@animatable_property('energy', use_data_object=True)
 	def set_energy(self, value: float):
+		"""Set energy of light source
+
+		:param value: Energy of light source
+		:return:
+		"""
 		self.obj.data.energy = value
 
 	@property
@@ -74,5 +80,9 @@ class Light(BsynObject):
 		self.set_color(value)
 
 	@animatable_property('color', use_data_object=True)
-	def set_color(self, value):
+	def set_color(self, value: types.VectorLikeAlias):
+		"""Set color of light source
+
+		:param value: RGB[A] color
+		"""
 		self.obj.data.color = value
