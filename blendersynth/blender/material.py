@@ -128,6 +128,16 @@ class Material(BsynObject):
 		self.links.new(tex_coord_node.outputs['UV'], mapping_node.inputs['Vector'])
 		self._texture_scaling_socket = mapping_node.outputs['Vector']
 
+	def set_bdsf_property(self, key: str, value: float):
+		"""Set the property of the BSDF node"""
+		if self.shader.type != 'BSDF_PRINCIPLED':
+			raise ValueError("Shader is not a Principled BSDF")
+
+		if key not in self.shader.inputs:
+			raise ValueError(f"Invalid BDSF shader property `{key}`")
+
+		self.shader.inputs[key].default_value = value
+
 	@property
 	def scale(self):
 		return self._scale

@@ -28,7 +28,7 @@ def bounding_box(object: Mesh, camera: bpy.types.Camera = None,
 	if scene is None:
 		scene = bpy.context.scene
 
-	verts = object.get_all_vertices('WORLD')
+	verts = object._get_all_vertices('WORLD')
 	coords_2d = project_points(verts, scene, camera, invert_y=invert_y)
 
 	if normalized:

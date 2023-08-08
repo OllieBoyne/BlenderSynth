@@ -7,6 +7,7 @@ from .material import Material
 from .aov import AOV
 import numpy as np
 import mathutils
+import bmesh
 from mathutils import Vector, Euler
 from typing import Union, List
 from copy import deepcopy
@@ -46,7 +47,6 @@ def _get_child_meshes(obj):
 			other += child_other
 
 		return meshes, other
-
 
 
 class Mesh(BsynObject):
@@ -99,7 +99,7 @@ class Mesh(BsynObject):
 		self.scene['MAX_CLASSES'] = max(self.scene.get('MAX_CLASSES', 0), class_id)
 
 	@classmethod
-	def from_scene(cls, key:str, class_id:int=0) -> 'Mesh':
+	def from_scene(cls, key: str, class_id: int = 0) -> 'Mesh':
 		"""Create object from named object in scene.
 
 		:param key: Name of object in scene
@@ -142,8 +142,8 @@ class Mesh(BsynObject):
 		return obj
 
 	@classmethod
-	def from_obj(cls, obj_loc:str, class_id:int=None,
-				 forward_axis:str='-Z', up_axis:str='Y'):
+	def from_obj(cls, obj_loc: str, class_id: int = None,
+				 forward_axis: str = '-Z', up_axis: str = 'Y'):
 		"""Load object from .obj file.
 
 		:param obj_loc: Location of .obj file
@@ -158,7 +158,7 @@ class Mesh(BsynObject):
 		"""
 		for axis in (forward_axis, up_axis):
 			assert axis in (
-			'X', 'Y', 'Z', '-X', '-Y', '-Z'), f"Axis `{axis}` not valid, must be one of X, Y, Z, -X, -Y, -Z"
+				'X', 'Y', 'Z', '-X', '-Y', '-Z'), f"Axis `{axis}` not valid, must be one of X, Y, Z, -X, -Y, -Z"
 
 		forward_axis = forward_axis.replace('-', 'NEGATIVE_')  # e.g. -X -> NEGATIVE_X
 		up_axis = up_axis.replace('-', 'NEGATIVE_')
@@ -180,7 +180,7 @@ class Mesh(BsynObject):
 		return cls(obj, class_id=class_id)
 
 	@classmethod
-	def from_glb(cls, glb_loc:str, class_id:int=None):
+	def from_glb(cls, glb_loc: str, class_id: int = None):
 		"""Load object from .glb file.
 
 		:param glb_loc: Location of .glb file
@@ -200,12 +200,12 @@ class Mesh(BsynObject):
 		return cls(importer.imported_obj, class_id=class_id)
 
 	@classmethod
-	def from_gltf(cls, gltf_loc:str, class_id:int=None):
+	def from_gltf(cls, gltf_loc: str, class_id: int = None):
 		"""Alias for :meth:`~blendersynth.blender.Mesh.from_glb`"""
 		return cls.from_glb(gltf_loc, class_id=class_id)
 
 	@classmethod
-	def from_fbx(cls, fbx_loc:str, class_id:int=None):
+	def from_fbx(cls, fbx_loc: str, class_id: int = None):
 		"""Load object from .fbx file.
 
 		:param fbx_loc: Location of .fbx file
@@ -256,14 +256,28 @@ class Mesh(BsynObject):
 					raise ValueError(
 						f"Error with setting origin. Expects a list of {len(self._meshes)} 3-long Vector. Received: {origin}")
 
-	def get_all_vertices(self, ref_frame='WORLD'):
+	def _get_all_vertices(self, ref_frame='WORLD') -> np.ndarray:
+		"""
+		Get all vertices of object, taking into account deformations.
+		:param ref_frame: LOCAL or WORLD
+		:return: Nx3 array of vertices
+		"""
+
+		depsgraph = bpy.context.evaluated_depsgraph_get()  # to account for deformations
+
 		if ref_frame not in {'LOCAL', 'WORLD'}:
 			raise ValueError(f"Invalid ref_frame: {ref_frame}. Must be one of ['LOCAL', 'WORLD']")
 
 		verts = []
 
 		for mesh in self._meshes:
-			mesh_verts = np.array([vert.co for vert in mesh.data.vertices])
+
+			# use bmesh to get vertices - this accounts for deformations in depsgraph
+			bm = bmesh.new()
+			bm.from_object(mesh, depsgraph)
+			bm.verts.ensure_lookup_table()
+			mesh_verts = np.array([x.co for x in bm.verts])
+			bm.free()
 
 			if ref_frame == 'WORLD':
 				mesh_verts = np.dot(mesh.matrix_world, np.vstack((mesh_verts.T, np.ones(mesh_verts.shape[0]))))
@@ -279,13 +293,17 @@ class Mesh(BsynObject):
 		return {m for mesh in self._meshes for m in mesh.data.materials}
 
 	def assign_pass_index(self, index: int):
-		"""Assign pass index to object. This can be used when mask rendering."""
+		"""Assign pass index to object. This can be used when mask rendering.
+
+		:param index: Pass index to assign"""
 		for mesh in self._meshes:
 			mesh.pass_index = index
 		return index
 
 	def assign_aov(self, aov: AOV):
-		"""Assign AOV to object. Applies to all materials"""
+		"""Assign AOV to object. Applies to all materials.
+
+		:param aov: AOV to assign"""
 		if aov not in self.assigned_aovs:
 			for material in self.materials:
 				shader_node_tree = material.node_tree
@@ -294,13 +312,44 @@ class Mesh(BsynObject):
 
 		self.assigned_aovs.append(aov)
 
-	def set_minimum_to(self, axis='Z', pos=0):
-		"""Set minimum of object to a given position"""
-		min_pos = self.get_all_vertices('WORLD')[:, 'XYZ'.index(axis)].min()
+	def set_minimum_to(self, axis: str = 'Z', pos: float = 0):
+		"""Set minimum of object to a given position in a given axis.
+
+		:param axis: Axis to set minimum in
+		:param pos: Position to set minimum to
+		"""
+		min_pos = self._get_all_vertices('WORLD')[:, 'XYZ'.index(axis)].min()
 		trans_vec = np.zeros(3)
 		trans_vec['XYZ'.index(axis)] = pos - min_pos
 		self.translate(trans_vec)
 
+	def clamp_in_axis(self, axis: str = 'Z', mode: str = 'min', value: float = 0):
+		"""Clamp object in a given axis to a given value - ensure that, in this axis,
+		the object never goes below (mode='min') or above (mode='max') the given value.
+
+		This can be used to ensure that an object never goes below the ground plane, for example.
+
+		:param axis: Axis to clamp in
+		:param mode: 'min' or 'max'
+		:param value: Value to clamp to
+		"""
+
+		axis = axis.upper()
+		assert axis in 'XYZ', f"Invalid axis: {axis}"
+		assert mode in {'min', 'max'}, f"Invalid mode: {mode}"
+
+		verts = self._get_all_vertices('WORLD')
+		axis_idx = 'XYZ'.index(axis)
+
+		translation = 0
+		if mode == 'min':
+			translation = max(value - verts[:, axis_idx].min(), 0)  # can only be positive
+		elif mode == 'max':
+			translation = min(value - verts[:, axis_idx].max(), 0)  # can only be negative
+
+		trans_vec = np.zeros(3)
+		trans_vec['XYZ'.index(axis)] = translation
+		self.translate(trans_vec)
 
 	def delete(self, delete_materials: bool = True):
 		"""Clear mesh from scene & mesh data.
@@ -425,9 +474,10 @@ class Mesh(BsynObject):
 	def get_bone(self, bone_name: str, armature_name: str = None) -> bpy.types.PoseBone:
 		"""
 		Get bone from armature.
-		:param bone_name:
+
+		:param bone_name: Name of bone to get
 		:param armature_name: If not given, will load first available armature found
-		:return:
+		:return: PoseBone object
 		"""
 
 		armature = self.get_armature(armature_name)
@@ -448,10 +498,9 @@ class Mesh(BsynObject):
 		:param frame: Frame to set pose on. If given, will insert keyframe here.
 		"""
 
-
 		with SelectObjects(self._meshes + self._other_objects):
 			armature = self.get_armature(armature_name)
-			with SetMode('POSE', object = armature):
+			with SetMode('POSE', object=armature):
 				if isinstance(bone, str):
 					bone = self.get_bone(bone, armature_name)
 
