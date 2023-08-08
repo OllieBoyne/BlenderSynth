@@ -10,14 +10,26 @@ from typing import Union, List, Tuple
 blender_array_type = Union[List[float], mathutils.Vector, np.ndarray, Tuple[float, ...], Tuple[int, ...]]
 blender_array_or_scalar = Union[blender_array_type, int, float]
 
+def _quaternion_equal(a: mathutils.Quaternion, b: mathutils.Quaternion, tol=1e-6):
+	"""Check if two quaternion rotations are functionally equal"""
+	return abs(a.dot(b)) > 1 - tol
+
+def _euler_equal(a: mathutils.Euler, b: mathutils.Euler, tol=1e-6):
+	"""Check if two euler rotations are equal"""
+	return _quaternion_equal(a.to_quaternion(), b.to_quaternion(), tol=tol)
+
 def _euler_from(a: mathutils.Euler, b: mathutils.Euler):
 	"""Get euler rotation from a to b"""
-	return (b.to_matrix() @ a.to_matrix().inverted()).to_euler()
+	return (a.to_quaternion().rotation_difference(b.to_quaternion())).to_euler('XYZ')
 
 
 def _euler_add(a: mathutils.Euler, b: mathutils.Euler):
 	"""Compute euler rotation of a, followed by b"""
-	return (a.to_matrix() @ b.to_matrix()).to_euler()
+	return (a.to_quaternion() @ b.to_quaternion()).to_euler('XYZ')
+
+def _euler_invert(a: mathutils.Euler):
+	"""Invert euler rotation"""
+	return a.to_quaternion().inverted().to_euler('XYZ')
 
 
 class GetNewObject():

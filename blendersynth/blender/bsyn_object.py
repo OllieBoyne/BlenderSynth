@@ -1,6 +1,6 @@
 """Base class for all BlenderSynth objects."""
-from .utils import handle_vec, SelectObjects, _euler_add, _euler_from, animatable_property
-from mathutils import Vector, Euler
+from .utils import handle_vec, SelectObjects, _euler_add, animatable_property, _euler_invert
+from mathutils import Vector, Euler, Matrix
 import numpy as np
 import bpy
 from typing import Union
@@ -25,11 +25,11 @@ class BsynObject:
 	def data(self):
 		return self.object.data
 
-	# def update(self):
+	def update(self):
 	#   ---> not currently needed, may be needed in the future
 	# 	"""On any update, run this. For most objects, this is a no-op, but for some objects,
 	# 	this is necessary to update the object's state. e.g. Camera"""
-	# 	return
+		return
 
 	def _keyframe_delete(self, *args, **kwargs):
 		self._object.keyframe_delete(*args, **kwargs)
@@ -41,6 +41,10 @@ class BsynObject:
 	def _all_objects(self):
 		"""List of all objects associated with this object."""
 		return [self.object]
+
+	@property
+	def origin(self) -> Vector:
+		return self.location
 
 	@property
 	def location(self) -> Vector:
@@ -81,6 +85,11 @@ class BsynObject:
 		with SelectObjects(self._all_objects):
 			bpy.ops.transform.translate(value=translation)
 
+	def _apply_rotation(self, rot):
+		for ax, val in zip('XYZ', rot):
+			if val != 0:
+				bpy.ops.transform.rotate(value=val, orient_axis=ax, orient_type='GLOBAL',
+										 constraint_axis=[ax == 'X', ax == 'Y', ax == 'Z'])
 
 	@animatable_property('rotation_euler')
 	def set_rotation_euler(self, rotation: types.VectorLikeAlias):
@@ -90,12 +99,11 @@ class BsynObject:
 
 		assert len(rotation) == 3, f"Rotation must be a tuple of length 3, got {len(rotation)}"
 		rotation = Euler(rotation, 'XYZ')
-		diff = _euler_from(self.rotation_euler, rotation)
 
+		# to avoid dealing with rotation calculations, we first rotate to the origin, then rotate to the new rotation
 		with SelectObjects(self._all_objects):
-			for ax, val in zip('XYZ', diff):
-				if val != 0:
-					bpy.ops.transform.rotate(value=val, orient_axis=ax)
+			self._apply_rotation(_euler_invert(self.rotation_euler))  # invert current rotation
+			self._apply_rotation(rotation)  # apply new rotation
 
 	@animatable_property('scale')
 	def set_scale(self, scale: types.VectorLikeOrScalarAlias):
