@@ -2,6 +2,7 @@
 import subprocess
 import inspect
 import sys
+import os
 from ..utils.blender_setup.blender_locator import get_blender_path
 from ..file.tempfiles import cleanup_temp_files as cleanup
 
@@ -14,11 +15,15 @@ def run_this_script(debug:bool=False):
 
 		caller_path = inspect.stack()[1].filename # path of script that called this function
 
+		caller_dir = os.path.dirname(caller_path)
+		env = os.environ.copy()
+		env['PYTHONPATH'] = caller_dir + os.pathsep + env.get('PYTHONPATH', '')
+
 		commands = [blender_path] + \
 			['--background'] * (not debug) + \
 			['--python', caller_path]
 
-		subprocess.call(commands)
+		subprocess.call(commands, env=env)
 
 		cleanup()  # cleanup temp files
 		sys.exit()  # exit the script once blender is finished

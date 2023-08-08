@@ -1,6 +1,6 @@
 """Import python module - if not installed, install it"""
 
-from .blender_setup.check_blender_install import install_module
+from .blender_setup.check_blender_install import _install_module
 import sys
 
 def import_module(named_module, pip_name = None):
@@ -18,5 +18,5 @@ def import_module(named_module, pip_name = None):
 	except ModuleNotFoundError:
 		print(f"Blender executable does not have module `{named_module}` installed. Installing...")
 		python_exec = sys.executable
-		install_module(python_exec, pip_name)
+		_install_module(python_exec, pip_name)
 		return __import__(named_module)

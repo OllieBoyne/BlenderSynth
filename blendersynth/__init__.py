@@ -53,4 +53,5 @@ if building_docs or get_blender_path() == sys.argv[0]:  # if blender is running 
 else:
 	# Imports for non blender
 	from .run.run import execute_jobs
+	from .utils.blender_setup.check_blender_install import install_module
 	from . import file

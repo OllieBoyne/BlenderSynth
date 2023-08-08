@@ -12,7 +12,7 @@ def check_module(python_executable, module_name):
 	except subprocess.CalledProcessError:
 		return False
 
-def install_module(python_executable, module_name, is_test_pypi=False,
+def _install_module(python_executable, module_name, is_test_pypi=False,
 				   version=None, upgrade=True, editable=False):
 
 	commands = [python_executable, '-m', 'pip']
@@ -31,6 +31,20 @@ def install_module(python_executable, module_name, is_test_pypi=False,
 		subprocess.check_call(commands)
 	except subprocess.CalledProcessError as e:
 		raise Exception(f"Could not install {module_name} via pip. Error: {e}")
+
+def install_module(module_name: str, version:str=None, upgrade:bool=True, editable:bool=False):
+	"""Install a module to Blender Python.
+
+	:param module_name: name of module to install
+	:param version: version of module to install
+	:param upgrade: if True, will upgrade module if it is already installed
+	:param editable: if True, will install module in editable mode
+	"""
+
+
+	python_exec = find_blender_python(get_blender_path())
+
+	_install_module(python_exec, module_name, version=version, upgrade=upgrade, editable=editable)
 
 def check_blender_install(force_all=False,
 						  force_find_blender=False,
@@ -61,7 +75,7 @@ def check_blender_install(force_all=False,
 		# check if blender's python has all necessary packages
 		for dependency in dependencies:
 			if not check_module(python_path, dependency):
-				install_module(python_path, dependency)
+				_install_module(python_path, dependency)
 
 		# First uninstall blendersynth if present (in case of updates)
 		if check_module(python_path, 'blendersynth'):
@@ -72,10 +86,10 @@ def check_blender_install(force_all=False,
 			# Install from local setup.py
 			setup_py_loc = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'setup.py')
 			directory_loc = os.path.dirname(setup_py_loc)
-			install_module(python_path, directory_loc, editable=blendersynth_editable)
+			_install_module(python_path, directory_loc, editable=blendersynth_editable)
 
 		else:
 			# Install from pypi
-			install_module(python_path, 'blendersynth', upgrade=True)
+			_install_module(python_path, 'blendersynth', upgrade=True)
 
 		write_to_config('DEPENDENCIES_INSTALLED', 'True')

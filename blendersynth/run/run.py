@@ -74,7 +74,8 @@ class Runner:
 		command.compose(script=script, **script_kwargs)
 
 		thread_manager = BlenderThreadManager(command, json_chunks, print_to_stdout=print_to_stdout,
-											  output_directory=output_directory)
+											  output_directory=output_directory,
+											  script_directory=os.path.dirname(script))
 
 		thread_manager.start()
 

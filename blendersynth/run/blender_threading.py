@@ -15,14 +15,15 @@ def list_split(list, chunks):
 	return [[*x] for x in np.array_split(list, chunks)]
 
 class BlenderThread():
-	def __init__(self, command, jobs, log_loc, progress_loc, name='', timeout=100, to_stdout=False,
-				 MAX_PER_JOB=100):
+	def __init__(self, command, jobs, log_loc, progress_loc, name='', timeout:int=100, to_stdout:bool=False,
+				 MAX_PER_JOB:int=100, script_directory:str=None):
 		"""
-
 		:progress_loc: .log file to write progress to
-
-		Timeout: longest time in (s) without render after which process is finished.
-		MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process."""
+		:timeout: longest time in (s) without render after which process is finished.
+		:to_stdout: If True, print to stdout instead of to a log file.
+		:MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.
+		:script_directory: If given, add this to `sys.path` before running the script.
+		"""
 
 		self.command = command
 		self.jobs = list_split(jobs, np.ceil(len(jobs)/MAX_PER_JOB)) # split jobs into chunks of MAX_PER_JOB
@@ -30,6 +31,7 @@ class BlenderThread():
 
 		self.size = len(jobs)
 		self.timeout = timeout
+		self.script_directory = script_directory
 
 		self.prev_n = 0  # store how many rendered to check for updates for timeout purposes
 		self.timer = perf_counter()
@@ -73,7 +75,12 @@ class BlenderThread():
 
 		stdout = sys.stdout if self.to_stdout else self.logfile
 		stderr = sys.stderr if self.to_stdout else self.logfile
-		self.process = Popen(command, universal_newlines=True, stdout=stdout, stderr=stderr)
+
+		env = os.environ.copy()
+		if self.script_directory is not None:
+			env['PYTHONPATH'] = self.script_directory + os.pathsep + env.get('PYTHONPATH', '')
+
+		self.process = Popen(command, universal_newlines=True, stdout=stdout, stderr=stderr, env=env)
 
 	def terminate(self):
 		self.process.kill()
@@ -133,12 +140,13 @@ class BlenderThread():
 
 class BlenderThreadManager:
 	def __init__(self, command, jsons, output_directory, print_to_stdout=False,
-				 MAX_PER_JOB=100):
+				 MAX_PER_JOB=100, script_directory=None):
 		"""
 		:param commands: Base Blender command to run
 		:param jsons: A list of num_threads size, each element is a list of jsons to render from
 		:param log_locs:
 		:param MAX_PER_JOB: To prevent memory issues, split up jobs into chunks of MAX_PER_JOB
+		:param script_directory: If given, add this to `sys.path` before running the script.
 		"""
 		self.num_threads = len(jsons)
 
@@ -171,7 +179,9 @@ class BlenderThreadManager:
 								   progress_loc=progresses[i],
 								   name=str(i),
 								   to_stdout=print_to_stdout,
-								   MAX_PER_JOB=MAX_PER_JOB)
+								   MAX_PER_JOB=MAX_PER_JOB,
+								   script_directory=script_directory)
+			
 			self.threads.append(thread)
 
 	def __len__(self):

@@ -8,7 +8,10 @@ import os
 import logging
 
 class Inputs:
-	"""This class is used to iterate over the JSONs passed in via `--jobs` in sys.argv."""
+	"""This class is used to iterate over the JSONs passed in via `--jobs` in sys.argv.
+
+	Will also convert all kwargs to attributes for easy access"""
+
 	jsons = None
 	"""List of JSON files passed in via `--jobs` in sys.argv."""
 
@@ -19,6 +22,11 @@ class Inputs:
 		# Set up logging
 		logging.basicConfig(filename=log_loc, level=logging.INFO, filemode='w',
 							format='%(asctime)s - %(levelname)s - %(message)s')
+		
+		# store all --kwargs as attributes
+		for k, v in zip(sys.argv, sys.argv[1:]):
+			if k.startswith('--'):
+				setattr(self, k[2:], v)
 
 
 	def __iter__(self):
