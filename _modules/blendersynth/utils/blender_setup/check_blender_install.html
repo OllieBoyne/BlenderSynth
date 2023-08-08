@@ -98,7 +98,7 @@
 	<span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">False</span>
 
-<span class="k">def</span> <span class="nf">install_module</span><span class="p">(</span><span class="n">python_executable</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">is_test_pypi</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">_install_module</span><span class="p">(</span><span class="n">python_executable</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">is_test_pypi</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 				   <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">upgrade</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">editable</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
 	<span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="n">python_executable</span><span class="p">,</span> <span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;pip&#39;</span><span class="p">]</span>
@@ -117,6 +117,20 @@
 		<span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">commands</span><span class="p">)</span>
 	<span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 		<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not install </span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2"> via pip. Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="install_module"><a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.check_blender_install.html#blendersynth.utils.blender_setup.check_blender_install.install_module">[docs]</a><span class="k">def</span> <span class="nf">install_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">upgrade</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">editable</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Install a module to Blender Python.</span>
+
+<span class="sd">	:param module_name: name of module to install</span>
+<span class="sd">	:param version: version of module to install</span>
+<span class="sd">	:param upgrade: if True, will upgrade module if it is already installed</span>
+<span class="sd">	:param editable: if True, will install module in editable mode</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+
+	<span class="n">python_exec</span> <span class="o">=</span> <span class="n">find_blender_python</span><span class="p">(</span><span class="n">get_blender_path</span><span class="p">())</span>
+
+	<span class="n">_install_module</span><span class="p">(</span><span class="n">python_exec</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">upgrade</span><span class="o">=</span><span class="n">upgrade</span><span class="p">,</span> <span class="n">editable</span><span class="o">=</span><span class="n">editable</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="check_blender_install"><a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.check_blender_install.html#blendersynth.utils.blender_setup.check_blender_install.check_blender_install">[docs]</a><span class="k">def</span> <span class="nf">check_blender_install</span><span class="p">(</span><span class="n">force_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 						  <span class="n">force_find_blender</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -147,7 +161,7 @@
 		<span class="c1"># check if blender&#39;s python has all necessary packages</span>
 		<span class="k">for</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="n">dependencies</span><span class="p">:</span>
 			<span class="k">if</span> <span class="ow">not</span> <span class="n">check_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
-				<span class="n">install_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="n">dependency</span><span class="p">)</span>
+				<span class="n">_install_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="n">dependency</span><span class="p">)</span>
 
 		<span class="c1"># First uninstall blendersynth if present (in case of updates)</span>
 		<span class="k">if</span> <span class="n">check_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="s1">&#39;blendersynth&#39;</span><span class="p">):</span>
@@ -158,11 +172,11 @@
 			<span class="c1"># Install from local setup.py</span>
 			<span class="n">setup_py_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;setup.py&#39;</span><span class="p">)</span>
 			<span class="n">directory_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">setup_py_loc</span><span class="p">)</span>
-			<span class="n">install_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="n">directory_loc</span><span class="p">,</span> <span class="n">editable</span><span class="o">=</span><span class="n">blendersynth_editable</span><span class="p">)</span>
+			<span class="n">_install_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="n">directory_loc</span><span class="p">,</span> <span class="n">editable</span><span class="o">=</span><span class="n">blendersynth_editable</span><span class="p">)</span>
 
 		<span class="k">else</span><span class="p">:</span>
 			<span class="c1"># Install from pypi</span>
-			<span class="n">install_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="s1">&#39;blendersynth&#39;</span><span class="p">,</span> <span class="n">upgrade</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+			<span class="n">_install_module</span><span class="p">(</span><span class="n">python_path</span><span class="p">,</span> <span class="s1">&#39;blendersynth&#39;</span><span class="p">,</span> <span class="n">upgrade</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 		<span class="n">write_to_config</span><span class="p">(</span><span class="s1">&#39;DEPENDENCIES_INSTALLED&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">)</span></div>
 </pre></div>

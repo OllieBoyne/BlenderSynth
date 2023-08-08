@@ -160,7 +160,8 @@
 		<span class="n">command</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">script</span><span class="o">=</span><span class="n">script</span><span class="p">,</span> <span class="o">**</span><span class="n">script_kwargs</span><span class="p">)</span>
 
 		<span class="n">thread_manager</span> <span class="o">=</span> <span class="n">BlenderThreadManager</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">json_chunks</span><span class="p">,</span> <span class="n">print_to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
-											  <span class="n">output_directory</span><span class="o">=</span><span class="n">output_directory</span><span class="p">)</span>
+											  <span class="n">output_directory</span><span class="o">=</span><span class="n">output_directory</span><span class="p">,</span>
+											  <span class="n">script_directory</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">script</span><span class="p">))</span>
 
 		<span class="n">thread_manager</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 

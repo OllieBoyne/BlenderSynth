@@ -88,6 +88,7 @@
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">..utils.blender_setup.blender_locator</span> <span class="kn">import</span> <span class="n">get_blender_path</span>
 <span class="kn">from</span> <span class="nn">..file.tempfiles</span> <span class="kn">import</span> <span class="n">cleanup_temp_files</span> <span class="k">as</span> <span class="n">cleanup</span>
 
@@ -100,11 +101,15 @@
 
 		<span class="n">caller_path</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">filename</span> <span class="c1"># path of script that called this function</span>
 
+		<span class="n">caller_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">caller_path</span><span class="p">)</span>
+		<span class="n">env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">env</span><span class="p">[</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">caller_dir</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">pathsep</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
 		<span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="n">blender_path</span><span class="p">]</span> <span class="o">+</span> \
 			<span class="p">[</span><span class="s1">&#39;--background&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="ow">not</span> <span class="n">debug</span><span class="p">)</span> <span class="o">+</span> \
 			<span class="p">[</span><span class="s1">&#39;--python&#39;</span><span class="p">,</span> <span class="n">caller_path</span><span class="p">]</span>
 
-		<span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">commands</span><span class="p">)</span>
+		<span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
 
 		<span class="n">cleanup</span><span class="p">()</span>  <span class="c1"># cleanup temp files</span>
 		<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>  <span class="c1"># exit the script once blender is finished</span></div>

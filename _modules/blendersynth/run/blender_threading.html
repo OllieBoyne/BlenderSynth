@@ -101,14 +101,15 @@
 	<span class="k">return</span> <span class="p">[[</span><span class="o">*</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)]</span></div>
 
 <span class="k">class</span> <span class="nc">BlenderThread</span><span class="p">():</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">jobs</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">,</span> <span class="n">progress_loc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">to_stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-				 <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">jobs</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">,</span> <span class="n">progress_loc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">to_stdout</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+				 <span class="n">MAX_PER_JOB</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">script_directory</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-
 <span class="sd">		:progress_loc: .log file to write progress to</span>
-
-<span class="sd">		Timeout: longest time in (s) without render after which process is finished.</span>
-<span class="sd">		MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.&quot;&quot;&quot;</span>
+<span class="sd">		:timeout: longest time in (s) without render after which process is finished.</span>
+<span class="sd">		:to_stdout: If True, print to stdout instead of to a log file.</span>
+<span class="sd">		:MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.</span>
+<span class="sd">		:script_directory: If given, add this to `sys.path` before running the script.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">jobs</span> <span class="o">=</span> <span class="n">list_split</span><span class="p">(</span><span class="n">jobs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span><span class="o">/</span><span class="n">MAX_PER_JOB</span><span class="p">))</span> <span class="c1"># split jobs into chunks of MAX_PER_JOB</span>
@@ -116,6 +117,7 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">script_directory</span> <span class="o">=</span> <span class="n">script_directory</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">prev_n</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># store how many rendered to check for updates for timeout purposes</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
@@ -159,7 +161,12 @@
 
 		<span class="n">stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span>
 		<span class="n">stderr</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">stderr</span><span class="p">)</span>
+
+		<span class="n">env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">env</span><span class="p">[</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_directory</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">pathsep</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">stderr</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
@@ -219,12 +226,13 @@
 
 <span class="k">class</span> <span class="nc">BlenderThreadManager</span><span class="p">:</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">jsons</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">print_to_stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-				 <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+				 <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">script_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		:param commands: Base Blender command to run</span>
 <span class="sd">		:param jsons: A list of num_threads size, each element is a list of jsons to render from</span>
 <span class="sd">		:param log_locs:</span>
 <span class="sd">		:param MAX_PER_JOB: To prevent memory issues, split up jobs into chunks of MAX_PER_JOB</span>
+<span class="sd">		:param script_directory: If given, add this to `sys.path` before running the script.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jsons</span><span class="p">)</span>
 
@@ -257,7 +265,9 @@
 								   <span class="n">progress_loc</span><span class="o">=</span><span class="n">progresses</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
 								   <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
 								   <span class="n">to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
-								   <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="n">MAX_PER_JOB</span><span class="p">)</span>
+								   <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="n">MAX_PER_JOB</span><span class="p">,</span>
+								   <span class="n">script_directory</span><span class="o">=</span><span class="n">script_directory</span><span class="p">)</span>
+			
 			<span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thread</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

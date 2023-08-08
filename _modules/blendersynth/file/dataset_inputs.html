@@ -94,7 +94,10 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <div class="viewcode-block" id="Inputs"><a class="viewcode-back" href="../../../api/blendersynth.file.dataset_inputs.html#blendersynth.file.dataset_inputs.Inputs">[docs]</a><span class="k">class</span> <span class="nc">Inputs</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;This class is used to iterate over the JSONs passed in via `--jobs` in sys.argv.&quot;&quot;&quot;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;This class is used to iterate over the JSONs passed in via `--jobs` in sys.argv.</span>
+
+<span class="sd">	Will also convert all kwargs to attributes for easy access&quot;&quot;&quot;</span>
+
 	<span class="n">jsons</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;List of JSON files passed in via `--jobs` in sys.argv.&quot;&quot;&quot;</span>
 
@@ -105,6 +108,11 @@
 		<span class="c1"># Set up logging</span>
 		<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">log_loc</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span>
 							<span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+		
+		<span class="c1"># store all --kwargs as attributes</span>
+		<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+			<span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;--&#39;</span><span class="p">):</span>
+				<span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">v</span><span class="p">)</span>
 
 
 	<span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
