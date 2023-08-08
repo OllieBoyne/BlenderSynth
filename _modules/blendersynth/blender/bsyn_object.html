@@ -85,8 +85,8 @@
              
   <h1>Source code for blendersynth.blender.bsyn_object</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Base class for all BlenderSynth objects.&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">handle_vec</span><span class="p">,</span> <span class="n">SelectObjects</span><span class="p">,</span> <span class="n">_euler_add</span><span class="p">,</span> <span class="n">_euler_from</span><span class="p">,</span> <span class="n">animatable_property</span>
-<span class="kn">from</span> <span class="nn">mathutils</span> <span class="kn">import</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">Euler</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">handle_vec</span><span class="p">,</span> <span class="n">SelectObjects</span><span class="p">,</span> <span class="n">_euler_add</span><span class="p">,</span> <span class="n">animatable_property</span><span class="p">,</span> <span class="n">_euler_invert</span>
+<span class="kn">from</span> <span class="nn">mathutils</span> <span class="kn">import</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">Euler</span><span class="p">,</span> <span class="n">Matrix</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">bpy</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
@@ -111,11 +111,11 @@
 	<span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">data</span>
 
-	<span class="c1"># def update(self):</span>
+	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 	<span class="c1">#   ---&gt; not currently needed, may be needed in the future</span>
 	<span class="c1"># 	&quot;&quot;&quot;On any update, run this. For most objects, this is a no-op, but for some objects,</span>
 	<span class="c1"># 	this is necessary to update the object&#39;s state. e.g. Camera&quot;&quot;&quot;</span>
-	<span class="c1"># 	return</span>
+		<span class="k">return</span>
 
 	<span class="k">def</span> <span class="nf">_keyframe_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span><span class="o">.</span><span class="n">keyframe_delete</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -127,6 +127,10 @@
 	<span class="k">def</span> <span class="nf">_all_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;List of all objects associated with this object.&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">]</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">origin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
@@ -167,6 +171,11 @@
 		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
 			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">translation</span><span class="p">)</span>
 
+	<span class="k">def</span> <span class="nf">_apply_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rot</span><span class="p">):</span>
+		<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="s1">&#39;XYZ&#39;</span><span class="p">,</span> <span class="n">rot</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">orient_axis</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">orient_type</span><span class="o">=</span><span class="s1">&#39;GLOBAL&#39;</span><span class="p">,</span>
+										 <span class="n">constraint_axis</span><span class="o">=</span><span class="p">[</span><span class="n">ax</span> <span class="o">==</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">==</span> <span class="s1">&#39;Z&#39;</span><span class="p">])</span>
 
 	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;rotation_euler&#39;</span><span class="p">)</span>
 	<span class="k">def</span> <span class="nf">set_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="p">):</span>
@@ -176,12 +185,11 @@
 
 		<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Rotation must be a tuple of length 3, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 		<span class="n">rotation</span> <span class="o">=</span> <span class="n">Euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="s1">&#39;XYZ&#39;</span><span class="p">)</span>
-		<span class="n">diff</span> <span class="o">=</span> <span class="n">_euler_from</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span><span class="p">,</span> <span class="n">rotation</span><span class="p">)</span>
 
+		<span class="c1"># to avoid dealing with rotation calculations, we first rotate to the origin, then rotate to the new rotation</span>
 		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
-			<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="s1">&#39;XYZ&#39;</span><span class="p">,</span> <span class="n">diff</span><span class="p">):</span>
-				<span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-					<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">orient_axis</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_apply_rotation</span><span class="p">(</span><span class="n">_euler_invert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span><span class="p">))</span>  <span class="c1"># invert current rotation</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_apply_rotation</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span>  <span class="c1"># apply new rotation</span>
 
 	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">)</span>
 	<span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeOrScalarAlias</span><span class="p">):</span>
