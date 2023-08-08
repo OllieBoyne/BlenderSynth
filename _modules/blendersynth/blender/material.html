@@ -214,6 +214,16 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">tex_coord_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;UV&#39;</span><span class="p">],</span> <span class="n">mapping_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">])</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_texture_scaling_socket</span> <span class="o">=</span> <span class="n">mapping_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">]</span>
 
+<div class="viewcode-block" id="Material.set_bdsf_property"><a class="viewcode-back" href="../../../api/blendersynth.blender.material.html#blendersynth.blender.material.Material.set_bdsf_property">[docs]</a>	<span class="k">def</span> <span class="nf">set_bdsf_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set the property of the BSDF node&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shader</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s1">&#39;BSDF_PRINCIPLED&#39;</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Shader is not a Principled BSDF&quot;</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shader</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid BDSF shader property `</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">shader</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">value</span></div>
+
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span>
