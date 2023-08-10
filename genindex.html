@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="python/animation.html">Animation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python/capturing_pose.html">Capturing pose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python/custom_aov.html">Custom AOV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python/inverse_kinematics.html">Inverse kinematics</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -111,6 +112,8 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.add_ik_constraint">add_ik_constraint() (blendersynth.blender.armature.Armature method)</a>
+</li>
       <li><a href="api/blendersynth.blender.material.html#blendersynth.blender.material.Material.add_source">add_source() (blendersynth.blender.material.Material method)</a>
 </li>
       <li><a href="api/blendersynth.blender.aov.html#blendersynth.blender.aov.AOV.add_to_shader">add_to_shader() (blendersynth.blender.aov.AOV method)</a>
@@ -135,13 +138,17 @@
         <li><a href="api/blendersynth.blender.aov.html#blendersynth.blender.aov.UVAOV.add_to_shader">(blendersynth.blender.aov.UVAOV method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/blendersynth.blender.utils.html#blendersynth.blender.utils.animatable_property">animatable_property() (in module blendersynth.blender.utils)</a>
 </li>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.animate_path">animate_path() (blendersynth.blender.bsyn_object.BsynObject method)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.animate_path">animate_path() (blendersynth.blender.armature.Armature method)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.animate_path">(blendersynth.blender.armature.IKConstraint method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.animate_path">(blendersynth.blender.armature.PoseBone method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.animate_path">(blendersynth.blender.bsyn_object.BsynObject method)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.animate_path">(blendersynth.blender.curve.Curve method)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.animate_path">(blendersynth.blender.light.Light method)</a>
@@ -149,15 +156,25 @@
         <li><a href="api/blendersynth.blender.material.html#blendersynth.blender.material.Material.animate_path">(blendersynth.blender.material.Material method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/blendersynth.blender.aov.html#blendersynth.blender.aov.AOV">AOV (class in blendersynth.blender.aov)</a>
+</li>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature">Armature (class in blendersynth.blender.armature)</a>
 </li>
       <li><a href="api/blendersynth.blender.aov.html#blendersynth.blender.aov.AttrAOV">AttrAOV (class in blendersynth.blender.aov)</a>
 </li>
       <li><a href="api/blendersynth.blender.aov.html#blendersynth.blender.aov.AttrRGBAOV">AttrRGBAOV (class in blendersynth.blender.aov)</a>
 </li>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.axes">axes (blendersynth.blender.bsyn_object.BsynObject property)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.axes">axes (blendersynth.blender.armature.Armature property)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.axes">(blendersynth.blender.armature.IKConstraint property)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.axes">(blendersynth.blender.armature.PoseBone property)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.axes">(blendersynth.blender.bsyn_object.BsynObject property)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.axes">(blendersynth.blender.curve.Curve property)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.axes">(blendersynth.blender.light.Light property)</a>
@@ -178,6 +195,13 @@
 
       <ul>
         <li><a href="api/blendersynth.blender.aov.html#module-blendersynth.blender.aov">module</a>
+</li>
+      </ul></li>
+      <li>
+    blendersynth.blender.armature
+
+      <ul>
+        <li><a href="api/blendersynth.blender.armature.html#module-blendersynth.blender.armature">module</a>
 </li>
       </ul></li>
       <li>
@@ -361,6 +385,8 @@
 </li>
       <li><a href="api/blendersynth.file.tempfiles.html#blendersynth.file.tempfiles.cleanup_temp_files">cleanup_temp_files() (in module blendersynth.file.tempfiles)</a>
 </li>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.clear_pose">clear_pose() (blendersynth.blender.armature.Armature method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.color">color (blendersynth.blender.light.Light property)</a>
@@ -370,6 +396,8 @@
       <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.create">create() (blendersynth.blender.light.Light class method)</a>
 </li>
       <li><a href="api/blendersynth.file.tempfiles.html#blendersynth.file.tempfiles.create_temp_file">create_temp_file() (in module blendersynth.file.tempfiles)</a>
+</li>
+      <li><a href="api/blendersynth.blender.utils.html#blendersynth.blender.utils.CursorAt">CursorAt (class in blendersynth.blender.utils)</a>
 </li>
       <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve">Curve (class in blendersynth.blender.curve)</a>
 </li>
@@ -405,9 +433,15 @@
 </li>
       <li><a href="api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.find_blender_python">find_blender_python() (in module blendersynth.utils.blender_setup.blender_locator)</a>
 </li>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.follow_path">follow_path() (blendersynth.blender.bsyn_object.BsynObject method)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.follow_path">follow_path() (blendersynth.blender.armature.Armature method)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.follow_path">(blendersynth.blender.armature.IKConstraint method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.follow_path">(blendersynth.blender.armature.PoseBone method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.follow_path">(blendersynth.blender.bsyn_object.BsynObject method)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.follow_path">(blendersynth.blender.curve.Curve method)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.follow_path">(blendersynth.blender.light.Light method)</a>
@@ -431,10 +465,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.get_blender_path">get_blender_path() (in module blendersynth.utils.blender_setup.blender_locator)</a>
 </li>
-      <li><a href="api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.get_frames_from_directory">get_frames_from_directory() (in module blendersynth.file.frames_to_video)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.get_bone">get_bone() (blendersynth.blender.armature.Armature method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.get_frames_from_directory">get_frames_from_directory() (in module blendersynth.file.frames_to_video)</a>
+</li>
       <li><a href="api/blendersynth.blender.utils.html#blendersynth.blender.utils.get_node_by_name">get_node_by_name() (in module blendersynth.blender.utils)</a>
 </li>
       <li><a href="api/blendersynth.blender.utils.html#blendersynth.blender.utils.GetNewObject">GetNewObject (class in blendersynth.blender.utils)</a>
@@ -449,6 +485,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.head_location">head_location (blendersynth.blender.armature.PoseBone property)</a>
+</li>
       <li><a href="api/blendersynth.file.ffmpeg_utils.html#blendersynth.file.ffmpeg_utils.hstack">hstack() (in module blendersynth.file.ffmpeg_utils)</a>
 </li>
   </ul></td>
@@ -457,14 +495,16 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint">IKConstraint (class in blendersynth.blender.armature)</a>
+</li>
       <li><a href="api/blendersynth.utils.blender_importer.html#blendersynth.utils.blender_importer.import_module">import_module() (in module blendersynth.utils.blender_importer)</a>
 </li>
       <li><a href="api/blendersynth.file.dataset_inputs.html#blendersynth.file.dataset_inputs.Inputs">Inputs (class in blendersynth.file.dataset_inputs)</a>
 </li>
-      <li><a href="api/blendersynth.utils.blender_setup.check_blender_install.html#blendersynth.utils.blender_setup.check_blender_install.install_module">install_module() (in module blendersynth.utils.blender_setup.check_blender_install)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/blendersynth.utils.blender_setup.check_blender_install.html#blendersynth.utils.blender_setup.check_blender_install.install_module">install_module() (in module blendersynth.utils.blender_setup.check_blender_install)</a>
+</li>
       <li><a href="api/blendersynth.blender.aov.html#blendersynth.blender.aov.InstanceIDAOV">InstanceIDAOV (class in blendersynth.blender.aov)</a>
 </li>
       <li><a href="api/blendersynth.blender.aov.html#blendersynth.blender.aov.InstanceRGBAOV">InstanceRGBAOV (class in blendersynth.blender.aov)</a>
@@ -495,9 +535,15 @@
 </li>
       <li><a href="api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.list_split">list_split() (in module blendersynth.run.blender_threading)</a>
 </li>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.location">location (blendersynth.blender.bsyn_object.BsynObject property)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.location">location (blendersynth.blender.armature.Armature property)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.location">(blendersynth.blender.armature.IKConstraint property)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.location">(blendersynth.blender.armature.PoseBone property)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.location">(blendersynth.blender.bsyn_object.BsynObject property)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.location">(blendersynth.blender.curve.Curve property)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.location">(blendersynth.blender.light.Light property)</a>
@@ -517,9 +563,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/blendersynth.blender.material.html#blendersynth.blender.material.Material">Material (class in blendersynth.blender.material)</a>
 </li>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.matrix_world">matrix_world (blendersynth.blender.bsyn_object.BsynObject property)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.matrix_world">matrix_world (blendersynth.blender.armature.Armature property)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.matrix_world">(blendersynth.blender.armature.IKConstraint property)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.matrix_world">(blendersynth.blender.armature.PoseBone property)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.matrix_world">(blendersynth.blender.bsyn_object.BsynObject property)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.matrix_world">(blendersynth.blender.curve.Curve property)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.matrix_world">(blendersynth.blender.light.Light property)</a>
@@ -532,6 +584,8 @@
 
       <ul>
         <li><a href="api/blendersynth.blender.aov.html#module-blendersynth.blender.aov">blendersynth.blender.aov</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#module-blendersynth.blender.armature">blendersynth.blender.armature</a>
 </li>
         <li><a href="api/blendersynth.blender.bsyn_object.html#module-blendersynth.blender.bsyn_object">blendersynth.blender.bsyn_object</a>
 </li>
@@ -604,9 +658,15 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.path_keyframe">path_keyframe() (blendersynth.blender.bsyn_object.BsynObject method)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.path_keyframe">path_keyframe() (blendersynth.blender.armature.Armature method)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.path_keyframe">(blendersynth.blender.armature.IKConstraint method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.path_keyframe">(blendersynth.blender.armature.PoseBone method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.path_keyframe">(blendersynth.blender.bsyn_object.BsynObject method)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.path_keyframe">(blendersynth.blender.curve.Curve method)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.path_keyframe">(blendersynth.blender.light.Light method)</a>
@@ -615,12 +675,20 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.pose_bone">pose_bone() (blendersynth.blender.armature.Armature method)</a>
+</li>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone">PoseBone (class in blendersynth.blender.armature)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.read_from_config">read_from_config() (in module blendersynth.utils.blender_setup.blender_locator)</a>
+</li>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.remove">remove() (blendersynth.blender.armature.IKConstraint method)</a>
 </li>
       <li><a href="api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.remove_config">remove_config() (in module blendersynth.utils.blender_setup.blender_locator)</a>
 </li>
@@ -630,9 +698,15 @@
 </li>
       <li><a href="api/blendersynth.blender.render.html#blendersynth.blender.render.render_depth">render_depth() (in module blendersynth.blender.render)</a>
 </li>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.rotate_by">rotate_by() (blendersynth.blender.bsyn_object.BsynObject method)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.rotate_by">rotate_by() (blendersynth.blender.armature.Armature method)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.rotate_by">(blendersynth.blender.armature.IKConstraint method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.rotate_by">(blendersynth.blender.armature.PoseBone method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.rotate_by">(blendersynth.blender.bsyn_object.BsynObject method)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.rotate_by">(blendersynth.blender.curve.Curve method)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.rotate_by">(blendersynth.blender.light.Light method)</a>
@@ -642,9 +716,15 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.rotation_euler">rotation_euler (blendersynth.blender.bsyn_object.BsynObject property)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.rotation_euler">rotation_euler (blendersynth.blender.armature.Armature property)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.rotation_euler">(blendersynth.blender.armature.IKConstraint property)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.rotation_euler">(blendersynth.blender.armature.PoseBone property)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.rotation_euler">(blendersynth.blender.bsyn_object.BsynObject property)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.rotation_euler">(blendersynth.blender.curve.Curve property)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.rotation_euler">(blendersynth.blender.light.Light property)</a>
@@ -662,9 +742,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/blendersynth.file.dataset_outputs.html#blendersynth.file.dataset_outputs.save_label">save_label() (in module blendersynth.file.dataset_outputs)</a>
 </li>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.scale_by">scale_by() (blendersynth.blender.bsyn_object.BsynObject method)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.scale_by">scale_by() (blendersynth.blender.armature.Armature method)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.scale_by">(blendersynth.blender.armature.IKConstraint method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.scale_by">(blendersynth.blender.armature.PoseBone method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.scale_by">(blendersynth.blender.bsyn_object.BsynObject method)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.scale_by">(blendersynth.blender.curve.Curve method)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.scale_by">(blendersynth.blender.light.Light method)</a>
@@ -694,9 +780,15 @@
 </li>
       <li><a href="api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand.set_job">set_job() (blendersynth.run.run.BlenderCommand method)</a>
 </li>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.set_location">set_location() (blendersynth.blender.bsyn_object.BsynObject method)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.set_location">set_location() (blendersynth.blender.armature.Armature method)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.set_location">(blendersynth.blender.armature.IKConstraint method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.set_location">(blendersynth.blender.armature.PoseBone method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.set_location">(blendersynth.blender.bsyn_object.BsynObject method)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.set_location">(blendersynth.blender.curve.Curve method)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.set_location">(blendersynth.blender.light.Light method)</a>
@@ -710,9 +802,15 @@
 </li>
       <li><a href="api/blendersynth.blender.render.html#blendersynth.blender.render.set_resolution">set_resolution() (in module blendersynth.blender.render)</a>
 </li>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.set_rotation_euler">set_rotation_euler() (blendersynth.blender.bsyn_object.BsynObject method)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.set_rotation_euler">set_rotation_euler() (blendersynth.blender.armature.Armature method)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.set_rotation_euler">(blendersynth.blender.armature.IKConstraint method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.set_rotation_euler">(blendersynth.blender.armature.PoseBone method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.set_rotation_euler">(blendersynth.blender.bsyn_object.BsynObject method)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.set_rotation_euler">(blendersynth.blender.curve.Curve method)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.set_rotation_euler">(blendersynth.blender.light.Light method)</a>
@@ -720,9 +818,15 @@
         <li><a href="api/blendersynth.blender.material.html#blendersynth.blender.material.Material.set_rotation_euler">(blendersynth.blender.material.Material method)</a>
 </li>
       </ul></li>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.set_scale">set_scale() (blendersynth.blender.bsyn_object.BsynObject method)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.set_scale">set_scale() (blendersynth.blender.armature.Armature method)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.set_scale">(blendersynth.blender.armature.IKConstraint method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.set_scale">(blendersynth.blender.armature.PoseBone method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.set_scale">(blendersynth.blender.bsyn_object.BsynObject method)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.set_scale">(blendersynth.blender.curve.Curve method)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.set_scale">(blendersynth.blender.light.Light method)</a>
@@ -742,11 +846,19 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.tail_location">tail_location (blendersynth.blender.armature.PoseBone property)</a>
+</li>
       <li><a href="api/blendersynth.utils.node_arranger.html#blendersynth.utils.node_arranger.tidy_tree">tidy_tree() (in module blendersynth.utils.node_arranger)</a>
 </li>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.track_to">track_to() (blendersynth.blender.bsyn_object.BsynObject method)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.track_to">track_to() (blendersynth.blender.armature.Armature method)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.track_to">(blendersynth.blender.armature.IKConstraint method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.track_to">(blendersynth.blender.armature.PoseBone method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.track_to">(blendersynth.blender.bsyn_object.BsynObject method)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.track_to">(blendersynth.blender.curve.Curve method)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.track_to">(blendersynth.blender.light.Light method)</a>
@@ -756,9 +868,15 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.translate">translate() (blendersynth.blender.bsyn_object.BsynObject method)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.translate">translate() (blendersynth.blender.armature.Armature method)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.translate">(blendersynth.blender.armature.IKConstraint method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.translate">(blendersynth.blender.armature.PoseBone method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.translate">(blendersynth.blender.bsyn_object.BsynObject method)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.translate">(blendersynth.blender.curve.Curve method)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.translate">(blendersynth.blender.light.Light method)</a>
@@ -772,9 +890,15 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.untrack">untrack() (blendersynth.blender.bsyn_object.BsynObject method)</a>
+      <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.untrack">untrack() (blendersynth.blender.armature.Armature method)</a>
 
       <ul>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.untrack">(blendersynth.blender.armature.IKConstraint method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.untrack">(blendersynth.blender.armature.PoseBone method)</a>
+</li>
+        <li><a href="api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.untrack">(blendersynth.blender.bsyn_object.BsynObject method)</a>
+</li>
         <li><a href="api/blendersynth.blender.curve.html#blendersynth.blender.curve.Curve.untrack">(blendersynth.blender.curve.Curve method)</a>
 </li>
         <li><a href="api/blendersynth.blender.light.html#blendersynth.blender.light.Light.untrack">(blendersynth.blender.light.Light method)</a>

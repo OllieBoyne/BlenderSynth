@@ -6,6 +6,7 @@
 	:maxdepth: 1
 
 	blendersynth.blender.aov
+	blendersynth.blender.armature
 	blendersynth.blender.bsyn_object
 	blendersynth.blender.camera
 	blendersynth.blender.compositor

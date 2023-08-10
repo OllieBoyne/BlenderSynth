@@ -1,0 +1,7 @@
+:code:`blendersynth.blender.armature`
+========================================
+
+
+.. automodule:: blendersynth.blender.armature
+	:members:
+	:inherited-members:

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>blendersynth.blender.armature &mdash; BlenderSynth 2023 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="blendersynth.blender.bsyn_object" href="blendersynth.blender.bsyn_object.html" />
+    <link rel="prev" title="blendersynth.blender.aov" href="blendersynth.blender.aov.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BlenderSynth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../python/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/mesh_importing.html">Mesh importing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/texturing.html">Texturing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/output_data.html">Output data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/dataset_creation/index.html">Dataset creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/capturing_pose.html">Capturing pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/custom_aov.html">Custom AOV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/inverse_kinematics.html">Inverse kinematics</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BlenderSynth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.armature</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/blendersynth.blender.armature.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-blendersynth.blender.armature">
+<span id="blendersynth-blender-armature"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.armature</span></code><a class="headerlink" href="#module-blendersynth.blender.armature" title="Permalink to this heading"></a></h1>
+<p>Armature object for managing pose</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.armature.</span></span><span class="sig-name descname"><span class="pre">Armature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/armature.html#Armature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.armature.Armature" title="Permalink to this definition"></a></dt>
+<dd><p>This class manages armatures - a collection of posable bones.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.add_ik_constraint">
+<span class="sig-name descname"><span class="pre">add_ik_constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bone</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chain_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/armature.html#Armature.add_ik_constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.armature.Armature.add_ik_constraint" title="Permalink to this definition"></a></dt>
+<dd><p>Translates the given pose bone to a specific position using IK.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bone</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <a class="reference internal" href="#blendersynth.blender.armature.PoseBone" title="blendersynth.blender.armature.PoseBone"><code class="xref py py-class docutils literal notranslate"><span class="pre">PoseBone</span></code></a>]) – The pose bone object, or name of bone, to move.</p></li>
+<li><p><strong>position</strong> (<em>blendersynth.utils.types.VectorLike</em>) – Target position to be placed at.</p></li>
+<li><p><strong>chain_count</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of bones to affect in the chain. 0 affects all bones in the chain.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#blendersynth.blender.armature.IKConstraint" title="blendersynth.blender.armature.IKConstraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">IKConstraint</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>IKConstraint object, which can be used to modify or remove the IK constraint.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.animate_path">
+<span class="sig-name descname"><span class="pre">animate_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">250)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.Armature.animate_path" title="Permalink to this definition"></a></dt>
+<dd><p>Animate object along path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frames</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of keyframes to animate at - length N</p></li>
+<li><p><strong>fracs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of fractions along path to animate at - length N</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.axes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">axes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#blendersynth.blender.armature.Armature.axes" title="Permalink to this definition"></a></dt>
+<dd><p>Return 3x3 rotation matrix (normalized) to represent axes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.clear_pose">
+<span class="sig-name descname"><span class="pre">clear_pose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bones</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/armature.html#Armature.clear_pose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.armature.Armature.clear_pose" title="Permalink to this definition"></a></dt>
+<dd><p>Clear the pose of the armature.
+For the target bones, sets poses to zero, and removes any IK constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rot</strong> – Clear rotation</p></li>
+<li><p><strong>location</strong> – Clear location</p></li>
+<li><p><strong>scale</strong> – Clear scale</p></li>
+<li><p><strong>bones</strong> – List of bones to clear. If not given, will clear all bones.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.follow_path">
+<span class="sig-name descname"><span class="pre">follow_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">250)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.Armature.follow_path" title="Permalink to this definition"></a></dt>
+<dd><p>Follow path, with optional animation setting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<a class="reference internal" href="blendersynth.blender.curve.html#blendersynth.blender.curve.Curve" title="blendersynth.blender.curve.Curve"><em>Curve</em></a>) – Curve object</p></li>
+<li><p><strong>zero</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, set camera location to (0, 0, 0) [aligns camera with path]</p></li>
+<li><p><strong>animate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, animate camera along path</p></li>
+<li><p><strong>frames</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of keyframes to animate at - length N</p></li>
+<li><p><strong>fracs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of fractions along path to animate at - length N</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.get_bone">
+<span class="sig-name descname"><span class="pre">get_bone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bone</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/armature.html#Armature.get_bone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.armature.Armature.get_bone" title="Permalink to this definition"></a></dt>
+<dd><p>Get bone from armature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bone_name</strong> – Name of bone to get (or PoseBone object)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#blendersynth.blender.armature.PoseBone" title="blendersynth.blender.armature.PoseBone"><code class="xref py py-class docutils literal notranslate"><span class="pre">PoseBone</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PoseBone object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.location">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span></em><a class="headerlink" href="#blendersynth.blender.armature.Armature.location" title="Permalink to this definition"></a></dt>
+<dd><p>Location of object</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.matrix_world">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matrix_world</span></span><a class="headerlink" href="#blendersynth.blender.armature.Armature.matrix_world" title="Permalink to this definition"></a></dt>
+<dd><p>Return world matrix of object(s).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.path_keyframe">
+<span class="sig-name descname"><span class="pre">path_keyframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.Armature.path_keyframe" title="Permalink to this definition"></a></dt>
+<dd><p>Set keyframe for camera path offset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Frame number</p></li>
+<li><p><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Offset fraction (0-1)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.pose_bone">
+<span class="sig-name descname"><span class="pre">pose_bone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bone</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/armature.html#Armature.pose_bone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.armature.Armature.pose_bone" title="Permalink to this definition"></a></dt>
+<dd><p>Set the pose of a bone by giving a Euler XYZ rotation and/or location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bone</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PoseBone</span></code>]) – Name of bone to pose, or PoseBone object</p></li>
+<li><p><strong>rotation</strong> (<em>blendersynth.utils.types.VectorLike</em>) – Euler XYZ rotation in radians</p></li>
+<li><p><strong>location</strong> (<em>blendersynth.utils.types.VectorLike</em>) – Location of bone</p></li>
+<li><p><strong>scale</strong> (<em>blendersynth.utils.types.VectorLike</em>) – Scale of bone</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Frame to set pose on. If given, will insert keyframe here.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.rotate_by">
+<span class="sig-name descname"><span class="pre">rotate_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.Armature.rotate_by" title="Permalink to this definition"></a></dt>
+<dd><p>Add a rotation to the object. Must be in XYZ order, euler angles, radians.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.rotation_euler">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation_euler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Euler</span></em><a class="headerlink" href="#blendersynth.blender.armature.Armature.rotation_euler" title="Permalink to this definition"></a></dt>
+<dd><p>Rotation in euler XYZ angles</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.scale_by">
+<span class="sig-name descname"><span class="pre">scale_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.Armature.scale_by" title="Permalink to this definition"></a></dt>
+<dd><p>Scale object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.set_location">
+<span class="sig-name descname"><span class="pre">set_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.Armature.set_location" title="Permalink to this definition"></a></dt>
+<dd><p>Set location of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>location</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Location vector to set</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.set_rotation_euler">
+<span class="sig-name descname"><span class="pre">set_rotation_euler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.Armature.set_rotation_euler" title="Permalink to this definition"></a></dt>
+<dd><p>Set euler rotation of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rotation</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Rotation vector</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.set_scale">
+<span class="sig-name descname"><span class="pre">set_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.Armature.set_scale" title="Permalink to this definition"></a></dt>
+<dd><p>Set scale of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scale</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLikeOrScalar" title="blendersynth.utils.types.VectorLikeOrScalar"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLikeOrScalar</span></code></a>) – Scale to set. Either single value or 3 long vector</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.track_to">
+<span class="sig-name descname"><span class="pre">track_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.Armature.track_to" title="Permalink to this definition"></a></dt>
+<dd><p>Track to object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject" title="blendersynth.blender.bsyn_object.BsynObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">BsynObject</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Object</span></code>]) – BsynObject or Blender Object to track to</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">translation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.Armature.translate" title="Permalink to this definition"></a></dt>
+<dd><p>Translate object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.Armature.untrack">
+<span class="sig-name descname"><span class="pre">untrack</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.Armature.untrack" title="Permalink to this definition"></a></dt>
+<dd><p>Remove track to constraint from object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.armature.</span></span><span class="sig-name descname"><span class="pre">IKConstraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pose_bone</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constraint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/armature.html#IKConstraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint" title="Permalink to this definition"></a></dt>
+<dd><p>A combination of a PoseBone, object, a aonstraint object,
+and an Empty which acts as the target for the IK constraint.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.animate_path">
+<span class="sig-name descname"><span class="pre">animate_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">250)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.animate_path" title="Permalink to this definition"></a></dt>
+<dd><p>Animate object along path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frames</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of keyframes to animate at - length N</p></li>
+<li><p><strong>fracs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of fractions along path to animate at - length N</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.axes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">axes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.axes" title="Permalink to this definition"></a></dt>
+<dd><p>Return 3x3 rotation matrix (normalized) to represent axes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.follow_path">
+<span class="sig-name descname"><span class="pre">follow_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">250)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.follow_path" title="Permalink to this definition"></a></dt>
+<dd><p>Follow path, with optional animation setting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<a class="reference internal" href="blendersynth.blender.curve.html#blendersynth.blender.curve.Curve" title="blendersynth.blender.curve.Curve"><em>Curve</em></a>) – Curve object</p></li>
+<li><p><strong>zero</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, set camera location to (0, 0, 0) [aligns camera with path]</p></li>
+<li><p><strong>animate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, animate camera along path</p></li>
+<li><p><strong>frames</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of keyframes to animate at - length N</p></li>
+<li><p><strong>fracs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of fractions along path to animate at - length N</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.location">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span></em><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.location" title="Permalink to this definition"></a></dt>
+<dd><p>Location of object</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.matrix_world">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matrix_world</span></span><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.matrix_world" title="Permalink to this definition"></a></dt>
+<dd><p>Return world matrix of object(s).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.path_keyframe">
+<span class="sig-name descname"><span class="pre">path_keyframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.path_keyframe" title="Permalink to this definition"></a></dt>
+<dd><p>Set keyframe for camera path offset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Frame number</p></li>
+<li><p><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Offset fraction (0-1)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/armature.html#IKConstraint.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.remove" title="Permalink to this definition"></a></dt>
+<dd><p>Remove this constraint.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.rotate_by">
+<span class="sig-name descname"><span class="pre">rotate_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.rotate_by" title="Permalink to this definition"></a></dt>
+<dd><p>Add a rotation to the object. Must be in XYZ order, euler angles, radians.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.rotation_euler">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation_euler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Euler</span></em><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.rotation_euler" title="Permalink to this definition"></a></dt>
+<dd><p>Rotation in euler XYZ angles</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.scale_by">
+<span class="sig-name descname"><span class="pre">scale_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.scale_by" title="Permalink to this definition"></a></dt>
+<dd><p>Scale object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.set_location">
+<span class="sig-name descname"><span class="pre">set_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.set_location" title="Permalink to this definition"></a></dt>
+<dd><p>Set location of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>location</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Location vector to set</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.set_rotation_euler">
+<span class="sig-name descname"><span class="pre">set_rotation_euler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.set_rotation_euler" title="Permalink to this definition"></a></dt>
+<dd><p>Set euler rotation of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rotation</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Rotation vector</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.set_scale">
+<span class="sig-name descname"><span class="pre">set_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.set_scale" title="Permalink to this definition"></a></dt>
+<dd><p>Set scale of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scale</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLikeOrScalar" title="blendersynth.utils.types.VectorLikeOrScalar"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLikeOrScalar</span></code></a>) – Scale to set. Either single value or 3 long vector</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.track_to">
+<span class="sig-name descname"><span class="pre">track_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.track_to" title="Permalink to this definition"></a></dt>
+<dd><p>Track to object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject" title="blendersynth.blender.bsyn_object.BsynObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">BsynObject</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Object</span></code>]) – BsynObject or Blender Object to track to</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">translation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.translate" title="Permalink to this definition"></a></dt>
+<dd><p>Translate object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.IKConstraint.untrack">
+<span class="sig-name descname"><span class="pre">untrack</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.IKConstraint.untrack" title="Permalink to this definition"></a></dt>
+<dd><p>Remove track to constraint from object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.armature.</span></span><span class="sig-name descname"><span class="pre">PoseBone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/armature.html#PoseBone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.armature.PoseBone" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.animate_path">
+<span class="sig-name descname"><span class="pre">animate_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">250)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.animate_path" title="Permalink to this definition"></a></dt>
+<dd><p>Animate object along path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frames</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of keyframes to animate at - length N</p></li>
+<li><p><strong>fracs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of fractions along path to animate at - length N</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.axes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">axes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.axes" title="Permalink to this definition"></a></dt>
+<dd><p>Return 3x3 rotation matrix (normalized) to represent axes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.follow_path">
+<span class="sig-name descname"><span class="pre">follow_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">250)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.follow_path" title="Permalink to this definition"></a></dt>
+<dd><p>Follow path, with optional animation setting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<a class="reference internal" href="blendersynth.blender.curve.html#blendersynth.blender.curve.Curve" title="blendersynth.blender.curve.Curve"><em>Curve</em></a>) – Curve object</p></li>
+<li><p><strong>zero</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, set camera location to (0, 0, 0) [aligns camera with path]</p></li>
+<li><p><strong>animate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, animate camera along path</p></li>
+<li><p><strong>frames</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of keyframes to animate at - length N</p></li>
+<li><p><strong>fracs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of fractions along path to animate at - length N</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.head_location">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">head_location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span></em><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.head_location" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the world location of the head (start) of the bone.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.location">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span></em><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.location" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the world location of the head (start) of the bone.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.matrix_world">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matrix_world</span></span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.matrix_world" title="Permalink to this definition"></a></dt>
+<dd><p>Return world matrix of object(s).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.path_keyframe">
+<span class="sig-name descname"><span class="pre">path_keyframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.path_keyframe" title="Permalink to this definition"></a></dt>
+<dd><p>Set keyframe for camera path offset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Frame number</p></li>
+<li><p><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Offset fraction (0-1)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.rotate_by">
+<span class="sig-name descname"><span class="pre">rotate_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.rotate_by" title="Permalink to this definition"></a></dt>
+<dd><p>Add a rotation to the object. Must be in XYZ order, euler angles, radians.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.rotation_euler">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation_euler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Euler</span></em><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.rotation_euler" title="Permalink to this definition"></a></dt>
+<dd><p>Rotation in euler XYZ angles</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.scale_by">
+<span class="sig-name descname"><span class="pre">scale_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.scale_by" title="Permalink to this definition"></a></dt>
+<dd><p>Scale object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.set_location">
+<span class="sig-name descname"><span class="pre">set_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.set_location" title="Permalink to this definition"></a></dt>
+<dd><p>Set location of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>location</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Location vector to set</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.set_rotation_euler">
+<span class="sig-name descname"><span class="pre">set_rotation_euler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.set_rotation_euler" title="Permalink to this definition"></a></dt>
+<dd><p>Set euler rotation of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rotation</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Rotation vector</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.set_scale">
+<span class="sig-name descname"><span class="pre">set_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.set_scale" title="Permalink to this definition"></a></dt>
+<dd><p>Set scale of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scale</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLikeOrScalar" title="blendersynth.utils.types.VectorLikeOrScalar"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLikeOrScalar</span></code></a>) – Scale to set. Either single value or 3 long vector</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.tail_location">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tail_location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span></em><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.tail_location" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the world location of the tail (or end) of the bone.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.track_to">
+<span class="sig-name descname"><span class="pre">track_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.track_to" title="Permalink to this definition"></a></dt>
+<dd><p>Track to object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject" title="blendersynth.blender.bsyn_object.BsynObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">BsynObject</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Object</span></code>]) – BsynObject or Blender Object to track to</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">translation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.translate" title="Permalink to this definition"></a></dt>
+<dd><p>Translate object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.untrack">
+<span class="sig-name descname"><span class="pre">untrack</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.untrack" title="Permalink to this definition"></a></dt>
+<dd><p>Remove track to constraint from object</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="blendersynth.blender.aov.html" class="btn btn-neutral float-left" title="blendersynth.blender.aov" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="blendersynth.blender.bsyn_object.html" class="btn btn-neutral float-right" title="blendersynth.blender.bsyn_object" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ollie Boyne.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inverse kinematics &mdash; BlenderSynth 2023 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="../markdown/examples.README.html" />
+    <link rel="prev" title="Custom AOV" href="custom_aov.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BlenderSynth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mesh_importing.html">Mesh importing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="texturing.html">Texturing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output_data.html">Output data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset_creation/index.html">Dataset creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capturing_pose.html">Capturing pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_aov.html">Custom AOV</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Inverse kinematics</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BlenderSynth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Inverse kinematics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/python/inverse_kinematics.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="inverse-kinematics">
+<h1>Inverse kinematics<a class="headerlink" href="#inverse-kinematics" title="Permalink to this heading"></a></h1>
+<p>In this example, we show how to use Armatures and PoseBones. We deform a mesh using Inverse Kinematics to produce this animation:</p>
+<a class="reference external image-reference" href="../_static/images/resources%20inverse_kinematics.gif"><img alt="" src="../_images/resources%2520inverse_kinematics.gif" /></a>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;We use inverse kinematics to deform a bendy rod&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
+
+<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Load object from .fbx file (complete with rigging)</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_fbx</span><span class="p">(</span><span class="s1">&#39;../resources/objects/bendy_rod/bendy_rod.fbx&#39;</span><span class="p">)</span>
+
+<span class="c1"># render settings</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_cycles_samples</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_resolution</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
+<span class="n">num_frames</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># we have a bone named &#39;top&#39;, which we want to control the position of</span>
+<span class="n">armature</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_armature</span><span class="p">()</span> <span class="c1"># get the &#39;armature&#39; - the skeleton that contains the poseable bones</span>
+<span class="n">bone</span> <span class="o">=</span> <span class="n">armature</span><span class="o">.</span><span class="n">get_bone</span><span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+<span class="n">bone_location</span> <span class="o">=</span> <span class="n">bone</span><span class="o">.</span><span class="n">tail_location</span> <span class="c1"># tail end of the bone</span>
+
+<span class="c1"># here we add the constraint. We constrain the bone to `bone_location`</span>
+<span class="c1"># We set chain_count = 4, so that the 5th bone from the end (the root bone) doesn&#39;t move</span>
+<span class="n">constraint</span> <span class="o">=</span> <span class="n">armature</span><span class="o">.</span><span class="n">add_ik_constraint</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">bone_location</span><span class="p">,</span> <span class="n">chain_count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">constraint</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">bone_location</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">constraint</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">bone_location</span> <span class="o">+</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">frame</span><span class="o">=</span><span class="n">num_frames</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">constraint</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">bone_location</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
+
+<span class="c1"># some small additions to make it look nice</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">set_hdri</span><span class="p">(</span><span class="s1">&#39;../resources/images/polyhaven_evening_road_01_puresky_1k.exr&#39;</span><span class="p">,</span> <span class="n">intensity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># Environment map</span>
+<span class="n">camera</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Camera</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">look_at</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">centroid</span><span class="p">())</span>
+
+<span class="c1"># now we render an animation</span>
+<span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>
+<span class="n">render_dir</span> <span class="o">=</span> <span class="s1">&#39;inverse_kinematics/rgb&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">render_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">render_dir</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">animation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame_end</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
+
+<span class="c1"># convert rendered frames to video</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">render_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">frames_to_video</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="n">render_dir</span><span class="p">,</span> <span class="n">output_loc</span><span class="o">=</span><span class="s1">&#39;inverse_kinematics/rgb.gif&#39;</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">delete_images</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_fmt</span><span class="o">=</span><span class="s1">&#39;gif&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="custom_aov.html" class="btn btn-neutral float-left" title="Custom AOV" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../markdown/examples.README.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ollie Boyne.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+Inverse kinematics
+==================
+
+.. mdinclude:: ../markdown/examples.inverse_kinematics.md
+
+
+.. literalinclude:: ../_static/python/examples.inverse_kinematics.py
+   :language: python
+	

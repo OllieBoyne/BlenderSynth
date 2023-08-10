@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>blendersynth.blender.armature &mdash; BlenderSynth 2023 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            BlenderSynth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/mesh_importing.html">Mesh importing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/texturing.html">Texturing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/output_data.html">Output data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/dataset_creation/index.html">Dataset creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/capturing_pose.html">Capturing pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/custom_aov.html">Custom AOV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/inverse_kinematics.html">Inverse kinematics</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">BlenderSynth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">blendersynth.blender.armature</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for blendersynth.blender.armature</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Armature object for managing pose&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span><span class="p">,</span> <span class="n">animatable_property</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">SelectObjects</span><span class="p">,</span> <span class="n">SetMode</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">types</span>
+<span class="kn">import</span> <span class="nn">bpy</span>
+<span class="kn">import</span> <span class="nn">mathutils</span>
+
+
+<div class="viewcode-block" id="PoseBone"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone">[docs]</a><span class="k">class</span> <span class="nc">PoseBone</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="nb">object</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">constraints</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">armature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">id_data</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">matrix_world</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">matrix</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Gets the world location of the head (start) of the bone.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">head</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">head_location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Gets the world location of the head (start) of the bone.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">head</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">tail_location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Gets the world location of the tail (or end) of the bone.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">tail</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="o">.</span><span class="n">to_scale</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="IKConstraint"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint">[docs]</a><span class="k">class</span> <span class="nc">IKConstraint</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;A combination of a PoseBone, object, a aonstraint object,</span>
+<span class="sd">	and an Empty which acts as the target for the IK constraint.&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pose_bone</span><span class="p">:</span> <span class="n">PoseBone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Constraint</span><span class="p">,</span> <span class="n">empty</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span> <span class="o">=</span> <span class="n">pose_bone</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">constraint</span> <span class="o">=</span> <span class="n">constraint</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">empty</span> <span class="o">=</span> <span class="n">empty</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">empty</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">bone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span>
+
+<div class="viewcode-block" id="IKConstraint.remove"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.remove">[docs]</a>	<span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Remove this constraint.&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bone</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">constraint</span><span class="p">)</span>
+		<span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="p">)</span></div>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">armature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bone</span><span class="o">.</span><span class="n">id_data</span></div>
+
+
+<div class="viewcode-block" id="Armature"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature">[docs]</a><span class="k">class</span> <span class="nc">Armature</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;This class manages armatures - a collection of posable bones.&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Armature</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="nb">object</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># for IK constraints</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">pose</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Pose</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">pose</span>
+
+<div class="viewcode-block" id="Armature.get_bone"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.get_bone">[docs]</a>	<span class="k">def</span> <span class="nf">get_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">PoseBone</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Get bone from armature.</span>
+
+<span class="sd">		:param bone_name: Name of bone to get (or PoseBone object)</span>
+<span class="sd">		:return: PoseBone object</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">):</span>
+			<span class="k">return</span> <span class="n">bone</span>
+
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">):</span>
+			<span class="k">return</span> <span class="n">PoseBone</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">bone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">bones</span><span class="p">[</span><span class="n">bone</span><span class="p">]</span>
+			<span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bone `</span><span class="si">{</span><span class="n">bone</span><span class="si">}</span><span class="s2">` not found in armature `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
+			<span class="k">return</span> <span class="n">PoseBone</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span>
+
+		<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected bone to be PoseBone, str, or PoseBone, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Armature.pose_bone"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.pose_bone">[docs]</a>	<span class="k">def</span> <span class="nf">pose_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">],</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+				  <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+				  <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set the pose of a bone by giving a Euler XYZ rotation and/or location.</span>
+
+<span class="sd">		:param bone: Name of bone to pose, or PoseBone object</span>
+<span class="sd">		:param rotation: Euler XYZ rotation in radians</span>
+<span class="sd">		:param location: Location of bone</span>
+<span class="sd">		:param scale: Scale of bone</span>
+<span class="sd">		:param frame: Frame to set pose on. If given, will insert keyframe here.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="k">with</span> <span class="n">SetMode</span><span class="p">(</span><span class="s1">&#39;POSE&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+				<span class="n">bone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bone</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span>
+
+			<span class="n">bone</span><span class="o">.</span><span class="n">rotation_mode</span> <span class="o">=</span> <span class="s1">&#39;XYZ&#39;</span>
+			<span class="k">if</span> <span class="n">rotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="n">bone</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="n">bone</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="n">scale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="n">bone</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Armature.clear_pose"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.clear_pose">[docs]</a>	<span class="k">def</span> <span class="nf">clear_pose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bones</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Clear the pose of the armature.</span>
+<span class="sd">		For the target bones, sets poses to zero, and removes any IK constraints.</span>
+
+<span class="sd">		:param rot: Clear rotation</span>
+<span class="sd">		:param location: Clear location</span>
+<span class="sd">		:param scale: Clear scale</span>
+<span class="sd">		:param bones: List of bones to clear. If not given, will clear all bones.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="k">with</span> <span class="n">SetMode</span><span class="p">(</span><span class="s1">&#39;POSE&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
+			<span class="k">for</span> <span class="n">bone</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">bones</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">bones</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">bones</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">rot</span><span class="p">:</span>
+						<span class="n">bone</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+					<span class="k">if</span> <span class="n">location</span><span class="p">:</span>
+						<span class="n">bone</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+					<span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+						<span class="n">bone</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+				<span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="p">]:</span>
+					<span class="k">if</span> <span class="n">constraint</span><span class="o">.</span><span class="n">bone</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+						<span class="n">constraint</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Armature.add_ik_constraint"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.add_ik_constraint">[docs]</a>	<span class="k">def</span> <span class="nf">add_ik_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">],</span> <span class="n">position</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="p">,</span>
+						  <span class="n">chain_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IKConstraint</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Translates the given pose bone to a specific position using IK.</span>
+
+<span class="sd">		:param bone: The pose bone object, or name of bone, to move.</span>
+<span class="sd">		:param position: Target position to be placed at.</span>
+<span class="sd">		:param chain_count: Number of bones to affect in the chain. 0 affects all bones in the chain.</span>
+<span class="sd">		:return: IKConstraint object, which can be used to modify or remove the IK constraint.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">bone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bone</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span>
+
+		<span class="c1"># Create an empty to serve as the IK target</span>
+		<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">empty_add</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">position</span><span class="p">)</span>
+		<span class="n">empty</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span>
+		<span class="n">empty</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;IK_Target_For_&quot;</span> <span class="o">+</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span>
+
+		<span class="c1"># Add IK constraint to the specified bone</span>
+		<span class="n">constraint</span> <span class="o">=</span> <span class="n">bone</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;IK&#39;</span><span class="p">)</span>
+		<span class="n">constraint</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">empty</span>
+		<span class="n">constraint</span><span class="o">.</span><span class="n">chain_count</span> <span class="o">=</span> <span class="n">chain_count</span>
+
+		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+		<span class="n">ik_constraint</span> <span class="o">=</span> <span class="n">IKConstraint</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">,</span> <span class="n">empty</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ik_constraint</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">ik_constraint</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ollie Boyne.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

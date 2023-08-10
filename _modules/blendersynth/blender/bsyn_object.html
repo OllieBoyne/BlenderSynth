@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../python/animation.html">Animation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python/capturing_pose.html">Capturing pose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python/custom_aov.html">Custom AOV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/inverse_kinematics.html">Inverse kinematics</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -92,9 +93,13 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">types</span>
 
+
 <div class="viewcode-block" id="BsynObject"><a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject">[docs]</a><span class="k">class</span> <span class="nc">BsynObject</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Generic class for BlenderSynth objects.&quot;&quot;&quot;</span>
-	<span class="n">_object</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># corresponding blender object</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Generic class for BlenderSynth objects.</span>
+
+<span class="sd">	Assigned an .obj (eg bpy.types.Mesh for a Mesh) which is the main Blender object it represents.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">_object</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># corresponding blender object</span>
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">obj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -112,9 +117,9 @@
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">data</span>
 
 	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-	<span class="c1">#   ---&gt; not currently needed, may be needed in the future</span>
-	<span class="c1"># 	&quot;&quot;&quot;On any update, run this. For most objects, this is a no-op, but for some objects,</span>
-	<span class="c1"># 	this is necessary to update the object&#39;s state. e.g. Camera&quot;&quot;&quot;</span>
+		<span class="c1">#   ---&gt; not currently needed, may be needed in the future</span>
+		<span class="c1"># 	&quot;&quot;&quot;On any update, run this. For most objects, this is a no-op, but for some objects,</span>
+		<span class="c1"># 	this is necessary to update the object&#39;s state. e.g. Camera&quot;&quot;&quot;</span>
 		<span class="k">return</span>
 
 	<span class="k">def</span> <span class="nf">_keyframe_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -150,7 +155,6 @@
 	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">scale</span>
@@ -158,7 +162,6 @@
 	<span class="nd">@scale</span><span class="o">.</span><span class="n">setter</span>
 	<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
-
 
 	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
 	<span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="p">):</span>
