@@ -128,6 +128,7 @@ class BlenderThread():
 			self.timer = perf_counter()
 
 		elif (perf_counter() - self.timer) >= self.timeout:
+			self.status = f'✖ THREAD {self.name} FAILED [TIMEOUT].'
 			return False
 
 		return True
@@ -188,17 +189,20 @@ class BlenderThreadManager:
 		return sum(map(len, self.threads))
 
 	def start(self, progress_bars=True,
-			  tick=0.5, report_every=15,
+			  tick=0.5, report_every=15, offset=1,
 			  ):
 		"""Start all threads and job progress
 		:param progress_bars: If True, show progress bars for each thread and overall progress
 		:param tick: How often to update progress bars
 		:param report_every: How often to print status updates to log
+		:param offset: How long to wait before starting each thread (to avoid memory issues)
 		"""
 		self.t0 = perf_counter()  # log start time
 		self.session_start = datetime.now()
+
 		for thread in self.threads:
 			thread.check_in()
+			sleep(offset)
 
 		# register atexit handler
 		atexit.register(self.terminate)
@@ -248,8 +252,8 @@ class BlenderThreadManager:
 							if thread_running:
 								pbars[t].n = thread.num_rendered
 
-							else:  # Thread failed, restart thread
-								print("CANNOT DEAL WITH FAILED THREADS YET")
+							else:  # Thread failed, currently will only notify the user
+								pass
 
 						pbars[t].set_description(thread.status)
 

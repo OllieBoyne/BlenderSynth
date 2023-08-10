@@ -20,7 +20,7 @@ class Inputs:
 		log_loc = sys.argv[sys.argv.index('--log') + 1]
 
 		# Set up logging
-		logging.basicConfig(filename=log_loc, level=logging.INFO, filemode='w',
+		logging.basicConfig(filename=log_loc, level=logging.INFO, filemode='a',
 							format='%(asctime)s - %(levelname)s - %(message)s')
 		
 		# store all --kwargs as attributes
@@ -36,7 +36,7 @@ class Inputs:
 				yield fname, json.load(f)
 
 			# Once we get here, we've passed 'yield', so we know that JSON has been loaded & rendering has occured
-			logging.info(f"RENDERED: {n:04d}")
+			logging.info(f"RENDERED: {fname}")
 
 	def __len__(self):
 		return len(self.jsons)
