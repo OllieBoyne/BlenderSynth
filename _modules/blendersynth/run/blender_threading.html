@@ -214,6 +214,7 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
 
 		<span class="k">elif</span> <span class="p">(</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;✖ THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> FAILED [TIMEOUT].&#39;</span>
 			<span class="k">return</span> <span class="kc">False</span>
 
 		<span class="k">return</span> <span class="kc">True</span>
@@ -274,17 +275,20 @@
 		<span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">))</span>
 
 	<span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_bars</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-			  <span class="n">tick</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">report_every</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+			  <span class="n">tick</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">report_every</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 			  <span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Start all threads and job progress</span>
 <span class="sd">		:param progress_bars: If True, show progress bars for each thread and overall progress</span>
 <span class="sd">		:param tick: How often to update progress bars</span>
 <span class="sd">		:param report_every: How often to print status updates to log</span>
+<span class="sd">		:param offset: How long to wait before starting each thread (to avoid memory issues)</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>  <span class="c1"># log start time</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">session_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
 		<span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">:</span>
 			<span class="n">thread</span><span class="o">.</span><span class="n">check_in</span><span class="p">()</span>
+			<span class="n">sleep</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
 
 		<span class="c1"># register atexit handler</span>
 		<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">terminate</span><span class="p">)</span>
@@ -334,8 +338,8 @@
 							<span class="k">if</span> <span class="n">thread_running</span><span class="p">:</span>
 								<span class="n">pbars</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">thread</span><span class="o">.</span><span class="n">num_rendered</span>
 
-							<span class="k">else</span><span class="p">:</span>  <span class="c1"># Thread failed, restart thread</span>
-								<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CANNOT DEAL WITH FAILED THREADS YET&quot;</span><span class="p">)</span>
+							<span class="k">else</span><span class="p">:</span>  <span class="c1"># Thread failed, currently will only notify the user</span>
+								<span class="k">pass</span>
 
 						<span class="n">pbars</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="n">thread</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
 
