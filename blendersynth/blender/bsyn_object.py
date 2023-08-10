@@ -6,9 +6,13 @@ import bpy
 from typing import Union
 from ..utils import types
 
+
 class BsynObject:
-	"""Generic class for BlenderSynth objects."""
-	_object = None # corresponding blender object
+	"""Generic class for BlenderSynth objects.
+
+	Assigned an .obj (eg bpy.types.Mesh for a Mesh) which is the main Blender object it represents.
+	"""
+	_object = None  # corresponding blender object
 
 	@property
 	def obj(self):
@@ -26,9 +30,9 @@ class BsynObject:
 		return self.object.data
 
 	def update(self):
-	#   ---> not currently needed, may be needed in the future
-	# 	"""On any update, run this. For most objects, this is a no-op, but for some objects,
-	# 	this is necessary to update the object's state. e.g. Camera"""
+		#   ---> not currently needed, may be needed in the future
+		# 	"""On any update, run this. For most objects, this is a no-op, but for some objects,
+		# 	this is necessary to update the object's state. e.g. Camera"""
 		return
 
 	def _keyframe_delete(self, *args, **kwargs):
@@ -64,7 +68,6 @@ class BsynObject:
 	def rotation_euler(self, value):
 		self.set_rotation_euler(value)
 
-
 	@property
 	def scale(self):
 		return self.obj.scale
@@ -72,7 +75,6 @@ class BsynObject:
 	@scale.setter
 	def scale(self, scale):
 		self.set_scale(scale)
-
 
 	@animatable_property('location')
 	def set_location(self, location: types.VectorLikeAlias):

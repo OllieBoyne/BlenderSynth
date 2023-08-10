@@ -1,9 +1,10 @@
 import os.path
 
 import bpy
-from .utils import GetNewObject, SelectObjects, handle_vec, SetMode, animatable_property
+from .utils import GetNewObject, SelectObjects, handle_vec, CursorAt
 from .bsyn_object import BsynObject
 from .material import Material
+from .armature import Armature
 from .aov import AOV
 import numpy as np
 import mathutils
@@ -11,6 +12,7 @@ import bmesh
 from mathutils import Vector, Euler
 from typing import Union, List
 from copy import deepcopy
+from ..utils import types
 
 _primitives = {
 	"cube": bpy.ops.mesh.primitive_cube_add,
@@ -48,6 +50,11 @@ def _get_child_meshes(obj):
 
 		return meshes, other
 
+
+def _set_object_origin(obj: bpy.types.Object, origin: Vector):
+	"""Set the origin of an object to a given point"""
+	with SelectObjects([obj]), CursorAt(origin):
+		bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
 
 class Mesh(BsynObject):
 	"""A mesh object. Can be a single mesh, or a hierarchy of meshes."""
@@ -225,13 +232,13 @@ class Mesh(BsynObject):
 	@property
 	def origin(self) -> Union[Vector, List[Vector]]:
 		"""
-		If single mesh, return Vector of origin.
-		If multiple meshes, return list of Vectors of centroid of each mesh."""
-		if len(self._meshes) == 1:
+		If single object, return Vector of origin.
+		If multiple objects, return list of Vectors of centroid of each mesh."""
+		if len(self._all_objects) == 1:
 			return self._meshes[0].location
 
 		else:
-			return [m.location for m in self._meshes]
+			return [m.location for m in self._all_objects]
 
 	@origin.setter
 	def origin(self, origin):
@@ -239,22 +246,22 @@ class Mesh(BsynObject):
 		If single mesh, expects Vector.
 		If multiple meshes, expects list of Vectors"""
 
-		if len(self._meshes) == 1:
+		if len(self._all_objects) == 1:
 			try:
 				vec = handle_vec(origin)
 			except ValueError:
 				raise ValueError(f"Error with setting origin. Expects a 3 long Vector. Received: {origin}")
 
-			self._meshes[0].location = vec
+			_set_object_origin(self._meshes[0], vec)
 
 		else:
-			for i in range(len(self._meshes)):
+			for i in range(len(self._all_objects)):
 				try:
 					vec = handle_vec(origin[i])
-					self._meshes[i].location = vec
+					_set_object_origin(self._all_objects[i], vec)
 				except:
 					raise ValueError(
-						f"Error with setting origin. Expects a list of {len(self._meshes)} 3-long Vector. Received: {origin}")
+						f"Error with setting origin. Expects a list of {len(self._all_objects)} 3-long Vector. Received: {origin}")
 
 	def _get_all_vertices(self, ref_frame='WORLD') -> np.ndarray:
 		"""
@@ -450,70 +457,29 @@ class Mesh(BsynObject):
 	def name(self):
 		return self._meshes[0].name
 
-	def get_armature(self, armature_name: str = None) -> bpy.types.Object:
+	def get_armature(self, armature_name: str = None) -> Armature:
 		"""Get armature.
 		If no name given, return first armature found.
 
 		:param armature_name: Name of armature to load."""
 
 		armatures = [obj for obj in self._other_objects if obj.type == 'ARMATURE']
+		if len(armatures) == 0:
+			raise ValueError("No armatures found.")
 
+		arm = None
 		if armature_name:
 			for arm in armatures:
 				if arm.name == armature_name:
-					return arm
-
-			raise KeyError(f"Armature `{armature_name}` not found.")
+					arm = arm
 
 		else:
-			if len(armatures) == 0:
-				raise ValueError("No armatures found.")
+			arm = armatures[0]
 
-			return armatures[0]
+		if arm is None:
+			raise KeyError(f"Armature `{armature_name}` not found.")
 
-	def get_bone(self, bone_name: str, armature_name: str = None) -> bpy.types.PoseBone:
-		"""
-		Get bone from armature.
-
-		:param bone_name: Name of bone to get
-		:param armature_name: If not given, will load first available armature found
-		:return: PoseBone object
-		"""
-
-		armature = self.get_armature(armature_name)
-		try:
-			bone = armature.pose.bones[bone_name]
-		except KeyError:
-			raise KeyError(f"Bone `{bone_name}` not found in armature `{armature.name}`")
-		return bone
-
-	def pose_bone(self, bone: Union[str, bpy.types.PoseBone], rotation: Vector = None, location: Vector = None,
-				  armature_name: str = None, frame: int = None):
-		"""Set the pose of a bone by giving a Euler XYZ rotation and/or location.
-
-		:param bone: Name of bone to pose, or PoseBone object
-		:param rotation: Euler XYZ rotation in radians
-		:param location: Location in object space
-		:param armature_name: Name of armature to use. If not given, will use first armature found.
-		:param frame: Frame to set pose on. If given, will insert keyframe here.
-		"""
-
-		with SelectObjects(self._meshes + self._other_objects):
-			armature = self.get_armature(armature_name)
-			with SetMode('POSE', object=armature):
-				if isinstance(bone, str):
-					bone = self.get_bone(bone, armature_name)
-
-				bone.rotation_mode = 'XYZ'
-				if rotation is not None:
-					bone.rotation_euler = rotation
-					if frame is not None:
-						bone.keyframe_insert(data_path='rotation_euler', frame=frame)
-
-				if location is not None:
-					bone.location = location
-					if frame is not None:
-						bone.keyframe_insert(data_path='location', frame=frame)
+		return Armature(arm)
 
 	@property
 	def material(self):

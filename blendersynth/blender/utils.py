@@ -5,6 +5,7 @@ import bpy
 import numpy as np
 import mathutils
 from typing import Union, List, Tuple
+from ..utils import types
 
 # define Blender Array type
 blender_array_type = Union[List[float], mathutils.Vector, np.ndarray, Tuple[float, ...], Tuple[int, ...]]
@@ -117,6 +118,22 @@ class SetMode:
 	def __exit__(self, type, value, traceback):
 		bpy.ops.object.mode_set(mode=self.original_mode)
 		bpy.context.view_layer.objects.active = self.original_active_object
+
+
+class CursorAt():
+	"""Context manager for moving the cursor to a specific location in space.
+	On exit, will return the cursor to its original location."""
+
+	def __init__(self, target: types.VectorLikeAlias):
+		self.original_location = None
+		self.target = target
+
+	def __enter__(self):
+		self.original_location = bpy.context.scene.cursor.location.copy()
+		bpy.context.scene.cursor.location = self.target
+
+	def __exit__(self, *args):
+		bpy.context.scene.cursor.location = self.original_location
 
 
 def get_node_by_name(node_tree: bpy.types.NodeTree, key: str, raise_error=False) -> bpy.types.Node:

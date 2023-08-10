@@ -34,8 +34,8 @@ normal_aov = bsyn.aov.NormalsAOV(ref_frame='CAMERA', polarity=[-1, 1, -1])
 monkey.assign_aov(normal_aov)
 
 # Define data outputs
-comp.define_output('Image', directory='animation/rgb', file_name='rgb', mode='image')  # render RGB layer (note mode='image')
-comp.define_output(normal_aov, directory='animation/normal', file_name='normals', mode='image')  # render RGB layer (note mode='image')
+comp.define_output('Image', directory='animation/rgb', file_name='rgb', mode='image')
+comp.define_output(normal_aov, directory='animation/normal', file_name='normals', mode='image')
 
 comp.render(animation=True, frame_end=num_frames)
 

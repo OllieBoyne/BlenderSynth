@@ -37,6 +37,8 @@ if building_docs or get_blender_path() == sys.argv[0]:  # if blender is running 
 	from . import annotations
 	from .file.tempfiles import cleanup_temp_files as cleanup
 
+	import mathutils
+
 	# set render engine to cycles
 	render.set_engine('CYCLES')
 

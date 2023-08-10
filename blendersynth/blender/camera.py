@@ -6,6 +6,7 @@ from .bsyn_object import BsynObject
 from typing import Union
 from .mesh import Mesh
 from .curve import Curve
+from ..utils import types
 
 
 def _look_at_rotation(obj_camera: bpy.types.Object,
@@ -95,7 +96,7 @@ class Camera(BsynObject):
 		self.camera.data.angle = fov * np.pi / 180
 		self.update()
 
-	def look_at(self, at:mathutils.Vector=mathutils.Vector((0, 0, 0)), up:mathutils.Vector=mathutils.Vector((0, 0, 1))):
+	def look_at(self, at:types.VectorLikeAlias=mathutils.Vector((0, 0, 0)), up:types.VectorLikeAlias=mathutils.Vector((0, 0, 1))):
 		"""Look at a point in space, with up vector.
 
 		:param at: Point to look at
@@ -105,7 +106,7 @@ class Camera(BsynObject):
 
 		self.rotation_euler = _look_at_rotation(self.camera, at, up)
 
-	def look_at_object(self, obj: Union[Mesh, bpy.types.Object], up:mathutils.Vector=mathutils.Vector((0, 1, 0))):
+	def look_at_object(self, obj: Union[Mesh, bpy.types.Object], up:types.VectorLikeAlias = mathutils.Vector((0, 1, 0))):
 		"""Look at an object, with up vector.
 
 		:param obj: Object to look at
