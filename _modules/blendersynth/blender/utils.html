@@ -119,6 +119,13 @@
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Invert euler rotation&quot;&quot;&quot;</span>
 	<span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">to_quaternion</span><span class="p">()</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span><span class="o">.</span><span class="n">to_euler</span><span class="p">(</span><span class="s1">&#39;XYZ&#39;</span><span class="p">)</span>
 
+<span class="k">def</span> <span class="nf">_is_object_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Check if object is still available&quot;&quot;&quot;</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">x</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span>
+		<span class="k">return</span> <span class="kc">True</span>
+	<span class="k">except</span> <span class="ne">ReferenceError</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="GetNewObject"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.GetNewObject">[docs]</a><span class="k">class</span> <span class="nc">GetNewObject</span><span class="p">():</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Context manager for getting the newly imported object(s) to the scene.</span>
@@ -212,7 +219,9 @@
 
 	<span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
 		<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">mode_set</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">original_mode</span><span class="p">)</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_active_object</span></div>
+
+		<span class="k">if</span> <span class="n">_is_object_valid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">original_active_object</span><span class="p">):</span>
+			<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_active_object</span></div>
 
 
 <div class="viewcode-block" id="CursorAt"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.CursorAt">[docs]</a><span class="k">class</span> <span class="nc">CursorAt</span><span class="p">():</span>

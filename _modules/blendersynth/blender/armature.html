@@ -138,7 +138,17 @@
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">:</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span></div>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
+
+	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeOrScalarAlias</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set scale of pose bone.</span>
+
+<span class="sd">		:param scale: Scale to set. Either single value or 3 long vector&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+			<span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span></div>
 
 
 <div class="viewcode-block" id="IKConstraint"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint">[docs]</a><span class="k">class</span> <span class="nc">IKConstraint</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
