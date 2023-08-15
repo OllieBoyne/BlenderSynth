@@ -154,6 +154,14 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">imported_obj</span> <span class="o">=</span> <span class="n">parent_obj</span></div>
 
 
+<span class="k">def</span> <span class="nf">_select</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Select/deselect an object&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;select_set&#39;</span><span class="p">):</span>  <span class="c1"># e.g. Mesh</span>
+		<span class="n">obj</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;select&#39;</span><span class="p">):</span>  <span class="c1"># e.g. PoseBone</span>
+		<span class="n">obj</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="n">state</span>
+
+
 <div class="viewcode-block" id="SelectObjects"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.SelectObjects">[docs]</a><span class="k">class</span> <span class="nc">SelectObjects</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Context manager for selecting objects.</span>
 <span class="sd">	On exit, will reselect the objects that were selected before entering the context.&quot;&quot;&quot;</span>
@@ -170,14 +178,14 @@
 
 		<span class="c1"># select objects</span>
 		<span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
-			<span class="n">obj</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+			<span class="n">_select</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
 		<span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
-			<span class="n">obj</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+			<span class="n">_select</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 		<span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_objs</span><span class="p">:</span>
-			<span class="n">obj</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+			<span class="n">_select</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SetMode"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.SetMode">[docs]</a><span class="k">class</span> <span class="nc">SetMode</span><span class="p">:</span>

@@ -7,5 +7,6 @@
 
 	blendersynth.utils.blender_importer
 	blendersynth.utils.blender_setup
+	blendersynth.utils.layout
 	blendersynth.utils.node_arranger
 	blendersynth.utils.types

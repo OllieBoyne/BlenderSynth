@@ -138,15 +138,11 @@
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">:</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
-
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="o">.</span><span class="n">to_scale</span><span class="p">()</span></div>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="IKConstraint"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint">[docs]</a><span class="k">class</span> <span class="nc">IKConstraint</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;A combination of a PoseBone, object, a aonstraint object,</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;A combination of a PoseBone, object, a Constraint object,</span>
 <span class="sd">	and an Empty which acts as the target for the IK constraint.&quot;&quot;&quot;</span>
 
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pose_bone</span><span class="p">:</span> <span class="n">PoseBone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Constraint</span><span class="p">,</span> <span class="n">empty</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">):</span>

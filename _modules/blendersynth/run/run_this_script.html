@@ -91,16 +91,39 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">..utils.blender_setup.blender_locator</span> <span class="kn">import</span> <span class="n">get_blender_path</span>
-<span class="kn">from</span> <span class="nn">..file.tempfiles</span> <span class="kn">import</span> <span class="n">cleanup_temp_files</span> <span class="k">as</span> <span class="n">cleanup</span>
+<span class="kn">from</span> <span class="nn">..file.tempfiles</span> <span class="kn">import</span> <span class="n">create_temp_file</span><span class="p">,</span> <span class="n">cleanup_temp_files</span> <span class="k">as</span> <span class="n">cleanup</span>
+<span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copyfile</span>
+
+<span class="k">def</span> <span class="nf">_copy_over_script</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Copies over a python script to a tempfile, returning the path.</span>
+<span class="sd">	Removes certain lines so it can run in blender&quot;&quot;&quot;</span>
+	<span class="n">remove_lines_containing</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.run_this_script&#39;</span><span class="p">]</span>
+	<span class="n">new_lines</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+		<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">s</span> <span class="ow">in</span> <span class="n">line</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">remove_lines_containing</span><span class="p">]):</span>
+				<span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+	<span class="n">new_filepath</span> <span class="o">=</span> <span class="n">create_temp_file</span><span class="p">(</span><span class="n">ext</span><span class="o">=</span><span class="s1">&#39;.py&#39;</span><span class="p">)</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_filepath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">new_lines</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">new_filepath</span>
+
+
 
 <div class="viewcode-block" id="run_this_script"><a class="viewcode-back" href="../../../api/blendersynth.run.run_this_script.html#blendersynth.run.run_this_script.run_this_script">[docs]</a><span class="k">def</span> <span class="nf">run_this_script</span><span class="p">(</span><span class="n">debug</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Run the script in which this function is called from Blender</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Run the script in which this function is called from Blender.</span>
+
+<span class="sd">	Will also place a copy of the script inside Blender.</span>
 
 <span class="sd">	:param debug: If True, open a Blender instance after all code is executed, otherwise run in background&quot;&quot;&quot;</span>
 	<span class="n">blender_path</span> <span class="o">=</span> <span class="n">get_blender_path</span><span class="p">()</span>
-	<span class="k">if</span> <span class="n">blender_path</span> <span class="o">!=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># if blender is not running this script</span>
 
-		<span class="n">caller_path</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">filename</span> <span class="c1"># path of script that called this function</span>
+	<span class="n">caller_path</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">filename</span>  <span class="c1"># path of script that called this function</span>
+
+	<span class="k">if</span> <span class="n">blender_path</span> <span class="o">!=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># if blender is not running this script</span>
 
 		<span class="n">caller_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">caller_path</span><span class="p">)</span>
 		<span class="n">env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -113,7 +136,22 @@
 		<span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
 
 		<span class="n">cleanup</span><span class="p">()</span>  <span class="c1"># cleanup temp files</span>
-		<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>  <span class="c1"># exit the script once blender is finished</span></div>
+		<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>  <span class="c1"># exit the script once blender is finished</span>
+
+	<span class="k">else</span><span class="p">:</span>
+		<span class="c1"># blender is running this script</span>
+		<span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+			<span class="c1"># load the script into blender for viewing</span>
+			<span class="kn">import</span> <span class="nn">bpy</span>
+			<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">layout</span>
+
+			<span class="n">caller_path</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">caller_path</span><span class="p">)</span>
+			<span class="n">script_path</span> <span class="o">=</span> <span class="n">_copy_over_script</span><span class="p">(</span><span class="n">caller_path</span><span class="p">)</span>
+
+			<span class="n">text_block</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">texts</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">script_path</span><span class="p">)</span>
+
+			<span class="n">layout</span><span class="o">.</span><span class="n">change_area_to</span><span class="p">(</span><span class="s1">&#39;DOPESHEET_EDITOR&#39;</span><span class="p">,</span> <span class="s1">&#39;TEXT_EDITOR&#39;</span><span class="p">)</span>
+			<span class="n">layout</span><span class="o">.</span><span class="n">get_area</span><span class="p">(</span><span class="s1">&#39;TEXT_EDITOR&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">spaces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text_block</span></div>
 </pre></div>
 
            </div>
