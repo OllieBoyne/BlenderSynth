@@ -97,6 +97,7 @@ class Mesh(BsynObject):
 		self.set_class_id(class_id)
 
 		self.assigned_aovs = []
+		self._armatures = {}  # name : armature, to prevent multiple instances of armatures
 
 	def set_class_id(self, class_id):
 		assert isinstance(class_id, int), f"Class ID must be an integer, not {type(class_id)}"
@@ -467,22 +468,24 @@ class Mesh(BsynObject):
 		:param armature_name: Name of armature to load."""
 
 		armatures = [obj for obj in self._other_objects if obj.type == 'ARMATURE']
+
 		if len(armatures) == 0:
 			raise ValueError("No armatures found.")
 
-		arm = None
-		if armature_name:
-			for arm in armatures:
-				if arm.name == armature_name:
-					arm = arm
+		if armature_name is None:
+			armature_name = armatures[0].name
 
-		else:
-			arm = armatures[0]
+		if armature_name in self._armatures:
+			return self._armatures[armature_name]
 
-		if arm is None:
-			raise KeyError(f"Armature `{armature_name}` not found.")
+		for arm in armatures:
+			if arm.name == armature_name:
+				bsyn_arm = Armature(arm)
+				self._armatures[armature_name] = bsyn_arm
+				return bsyn_arm
 
-		return Armature(arm)
+		raise KeyError(f"Armature `{armature_name}` not found.")
+
 
 	@property
 	def material(self):

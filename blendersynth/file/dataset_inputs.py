@@ -4,8 +4,8 @@ return an iterable with read's in sys.argv's `--jobs` jsons."""
 import sys
 import json
 import os
-
 import logging
+from typing import Union, List
 
 class Inputs:
 	"""This class is used to iterate over the JSONs passed in via `--jobs` in sys.argv.
@@ -43,6 +43,14 @@ class Inputs:
 
 class DebugInputs(Inputs):
 	"""Class to emulate the Inputs class, for a single JSON for testing."""
-	def __init__(self, json_loc):
-		self.jsons = [json_loc]
+	def __init__(self, json_loc: Union[str, List], repeats:int=1):
+		"""
+
+		:param json_loc: Location of JSON(s) to use
+		:param repeat: Number of times to repeat the JSON(s)
+		"""
+		if isinstance(json_loc, str):
+			json_loc = [json_loc]
+
+		self.jsons = json_loc * repeats
 

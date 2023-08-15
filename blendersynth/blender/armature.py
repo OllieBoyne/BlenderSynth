@@ -53,6 +53,16 @@ class PoseBone(BsynObject):
 	def rotation_euler(self) -> mathutils.Euler:
 		return self.matrix_world.to_euler()
 
+	@animatable_property('scale')
+	def set_scale(self, scale: types.VectorLikeOrScalarAlias):
+		"""Set scale of pose bone.
+
+		:param scale: Scale to set. Either single value or 3 long vector"""
+		if isinstance(scale, (int, float)):
+			scale = (scale, scale, scale)
+
+		self.obj.scale = scale
+
 
 class IKConstraint(BsynObject):
 	"""A combination of a PoseBone, object, a Constraint object,

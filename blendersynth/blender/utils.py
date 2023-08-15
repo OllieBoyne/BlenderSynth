@@ -32,6 +32,13 @@ def _euler_invert(a: mathutils.Euler):
 	"""Invert euler rotation"""
 	return a.to_quaternion().inverted().to_euler('XYZ')
 
+def _is_object_valid(obj: bpy.types.Object):
+	"""Check if object is still available"""
+	try:
+		x = obj.name
+		return True
+	except ReferenceError:
+		return False
 
 class GetNewObject():
 	"""Context manager for getting the newly imported object(s) to the scene.
@@ -125,7 +132,9 @@ class SetMode:
 
 	def __exit__(self, type, value, traceback):
 		bpy.ops.object.mode_set(mode=self.original_mode)
-		bpy.context.view_layer.objects.active = self.original_active_object
+
+		if _is_object_valid(self.original_active_object):
+			bpy.context.view_layer.objects.active = self.original_active_object
 
 
 class CursorAt():
