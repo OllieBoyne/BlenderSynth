@@ -36,6 +36,7 @@ if building_docs or get_blender_path() == sys.argv[0]:  # if blender is running 
 	from .blender.camera import Camera
 	from . import annotations
 	from .file.tempfiles import cleanup_temp_files as cleanup
+	from .utils import layout
 
 	import mathutils
 

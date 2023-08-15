@@ -67,6 +67,14 @@ class GetNewObject():
 			self.imported_obj = parent_obj
 
 
+def _select(obj, state=True):
+	"""Select/deselect an object"""
+	if hasattr(obj, 'select_set'):  # e.g. Mesh
+		obj.select_set(state)
+	elif hasattr(obj, 'select'):  # e.g. PoseBone
+		obj.select = state
+
+
 class SelectObjects:
 	"""Context manager for selecting objects.
 	On exit, will reselect the objects that were selected before entering the context."""
@@ -83,14 +91,14 @@ class SelectObjects:
 
 		# select objects
 		for obj in self.objects:
-			obj.select_set(True)
+			_select(obj, state=True)
 
 	def __exit__(self, *args):
 		for obj in self.objects:
-			obj.select_set(False)
+			_select(obj, state=False)
 
 		for obj in self.old_objs:
-			obj.select_set(True)
+			_select(obj, state=True)
 
 
 class SetMode:
