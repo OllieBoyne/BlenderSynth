@@ -330,7 +330,7 @@ class Mesh(BsynObject):
 		trans_vec['XYZ'.index(axis)] = pos - min_pos
 		self.translate(trans_vec)
 
-	def clamp_in_axis(self, axis: str = 'Z', mode: str = 'min', value: float = 0):
+	def clamp_in_axis(self, axis: str = 'Z', mode: str = 'min', value: float = 0) -> np.ndarray:
 		"""Clamp object in a given axis to a given value - ensure that, in this axis,
 		the object never goes below (mode='min') or above (mode='max') the given value.
 
@@ -339,6 +339,7 @@ class Mesh(BsynObject):
 		:param axis: Axis to clamp in
 		:param mode: 'min' or 'max'
 		:param value: Value to clamp to
+		:return: Vector of translation applied to object
 		"""
 
 		axis = axis.upper()
@@ -357,6 +358,8 @@ class Mesh(BsynObject):
 		trans_vec = np.zeros(3)
 		trans_vec['XYZ'.index(axis)] = translation
 		self.translate(trans_vec)
+
+		return trans_vec
 
 	def delete(self, delete_materials: bool = True):
 		"""Clear mesh from scene & mesh data.

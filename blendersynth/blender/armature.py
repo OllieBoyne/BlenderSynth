@@ -53,13 +53,9 @@ class PoseBone(BsynObject):
 	def rotation_euler(self) -> mathutils.Euler:
 		return self.matrix_world.to_euler()
 
-	@property
-	def scale(self) -> mathutils.Vector:
-		return self.matrix_world.to_scale()
-
 
 class IKConstraint(BsynObject):
-	"""A combination of a PoseBone, object, a aonstraint object,
+	"""A combination of a PoseBone, object, a Constraint object,
 	and an Empty which acts as the target for the IK constraint."""
 
 	def __init__(self, pose_bone: PoseBone, constraint: bpy.types.Constraint, empty: bpy.types.Object):
