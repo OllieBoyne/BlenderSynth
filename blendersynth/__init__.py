@@ -18,27 +18,40 @@ from .run.run_this_script import run_this_script
 
 import sys
 from .utils.blender_setup.blender_locator import get_blender_path
+from .run.import_handling import conditional_import
 
-if building_docs or get_blender_path() == sys.argv[0]:  # if blender is running this script, or if building docs
-	import bpy
-	from bpy import *
-	from .blender.mesh import Mesh
-	from .blender.material import Material
-	from .blender.curve import Curve
-	from .blender import render
-	from .blender.compositor.compositor import Compositor
-	from .blender import aov
-	from .file.dataset_inputs import Inputs, DebugInputs
-	from . import file
-	from .run.blender_interface import log_event
-	from .blender.world import world
-	from .blender.light import Light
-	from .blender.camera import Camera
-	from . import annotations
-	from .file.tempfiles import cleanup_temp_files as cleanup
-	from .utils import layout
+IS_BLENDER_RUN = building_docs or get_blender_path() == sys.argv[0] # if blender is running this script, or if building docs
 
-	import mathutils
+
+# Blender only imports
+Mesh = conditional_import(IS_BLENDER_RUN, '.blender.mesh', 'Mesh')
+Material = conditional_import(IS_BLENDER_RUN, '.blender.material', 'Material')
+Curve = conditional_import(IS_BLENDER_RUN, '.blender.curve', 'Curve')
+render = conditional_import(IS_BLENDER_RUN, '.blender.render')
+Compositor = conditional_import(IS_BLENDER_RUN, '.blender.compositor.compositor', 'Compositor')
+aov = conditional_import(IS_BLENDER_RUN, '.blender', 'aov')
+Inputs = conditional_import(IS_BLENDER_RUN, '.file.dataset_inputs', 'Inputs')
+DebugInputs = conditional_import(IS_BLENDER_RUN, '.file.dataset_inputs', 'DebugInputs')
+cleanup_temp_files = conditional_import(IS_BLENDER_RUN, '.file.tempfiles', 'cleanup_temp_files')
+log_event = conditional_import(IS_BLENDER_RUN, '.run.blender_interface', 'log_event')
+world = conditional_import(IS_BLENDER_RUN, '.blender.world', 'world')
+Light = conditional_import(IS_BLENDER_RUN, '.blender.light', 'Light')
+Camera = conditional_import(IS_BLENDER_RUN, '.blender.camera', 'Camera')
+annotations = conditional_import(IS_BLENDER_RUN, '.annotations')
+layout = conditional_import(IS_BLENDER_RUN, '.utils.layout')
+mathutils = conditional_import(IS_BLENDER_RUN, 'mathutils')
+bpy = conditional_import(IS_BLENDER_RUN, 'bpy')
+
+# Vanilla only imports
+execute_jobs = conditional_import(not IS_BLENDER_RUN, '.run.run', 'execute_jobs')
+install_module = conditional_import(not IS_BLENDER_RUN, '.utils.blender_setup.check_blender_install', 'install_module')
+
+# Global imports
+from . import file
+
+
+if IS_BLENDER_RUN:
+	from bpy import *  # import everything from bpy
 
 	# set render engine to cycles
 	render.set_engine('CYCLES')
@@ -53,8 +66,4 @@ if building_docs or get_blender_path() == sys.argv[0]:  # if blender is running 
 	bpy.data.objects['Light'].select_set(True)
 	bpy.ops.object.delete()
 
-else:
-	# Imports for non blender
-	from .run.run import execute_jobs
-	from .utils.blender_setup.check_blender_install import install_module
-	from . import file
+
