@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blendersynth.run &mdash; BlenderSynth 2023 documentation</title>
+  <title>blendersynth.run.import_handling &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="blendersynth.run.blender_interface" href="blendersynth.run.blender_interface.html" />
-    <link rel="prev" title="blendersynth.file.tempfiles" href="blendersynth.file.tempfiles.html" /> 
+    <link rel="next" title="blendersynth.run.run" href="blendersynth.run.run.html" />
+    <link rel="prev" title="blendersynth.run.blender_threading" href="blendersynth.run.blender_threading.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -59,7 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
 </ul>
 
@@ -77,9 +77,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></li>
+          <li class="breadcrumb-item"><a href="blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.import_handling</span></code></li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/blendersynth.run.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/blendersynth.run.import_handling.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -87,25 +88,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-run">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code><a class="headerlink" href="#blendersynth-run" title="Permalink to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.run.blender_interface.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.blender_interface</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.run.blender_threading.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.blender_threading</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.run.import_handling.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.import_handling</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.run.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.run</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.run.run_this_script.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.run_this_script</span></code></a></li>
+  <section id="module-blendersynth.run.import_handling">
+<span id="blendersynth-run-import-handling"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.import_handling</span></code><a class="headerlink" href="#module-blendersynth.run.import_handling" title="Permalink to this heading"></a></h1>
+<p>For calling errors if a user tries run certain operations in the wrong python environment</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.run.import_handling.conditional_import">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.run.import_handling.</span></span><span class="sig-name descname"><span class="pre">conditional_import</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">condition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/import_handling.html#conditional_import"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.import_handling.conditional_import" title="Permalink to this definition"></a></dt>
+<dd><p>Imports a module if condition,
+otherwise returns IllegalImport.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>condition</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, import the module</p></li>
+<li><p><strong>src</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The module to import</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The name of the module to import. If None, the last part of src is used.</p></li>
 </ul>
-</div>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">IllegalImport</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The imported module, or IllegalImport if condition is False</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="blendersynth.file.tempfiles.html" class="btn btn-neutral float-left" title="blendersynth.file.tempfiles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="blendersynth.run.blender_interface.html" class="btn btn-neutral float-right" title="blendersynth.run.blender_interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="blendersynth.run.blender_threading.html" class="btn btn-neutral float-left" title="blendersynth.run.blender_threading" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="blendersynth.run.run.html" class="btn btn-neutral float-right" title="blendersynth.run.run" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

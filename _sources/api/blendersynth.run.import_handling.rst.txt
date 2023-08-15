@@ -1,0 +1,7 @@
+:code:`blendersynth.run.import_handling`
+===========================================
+
+
+.. automodule:: blendersynth.run.import_handling
+	:members:
+	:inherited-members:
