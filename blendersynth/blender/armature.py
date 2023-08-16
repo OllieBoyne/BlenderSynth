@@ -1,11 +1,13 @@
 """Armature object for managing pose"""
 
 from .bsyn_object import BsynObject, animatable_property
+from .other_objects import Empty
 from .utils import SelectObjects, SetMode
 from typing import Union
 from ..utils import types
 import bpy
 import mathutils
+
 
 
 class PoseBone(BsynObject):
@@ -63,16 +65,18 @@ class PoseBone(BsynObject):
 
 		self.obj.scale = scale
 
-
-class IKConstraint(BsynObject):
-	"""A combination of a PoseBone, object, a Constraint object,
-	and an Empty which acts as the target for the IK constraint."""
-
-	def __init__(self, pose_bone: PoseBone, constraint: bpy.types.Constraint, empty: bpy.types.Object):
+class BoneConstraint(BsynObject):
+	"""Generic pose bone constraint object"""
+	def __init__(self, pose_bone: PoseBone, constraint: bpy.types.Constraint, empty: Empty):
 		self.pose_bone = pose_bone
 		self.constraint = constraint
 		self.empty = empty
-		self._object = empty
+		self._object = empty.obj
+
+
+	@property
+	def name(self):
+		return f"{self.constraint.name}: {self.pose_bone.name} -> {self.empty.name}"
 
 	@property
 	def bone(self):
@@ -81,19 +85,21 @@ class IKConstraint(BsynObject):
 	def remove(self):
 		"""Remove this constraint."""
 		self.bone.constraints.remove(self.constraint)
-		bpy.data.objects.remove(self.empty)
+		if self.empty is not None:
+			bpy.data.objects.remove(self.empty)
 
 	@property
 	def armature(self):
 		return self.bone.id_data
-
 
 class Armature(BsynObject):
 	"""This class manages armatures - a collection of posable bones."""
 
 	def __init__(self, object: bpy.types.Armature):
 		self._object = object
-		self.ik_constraints = []  # for IK constraints
+		self.ik_constraints = {}  # for IK constraints
+		self.constraints = {} # for generic constraints
+		self.pose_bones = {n: PoseBone(b) for n, b in object.pose.bones.items()}
 
 	@property
 	def name(self) -> str:
@@ -115,14 +121,10 @@ class Armature(BsynObject):
 			return bone
 
 		if isinstance(bone, bpy.types.PoseBone):
-			return PoseBone(bone)
+			return self.pose_bones[bone.name]
 
 		if isinstance(bone, str):
-			try:
-				bone = self.pose.bones[bone]
-			except KeyError:
-				raise KeyError(f"Bone `{bone}` not found in armature `{self.name}`")
-			return PoseBone(bone)
+			return self.pose_bones[bone]
 
 		raise TypeError(f"Expected bone to be PoseBone, str, or PoseBone, got {type(bone)}")
 
@@ -173,37 +175,44 @@ class Armature(BsynObject):
 					if scale:
 						bone.scale = (1, 1, 1)
 
-				for constraint in [*self.ik_constraints]:
-					if constraint.bone.name == bone.name:
-						constraint.remove()
-						self.ik_constraints.remove(constraint)
+				for bone_name in self.ik_constraints.keys():
+					if bone_name == bone.name:
+						self.ik_constraints[bone_name].remove()  # remove the constraint
+						self.ik_constraints.pop(bone_name)  # remove reference to it
 
-	def add_ik_constraint(self, bone: Union[str, PoseBone], position: types.VectorLikeAlias,
-						  chain_count: int = 0) -> IKConstraint:
+				for cname, constraint in self.constraints.items():
+					if constraint.pose_bone.name == bone.name:
+						self.constraints[cname].remove()
+						self.constraints.pop(cname)
+
+
+	def add_constraint(self, bone: Union[str, PoseBone], constraint_name: str, target:Empty=None, **kwargs) -> BoneConstraint:
 		"""
-		Translates the given pose bone to a specific position using IK.
+		Applies a generic bone constraint. Returns BoneConstraint object
 
-		:param bone: The pose bone object, or name of bone, to move.
-		:param position: Target position to be placed at.
-		:param chain_count: Number of bones to affect in the chain. 0 affects all bones in the chain.
-		:return: IKConstraint object, which can be used to modify or remove the IK constraint.
+		:param bone: Bone to apply constraint to
+		:param constraint_name:
+		:param target: Empty target. If none given, will create one.
+
+		Any other constraint specific keyword arguments given as well will be fed into the new constraint
 		"""
 
 		bone = self.get_bone(bone)
 
-		# Create an empty to serve as the IK target
-		bpy.ops.object.empty_add(location=position)
-		empty = bpy.context.object
-		empty.name = "IK_Target_For_" + bone.name
-
 		# Add IK constraint to the specified bone
-		constraint = bone.constraints.new('IK')
-		constraint.target = empty
-		constraint.chain_count = chain_count
+		constraint = bone.constraints.new(constraint_name)
+		for k, v in kwargs.items():
+			setattr(constraint, k, v)
+
+		# Create an empty to serve as the IK target
+		if target is None:
+			target = Empty(name="Target_For_" + bone.name)
+
+		constraint.target = target.object
 
 		bpy.context.view_layer.update()
 
-		ik_constraint = IKConstraint(bone, constraint, empty)
-		self.ik_constraints.append(ik_constraint)
+		constraint = BoneConstraint(bone, constraint, target)
+		self.constraints[constraint.name] = constraint
 
-		return ik_constraint
+		return constraint

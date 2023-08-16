@@ -27,6 +27,7 @@ IS_BLENDER_RUN = building_docs or get_blender_path() == sys.argv[0] # if blender
 Mesh = conditional_import(IS_BLENDER_RUN, '.blender.mesh', 'Mesh')
 Material = conditional_import(IS_BLENDER_RUN, '.blender.material', 'Material')
 Curve = conditional_import(IS_BLENDER_RUN, '.blender.curve', 'Curve')
+Empty = conditional_import(IS_BLENDER_RUN, '.blender.other_objects', 'Empty')
 render = conditional_import(IS_BLENDER_RUN, '.blender.render')
 Compositor = conditional_import(IS_BLENDER_RUN, '.blender.compositor.compositor', 'Compositor')
 aov = conditional_import(IS_BLENDER_RUN, '.blender', 'aov')
@@ -53,17 +54,11 @@ from . import file
 if IS_BLENDER_RUN:
 	from bpy import *  # import everything from bpy
 
-	# set render engine to cycles
-	render.set_engine('CYCLES')
-
-	# common aliases
 	def load_blend(src):
 		return bpy.ops.wm.open_mainfile(filepath=src)
 
-	# Clear default cube and light
-	import bpy
-	bpy.data.objects['Cube'].select_set(True)
-	bpy.data.objects['Light'].select_set(True)
-	bpy.ops.object.delete()
+	# set render engine to cycles
+	from .run.pre_ops import on_script_open
+	on_script_open()
 
 

@@ -42,6 +42,10 @@ class BsynObject:
 		self._object.keyframe_insert(*args, **kwargs)
 
 	@property
+	def name(self):
+		return self.obj.name
+
+	@property
 	def _all_objects(self):
 		"""List of all objects associated with this object."""
 		return [self.object]
