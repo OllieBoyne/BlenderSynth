@@ -3,7 +3,7 @@
 import os
 import blendersynth as bsyn
 
-bsyn.run_this_script(debug=False)
+bsyn.run_this_script(debug=True)
 
 # Load object from .fbx file (complete with rigging)
 obj = bsyn.Mesh.from_fbx('../resources/objects/bendy_rod/bendy_rod.fbx')
@@ -20,7 +20,7 @@ bone_location = bone.tail_location # tail end of the bone
 
 # here we add the constraint. We constrain the bone to `bone_location`
 # We set chain_count = 4, so that the 5th bone from the end (the root bone) doesn't move
-constraint = armature.add_ik_constraint(bone, position=bone_location, chain_count=4)
+constraint = armature.add_constraint(bone, 'IK', chain_count=4)
 
 constraint.set_location(bone_location, frame=0)
 constraint.set_location(bone_location + bsyn.mathutils.Vector([2, 2, 0]), frame=num_frames//2)

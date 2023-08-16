@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blendersynth.blender &mdash; BlenderSynth 2023 documentation</title>
+  <title>blendersynth.run.pre_ops &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="blendersynth.blender.aov" href="blendersynth.blender.aov.html" />
-    <link rel="prev" title="blendersynth.annotations.utils" href="blendersynth.annotations.utils.html" /> 
+    <link rel="next" title="blendersynth.run.run" href="blendersynth.run.run.html" />
+    <link rel="prev" title="blendersynth.run.import_handling" href="blendersynth.run.import_handling.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,9 +57,9 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
 </ul>
 
@@ -77,9 +77,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></li>
+          <li class="breadcrumb-item"><a href="blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.pre_ops</span></code></li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/blendersynth.blender.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/blendersynth.run.pre_ops.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -87,33 +88,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-blender">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code><a class="headerlink" href="#blendersynth-blender" title="Permalink to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.aov.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.aov</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.armature.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.armature</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.bsyn_object.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.bsyn_object</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.camera.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.camera</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.compositor.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.compositor</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.curve.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.curve</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.light.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.light</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.material.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.material</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.mesh.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.mesh</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.other_objects.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.other_objects</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.render.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.render</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.utils</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.world.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.world</span></code></a></li>
-</ul>
-</div>
+  <section id="module-blendersynth.run.pre_ops">
+<span id="blendersynth-run-pre-ops"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.pre_ops</span></code><a class="headerlink" href="#module-blendersynth.run.pre_ops" title="Permalink to this heading"></a></h1>
+<p>Some preferential blender operations to run (e.g. setup) that will be run before debug mode is entered</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="blendersynth.annotations.utils.html" class="btn btn-neutral float-left" title="blendersynth.annotations.utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="blendersynth.blender.aov.html" class="btn btn-neutral float-right" title="blendersynth.blender.aov" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="blendersynth.run.import_handling.html" class="btn btn-neutral float-left" title="blendersynth.run.import_handling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="blendersynth.run.run.html" class="btn btn-neutral float-right" title="blendersynth.run.run" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

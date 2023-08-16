@@ -14,6 +14,7 @@
 	blendersynth.blender.light
 	blendersynth.blender.material
 	blendersynth.blender.mesh
+	blendersynth.blender.other_objects
 	blendersynth.blender.render
 	blendersynth.blender.utils
 	blendersynth.blender.world

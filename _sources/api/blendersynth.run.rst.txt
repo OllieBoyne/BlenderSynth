@@ -8,5 +8,6 @@
 	blendersynth.run.blender_interface
 	blendersynth.run.blender_threading
 	blendersynth.run.import_handling
+	blendersynth.run.pre_ops
 	blendersynth.run.run
 	blendersynth.run.run_this_script

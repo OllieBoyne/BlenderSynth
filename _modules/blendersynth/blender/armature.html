@@ -88,11 +88,13 @@
 <span></span><span class="sd">&quot;&quot;&quot;Armature object for managing pose&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span><span class="p">,</span> <span class="n">animatable_property</span>
+<span class="kn">from</span> <span class="nn">.other_objects</span> <span class="kn">import</span> <span class="n">Empty</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">SelectObjects</span><span class="p">,</span> <span class="n">SetMode</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">types</span>
 <span class="kn">import</span> <span class="nn">bpy</span>
 <span class="kn">import</span> <span class="nn">mathutils</span>
+
 
 
 <div class="viewcode-block" id="PoseBone"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone">[docs]</a><span class="k">class</span> <span class="nc">PoseBone</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
@@ -150,37 +152,41 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span></div>
 
-
-<div class="viewcode-block" id="IKConstraint"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint">[docs]</a><span class="k">class</span> <span class="nc">IKConstraint</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;A combination of a PoseBone, object, a Constraint object,</span>
-<span class="sd">	and an Empty which acts as the target for the IK constraint.&quot;&quot;&quot;</span>
-
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pose_bone</span><span class="p">:</span> <span class="n">PoseBone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Constraint</span><span class="p">,</span> <span class="n">empty</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">):</span>
+<div class="viewcode-block" id="BoneConstraint"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.BoneConstraint">[docs]</a><span class="k">class</span> <span class="nc">BoneConstraint</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Generic pose bone constraint object&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pose_bone</span><span class="p">:</span> <span class="n">PoseBone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Constraint</span><span class="p">,</span> <span class="n">empty</span><span class="p">:</span> <span class="n">Empty</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span> <span class="o">=</span> <span class="n">pose_bone</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">constraint</span> <span class="o">=</span> <span class="n">constraint</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">empty</span> <span class="o">=</span> <span class="n">empty</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">empty</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">empty</span><span class="o">.</span><span class="n">obj</span>
+
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constraint</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">bone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span>
 
-<div class="viewcode-block" id="IKConstraint.remove"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.IKConstraint.remove">[docs]</a>	<span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BoneConstraint.remove"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.BoneConstraint.remove">[docs]</a>	<span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Remove this constraint.&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">bone</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">constraint</span><span class="p">)</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="p">)</span></div>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">empty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="p">)</span></div>
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">armature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bone</span><span class="o">.</span><span class="n">id_data</span></div>
-
 
 <div class="viewcode-block" id="Armature"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature">[docs]</a><span class="k">class</span> <span class="nc">Armature</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;This class manages armatures - a collection of posable bones.&quot;&quot;&quot;</span>
 
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Armature</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="nb">object</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># for IK constraints</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># for IK constraints</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># for generic constraints</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pose_bones</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">PoseBone</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">object</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">bones</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -202,14 +208,10 @@
 			<span class="k">return</span> <span class="n">bone</span>
 
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">):</span>
-			<span class="k">return</span> <span class="n">PoseBone</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose_bones</span><span class="p">[</span><span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
 
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-			<span class="k">try</span><span class="p">:</span>
-				<span class="n">bone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">bones</span><span class="p">[</span><span class="n">bone</span><span class="p">]</span>
-			<span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-				<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bone `</span><span class="si">{</span><span class="n">bone</span><span class="si">}</span><span class="s2">` not found in armature `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
-			<span class="k">return</span> <span class="n">PoseBone</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose_bones</span><span class="p">[</span><span class="n">bone</span><span class="p">]</span>
 
 		<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected bone to be PoseBone, str, or PoseBone, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
@@ -260,40 +262,47 @@
 					<span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
 						<span class="n">bone</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-				<span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="p">]:</span>
-					<span class="k">if</span> <span class="n">constraint</span><span class="o">.</span><span class="n">bone</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-						<span class="n">constraint</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
-						<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span></div>
+				<span class="k">for</span> <span class="n">bone_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+					<span class="k">if</span> <span class="n">bone_name</span> <span class="o">==</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="p">[</span><span class="n">bone_name</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>  <span class="c1"># remove the constraint</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">bone_name</span><span class="p">)</span>  <span class="c1"># remove reference to it</span>
 
-<div class="viewcode-block" id="Armature.add_ik_constraint"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.add_ik_constraint">[docs]</a>	<span class="k">def</span> <span class="nf">add_ik_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">],</span> <span class="n">position</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="p">,</span>
-						  <span class="n">chain_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IKConstraint</span><span class="p">:</span>
+				<span class="k">for</span> <span class="n">cname</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+					<span class="k">if</span> <span class="n">constraint</span><span class="o">.</span><span class="n">pose_bone</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">cname</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Armature.add_constraint"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.add_constraint">[docs]</a>	<span class="k">def</span> <span class="nf">add_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">],</span> <span class="n">constraint_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span><span class="n">Empty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoneConstraint</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Translates the given pose bone to a specific position using IK.</span>
+<span class="sd">		Applies a generic bone constraint. Returns BoneConstraint object</span>
 
-<span class="sd">		:param bone: The pose bone object, or name of bone, to move.</span>
-<span class="sd">		:param position: Target position to be placed at.</span>
-<span class="sd">		:param chain_count: Number of bones to affect in the chain. 0 affects all bones in the chain.</span>
-<span class="sd">		:return: IKConstraint object, which can be used to modify or remove the IK constraint.</span>
+<span class="sd">		:param bone: Bone to apply constraint to</span>
+<span class="sd">		:param constraint_name:</span>
+<span class="sd">		:param target: Empty target. If none given, will create one.</span>
+
+<span class="sd">		Any other constraint specific keyword arguments given as well will be fed into the new constraint</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 
 		<span class="n">bone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bone</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span>
 
-		<span class="c1"># Create an empty to serve as the IK target</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">empty_add</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">position</span><span class="p">)</span>
-		<span class="n">empty</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span>
-		<span class="n">empty</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;IK_Target_For_&quot;</span> <span class="o">+</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span>
-
 		<span class="c1"># Add IK constraint to the specified bone</span>
-		<span class="n">constraint</span> <span class="o">=</span> <span class="n">bone</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;IK&#39;</span><span class="p">)</span>
-		<span class="n">constraint</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">empty</span>
-		<span class="n">constraint</span><span class="o">.</span><span class="n">chain_count</span> <span class="o">=</span> <span class="n">chain_count</span>
+		<span class="n">constraint</span> <span class="o">=</span> <span class="n">bone</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">constraint_name</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+			<span class="nb">setattr</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+		<span class="c1"># Create an empty to serve as the IK target</span>
+		<span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">target</span> <span class="o">=</span> <span class="n">Empty</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Target_For_&quot;</span> <span class="o">+</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+		<span class="n">constraint</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">object</span>
 
 		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-		<span class="n">ik_constraint</span> <span class="o">=</span> <span class="n">IKConstraint</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">,</span> <span class="n">empty</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ik_constraint</span><span class="p">)</span>
+		<span class="n">constraint</span> <span class="o">=</span> <span class="n">BoneConstraint</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="n">constraint</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">constraint</span>
 
-		<span class="k">return</span> <span class="n">ik_constraint</span></div></div>
+		<span class="k">return</span> <span class="n">constraint</span></div></div>
 </pre></div>
 
            </div>

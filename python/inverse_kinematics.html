@@ -96,7 +96,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
 
-<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Load object from .fbx file (complete with rigging)</span>
 <span class="n">obj</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_fbx</span><span class="p">(</span><span class="s1">&#39;../resources/objects/bendy_rod/bendy_rod.fbx&#39;</span><span class="p">)</span>
@@ -113,7 +113,7 @@
 
 <span class="c1"># here we add the constraint. We constrain the bone to `bone_location`</span>
 <span class="c1"># We set chain_count = 4, so that the 5th bone from the end (the root bone) doesn&#39;t move</span>
-<span class="n">constraint</span> <span class="o">=</span> <span class="n">armature</span><span class="o">.</span><span class="n">add_ik_constraint</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">bone_location</span><span class="p">,</span> <span class="n">chain_count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">constraint</span> <span class="o">=</span> <span class="n">armature</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="s1">&#39;IK&#39;</span><span class="p">,</span> <span class="n">chain_count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
 <span class="n">constraint</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">bone_location</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">constraint</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">bone_location</span> <span class="o">+</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">frame</span><span class="o">=</span><span class="n">num_frames</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>

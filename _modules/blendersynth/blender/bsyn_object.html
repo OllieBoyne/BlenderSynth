@@ -129,6 +129,10 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span>
+
+	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">_all_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;List of all objects associated with this object.&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">]</span>
