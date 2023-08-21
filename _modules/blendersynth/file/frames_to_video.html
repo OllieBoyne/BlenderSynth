@@ -12,9 +12,9 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../../../_static/documentation_options.js?v=a4664895"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -97,7 +97,9 @@
 <span class="n">valid_frames_exts</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;bmp&#39;</span><span class="p">,</span> <span class="s1">&#39;tiff&#39;</span><span class="p">,</span> <span class="s1">&#39;tif&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="get_frames_from_directory"><a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.get_frames_from_directory">[docs]</a><span class="k">def</span> <span class="nf">get_frames_from_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">exts</span><span class="o">=</span><span class="n">valid_frames_exts</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="get_frames_from_directory">
+<a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.get_frames_from_directory">[docs]</a>
+<span class="k">def</span> <span class="nf">get_frames_from_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">exts</span><span class="o">=</span><span class="n">valid_frames_exts</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Return a list of all paths to files in directory which have a valid frame extension&quot;&quot;&quot;</span>
 	<span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span> <span class="ow">in</span> <span class="n">exts</span><span class="p">]</span>
 	<span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
@@ -105,7 +107,10 @@
 	<span class="k">return</span> <span class="n">files</span></div>
 
 
-<div class="viewcode-block" id="ffmpeg_input_from_files"><a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.ffmpeg_input_from_files">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_input_from_files</span><span class="p">(</span><span class="n">file_list</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ffmpeg_input_from_files">
+<a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.ffmpeg_input_from_files">[docs]</a>
+<span class="k">def</span> <span class="nf">ffmpeg_input_from_files</span><span class="p">(</span><span class="n">file_list</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Return ffmpeg input from list of files&quot;&quot;&quot;</span>
 	<span class="n">file_list_loc</span> <span class="o">=</span> <span class="n">create_temp_file</span><span class="p">(</span><span class="n">ext</span><span class="o">=</span><span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
 
@@ -117,7 +122,10 @@
 	<span class="k">return</span> <span class="n">ffmpeg</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="n">file_list_loc</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">frame_rate</span><span class="p">),</span> <span class="n">f</span><span class="o">=</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="frames_to_video"><a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.frames_to_video">[docs]</a><span class="k">def</span> <span class="nf">frames_to_video</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">frame_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame_fmt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+<div class="viewcode-block" id="frames_to_video">
+<a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.frames_to_video">[docs]</a>
+<span class="k">def</span> <span class="nf">frames_to_video</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">frame_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame_fmt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 					<span class="n">frame_rate</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">output_loc</span><span class="o">=</span><span class="s1">&#39;./output.mp4&#39;</span><span class="p">,</span> <span class="n">output_fmt</span><span class="o">=</span><span class="s1">&#39;mp4&#39;</span><span class="p">,</span> <span class="n">pix_fmt</span><span class="o">=</span><span class="s1">&#39;yuv420p&#39;</span><span class="p">,</span>
 					<span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">loglevel</span><span class="o">=</span><span class="s1">&#39;error&#39;</span><span class="p">,</span>
 					<span class="n">delete_images</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -176,6 +184,7 @@
 			<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
 	<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Video created at &#39;</span> <span class="o">+</span> <span class="n">output_loc</span><span class="p">)</span></div>
+
 </pre></div>
 
            </div>

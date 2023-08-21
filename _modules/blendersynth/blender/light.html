@@ -12,9 +12,9 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../../../_static/documentation_options.js?v=a4664895"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -95,7 +95,9 @@
 <span class="n">LIGHT_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POINT&#39;</span><span class="p">,</span> <span class="s1">&#39;SUN&#39;</span><span class="p">,</span> <span class="s1">&#39;SPOT&#39;</span><span class="p">,</span> <span class="s1">&#39;AREA&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="Light"><a class="viewcode-back" href="../../../api/blendersynth.blender.light.html#blendersynth.blender.light.Light">[docs]</a><span class="k">class</span> <span class="nc">Light</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
+<div class="viewcode-block" id="Light">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.light.html#blendersynth.blender.light.Light">[docs]</a>
+<span class="k">class</span> <span class="nc">Light</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Light object, for managing lights in the scene&quot;&quot;&quot;</span>
 	<span class="n">light_types</span> <span class="o">=</span> <span class="n">LIGHT_TYPES</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;List of available light types&quot;&quot;&quot;</span>
@@ -103,7 +105,9 @@
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">light</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">light</span>
 
-<div class="viewcode-block" id="Light.from_scene"><a class="viewcode-back" href="../../../api/blendersynth.blender.light.html#blendersynth.blender.light.Light.from_scene">[docs]</a>	<span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Light.from_scene">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.light.html#blendersynth.blender.light.Light.from_scene">[docs]</a>
+	<span class="nd">@classmethod</span>
 	<span class="k">def</span> <span class="nf">from_scene</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Create object from scene key</span>
 
@@ -113,7 +117,10 @@
 		<span class="n">obj</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 		<span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Light.create"><a class="viewcode-back" href="../../../api/blendersynth.blender.light.html#blendersynth.blender.light.Light.create">[docs]</a>	<span class="nd">@classmethod</span>
+
+<div class="viewcode-block" id="Light.create">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.light.html#blendersynth.blender.light.Light.create">[docs]</a>
+	<span class="nd">@classmethod</span>
 	<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">light_type</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;POINT&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;Light&#39;</span><span class="p">,</span> <span class="n">intensity</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
 			   <span class="n">color</span><span class="p">:</span><span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">location</span><span class="p">:</span><span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Create a new Light object</span>
@@ -138,6 +145,7 @@
 		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">light</span><span class="p">)</span>
 
 		<span class="k">return</span> <span class="n">Light</span><span class="p">(</span><span class="n">light</span><span class="p">)</span></div>
+
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -173,6 +181,7 @@
 <span class="sd">		:param value: RGB[A] color</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">value</span></div>
+
 </pre></div>
 
            </div>

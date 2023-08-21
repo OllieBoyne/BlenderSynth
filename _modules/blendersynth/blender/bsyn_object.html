@@ -12,9 +12,9 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../../../_static/documentation_options.js?v=a4664895"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -94,7 +94,9 @@
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">types</span>
 
 
-<div class="viewcode-block" id="BsynObject"><a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject">[docs]</a><span class="k">class</span> <span class="nc">BsynObject</span><span class="p">:</span>
+<div class="viewcode-block" id="BsynObject">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject">[docs]</a>
+<span class="k">class</span> <span class="nc">BsynObject</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Generic class for BlenderSynth objects.</span>
 
 <span class="sd">	Assigned an .obj (eg bpy.types.Mesh for a Mesh) which is the main Blender object it represents.</span>
@@ -115,6 +117,16 @@
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">data</span>
+
+<div class="viewcode-block" id="BsynObject.remove">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.remove">[docs]</a>
+	<span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Delete .obj from bpy.data if it exists&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">ReferenceError</span><span class="p">:</span>
+			<span class="k">pass</span></div>
+
 
 	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="c1">#   ---&gt; not currently needed, may be needed in the future</span>
@@ -211,24 +223,33 @@
 		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
 			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">resize_fac</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BsynObject.translate"><a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.translate">[docs]</a>	<span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">translation</span><span class="p">):</span>
+<div class="viewcode-block" id="BsynObject.translate">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.translate">[docs]</a>
+	<span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">translation</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Translate object&quot;&quot;&quot;</span>
 		<span class="n">translation</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">translation</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">+</span> <span class="n">translation</span></div>
 
-<div class="viewcode-block" id="BsynObject.rotate_by"><a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.rotate_by">[docs]</a>	<span class="k">def</span> <span class="nf">rotate_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">):</span>
+
+<div class="viewcode-block" id="BsynObject.rotate_by">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.rotate_by">[docs]</a>
+	<span class="k">def</span> <span class="nf">rotate_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Add a rotation to the object. Must be in XYZ order, euler angles, radians.&quot;&quot;&quot;</span>
 		<span class="n">rotation</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 		<span class="n">new_rotation</span> <span class="o">=</span> <span class="n">_euler_add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span><span class="p">,</span> <span class="n">Euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="s1">&#39;XYZ&#39;</span><span class="p">))</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">new_rotation</span></div>
 
-<div class="viewcode-block" id="BsynObject.scale_by"><a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.scale_by">[docs]</a>	<span class="k">def</span> <span class="nf">scale_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+
+<div class="viewcode-block" id="BsynObject.scale_by">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.scale_by">[docs]</a>
+	<span class="k">def</span> <span class="nf">scale_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Scale object&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
 			<span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 
 		<span class="n">scale</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">*=</span> <span class="n">scale</span></div>
+
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">matrix_world</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -243,7 +264,9 @@
 		<span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 		<span class="k">return</span> <span class="n">mat</span>
 
-<div class="viewcode-block" id="BsynObject.track_to"><a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.track_to">[docs]</a>	<span class="k">def</span> <span class="nf">track_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;BsynObject&#39;</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]):</span>
+<div class="viewcode-block" id="BsynObject.track_to">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.track_to">[docs]</a>
+	<span class="k">def</span> <span class="nf">track_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;BsynObject&#39;</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Track to object.</span>
 
 <span class="sd">		:param obj: BsynObject or Blender Object to track to</span>
@@ -257,12 +280,18 @@
 		<span class="n">constraint</span><span class="o">.</span><span class="n">track_axis</span> <span class="o">=</span> <span class="s1">&#39;TRACK_NEGATIVE_Z&#39;</span>
 		<span class="n">constraint</span><span class="o">.</span><span class="n">up_axis</span> <span class="o">=</span> <span class="s1">&#39;UP_Y&#39;</span></div>
 
-<div class="viewcode-block" id="BsynObject.untrack"><a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.untrack">[docs]</a>	<span class="k">def</span> <span class="nf">untrack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="BsynObject.untrack">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.untrack">[docs]</a>
+	<span class="k">def</span> <span class="nf">untrack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Remove track to constraint from object&quot;&quot;&quot;</span>
 		<span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Track To&#39;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BsynObject.follow_path"><a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.follow_path">[docs]</a>	<span class="k">def</span> <span class="nf">follow_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="s1">&#39;Curve&#39;</span><span class="p">,</span> <span class="n">zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+
+<div class="viewcode-block" id="BsynObject.follow_path">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.follow_path">[docs]</a>
+	<span class="k">def</span> <span class="nf">follow_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="s1">&#39;Curve&#39;</span><span class="p">,</span> <span class="n">zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 					<span class="n">animate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="n">fracs</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Follow path, with optional animation setting.</span>
 
@@ -291,7 +320,10 @@
 		<span class="k">if</span> <span class="n">track_constraint_idx</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">track_constraint_idx</span><span class="p">,</span> <span class="n">track_constraint_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BsynObject.animate_path"><a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.animate_path">[docs]</a>	<span class="k">def</span> <span class="nf">animate_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="n">fracs</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+
+<div class="viewcode-block" id="BsynObject.animate_path">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.animate_path">[docs]</a>
+	<span class="k">def</span> <span class="nf">animate_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="n">fracs</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Animate object along path.</span>
 
 <span class="sd">		:param frames: tuple of keyframes to animate at - length N</span>
@@ -303,7 +335,10 @@
 		<span class="k">for</span> <span class="n">frame</span><span class="p">,</span> <span class="n">frac</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">fracs</span><span class="p">):</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">path_keyframe</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">frac</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BsynObject.path_keyframe"><a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.path_keyframe">[docs]</a>	<span class="k">def</span> <span class="nf">path_keyframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+
+<div class="viewcode-block" id="BsynObject.path_keyframe">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.path_keyframe">[docs]</a>
+	<span class="k">def</span> <span class="nf">path_keyframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set keyframe for camera path offset</span>
 
 <span class="sd">		:param frame: Frame number</span>
@@ -314,7 +349,9 @@
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Object `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="si">}</span><span class="s2">` does not have a &#39;Follow Path&#39; constraint&quot;</span><span class="p">)</span>
 
 		<span class="n">constraint</span><span class="o">.</span><span class="n">offset_factor</span> <span class="o">=</span> <span class="n">offset</span>
-		<span class="n">constraint</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;offset_factor&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div></div>
+		<span class="n">constraint</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;offset_factor&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
 
            </div>

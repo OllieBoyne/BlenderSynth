@@ -13,9 +13,9 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../_static/documentation_options.js?v=a4664895"></script>
         <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -88,17 +88,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.file.dataset_inputs">
-<span id="blendersynth-file-dataset-inputs"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.file.dataset_inputs</span></code><a class="headerlink" href="#module-blendersynth.file.dataset_inputs" title="Permalink to this heading"></a></h1>
-<p>When constructing a dataset, the INPUTS object below will
+  <section id="blendersynth-file-dataset-inputs">
+<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.file.dataset_inputs</span></code><a class="headerlink" href="#blendersynth-file-dataset-inputs" title="Link to this heading"></a></h1>
+<p id="module-blendersynth.file.dataset_inputs">When constructing a dataset, the INPUTS object below will
 return an iterable with read’s in sys.argv’s <cite>–jobs</cite> jsons.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.file.dataset_inputs.DebugInputs">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.file.dataset_inputs.</span></span><span class="sig-name descname"><span class="pre">DebugInputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/file/dataset_inputs.html#DebugInputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.file.dataset_inputs.DebugInputs" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.file.dataset_inputs.</span></span><span class="sig-name descname"><span class="pre">DebugInputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/file/dataset_inputs.html#DebugInputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.file.dataset_inputs.DebugInputs" title="Link to this definition"></a></dt>
 <dd><p>Class to emulate the Inputs class, for a single JSON for testing.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blendersynth.file.dataset_inputs.DebugInputs.jsons">
-<span class="sig-name descname"><span class="pre">jsons</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#blendersynth.file.dataset_inputs.DebugInputs.jsons" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">jsons</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#blendersynth.file.dataset_inputs.DebugInputs.jsons" title="Link to this definition"></a></dt>
 <dd><p>List of JSON files passed in via <cite>–jobs</cite> in sys.argv.</p>
 </dd></dl>
 
@@ -106,12 +106,12 @@ return an iterable with read’s in sys.argv’s <cite>–jobs</cite> jsons.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.file.dataset_inputs.Inputs">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.file.dataset_inputs.</span></span><span class="sig-name descname"><span class="pre">Inputs</span></span><a class="reference internal" href="../_modules/blendersynth/file/dataset_inputs.html#Inputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.file.dataset_inputs.Inputs" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.file.dataset_inputs.</span></span><span class="sig-name descname"><span class="pre">Inputs</span></span><a class="reference internal" href="../_modules/blendersynth/file/dataset_inputs.html#Inputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.file.dataset_inputs.Inputs" title="Link to this definition"></a></dt>
 <dd><p>This class is used to iterate over the JSONs passed in via <cite>–jobs</cite> in sys.argv.</p>
 <p>Will also convert all kwargs to attributes for easy access</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blendersynth.file.dataset_inputs.Inputs.jsons">
-<span class="sig-name descname"><span class="pre">jsons</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#blendersynth.file.dataset_inputs.Inputs.jsons" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">jsons</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#blendersynth.file.dataset_inputs.Inputs.jsons" title="Link to this definition"></a></dt>
 <dd><p>List of JSON files passed in via <cite>–jobs</cite> in sys.argv.</p>
 </dd></dl>
 

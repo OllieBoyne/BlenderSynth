@@ -12,9 +12,9 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../../../_static/documentation_options.js?v=a4664895"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -97,7 +97,9 @@
 
 
 
-<div class="viewcode-block" id="PoseBone"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone">[docs]</a><span class="k">class</span> <span class="nc">PoseBone</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
+<div class="viewcode-block" id="PoseBone">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone">[docs]</a>
+<span class="k">class</span> <span class="nc">PoseBone</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="nb">object</span>
 
@@ -152,7 +154,10 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span></div>
 
-<div class="viewcode-block" id="BoneConstraint"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.BoneConstraint">[docs]</a><span class="k">class</span> <span class="nc">BoneConstraint</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
+
+<div class="viewcode-block" id="BoneConstraint">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.BoneConstraint">[docs]</a>
+<span class="k">class</span> <span class="nc">BoneConstraint</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Generic pose bone constraint object&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pose_bone</span><span class="p">:</span> <span class="n">PoseBone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Constraint</span><span class="p">,</span> <span class="n">empty</span><span class="p">:</span> <span class="n">Empty</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span> <span class="o">=</span> <span class="n">pose_bone</span>
@@ -169,17 +174,23 @@
 	<span class="k">def</span> <span class="nf">bone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span>
 
-<div class="viewcode-block" id="BoneConstraint.remove"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.BoneConstraint.remove">[docs]</a>	<span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BoneConstraint.remove">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.BoneConstraint.remove">[docs]</a>
+	<span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Remove this constraint.&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">bone</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">constraint</span><span class="p">)</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">empty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="p">)</span></div>
+			<span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
+
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">armature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bone</span><span class="o">.</span><span class="n">id_data</span></div>
 
-<div class="viewcode-block" id="Armature"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature">[docs]</a><span class="k">class</span> <span class="nc">Armature</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Armature">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature">[docs]</a>
+<span class="k">class</span> <span class="nc">Armature</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;This class manages armatures - a collection of posable bones.&quot;&quot;&quot;</span>
 
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Armature</span><span class="p">):</span>
@@ -196,7 +207,9 @@
 	<span class="k">def</span> <span class="nf">pose</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Pose</span><span class="p">:</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">pose</span>
 
-<div class="viewcode-block" id="Armature.get_bone"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.get_bone">[docs]</a>	<span class="k">def</span> <span class="nf">get_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">PoseBone</span><span class="p">:</span>
+<div class="viewcode-block" id="Armature.get_bone">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.get_bone">[docs]</a>
+	<span class="k">def</span> <span class="nf">get_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">PoseBone</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Get bone from armature.</span>
 
@@ -215,7 +228,10 @@
 
 		<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected bone to be PoseBone, str, or PoseBone, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Armature.pose_bone"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.pose_bone">[docs]</a>	<span class="k">def</span> <span class="nf">pose_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">],</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+
+<div class="viewcode-block" id="Armature.pose_bone">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.pose_bone">[docs]</a>
+	<span class="k">def</span> <span class="nf">pose_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">],</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 				  <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 				  <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
@@ -242,7 +258,10 @@
 			<span class="k">if</span> <span class="n">scale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 				<span class="n">bone</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Armature.clear_pose"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.clear_pose">[docs]</a>	<span class="k">def</span> <span class="nf">clear_pose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bones</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Armature.clear_pose">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.clear_pose">[docs]</a>
+	<span class="k">def</span> <span class="nf">clear_pose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bones</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Clear the pose of the armature.</span>
 <span class="sd">		For the target bones, sets poses to zero, and removes any IK constraints.</span>
 
@@ -267,13 +286,17 @@
 						<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="p">[</span><span class="n">bone_name</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>  <span class="c1"># remove the constraint</span>
 						<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">bone_name</span><span class="p">)</span>  <span class="c1"># remove reference to it</span>
 
-				<span class="k">for</span> <span class="n">cname</span><span class="p">,</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+				<span class="k">for</span> <span class="n">cname</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">keys</span><span class="p">()]:</span>
+					<span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span>
 					<span class="k">if</span> <span class="n">constraint</span><span class="o">.</span><span class="n">pose_bone</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
 						<span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
 						<span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">cname</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Armature.add_constraint"><a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.add_constraint">[docs]</a>	<span class="k">def</span> <span class="nf">add_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">],</span> <span class="n">constraint_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span><span class="n">Empty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoneConstraint</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Armature.add_constraint">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.add_constraint">[docs]</a>
+	<span class="k">def</span> <span class="nf">add_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">],</span> <span class="n">constraint_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span><span class="n">Empty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoneConstraint</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Applies a generic bone constraint. Returns BoneConstraint object</span>
 
@@ -302,7 +325,9 @@
 		<span class="n">constraint</span> <span class="o">=</span> <span class="n">BoneConstraint</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="n">constraint</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">constraint</span>
 
-		<span class="k">return</span> <span class="n">constraint</span></div></div>
+		<span class="k">return</span> <span class="n">constraint</span></div>
+</div>
+
 </pre></div>
 
            </div>

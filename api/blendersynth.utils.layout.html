@@ -13,9 +13,9 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../_static/documentation_options.js?v=a4664895"></script>
         <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -88,17 +88,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.utils.layout">
-<span id="blendersynth-utils-layout"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.layout</span></code><a class="headerlink" href="#module-blendersynth.utils.layout" title="Permalink to this heading"></a></h1>
-<dl class="py data">
+  <section id="blendersynth-utils-layout">
+<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.layout</span></code><a class="headerlink" href="#blendersynth-utils-layout" title="Link to this heading"></a></h1>
+<dl class="py data" id="module-blendersynth.utils.layout">
 <dt class="sig sig-object py" id="blendersynth.utils.layout.AREA_TYPES">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.layout.</span></span><span class="sig-name descname"><span class="pre">AREA_TYPES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['VIEW_3D',</span> <span class="pre">'IMAGE_EDITOR',</span> <span class="pre">'NODE_EDITOR',</span> <span class="pre">'SEQUENCE_EDITOR',</span> <span class="pre">'CLIP_EDITOR',</span> <span class="pre">'DOPESHEET_EDITOR',</span> <span class="pre">'GRAPH_EDITOR',</span> <span class="pre">'NLA_EDITOR',</span> <span class="pre">'TEXT_EDITOR',</span> <span class="pre">'CONSOLE',</span> <span class="pre">'INFO',</span> <span class="pre">'TOPBAR',</span> <span class="pre">'STATUSBAR',</span> <span class="pre">'OUTLINER',</span> <span class="pre">'PROPERTIES',</span> <span class="pre">'FILE_BROWSER',</span> <span class="pre">'SPREADSHEET',</span> <span class="pre">'PREFERENCES']</span></em><a class="headerlink" href="#blendersynth.utils.layout.AREA_TYPES" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.layout.</span></span><span class="sig-name descname"><span class="pre">AREA_TYPES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['VIEW_3D',</span> <span class="pre">'IMAGE_EDITOR',</span> <span class="pre">'NODE_EDITOR',</span> <span class="pre">'SEQUENCE_EDITOR',</span> <span class="pre">'CLIP_EDITOR',</span> <span class="pre">'DOPESHEET_EDITOR',</span> <span class="pre">'GRAPH_EDITOR',</span> <span class="pre">'NLA_EDITOR',</span> <span class="pre">'TEXT_EDITOR',</span> <span class="pre">'CONSOLE',</span> <span class="pre">'INFO',</span> <span class="pre">'TOPBAR',</span> <span class="pre">'STATUSBAR',</span> <span class="pre">'OUTLINER',</span> <span class="pre">'PROPERTIES',</span> <span class="pre">'FILE_BROWSER',</span> <span class="pre">'SPREADSHEET',</span> <span class="pre">'PREFERENCES']</span></em><a class="headerlink" href="#blendersynth.utils.layout.AREA_TYPES" title="Link to this definition"></a></dt>
 <dd><p>List of all area types</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="blendersynth.utils.layout.change_area_to">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.layout.</span></span><span class="sig-name descname"><span class="pre">change_area_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">area_type_from</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_type_to</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/layout.html#change_area_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.layout.change_area_to" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.layout.</span></span><span class="sig-name descname"><span class="pre">change_area_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">area_type_from</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_type_to</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/layout.html#change_area_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.layout.change_area_to" title="Link to this definition"></a></dt>
 <dd><p>Change the first area found.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -112,7 +112,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="blendersynth.utils.layout.get_area">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.layout.</span></span><span class="sig-name descname"><span class="pre">get_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">area_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/layout.html#get_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.layout.get_area" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.layout.</span></span><span class="sig-name descname"><span class="pre">get_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">area_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/layout.html#get_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.layout.get_area" title="Link to this definition"></a></dt>
 <dd><p>Return the first found area of the given type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -126,7 +126,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="blendersynth.utils.layout.get_areas">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.layout.</span></span><span class="sig-name descname"><span class="pre">get_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">area_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/layout.html#get_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.layout.get_areas" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.layout.</span></span><span class="sig-name descname"><span class="pre">get_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">area_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/layout.html#get_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.layout.get_areas" title="Link to this definition"></a></dt>
 <dd><p>Yield all areas of the given type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

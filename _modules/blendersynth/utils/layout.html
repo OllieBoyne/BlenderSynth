@@ -12,9 +12,9 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../../../_static/documentation_options.js?v=a4664895"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -92,7 +92,9 @@
 			  <span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="s2">&quot;TOPBAR&quot;</span><span class="p">,</span> <span class="s2">&quot;STATUSBAR&quot;</span><span class="p">,</span> <span class="s2">&quot;OUTLINER&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPERTIES&quot;</span><span class="p">,</span> <span class="s2">&quot;FILE_BROWSER&quot;</span><span class="p">,</span> <span class="s2">&quot;SPREADSHEET&quot;</span><span class="p">,</span> <span class="s2">&quot;PREFERENCES&quot;</span><span class="p">]</span>
 <span class="sd">&quot;&quot;&quot;List of all area types&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="get_areas"><a class="viewcode-back" href="../../../api/blendersynth.utils.layout.html#blendersynth.utils.layout.get_areas">[docs]</a><span class="k">def</span> <span class="nf">get_areas</span><span class="p">(</span><span class="n">area_type</span><span class="p">):</span>
+<div class="viewcode-block" id="get_areas">
+<a class="viewcode-back" href="../../../api/blendersynth.utils.layout.html#blendersynth.utils.layout.get_areas">[docs]</a>
+<span class="k">def</span> <span class="nf">get_areas</span><span class="p">(</span><span class="n">area_type</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Yield all areas of the given type.</span>
 
 <span class="sd">	:param area_type: Area type to get (one of :attr:`~blendersynth.utils.layout.AREA_TYPES`)</span>
@@ -103,7 +105,10 @@
 		<span class="k">if</span> <span class="n">area</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">area_type</span><span class="p">:</span>
 			<span class="k">yield</span> <span class="n">area</span></div>
 
-<div class="viewcode-block" id="get_area"><a class="viewcode-back" href="../../../api/blendersynth.utils.layout.html#blendersynth.utils.layout.get_area">[docs]</a><span class="k">def</span> <span class="nf">get_area</span><span class="p">(</span><span class="n">area_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Area</span><span class="p">:</span>
+
+<div class="viewcode-block" id="get_area">
+<a class="viewcode-back" href="../../../api/blendersynth.utils.layout.html#blendersynth.utils.layout.get_area">[docs]</a>
+<span class="k">def</span> <span class="nf">get_area</span><span class="p">(</span><span class="n">area_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Area</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Return the first found area of the given type.</span>
 
 <span class="sd">	:param area_type: Area type to get (one of :attr:`~blendersynth.utils.layout.AREA_TYPES`)</span>
@@ -111,13 +116,17 @@
 	<span class="k">for</span> <span class="n">area</span> <span class="ow">in</span> <span class="n">get_areas</span><span class="p">(</span><span class="n">area_type</span><span class="p">):</span>
 		<span class="k">return</span> <span class="n">area</span></div>
 
-<div class="viewcode-block" id="change_area_to"><a class="viewcode-back" href="../../../api/blendersynth.utils.layout.html#blendersynth.utils.layout.change_area_to">[docs]</a><span class="k">def</span> <span class="nf">change_area_to</span><span class="p">(</span><span class="n">area_type_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">area_type_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+<div class="viewcode-block" id="change_area_to">
+<a class="viewcode-back" href="../../../api/blendersynth.utils.layout.html#blendersynth.utils.layout.change_area_to">[docs]</a>
+<span class="k">def</span> <span class="nf">change_area_to</span><span class="p">(</span><span class="n">area_type_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">area_type_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Change the first area found.</span>
 
 <span class="sd">	:param area_type_from: Area type to change from (one of :attr:`~blendersynth.utils.layout.AREA_TYPES`)</span>
 <span class="sd">	:param area_type_to: Area type to change to (one of :attr:`~blendersynth.utils.layout.AREA_TYPES`)</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">get_area</span><span class="p">(</span><span class="n">area_type_from</span><span class="p">)</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">area_type_to</span></div>
+
 </pre></div>
 
            </div>

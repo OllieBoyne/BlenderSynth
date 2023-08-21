@@ -12,9 +12,9 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../../../_static/documentation_options.js?v=a4664895"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -127,7 +127,9 @@
 	<span class="k">except</span> <span class="ne">ReferenceError</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="GetNewObject"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.GetNewObject">[docs]</a><span class="k">class</span> <span class="nc">GetNewObject</span><span class="p">():</span>
+<div class="viewcode-block" id="GetNewObject">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.GetNewObject">[docs]</a>
+<span class="k">class</span> <span class="nc">GetNewObject</span><span class="p">():</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Context manager for getting the newly imported object(s) to the scene.</span>
 
 <span class="sd">	On exit, will return the newly imported object(s).</span>
@@ -161,6 +163,7 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">imported_obj</span> <span class="o">=</span> <span class="n">parent_obj</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_select</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Select/deselect an object&quot;&quot;&quot;</span>
 	<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;select_set&#39;</span><span class="p">):</span>  <span class="c1"># e.g. Mesh</span>
@@ -169,7 +172,9 @@
 		<span class="n">obj</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="n">state</span>
 
 
-<div class="viewcode-block" id="SelectObjects"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.SelectObjects">[docs]</a><span class="k">class</span> <span class="nc">SelectObjects</span><span class="p">:</span>
+<div class="viewcode-block" id="SelectObjects">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.SelectObjects">[docs]</a>
+<span class="k">class</span> <span class="nc">SelectObjects</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Context manager for selecting objects.</span>
 <span class="sd">	On exit, will reselect the objects that were selected before entering the context.&quot;&quot;&quot;</span>
 
@@ -195,7 +200,10 @@
 			<span class="n">_select</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="SetMode"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.SetMode">[docs]</a><span class="k">class</span> <span class="nc">SetMode</span><span class="p">:</span>
+
+<div class="viewcode-block" id="SetMode">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.SetMode">[docs]</a>
+<span class="k">class</span> <span class="nc">SetMode</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Context manager for changing the mode of a specific object in Blender (e.g., to &#39;POSE&#39;),</span>
 <span class="sd">	returning to the original mode on exit.&quot;&quot;&quot;</span>
 
@@ -224,7 +232,10 @@
 			<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_active_object</span></div>
 
 
-<div class="viewcode-block" id="CursorAt"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.CursorAt">[docs]</a><span class="k">class</span> <span class="nc">CursorAt</span><span class="p">():</span>
+
+<div class="viewcode-block" id="CursorAt">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.CursorAt">[docs]</a>
+<span class="k">class</span> <span class="nc">CursorAt</span><span class="p">():</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Context manager for moving the cursor to a specific location in space.</span>
 <span class="sd">	On exit, will return the cursor to its original location.&quot;&quot;&quot;</span>
 
@@ -240,7 +251,10 @@
 		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_location</span></div>
 
 
-<div class="viewcode-block" id="get_node_by_name"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.get_node_by_name">[docs]</a><span class="k">def</span> <span class="nf">get_node_by_name</span><span class="p">(</span><span class="n">node_tree</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeTree</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Node</span><span class="p">:</span>
+
+<div class="viewcode-block" id="get_node_by_name">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.get_node_by_name">[docs]</a>
+<span class="k">def</span> <span class="nf">get_node_by_name</span><span class="p">(</span><span class="n">node_tree</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeTree</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Node</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Given a nodetree and a key, return the first node found with label matching key.</span>
 
 <span class="sd">	:param node_tree: Node tree to search</span>
@@ -255,7 +269,10 @@
 		<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> not found in node tree!</span><span class="se">\n</span><span class="s2">Labels are: </span><span class="si">{</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="handle_vec"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.handle_vec">[docs]</a><span class="k">def</span> <span class="nf">handle_vec</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">expected_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
+
+<div class="viewcode-block" id="handle_vec">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.handle_vec">[docs]</a>
+<span class="k">def</span> <span class="nf">handle_vec</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">expected_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Check `vec` is expected_length. Convert from tuple or ndarray to mathutils.Vector.</span>
 
 <span class="sd">	:param vec: Vector to check</span>
@@ -273,7 +290,10 @@
 	<span class="k">return</span> <span class="n">vec</span></div>
 
 
-<div class="viewcode-block" id="animatable_property"><a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.animatable_property">[docs]</a><span class="k">def</span> <span class="nf">animatable_property</span><span class="p">(</span><span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_data_object</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">callable</span><span class="p">:</span>
+
+<div class="viewcode-block" id="animatable_property">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.animatable_property">[docs]</a>
+<span class="k">def</span> <span class="nf">animatable_property</span><span class="p">(</span><span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_data_object</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">callable</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Decorator that wraps around a function to take a frame number and value, and set the property at that frame.</span>
 
 <span class="sd">	example usage::</span>
@@ -359,6 +379,7 @@
 		<span class="k">return</span> <span class="n">subwrapper</span>
 
 	<span class="k">return</span> <span class="n">wrapper</span></div>
+
 </pre></div>
 
            </div>

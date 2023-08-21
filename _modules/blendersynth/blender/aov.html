@@ -12,9 +12,9 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../../../_static/documentation_options.js?v=a4664895"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -96,7 +96,9 @@
 <span class="n">_socket_color_types</span> <span class="o">=</span> <span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocketVector</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocketColor</span><span class="p">)</span>
 <span class="n">_socket_value_types</span> <span class="o">=</span> <span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocketFloat</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocketInt</span><span class="p">)</span>
 
-<div class="viewcode-block" id="AOV"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AOV">[docs]</a><span class="k">class</span> <span class="nc">AOV</span><span class="p">:</span>
+<div class="viewcode-block" id="AOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AOV">[docs]</a>
+<span class="k">class</span> <span class="nc">AOV</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;A generic Arbitrary Output Value.</span>
 <span class="sd">	An AOV is a float or color value that can be output from a shader to the renderer.</span>
 <span class="sd">	See `Blender docs &lt;https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html&gt;`_ for more info.</span>
@@ -125,7 +127,9 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">_aov</span> <span class="o">=</span> <span class="n">aov</span>
 
 
-<div class="viewcode-block" id="AOV.add_to_shader"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AOV.add_to_shader">[docs]</a>	<span class="k">def</span> <span class="nf">add_to_shader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shader_node_tree</span><span class="p">):</span>
+<div class="viewcode-block" id="AOV.add_to_shader">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AOV.add_to_shader">[docs]</a>
+	<span class="k">def</span> <span class="nf">add_to_shader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shader_node_tree</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Add AOV to shader node tree&quot;&quot;&quot;</span>
 		<span class="c1"># add_to_shader must return output socket to connect to node</span>
 		<span class="n">out_socket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_to_shader</span><span class="p">(</span><span class="n">shader_node_tree</span><span class="p">)</span>
@@ -146,17 +150,24 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">_aov</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">AOV_TYPE</span>
 		<span class="n">tidy_tree</span><span class="p">(</span><span class="n">shader_node_tree</span><span class="p">)</span></div>
 
+
 	<span class="k">def</span> <span class="nf">_add_to_shader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shader_node_tree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocket</span><span class="p">:</span>
 		<span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="AOV.update"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AOV.update">[docs]</a>	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AOV.update">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AOV.update">[docs]</a>
+	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Some AOVs need an update before rendering (to change certain node properties)&quot;&quot;&quot;</span>
 		<span class="k">return</span></div>
+
 
 	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
 
-<div class="viewcode-block" id="NormalsAOV"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.NormalsAOV">[docs]</a><span class="k">class</span> <span class="nc">NormalsAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
+
+<div class="viewcode-block" id="NormalsAOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.NormalsAOV">[docs]</a>
+<span class="k">class</span> <span class="nc">NormalsAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 					<span class="n">ref_frame</span><span class="o">=</span><span class="s1">&#39;CAMERA&#39;</span><span class="p">,</span>
 					<span class="n">order</span><span class="o">=</span><span class="s1">&#39;XYZ&#39;</span><span class="p">,</span>
@@ -203,11 +214,17 @@
 
 		<span class="k">return</span> <span class="n">comb_xyz_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="NormalsAOV.update"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.NormalsAOV.update">[docs]</a>	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NormalsAOV.update">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.NormalsAOV.update">[docs]</a>
+	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Some AOVs may need render_time updates from scene context, hence this method&quot;&quot;&quot;</span>
-		<span class="k">pass</span></div></div>
+		<span class="k">pass</span></div>
+</div>
 
-<div class="viewcode-block" id="NOCAOV"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.NOCAOV">[docs]</a><span class="k">class</span> <span class="nc">NOCAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
+
+<div class="viewcode-block" id="NOCAOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.NOCAOV">[docs]</a>
+<span class="k">class</span> <span class="nc">NOCAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Normalised object coordinates - Gives the position of the object in object space,</span>
 <span class="sd">	normalised to the object&#39;s bounding box.&quot;&quot;&quot;</span>
 
@@ -215,7 +232,10 @@
 		<span class="n">texcon_node</span> <span class="o">=</span> <span class="n">shader_node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ShaderNodeTexCoord&#39;</span><span class="p">)</span>
 		<span class="k">return</span> <span class="n">texcon_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Generated&#39;</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="UVAOV"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.UVAOV">[docs]</a><span class="k">class</span> <span class="nc">UVAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
+
+<div class="viewcode-block" id="UVAOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.UVAOV">[docs]</a>
+<span class="k">class</span> <span class="nc">UVAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;UV coordinates&quot;&quot;&quot;</span>
 
 	<span class="k">def</span> <span class="nf">_add_to_shader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shader_node_tree</span><span class="p">):</span>
@@ -223,7 +243,10 @@
 		<span class="k">return</span> <span class="n">texcon_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;UV&#39;</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="AttrAOV"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AttrAOV">[docs]</a><span class="k">class</span> <span class="nc">AttrAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
+
+<div class="viewcode-block" id="AttrAOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AttrAOV">[docs]</a>
+<span class="k">class</span> <span class="nc">AttrAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Take an object attribute, and output it as an AOV&quot;&quot;&quot;</span>
 	<span class="n">attribute_type</span> <span class="o">=</span> <span class="kc">None</span>
 	<span class="n">attribute_name</span> <span class="o">=</span> <span class="kc">None</span>
@@ -234,14 +257,20 @@
 		<span class="n">attr_node</span><span class="o">.</span><span class="n">attribute_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attribute_name</span>
 		<span class="k">return</span> <span class="n">attr_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Instance Index&#39;</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="InstanceIDAOV"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.InstanceIDAOV">[docs]</a><span class="k">class</span> <span class="nc">InstanceIDAOV</span><span class="p">(</span><span class="n">AttrAOV</span><span class="p">):</span>
+
+<div class="viewcode-block" id="InstanceIDAOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.InstanceIDAOV">[docs]</a>
+<span class="k">class</span> <span class="nc">InstanceIDAOV</span><span class="p">(</span><span class="n">AttrAOV</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Instance ID - given to each object on creation.</span>
 <span class="sd">	Output is an integer corresponding to the object&#39;s instance ID (0-indexed)</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">attribute_type</span> <span class="o">=</span> <span class="s1">&#39;OBJECT&#39;</span>
 	<span class="n">attribute_name</span> <span class="o">=</span> <span class="s1">&#39;instance_id&#39;</span></div>
 
-<div class="viewcode-block" id="ClassIDAOV"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.ClassIDAOV">[docs]</a><span class="k">class</span> <span class="nc">ClassIDAOV</span><span class="p">(</span><span class="n">AttrAOV</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ClassIDAOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.ClassIDAOV">[docs]</a>
+<span class="k">class</span> <span class="nc">ClassIDAOV</span><span class="p">(</span><span class="n">AttrAOV</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Class ID - given to each object on creation.</span>
 <span class="sd">	Output is an integer corresponding to the object&#39;s class ID (0-indexed)</span>
 <span class="sd">	Class IDs can be manually set either when creating a Mesh, or by using the Mesh&#39;s set_class_id() method.</span>
@@ -250,7 +279,10 @@
 	<span class="n">attribute_type</span> <span class="o">=</span> <span class="s1">&#39;OBJECT&#39;</span>
 	<span class="n">attribute_name</span> <span class="o">=</span> <span class="s1">&#39;class_id&#39;</span></div>
 
-<div class="viewcode-block" id="AttrRGBAOV"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AttrRGBAOV">[docs]</a><span class="k">class</span> <span class="nc">AttrRGBAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
+
+<div class="viewcode-block" id="AttrRGBAOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AttrRGBAOV">[docs]</a>
+<span class="k">class</span> <span class="nc">AttrRGBAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	For a given numerical attribute, outputs a color corresponding to the attribute&#39;s value.</span>
 <span class="sd">	For N objects total, samples evenly on a distribution of hues, on a colour scale of S = 1, V = 1</span>
@@ -299,14 +331,20 @@
 		<span class="n">shader_node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">attr_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Fac&#39;</span><span class="p">],</span> <span class="n">group_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Index&#39;</span><span class="p">])</span>
 		<span class="k">return</span> <span class="n">group_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Color&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="AttrRGBAOV.update"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AttrRGBAOV.update">[docs]</a>	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AttrRGBAOV.update">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AttrRGBAOV.update">[docs]</a>
+	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">div_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span></div>
+
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">N</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="InstanceRGBAOV"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.InstanceRGBAOV">[docs]</a><span class="k">class</span> <span class="nc">InstanceRGBAOV</span><span class="p">(</span><span class="n">AttrRGBAOV</span><span class="p">):</span>
+
+<div class="viewcode-block" id="InstanceRGBAOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.InstanceRGBAOV">[docs]</a>
+<span class="k">class</span> <span class="nc">InstanceRGBAOV</span><span class="p">(</span><span class="n">AttrRGBAOV</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Similar to InstanceIDAOV, but outputs an RGB value corresponding to the object&#39;s instance ID.</span>
 <span class="sd">	For N instances total, samples evenly on a distribution of hues, on a colour scale of S = 1, V = 1.</span>
@@ -320,7 +358,10 @@
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Update the divisor node with the current number of instances&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;NUM_MESHES&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span></div>
 
-<div class="viewcode-block" id="ClassRGBAOV"><a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.ClassRGBAOV">[docs]</a><span class="k">class</span> <span class="nc">ClassRGBAOV</span><span class="p">(</span><span class="n">AttrRGBAOV</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ClassRGBAOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.ClassRGBAOV">[docs]</a>
+<span class="k">class</span> <span class="nc">ClassRGBAOV</span><span class="p">(</span><span class="n">AttrRGBAOV</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Similar to ClassIDAOV, but outputs an RGB value corresponding to the object&#39;s class ID.</span>
 <span class="sd">	For N classes total, samples evenly on a distribution of hues, on a colour scale of S = 1, V = 1.</span>
@@ -333,6 +374,7 @@
 	<span class="k">def</span> <span class="nf">N</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Update the divisor node with the current number of classes&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;MAX_CLASSES&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span></div>
+
 </pre></div>
 
            </div>
