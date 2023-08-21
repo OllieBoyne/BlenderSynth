@@ -29,6 +29,13 @@ class BsynObject:
 	def data(self):
 		return self.object.data
 
+	def remove(self):
+		"""Delete .obj from bpy.data if it exists"""
+		try:
+			bpy.data.objects.remove(self.obj)
+		except ReferenceError:
+			pass
+
 	def update(self):
 		#   ---> not currently needed, may be needed in the future
 		# 	"""On any update, run this. For most objects, this is a no-op, but for some objects,

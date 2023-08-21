@@ -86,7 +86,7 @@ class BoneConstraint(BsynObject):
 		"""Remove this constraint."""
 		self.bone.constraints.remove(self.constraint)
 		if self.empty is not None:
-			bpy.data.objects.remove(self.empty)
+			self.empty.remove()
 
 	@property
 	def armature(self):
@@ -180,7 +180,8 @@ class Armature(BsynObject):
 						self.ik_constraints[bone_name].remove()  # remove the constraint
 						self.ik_constraints.pop(bone_name)  # remove reference to it
 
-				for cname, constraint in self.constraints.items():
+				for cname in [*self.constraints.keys()]:
+					constraint = self.constraints[cname]
 					if constraint.pose_bone.name == bone.name:
 						self.constraints[cname].remove()
 						self.constraints.pop(cname)
