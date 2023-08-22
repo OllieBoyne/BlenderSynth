@@ -87,7 +87,7 @@
   <h1>Source code for blendersynth.utils.blender_setup.check_blender_install</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">blendersynth.utils.blender_setup.blender_locator</span> <span class="kn">import</span> <span class="n">find_blender_python</span><span class="p">,</span> <span class="n">get_blender_path</span><span class="p">,</span> <span class="n">remove_config</span><span class="p">,</span> <span class="n">write_to_config</span><span class="p">,</span> <span class="n">read_from_config</span><span class="p">,</span> <span class="n">remove_from_config</span>
+<span class="kn">from</span> <span class="nn">blendersynth.utils.blender_setup.blender_locator</span> <span class="kn">import</span> <span class="n">find_blender_python</span><span class="p">,</span> <span class="n">get_blender_path</span><span class="p">,</span> <span class="n">remove_config</span><span class="p">,</span> <span class="n">write_to_config</span><span class="p">,</span> <span class="n">read_from_config</span><span class="p">,</span> <span class="n">remove_from_config</span><span class="p">,</span> <span class="n">set_blender_path</span>
 
 <span class="n">dependencies</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;imageio&#39;</span><span class="p">,</span> <span class="s1">&#39;numpy&#39;</span><span class="p">,</span> <span class="s1">&#39;appdirs&#39;</span><span class="p">,</span> <span class="s1">&#39;tqdm&#39;</span><span class="p">,</span> <span class="s1">&#39;opencv-python&#39;</span><span class="p">,</span> <span class="s1">&#39;ffmpeg-python&#39;</span><span class="p">,</span> <span class="s1">&#39;pyyaml&#39;</span><span class="p">]</span>
 
@@ -161,6 +161,9 @@
 	<span class="k">if</span> <span class="n">force_install_dependencies</span><span class="p">:</span> <span class="n">remove_from_config</span><span class="p">(</span><span class="s1">&#39;DEPENDENCIES_INSTALLED&#39;</span><span class="p">)</span>
 
 	<span class="n">blender_path</span> <span class="o">=</span> <span class="n">get_blender_path</span><span class="p">()</span>
+	<span class="k">if</span> <span class="n">blender_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="n">blender_path</span> <span class="o">=</span> <span class="n">set_blender_path</span><span class="p">()</span>
+
 	<span class="n">python_path</span> <span class="o">=</span> <span class="n">find_blender_python</span><span class="p">(</span><span class="n">blender_path</span><span class="p">)</span>
 
 	<span class="k">if</span> <span class="ow">not</span> <span class="n">read_from_config</span><span class="p">(</span><span class="s1">&#39;DEPENDENCIES_INSTALLED&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span><span class="p">:</span>

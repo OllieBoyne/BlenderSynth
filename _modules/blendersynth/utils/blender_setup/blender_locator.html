@@ -150,30 +150,20 @@
 	<span class="k">return</span> <span class="kc">False</span></div>
 
 
+<div class="viewcode-block" id="set_blender_path">
+<a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.set_blender_path">[docs]</a>
+<span class="k">def</span> <span class="nf">set_blender_path</span><span class="p">(</span><span class="n">_blender_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;First time set-up of Blender Path. Will try to find Blender path in following order of</span>
+<span class="sd">	precedence:</span>
 
-<div class="viewcode-block" id="get_blender_path">
-<a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.get_blender_path">[docs]</a>
-<span class="k">def</span> <span class="nf">get_blender_path</span><span class="p">(</span><span class="n">_blender_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Get a valid blender executable path.</span>
+<span class="sd">	1) Input argument _blender_path</span>
+<span class="sd">	2) Environment variable `BLENDER_PATH`</span>
+<span class="sd">	3) Blender in PATH</span>
+<span class="sd">	4) Ask user for path</span>
 
-<span class="sd">	To achieve this, checks in the following locations:</span>
-
-<span class="sd">	1) Input argument `_blender_path` (if given)</span>
-
-<span class="sd">	2) Config file stored in user&#39;s `appdirs.user_config_dir`</span>
-
-<span class="sd">	3) Environment variable `BLENDER_PATH`</span>
-
-<span class="sd">	4) Blender in PATH</span>
-
-<span class="sd">	5) Ask user for path</span>
-
-<span class="sd">	It will end as soon as a valid path is found. If the input path is not valid, it will raise an error.</span>
-
-<span class="sd">	:param _blender_path: path to blender executable</span>
+<span class="sd">	When it finds a valid path, it will save it to the Config file stored in user&#39;s `appdirs.user_config_dir`</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
-	<span class="n">cfg_result</span> <span class="o">=</span> <span class="n">read_from_config</span><span class="p">(</span><span class="s1">&#39;BLENDER_PATH&#39;</span><span class="p">)</span>
 
 	<span class="k">if</span> <span class="n">_blender_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -186,8 +176,6 @@
 		<span class="k">else</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Provided Blender path, </span><span class="si">{</span><span class="n">_blender_path</span><span class="si">}</span><span class="s2">, is not executable.&quot;</span><span class="p">)</span>
 
-	<span class="k">elif</span> <span class="n">cfg_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="n">blender_path</span> <span class="o">=</span> <span class="n">cfg_result</span>
 
 	<span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;BLENDER_PATH&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 		<span class="n">blender_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;BLENDER_PATH&#39;</span><span class="p">)</span>
@@ -210,6 +198,14 @@
 
 	<span class="n">write_to_config</span><span class="p">(</span><span class="s1">&#39;BLENDER_PATH&#39;</span><span class="p">,</span> <span class="n">blender_path</span><span class="p">)</span>
 	<span class="k">return</span> <span class="n">blender_path</span></div>
+
+
+<div class="viewcode-block" id="get_blender_path">
+<a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.get_blender_path">[docs]</a>
+<span class="k">def</span> <span class="nf">get_blender_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Return blender path,</span>
+<span class="sd">	or None if no config file found&quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="n">read_from_config</span><span class="p">(</span><span class="s1">&#39;BLENDER_PATH&#39;</span><span class="p">)</span></div>
 
 
 
