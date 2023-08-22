@@ -12,9 +12,9 @@
   
         <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../../../../_static/documentation_options.js?v=a4664895"></script>
         <script src="../../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../python/animation.html">Animation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../python/capturing_pose.html">Capturing pose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../python/custom_aov.html">Custom AOV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../python/inverse_kinematics.html">Inverse kinematics</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -94,7 +95,9 @@
 <span class="kn">from</span> <span class="nn">...file.tempfiles</span> <span class="kn">import</span> <span class="n">create_temp_file</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
-<div class="viewcode-block" id="AlphaImageOverlay"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AlphaImageOverlay">[docs]</a><span class="k">class</span> <span class="nc">AlphaImageOverlay</span><span class="p">(</span><span class="n">CompositorNodeGroup</span><span class="p">):</span>
+<div class="viewcode-block" id="AlphaImageOverlay">
+<a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AlphaImageOverlay">[docs]</a>
+<span class="k">class</span> <span class="nc">AlphaImageOverlay</span><span class="p">(</span><span class="n">CompositorNodeGroup</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Overlay an image on top of the render, using the alpha channel of the image as a mask&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;AlphaImageOverlay&#39;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Create a mix node which overlays an image on top of the input image.&quot;&quot;&quot;</span>
@@ -145,7 +148,10 @@
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span></div>
 
 
-<div class="viewcode-block" id="KeypointsOverlay"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay">[docs]</a><span class="k">class</span> <span class="nc">KeypointsOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
+
+<div class="viewcode-block" id="KeypointsOverlay">
+<a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay">[docs]</a>
+<span class="k">class</span> <span class="nc">KeypointsOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Overlay which draws keypoints on top of the render.&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;KeypointsOverlay&#39;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 				 <span class="n">marker</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
@@ -169,7 +175,9 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="n">thickness</span>
 
-<div class="viewcode-block" id="KeypointsOverlay.update"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay.update">[docs]</a>	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="KeypointsOverlay.update">
+<a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay.update">[docs]</a>
+	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 			   <span class="n">camera</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Given [N x 3] keypoints, draw them onto a new temp image.</span>
 
@@ -210,9 +218,13 @@
 			<span class="k">else</span><span class="p">:</span>
 				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid marker: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">marker</span><span class="p">))</span>
 
-		<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div></div>
+		<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div>
+</div>
 
-<div class="viewcode-block" id="BoundingBoxOverlay"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay">[docs]</a><span class="k">class</span> <span class="nc">BoundingBoxOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
+
+<div class="viewcode-block" id="BoundingBoxOverlay">
+<a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay">[docs]</a>
+<span class="k">class</span> <span class="nc">BoundingBoxOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Overlay which draws bounding boxes on top of the render.&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;BoundingBoxOverlay&#39;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 				 <span class="n">col</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">thickness</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
@@ -220,7 +232,9 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">col</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">thickness</span><span class="p">)</span>  <span class="c1"># cv2 requires int</span>
 
-<div class="viewcode-block" id="BoundingBoxOverlay.update"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay.update">[docs]</a>	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bboxes</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="BoundingBoxOverlay.update">
+<a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay.update">[docs]</a>
+	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bboxes</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Given [N x 4] bounding boxes, draw them onto a new temp image.&quot;&quot;&quot;</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
@@ -238,9 +252,13 @@
 			<span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">])),</span>
 						  <span class="n">col</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">)</span>
 
-		<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div></div>
+		<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div>
+</div>
 
-<div class="viewcode-block" id="AxesOverlay"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay">[docs]</a><span class="k">class</span> <span class="nc">AxesOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
+
+<div class="viewcode-block" id="AxesOverlay">
+<a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay">[docs]</a>
+<span class="k">class</span> <span class="nc">AxesOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Overlay which draws axes on top of an existing render&quot;&quot;&quot;</span>
 
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;BoundingBoxOverlay&#39;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -250,7 +268,9 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="n">thickness</span>
 
-<div class="viewcode-block" id="AxesOverlay.update"><a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay.update">[docs]</a>	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="AxesOverlay.update">
+<a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay.update">[docs]</a>
+	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 			   <span class="n">camera</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plot axes onto the image.</span>
 
@@ -274,7 +294,9 @@
 				<span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">),</span>
 							   <span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">255</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">255</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">255</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">)</span>
 
-		<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div></div>
+		<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
 
            </div>

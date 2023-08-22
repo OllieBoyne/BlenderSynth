@@ -12,9 +12,9 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=dca6b923"></script>
+        <script src="../../../_static/documentation_options.js?v=a4664895"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../python/animation.html">Animation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python/capturing_pose.html">Capturing pose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python/custom_aov.html">Custom AOV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/inverse_kinematics.html">Inverse kinematics</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -93,7 +94,9 @@
 
 <span class="n">BBOX_FMTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1y1x2y2&#39;</span><span class="p">,</span> <span class="s1">&#39;xywh&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="bounding_box"><a class="viewcode-back" href="../../../api/blendersynth.annotations.bbox.html#blendersynth.annotations.bbox.bounding_box">[docs]</a><span class="k">def</span> <span class="nf">bounding_box</span><span class="p">(</span><span class="nb">object</span><span class="p">:</span> <span class="n">Mesh</span><span class="p">,</span> <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="bounding_box">
+<a class="viewcode-back" href="../../../api/blendersynth.annotations.bbox.html#blendersynth.annotations.bbox.bounding_box">[docs]</a>
+<span class="k">def</span> <span class="nf">bounding_box</span><span class="p">(</span><span class="nb">object</span><span class="p">:</span> <span class="n">Mesh</span><span class="p">,</span> <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 				 <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 				 <span class="n">return_fmt</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;x1y1x2y2&#39;</span><span class="p">,</span> <span class="n">normalized</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">invert_y</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Get the bounding box of an object in camera space.</span>
@@ -114,7 +117,7 @@
 	<span class="k">if</span> <span class="n">scene</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 		<span class="n">scene</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span>
 
-	<span class="n">verts</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">get_all_vertices</span><span class="p">(</span><span class="s1">&#39;WORLD&#39;</span><span class="p">)</span>
+	<span class="n">verts</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">_get_all_vertices</span><span class="p">(</span><span class="s1">&#39;WORLD&#39;</span><span class="p">)</span>
 	<span class="n">coords_2d</span> <span class="o">=</span> <span class="n">project_points</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">invert_y</span><span class="o">=</span><span class="n">invert_y</span><span class="p">)</span>
 
 	<span class="k">if</span> <span class="n">normalized</span><span class="p">:</span>
@@ -134,7 +137,10 @@
 	<span class="k">else</span><span class="p">:</span>
 		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid return_fmt: </span><span class="si">{</span><span class="n">return_fmt</span><span class="si">}</span><span class="s1">. Must be one of </span><span class="si">{</span><span class="n">BBOX_FMTS</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="bounding_boxes"><a class="viewcode-back" href="../../../api/blendersynth.annotations.bbox.html#blendersynth.annotations.bbox.bounding_boxes">[docs]</a><span class="k">def</span> <span class="nf">bounding_boxes</span><span class="p">(</span><span class="n">objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Mesh</span><span class="p">],</span> <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+
+<div class="viewcode-block" id="bounding_boxes">
+<a class="viewcode-back" href="../../../api/blendersynth.annotations.bbox.html#blendersynth.annotations.bbox.bounding_boxes">[docs]</a>
+<span class="k">def</span> <span class="nf">bounding_boxes</span><span class="p">(</span><span class="n">objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Mesh</span><span class="p">],</span> <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 				 <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 				 <span class="n">return_fmt</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;x1y1x2y2&#39;</span><span class="p">,</span> <span class="n">normalized</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">invert_y</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Run `bounding_box` for multiple objects</span>
@@ -149,6 +155,7 @@
 
 	<span class="k">return</span> <span class="p">[</span><span class="n">bounding_box</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="n">camera</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="n">scene</span><span class="p">,</span> <span class="n">return_fmt</span><span class="o">=</span><span class="n">return_fmt</span><span class="p">,</span>
 						   <span class="n">normalized</span><span class="o">=</span><span class="n">normalized</span><span class="p">,</span> <span class="n">invert_y</span><span class="o">=</span><span class="n">invert_y</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">]</span></div>
+
 </pre></div>
 
            </div>
