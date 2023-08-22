@@ -97,26 +97,27 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 
-<div class="viewcode-block" id="list_split">
-<a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.list_split">[docs]</a>
-<span class="k">def</span> <span class="nf">list_split</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">chunks</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_list_split</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">chunks</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Split a list into chunks&quot;&quot;&quot;</span>
-	<span class="k">return</span> <span class="p">[[</span><span class="o">*</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)]</span></div>
+	<span class="k">return</span> <span class="p">[[</span><span class="o">*</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)]</span>
 
 
+<div class="viewcode-block" id="BlenderThread">
+<a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread">[docs]</a>
 <span class="k">class</span> <span class="nc">BlenderThread</span><span class="p">():</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">jobs</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">,</span> <span class="n">progress_loc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">to_stdout</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-				 <span class="n">MAX_PER_JOB</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">script_directory</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Manages a list of jobs, which it feeds into sequential Blender instances in a single thread.&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">jobs</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">,</span> <span class="n">progress_loc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">to_stdout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+				 <span class="n">MAX_PER_JOB</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">script_directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		:progress_loc: .log file to write progress to</span>
-<span class="sd">		:timeout: longest time in (s) without render after which process is finished.</span>
+<span class="sd">		:timeout: longest time in (s) without render after which process is finished/failed.</span>
 <span class="sd">		:to_stdout: If True, print to stdout instead of to a log file.</span>
 <span class="sd">		:MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.</span>
 <span class="sd">		:script_directory: If given, add this to `sys.path` before running the script.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">jobs</span> <span class="o">=</span> <span class="n">list_split</span><span class="p">(</span><span class="n">jobs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span><span class="o">/</span><span class="n">MAX_PER_JOB</span><span class="p">))</span> <span class="c1"># split jobs into chunks of MAX_PER_JOB</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">jobs</span> <span class="o">=</span> <span class="n">_list_split</span><span class="p">(</span><span class="n">jobs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span> <span class="o">/</span> <span class="n">MAX_PER_JOB</span><span class="p">))</span>  <span class="c1"># split jobs into chunks of MAX_PER_JOB</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">njobs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span>
@@ -135,7 +136,6 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span> <span class="o">=</span> <span class="n">progress_loc</span>
 
-
 		<span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="kc">None</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">job</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">finished</span> <span class="o">=</span> <span class="kc">False</span>
@@ -143,6 +143,8 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;STARTED THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
 
+<div class="viewcode-block" id="BlenderThread.check_in">
+<a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.check_in">[docs]</a>
 	<span class="k">def</span> <span class="nf">check_in</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Checks if current job still running, if not move to next job.</span>
 <span class="sd">		If all jobs complete, set self.finished = True&quot;&quot;&quot;</span>
@@ -156,10 +158,16 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;✓ THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> COMPLETED.&#39;</span>
 			<span class="k">return</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> RUNNING JOB </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">njobs</span><span class="si">}</span><span class="s2">...&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">start_job</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> RUNNING JOB </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">njobs</span><span class="si">}</span><span class="s2">...&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">start_job</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="p">)</span></div>
 
-	<span class="k">def</span> <span class="nf">start_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="BlenderThread.start_job">
+<a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.start_job">[docs]</a>
+	<span class="k">def</span> <span class="nf">start_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		:param job: Index of job to start</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">job_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">[</span><span class="n">job</span><span class="p">]</span>
 		<span class="n">command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">set_job</span><span class="p">(</span><span class="n">job_list</span><span class="p">)</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span><span class="p">)</span><span class="o">.</span><span class="n">command</span>
 
@@ -170,10 +178,18 @@
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 			<span class="n">env</span><span class="p">[</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_directory</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">pathsep</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">stderr</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">stderr</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="BlenderThread.terminate">
+<a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.terminate">[docs]</a>
 	<span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;End process&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span></div>
+
+
+	<span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -194,7 +210,7 @@
 	<span class="k">def</span> <span class="nf">num_rendered</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Read through Log file to find how many renders have been completed&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span><span class="p">):</span>
-			<span class="k">return</span> <span class="mi">0</span> <span class="c1"># process not started yet</span>
+			<span class="k">return</span> <span class="mi">0</span>  <span class="c1"># process not started yet</span>
 
 		<span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
 		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -210,8 +226,10 @@
 	<span class="k">def</span> <span class="nf">success</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
 
+<div class="viewcode-block" id="BlenderThread.check_status">
+<a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.check_status">[docs]</a>
 	<span class="k">def</span> <span class="nf">check_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;True if still running succesfully, False if exceeded timeout&quot;&quot;&quot;</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;True if still running successfully, False if exceeded timeout&quot;&quot;&quot;</span>
 		<span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span>
 		<span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_n</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">prev_n</span> <span class="o">=</span> <span class="n">n</span>
@@ -221,15 +239,16 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;✖ THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> FAILED [TIMEOUT].&#39;</span>
 			<span class="k">return</span> <span class="kc">False</span>
 
-		<span class="k">return</span> <span class="kc">True</span>
+		<span class="k">return</span> <span class="kc">True</span></div>
+</div>
 
-	<span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
 
-	<span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
 
+<div class="viewcode-block" id="BlenderThreadManager">
+<a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThreadManager">[docs]</a>
 <span class="k">class</span> <span class="nc">BlenderThreadManager</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Manager of multiple :class:`~blendersynth.run.blender_threading.BlenderThread` instances&quot;&quot;&quot;</span>
+
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">jsons</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">print_to_stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 				 <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">script_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
@@ -265,24 +284,25 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">threads</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">):</span>
 			<span class="n">thread</span> <span class="o">=</span> <span class="n">BlenderThread</span><span class="p">(</span><span class="n">command</span><span class="p">,</span>
-								   <span class="n">jobs</span> <span class="o">=</span> <span class="n">jsons</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+								   <span class="n">jobs</span><span class="o">=</span><span class="n">jsons</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
 								   <span class="n">log_loc</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">logs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">logs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
 								   <span class="n">progress_loc</span><span class="o">=</span><span class="n">progresses</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
 								   <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
 								   <span class="n">to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
 								   <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="n">MAX_PER_JOB</span><span class="p">,</span>
 								   <span class="n">script_directory</span><span class="o">=</span><span class="n">script_directory</span><span class="p">)</span>
-			
+
 			<span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thread</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">))</span>
 
-	<span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_bars</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-			  <span class="n">tick</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">report_every</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-			  <span class="p">):</span>
+<div class="viewcode-block" id="BlenderThreadManager.start">
+<a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThreadManager.start">[docs]</a>
+	<span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_bars</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+			  <span class="n">tick</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">report_every</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">15.0</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Start all threads and job progress</span>
-<span class="sd">		:param progress_bars: If True, show progress bars for each thread and overall progress</span>
+<span class="sd">		:param progress_bars: Show progress bars for each thread and overall progress</span>
 <span class="sd">		:param tick: How often to update progress bars</span>
 <span class="sd">		:param report_every: How often to print status updates to log</span>
 <span class="sd">		:param offset: How long to wait before starting each thread (to avoid memory issues)</span>
@@ -347,7 +367,8 @@
 
 						<span class="n">pbars</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="n">thread</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
 
-			<span class="bp">self</span><span class="o">.</span><span class="n">update_report</span><span class="p">()</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">update_report</span><span class="p">()</span></div>
+
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">num_rendered</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -377,9 +398,14 @@
 		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_loc</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
 			<span class="n">outfile</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 
+<div class="viewcode-block" id="BlenderThreadManager.terminate">
+<a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThreadManager.terminate">[docs]</a>
 	<span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;End all threads&quot;&quot;&quot;</span>
 		<span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">:</span>
-			<span class="n">thread</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+			<span class="n">thread</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span></div>
+</div>
+
 </pre></div>
 
            </div>

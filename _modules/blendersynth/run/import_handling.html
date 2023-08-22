@@ -118,16 +118,21 @@
 		<span class="k">return</span> <span class="n">IllegalImport</span><span class="p">()</span></div>
 
 
+<div class="viewcode-block" id="IllegalImport">
+<a class="viewcode-back" href="../../../api/blendersynth.run.import_handling.html#blendersynth.run.import_handling.IllegalImport">[docs]</a>
 <span class="k">class</span> <span class="nc">IllegalImport</span><span class="p">:</span>
-
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Object which raises error on any interaction, to tell users they have used BlenderSynth incorrectly.&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">REQUIRES_BLENDER</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">REQUIRES_BLENDER</span> <span class="o">=</span> <span class="n">REQUIRES_BLENDER</span>
 
 	<span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-		<span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+		<span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+		<span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="p">)</span>
 
 	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">REQUIRES_BLENDER</span><span class="p">:</span>
 			<span class="k">return</span> <span class="s2">&quot;This object can only be used inside a Blender python environment. &quot;</span> \
 				   <span class="s2">&quot;Make sure that either:&quot;</span> \
@@ -135,7 +140,8 @@
 				   <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">- This script is being run from another python script, using bsyn.execute_jobs.&quot;</span>
 
 		<span class="k">else</span><span class="p">:</span>
-			<span class="k">return</span> <span class="s2">&quot;This object can only be used outside a Blender python environment. &quot;</span>
+			<span class="k">return</span> <span class="s2">&quot;This object can only be used outside a Blender python environment. &quot;</span></div>
+
 </pre></div>
 
            </div>

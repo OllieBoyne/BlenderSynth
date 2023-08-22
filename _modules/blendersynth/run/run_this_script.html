@@ -121,15 +121,18 @@
 <span class="sd">	Will also place a copy of the script inside Blender.</span>
 
 <span class="sd">	:param debug: If True, open a Blender instance after all code is executed, otherwise run in background&quot;&quot;&quot;</span>
-	<span class="n">blender_path</span> <span class="o">=</span> <span class="n">get_blender_path</span><span class="p">()</span>
+
+	<span class="n">running_in_blender</span> <span class="o">=</span> <span class="s1">&#39;bpy&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span>
 
 	<span class="n">caller_path</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">filename</span>  <span class="c1"># path of script that called this function</span>
 
-	<span class="k">if</span> <span class="n">blender_path</span> <span class="o">!=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># if blender is not running this script</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">running_in_blender</span><span class="p">:</span>  <span class="c1"># if blender is not running this script</span>
 
 		<span class="n">caller_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">caller_path</span><span class="p">)</span>
 		<span class="n">env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 		<span class="n">env</span><span class="p">[</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">caller_dir</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">pathsep</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+		<span class="n">blender_path</span> <span class="o">=</span> <span class="n">get_blender_path</span><span class="p">()</span>
 
 		<span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="n">blender_path</span><span class="p">]</span> <span class="o">+</span> \
 			<span class="p">[</span><span class="s1">&#39;--background&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="ow">not</span> <span class="n">debug</span><span class="p">)</span> <span class="o">+</span> \
