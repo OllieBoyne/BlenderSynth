@@ -15,8 +15,9 @@ import sys
 from .utils.blender_setup.blender_locator import get_blender_path
 from .run.import_handling import conditional_import
 
-building_docs = 'sphinx' in sys.modules
-IS_BLENDER_RUN = building_docs or get_blender_path() == sys.argv[0] # if blender is running this script, or if building docs
+is_building_docs = 'sphinx' in sys.modules
+is_blender = 'bpy' in sys.modules
+IS_BLENDER_RUN = is_building_docs or is_blender  # if blender is running this script, or if building docs
 
 
 # Blender only imports

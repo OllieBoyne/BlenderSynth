@@ -1,6 +1,6 @@
 import subprocess
 import os
-from blendersynth.utils.blender_setup.blender_locator import find_blender_python, get_blender_path, remove_config, write_to_config, read_from_config, remove_from_config
+from blendersynth.utils.blender_setup.blender_locator import find_blender_python, get_blender_path, remove_config, write_to_config, read_from_config, remove_from_config, set_blender_path
 
 dependencies = ['imageio', 'numpy', 'appdirs', 'tqdm', 'opencv-python', 'ffmpeg-python', 'pyyaml']
 
@@ -69,6 +69,9 @@ def check_blender_install(force_all=False,
 	if force_install_dependencies: remove_from_config('DEPENDENCIES_INSTALLED')
 
 	blender_path = get_blender_path()
+	if blender_path is None:
+		blender_path = set_blender_path()
+
 	python_path = find_blender_python(blender_path)
 
 	if not read_from_config('DEPENDENCIES_INSTALLED') == 'True':

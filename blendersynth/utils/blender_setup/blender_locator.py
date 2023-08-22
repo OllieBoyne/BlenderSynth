@@ -54,28 +54,18 @@ def validate_blender_path(blender_path: str) -> bool:
 
 	return False
 
+def set_blender_path(_blender_path: str = None) -> str:
+	"""First time set-up of Blender Path. Will try to find Blender path in following order of
+	precedence:
 
-def get_blender_path(_blender_path: str = None) -> str:
-	"""Get a valid blender executable path.
+	1) Input argument _blender_path
+	2) Environment variable `BLENDER_PATH`
+	3) Blender in PATH
+	4) Ask user for path
 
-	To achieve this, checks in the following locations:
-
-	1) Input argument `_blender_path` (if given)
-
-	2) Config file stored in user's `appdirs.user_config_dir`
-
-	3) Environment variable `BLENDER_PATH`
-
-	4) Blender in PATH
-
-	5) Ask user for path
-
-	It will end as soon as a valid path is found. If the input path is not valid, it will raise an error.
-
-	:param _blender_path: path to blender executable
+	When it finds a valid path, it will save it to the Config file stored in user's `appdirs.user_config_dir`
 	"""
 
-	cfg_result = read_from_config('BLENDER_PATH')
 
 	if _blender_path is not None:
 
@@ -88,8 +78,6 @@ def get_blender_path(_blender_path: str = None) -> str:
 		else:
 			raise ValueError(f"Provided Blender path, {_blender_path}, is not executable.")
 
-	elif cfg_result is not None:
-		blender_path = cfg_result
 
 	elif os.environ.get('BLENDER_PATH') is not None:
 		blender_path = os.environ.get('BLENDER_PATH')
@@ -112,6 +100,11 @@ def get_blender_path(_blender_path: str = None) -> str:
 
 	write_to_config('BLENDER_PATH', blender_path)
 	return blender_path
+
+def get_blender_path() -> str:
+	"""Return blender path,
+	or None if no config file found"""
+	return read_from_config('BLENDER_PATH')
 
 
 def write_to_config(key, value, section='BLENDER_SETUP'):
