@@ -10,23 +10,25 @@ from datetime import datetime, timedelta
 import os
 
 
-def list_split(list, chunks):
+def _list_split(list, chunks):
 	"""Split a list into chunks"""
 	return [[*x] for x in np.array_split(list, chunks)]
 
+
 class BlenderThread():
-	def __init__(self, command, jobs, log_loc, progress_loc, name='', timeout:int=100, to_stdout:bool=False,
-				 MAX_PER_JOB:int=100, script_directory:str=None):
+	"""Manages a list of jobs, which it feeds into sequential Blender instances in a single thread."""
+	def __init__(self, command, jobs, log_loc, progress_loc, name='', timeout: int = 100, to_stdout: bool = False,
+				 MAX_PER_JOB: int = 100, script_directory: str = None):
 		"""
 		:progress_loc: .log file to write progress to
-		:timeout: longest time in (s) without render after which process is finished.
+		:timeout: longest time in (s) without render after which process is finished/failed.
 		:to_stdout: If True, print to stdout instead of to a log file.
 		:MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.
 		:script_directory: If given, add this to `sys.path` before running the script.
 		"""
 
 		self.command = command
-		self.jobs = list_split(jobs, np.ceil(len(jobs)/MAX_PER_JOB)) # split jobs into chunks of MAX_PER_JOB
+		self.jobs = _list_split(jobs, np.ceil(len(jobs) / MAX_PER_JOB))  # split jobs into chunks of MAX_PER_JOB
 		self.njobs = len(self.jobs)
 
 		self.size = len(jobs)
@@ -44,7 +46,6 @@ class BlenderThread():
 			self.log_loc, self.logfile = None, None
 
 		self.logger_loc = progress_loc
-
 
 		self.process = None
 		self.job = -1
@@ -66,10 +67,13 @@ class BlenderThread():
 			self.status = f'✓ THREAD {self.name} COMPLETED.'
 			return
 
-		self.status = f"THREAD {self.name} RUNNING JOB {self.job+1}/{self.njobs}..."
+		self.status = f"THREAD {self.name} RUNNING JOB {self.job + 1}/{self.njobs}..."
 		self.start_job(self.job)
 
-	def start_job(self, job=0):
+	def start_job(self, job:int=0):
+		"""
+		:param job: Index of job to start
+		"""
 		job_list = self.jobs[job]
 		command = self.command.set_job(job_list).set_logger(self.logger_loc).command
 
@@ -83,7 +87,11 @@ class BlenderThread():
 		self.process = Popen(command, universal_newlines=True, stdout=stdout, stderr=stderr, env=env)
 
 	def terminate(self):
+		"""End process"""
 		self.process.kill()
+
+	def kill(self):
+		self.terminate()
 
 	@property
 	def is_running(self):
@@ -104,7 +112,7 @@ class BlenderThread():
 	def num_rendered(self):
 		"""Read through Log file to find how many renders have been completed"""
 		if self.process is None or not os.path.isfile(self.logger_loc):
-			return 0 # process not started yet
+			return 0  # process not started yet
 
 		x = 0
 		with open(self.logger_loc, 'r') as f:
@@ -121,7 +129,7 @@ class BlenderThread():
 		return self.num_rendered == self.size
 
 	def check_status(self):
-		"""True if still running succesfully, False if exceeded timeout"""
+		"""True if still running successfully, False if exceeded timeout"""
 		n = self.num_rendered
 		if n > self.prev_n:
 			self.prev_n = n
@@ -133,13 +141,10 @@ class BlenderThread():
 
 		return True
 
-	def kill(self):
-		self.process.kill()
-
-	def terminate(self):
-		self.process.terminate()
 
 class BlenderThreadManager:
+	"""Manager of multiple :class:`~blendersynth.run.blender_threading.BlenderThread` instances"""
+
 	def __init__(self, command, jsons, output_directory, print_to_stdout=False,
 				 MAX_PER_JOB=100, script_directory=None):
 		"""
@@ -175,24 +180,23 @@ class BlenderThreadManager:
 		self.threads = []
 		for i in range(self.num_threads):
 			thread = BlenderThread(command,
-								   jobs = jsons[i],
+								   jobs=jsons[i],
 								   log_loc=None if logs is None else logs[i],
 								   progress_loc=progresses[i],
 								   name=str(i),
 								   to_stdout=print_to_stdout,
 								   MAX_PER_JOB=MAX_PER_JOB,
 								   script_directory=script_directory)
-			
+
 			self.threads.append(thread)
 
 	def __len__(self):
 		return sum(map(len, self.threads))
 
-	def start(self, progress_bars=True,
-			  tick=0.5, report_every=15, offset=1,
-			  ):
+	def start(self, progress_bars: bool = True,
+			  tick: float = 0.5, report_every: float = 15.0, offset: float = 1.0):
 		"""Start all threads and job progress
-		:param progress_bars: If True, show progress bars for each thread and overall progress
+		:param progress_bars: Show progress bars for each thread and overall progress
 		:param tick: How often to update progress bars
 		:param report_every: How often to print status updates to log
 		:param offset: How long to wait before starting each thread (to avoid memory issues)
@@ -288,5 +292,6 @@ class BlenderThreadManager:
 			outfile.writelines(report)
 
 	def terminate(self):
+		"""End all threads"""
 		for thread in self.threads:
 			thread.terminate()

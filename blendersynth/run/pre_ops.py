@@ -2,8 +2,15 @@
 import bpy
 from ..blender import render
 
-def on_script_open():
 
+def on_script_open():
+	"""
+	On script open:
+
+	- Set Engine to CYCLES
+	- Delete default Cube & Light
+	- Disable splash screen
+	"""
 	render.set_engine('CYCLES')
 
 	bpy.data.objects['Cube'].select_set(True)

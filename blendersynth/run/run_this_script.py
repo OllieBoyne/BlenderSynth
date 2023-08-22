@@ -32,15 +32,18 @@ def run_this_script(debug:bool=False):
 	Will also place a copy of the script inside Blender.
 
 	:param debug: If True, open a Blender instance after all code is executed, otherwise run in background"""
-	blender_path = get_blender_path()
+
+	running_in_blender = 'bpy' in sys.modules
 
 	caller_path = inspect.stack()[1].filename  # path of script that called this function
 
-	if blender_path != sys.argv[0]:  # if blender is not running this script
+	if not running_in_blender:  # if blender is not running this script
 
 		caller_dir = os.path.dirname(caller_path)
 		env = os.environ.copy()
 		env['PYTHONPATH'] = caller_dir + os.pathsep + env.get('PYTHONPATH', '')
+
+		blender_path = get_blender_path()
 
 		commands = [blender_path] + \
 			['--background'] * (not debug) + \

@@ -29,15 +29,18 @@ def conditional_import(condition: bool, src: str, name:str=None) -> Union['Illeg
 		return IllegalImport()
 
 class IllegalImport:
-
+	"""Object which raises error on any interaction, to tell users they have used BlenderSynth incorrectly."""
 	def __init__(self, REQUIRES_BLENDER=True):
 		self.REQUIRES_BLENDER = REQUIRES_BLENDER
 
 	def __call__(self, *args, **kwargs):
-		raise ImportError(self.message)
+		raise ImportError(self._message)
+
+	def __getattr__(self, name):
+		raise ImportError(self._message)
 
 	@property
-	def message(self):
+	def _message(self):
 		if self.REQUIRES_BLENDER:
 			return "This object can only be used inside a Blender python environment. " \
 				   "Make sure that either:" \

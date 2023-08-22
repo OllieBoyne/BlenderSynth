@@ -1,6 +1,6 @@
 import os
 
-from .blender_threading import BlenderThreadManager, list_split
+from .blender_threading import BlenderThreadManager, _list_split
 from ..utils.blender_setup.blender_locator import get_blender_path
 from ..file.tempfiles import cleanup_temp_files as cleanup
 from typing import Union
@@ -67,7 +67,7 @@ class Runner:
 		self.num_threads = num_threads
 
 		# Split the jsons into num_threads chunks
-		json_chunks = list_split(self.jsons, self.num_threads)
+		json_chunks = _list_split(self.jsons, self.num_threads)
 
 		blender_loc = get_blender_path()
 		command = BlenderCommand(blender_loc=blender_loc, background=True)
