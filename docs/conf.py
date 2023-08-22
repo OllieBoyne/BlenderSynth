@@ -27,7 +27,7 @@ master_doc = 'index'
 
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-autodoc_mock_imports = ["bpy", "mathutils", "bpy_extras", "opencv-python", "cv2"]
+autodoc_mock_imports = ["bpy", "mathutils", "bpy_extras", "bmesh", "opencv-python", "cv2"]
 
 
 # -- Options for HTML output -------------------------------------------------
