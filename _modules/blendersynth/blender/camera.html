@@ -194,6 +194,32 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">fov</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">clip_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clip_start</span>
+
+	<span class="nd">@clip_start</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">clip_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_start</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">set_clip_start</span><span class="p">(</span><span class="n">clip_start</span><span class="p">)</span>
+
+	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;clip_start&#39;</span><span class="p">,</span> <span class="n">use_data_object</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">set_clip_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_start</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clip_start</span> <span class="o">=</span> <span class="n">clip_start</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">clip_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clip_end</span>
+
+	<span class="nd">@clip_end</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">clip_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_end</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">set_clip_end</span><span class="p">(</span><span class="n">clip_end</span><span class="p">)</span>
+
+	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;clip_end&#39;</span><span class="p">,</span> <span class="n">use_data_object</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">set_clip_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_end</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clip_end</span> <span class="o">=</span> <span class="n">clip_end</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
 <div class="viewcode-block" id="Camera.look_at">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.look_at">[docs]</a>
 	<span class="k">def</span> <span class="nf">look_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at</span><span class="p">:</span><span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="o">=</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span> <span class="n">up</span><span class="p">:</span><span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="o">=</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))):</span>
