@@ -96,6 +96,32 @@ class Camera(BsynObject):
 		self.camera.data.angle = fov * np.pi / 180
 		self.update()
 
+	@property
+	def clip_start(self):
+		return self.camera.data.clip_start
+
+	@clip_start.setter
+	def clip_start(self, clip_start):
+		self.set_clip_start(clip_start)
+
+	@animatable_property('clip_start', use_data_object=True)
+	def set_clip_start(self, clip_start):
+		self.camera.data.clip_start = clip_start
+		self.update()
+
+	@property
+	def clip_end(self):
+		return self.camera.data.clip_end
+
+	@clip_end.setter
+	def clip_end(self, clip_end):
+		self.set_clip_end(clip_end)
+
+	@animatable_property('clip_end', use_data_object=True)
+	def set_clip_end(self, clip_end):
+		self.camera.data.clip_end = clip_end
+		self.update()
+
 	def look_at(self, at:types.VectorLikeAlias=mathutils.Vector((0, 0, 0)), up:types.VectorLikeAlias=mathutils.Vector((0, 0, 1))):
 		"""Look at a point in space, with up vector.
 
