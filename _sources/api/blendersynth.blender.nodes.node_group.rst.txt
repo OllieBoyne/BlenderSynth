@@ -3,4 +3,5 @@
 
 .. automodule:: blendersynth.blender.nodes.node_group
 	:members:
-	:inherited-members:
+	:special-members: __init__
+

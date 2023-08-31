@@ -180,7 +180,7 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
 
 	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set location of object.</span>
 
 <span class="sd">		:param location: Location vector to set&quot;&quot;&quot;</span>
@@ -197,7 +197,7 @@
 										 <span class="n">constraint_axis</span><span class="o">=</span><span class="p">[</span><span class="n">ax</span> <span class="o">==</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">==</span> <span class="s1">&#39;Z&#39;</span><span class="p">])</span>
 
 	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;rotation_euler&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">set_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set euler rotation of object.</span>
 
 <span class="sd">		:param rotation: Rotation vector&quot;&quot;&quot;</span>
@@ -211,7 +211,7 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">_apply_rotation</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span>  <span class="c1"># apply new rotation</span>
 
 	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeOrScalarAlias</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeOrScalar</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set scale of object.</span>
 
 <span class="sd">		:param scale: Scale to set. Either single value or 3 long vector&quot;&quot;&quot;</span>

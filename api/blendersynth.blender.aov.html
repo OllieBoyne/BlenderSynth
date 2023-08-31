@@ -98,6 +98,11 @@
 An AOV is a float or color value that can be output from a shader to the renderer.
 See <a class="reference external" href="https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html">Blender docs</a> for more info.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.aov.AOV.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/aov.html#AOV.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.aov.AOV.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.aov.AOV.add_to_shader">
 <span class="sig-name descname"><span class="pre">add_to_shader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shader_node_tree</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/aov.html#AOV.add_to_shader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.aov.AOV.add_to_shader" title="Link to this definition"></a></dt>
 <dd><p>Add AOV to shader node tree</p>
@@ -115,18 +120,6 @@ See <a class="reference external" href="https://docs.blender.org/manual/en/lates
 <dt class="sig sig-object py" id="blendersynth.blender.aov.AttrAOV">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.aov.</span></span><span class="sig-name descname"><span class="pre">AttrAOV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/aov.html#AttrAOV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.aov.AttrAOV" title="Link to this definition"></a></dt>
 <dd><p>Take an object attribute, and output it as an AOV</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.AttrAOV.add_to_shader">
-<span class="sig-name descname"><span class="pre">add_to_shader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shader_node_tree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.AttrAOV.add_to_shader" title="Link to this definition"></a></dt>
-<dd><p>Add AOV to shader node tree</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.AttrAOV.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.AttrAOV.update" title="Link to this definition"></a></dt>
-<dd><p>Some AOVs need an update before rendering (to change certain node properties)</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -137,10 +130,9 @@ For N objects total, samples evenly on a distribution of hues, on a colour scale
 Runs update() method to change the value of N, which is called before rendering.
 N can be a property of the object to update.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.AttrRGBAOV.add_to_shader">
-<span class="sig-name descname"><span class="pre">add_to_shader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shader_node_tree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.AttrRGBAOV.add_to_shader" title="Link to this definition"></a></dt>
-<dd><p>Add AOV to shader node tree</p>
-</dd></dl>
+<dt class="sig sig-object py" id="blendersynth.blender.aov.AttrRGBAOV.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/aov.html#AttrRGBAOV.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.aov.AttrRGBAOV.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.aov.AttrRGBAOV.update">
@@ -157,18 +149,6 @@ N can be a property of the object to update.</p>
 Output is an integer corresponding to the object’s class ID (0-indexed)
 Class IDs can be manually set either when creating a Mesh, or by using the Mesh’s set_class_id() method.
 If not set, will default to a different index from each primitive.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.ClassIDAOV.add_to_shader">
-<span class="sig-name descname"><span class="pre">add_to_shader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shader_node_tree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.ClassIDAOV.add_to_shader" title="Link to this definition"></a></dt>
-<dd><p>Add AOV to shader node tree</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.ClassIDAOV.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.ClassIDAOV.update" title="Link to this definition"></a></dt>
-<dd><p>Some AOVs need an update before rendering (to change certain node properties)</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -183,32 +163,32 @@ Updates N at render time by reading the scene property ‘MAX_CLASSES’</p>
 <dd><p>Update the divisor node with the current number of classes</p>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.ClassRGBAOV.add_to_shader">
-<span class="sig-name descname"><span class="pre">add_to_shader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shader_node_tree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.ClassRGBAOV.add_to_shader" title="Link to this definition"></a></dt>
-<dd><p>Add AOV to shader node tree</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.ClassRGBAOV.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.ClassRGBAOV.update" title="Link to this definition"></a></dt>
-<dd><p>Some AOVs need an update before rendering (to change certain node properties)</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.aov.DisplacementGeneratedAOV">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.aov.</span></span><span class="sig-name descname"><span class="pre">DisplacementGeneratedAOV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/aov.html#DisplacementGeneratedAOV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.aov.DisplacementGeneratedAOV" title="Link to this definition"></a></dt>
-<dd><p>In the same co-ordinate space as GeneratedAOV, give the displacement vector
+<dd><p>In the same co-ordinate space as <a class="reference internal" href="#blendersynth.blender.aov.GeneratedAOV" title="blendersynth.blender.aov.GeneratedAOV"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneratedAOV</span></code></a>, give the displacement vector
 for each point under modifiers (e.g. pose).</p>
 <p>By default, this deformation is mapped from the range [-1 to 1] to [0 to 1], with 0.5 representing no
 deformation. Any values outside of this range are clamped.
 This can be modified through the input kwargs vmin and vmax.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.DisplacementGeneratedAOV.add_to_shader">
-<span class="sig-name descname"><span class="pre">add_to_shader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shader_node_tree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.DisplacementGeneratedAOV.add_to_shader" title="Link to this definition"></a></dt>
-<dd><p>Add AOV to shader node tree</p>
+<dt class="sig sig-object py" id="blendersynth.blender.aov.DisplacementGeneratedAOV.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/aov.html#DisplacementGeneratedAOV.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.aov.DisplacementGeneratedAOV.__init__" title="Link to this definition"></a></dt>
+<dd><p>Create AOV for displacement under modifiers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of AOV</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh" title="blendersynth.blender.mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – Mesh to calculate bounds for. Will be used to find bbox_min and bbox_max if given</p></li>
+<li><p><strong>bbox_min</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Minimum of bounding box. If not given, calculated from Mesh</p></li>
+<li><p><strong>bbox_max</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Maximum of bounding box. If not given, calculated from Mesh</p></li>
+<li><p><strong>vmin</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Minimum deformation to map to 0</p></li>
+<li><p><strong>vmax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Maximum value to map to 1</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -218,18 +198,12 @@ This can be modified through the input kwargs vmin and vmax.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<em>blendersynth.blender.mesh.Mesh</em>) – Mesh to calculate bounds for. Will be used to find bbox_min and bbox_max if given</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh" title="blendersynth.blender.mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – Mesh to calculate bounds for. Will be used to find bbox_min and bbox_max if given</p></li>
 <li><p><strong>bbox_min</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Minimum of bounding box. If not given, calculated from Mesh</p></li>
 <li><p><strong>bbox_max</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Maximum of bounding box. If not given, calculated from Mesh</p></li>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.DisplacementGeneratedAOV.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.DisplacementGeneratedAOV.update" title="Link to this definition"></a></dt>
-<dd><p>Some AOVs need an update before rendering (to change certain node properties)</p>
 </dd></dl>
 
 </dd></dl>
@@ -240,18 +214,6 @@ This can be modified through the input kwargs vmin and vmax.</p>
 <dd><p>‘Generated Texture Coordinates’.</p>
 <p>These are coordinates normalized to 0-1 for the object’s undeformed bounding box, not taking into account
 deformation (pose, modifiers). See <a class="reference external" href="https://docs.blender.org/manual/en/latest/render/shader_nodes/input/texture_coordinate.html">Blender docs</a> for more info.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.GeneratedAOV.add_to_shader">
-<span class="sig-name descname"><span class="pre">add_to_shader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shader_node_tree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.GeneratedAOV.add_to_shader" title="Link to this definition"></a></dt>
-<dd><p>Add AOV to shader node tree</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.GeneratedAOV.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.GeneratedAOV.update" title="Link to this definition"></a></dt>
-<dd><p>Some AOVs need an update before rendering (to change certain node properties)</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -259,18 +221,6 @@ deformation (pose, modifiers). See <a class="reference external" href="https://d
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.aov.</span></span><span class="sig-name descname"><span class="pre">InstanceIDAOV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/aov.html#InstanceIDAOV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.aov.InstanceIDAOV" title="Link to this definition"></a></dt>
 <dd><p>Instance ID - given to each object on creation.
 Output is an integer corresponding to the object’s instance ID (0-indexed)</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.InstanceIDAOV.add_to_shader">
-<span class="sig-name descname"><span class="pre">add_to_shader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shader_node_tree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.InstanceIDAOV.add_to_shader" title="Link to this definition"></a></dt>
-<dd><p>Add AOV to shader node tree</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.InstanceIDAOV.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.InstanceIDAOV.update" title="Link to this definition"></a></dt>
-<dd><p>Some AOVs need an update before rendering (to change certain node properties)</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -285,27 +235,23 @@ Updates N at render time by reading the scene property ‘NUM_MESHES’</p>
 <dd><p>Update the divisor node with the current number of instances</p>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.InstanceRGBAOV.add_to_shader">
-<span class="sig-name descname"><span class="pre">add_to_shader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shader_node_tree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.InstanceRGBAOV.add_to_shader" title="Link to this definition"></a></dt>
-<dd><p>Add AOV to shader node tree</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.InstanceRGBAOV.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.InstanceRGBAOV.update" title="Link to this definition"></a></dt>
-<dd><p>Some AOVs need an update before rendering (to change certain node properties)</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.aov.NormalsAOV">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.aov.</span></span><span class="sig-name descname"><span class="pre">NormalsAOV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CAMERA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'XYZ'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/aov.html#NormalsAOV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.aov.NormalsAOV" title="Link to this definition"></a></dt>
 <dd><dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.NormalsAOV.add_to_shader">
-<span class="sig-name descname"><span class="pre">add_to_shader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shader_node_tree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.NormalsAOV.add_to_shader" title="Link to this definition"></a></dt>
-<dd><p>Add AOV to shader node tree</p>
+<dt class="sig sig-object py" id="blendersynth.blender.aov.NormalsAOV.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CAMERA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'XYZ'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/aov.html#NormalsAOV.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.aov.NormalsAOV.__init__" title="Link to this definition"></a></dt>
+<dd><p>Given a shader node tree, add surface normals as output.
+:param shader_node_tree: Shader node tree to add AOV to
+:param aov_name: Name of AOV to add
+:type ref_frame:
+:param ref_frame: Reference frame to use for normals
+:type order:
+:param order: Order of components in RGB (default: XYZ)
+:type polarity:
+:param polarity: Polarity of XYZ (1 or -1)</p>
 </dd></dl>
 
 <dl class="py method">
@@ -320,18 +266,6 @@ Updates N at render time by reading the scene property ‘NUM_MESHES’</p>
 <dt class="sig sig-object py" id="blendersynth.blender.aov.UVAOV">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.aov.</span></span><span class="sig-name descname"><span class="pre">UVAOV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/aov.html#UVAOV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.aov.UVAOV" title="Link to this definition"></a></dt>
 <dd><p>UV coordinates</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.UVAOV.add_to_shader">
-<span class="sig-name descname"><span class="pre">add_to_shader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shader_node_tree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.UVAOV.add_to_shader" title="Link to this definition"></a></dt>
-<dd><p>Add AOV to shader node tree</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.aov.UVAOV.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.aov.UVAOV.update" title="Link to this definition"></a></dt>
-<dd><p>Some AOVs need an update before rendering (to change certain node properties)</p>
-</dd></dl>
-
 </dd></dl>
 
 </section>

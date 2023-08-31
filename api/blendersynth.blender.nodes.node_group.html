@@ -91,11 +91,93 @@
              
   <section id="module-blendersynth.blender.nodes.node_group">
 <span id="blendersynth-blender-nodes-node-group"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes.node_group</span></code><a class="headerlink" href="#module-blendersynth.blender.nodes.node_group" title="Link to this heading"></a></h1>
-<p>Custom compositor node group</p>
+<p>Custom node groups</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.CompositorNodeGroup">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.nodes.node_group.</span></span><span class="sig-name descname"><span class="pre">CompositorNodeGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_group.html#CompositorNodeGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="Link to this definition"></a></dt>
 <dd><p>Node Group for use in the compositor</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.NodeGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.nodes.node_group.</span></span><span class="sig-name descname"><span class="pre">NodeGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_group.html#NodeGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_group.NodeGroup" title="Link to this definition"></a></dt>
+<dd><p>Generic Node Group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.NodeGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_group.html#NodeGroup.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_group.NodeGroup.__init__" title="Link to this definition"></a></dt>
+<dd><p>A generic NodeGroup class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of node group</p></li>
+<li><p><strong>node_tree</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">NodeTree</span></code>) – NodeTree to add group to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.NodeGroup.add_node">
+<span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_group.html#NodeGroup.add_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_group.NodeGroup.add_node" title="Link to this definition"></a></dt>
+<dd><p>Create a new node in the group by name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.NodeGroup.input">
+<span class="sig-name descname"><span class="pre">input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_group.html#NodeGroup.input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_group.NodeGroup.input" title="Link to this definition"></a></dt>
+<dd><p>Get input socket by name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSocket</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.NodeGroup.inputs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#blendersynth.blender.nodes.node_group.NodeGroup.inputs" title="Link to this definition"></a></dt>
+<dd><p>Input sockets</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.NodeGroup.link">
+<span class="sig-name descname"><span class="pre">link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_socket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_socket</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_group.html#NodeGroup.link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_group.NodeGroup.link" title="Link to this definition"></a></dt>
+<dd><p>Link two sockets in the group</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>from_socket</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSocket</span></code>) – Socket to link from</p></li>
+<li><p><strong>to_socket</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSocket</span></code>) – Socket to link to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeLink</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.NodeGroup.output">
+<span class="sig-name descname"><span class="pre">output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_group.html#NodeGroup.output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_group.NodeGroup.output" title="Link to this definition"></a></dt>
+<dd><p>Get output socket by name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSocket</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.NodeGroup.outputs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#blendersynth.blender.nodes.node_group.NodeGroup.outputs" title="Link to this definition"></a></dt>
+<dd><p>Output sockets</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
