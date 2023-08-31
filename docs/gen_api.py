@@ -41,16 +41,21 @@ def manage_item(src):
 
 		# search python script for flags which affect doc building
 		inherit_members = True
+		special_members = ''
 		with open(src, 'r') as f:
 			for line in f.readlines():
 				if '# no-inherited-members' in line:
 					inherit_members = False
 
 				if '# docs-special-members' in line:
-					out_txt += f"\n\t:special-members: {line.split(': ')[1]}\n"
+					special_members = line.split(': ')[1]
+
 
 		if inherit_members:
 			out_txt += '\n\t:inherited-members:'
+
+		if special_members:
+			out_txt += f"\n\t:special-members: {special_members}\n"
 
 	with open(new_file, 'w') as f:
 		f.write(out_txt)
