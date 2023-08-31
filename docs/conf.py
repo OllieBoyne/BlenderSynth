@@ -48,6 +48,7 @@ m2r_parse_relative_links = True
 
 from typing import List
 
+# get mapping from types.py without importing all of blendersynth
 module_globals = {}
 with open('../blendersynth/utils/types.py') as f:
     l = f.read()

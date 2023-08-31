@@ -10,6 +10,9 @@ ref_frames = ['CAMERA', 'WORLD', 'OBJECT']
 _socket_color_types = (bpy.types.NodeSocketVector, bpy.types.NodeSocketColor)
 _socket_value_types = (bpy.types.NodeSocketFloat, bpy.types.NodeSocketInt)
 
+# docs-special-members: __init__
+# no-inherited-members
+
 
 class AOV:
 	"""A generic Arbitrary Output Value.
@@ -138,7 +141,7 @@ class GeneratedAOV(AOV):
 
 
 class DisplacementGeneratedAOV(AOV):
-	"""In the same co-ordinate space as GeneratedAOV, give the displacement vector
+	"""In the same co-ordinate space as :class:`GeneratedAOV`, give the displacement vector
 	for each point under modifiers (e.g. pose).
 
 	By default, this deformation is mapped from the range [-1 to 1] to [0 to 1], with 0.5 representing no
@@ -146,7 +149,7 @@ class DisplacementGeneratedAOV(AOV):
 	This can be modified through the input kwargs vmin and vmax.
 	"""
 
-	def __init__(self, *, name: str = None, mesh: 'blendersynth.blender.mesh.Mesh' = None,
+	def __init__(self, *, name: str = None, mesh: types.Mesh = None,
 				 bbox_min: types.VectorLike = None, bbox_max: types.VectorLike = None,
 				 vmin: float = -1, vmax: float = 1):
 		"""Create AOV for displacement under modifiers.
@@ -195,7 +198,7 @@ class DisplacementGeneratedAOV(AOV):
 		tidy_tree(shader_node_tree)
 		return map_range_node.outputs['Vector']
 
-	def set_bounds(self, mesh: 'blendersynth.blender.mesh.Mesh' = None,
+	def set_bounds(self, mesh: types.Mesh = None,
 				bbox_min: types.VectorLike = None, bbox_max: types.VectorLike = None):
 		"""Set bounds for DeformedGeneratedTextureCoordinates node group
 

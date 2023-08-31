@@ -119,7 +119,7 @@ class BsynObject:
 			self._apply_rotation(rotation)  # apply new rotation
 
 	@animatable_property('scale')
-	def set_scale(self, scale: types.VectorLikeOrScalarAlias):
+	def set_scale(self, scale: types.VectorLikeOrScalar):
 		"""Set scale of object.
 
 		:param scale: Scale to set. Either single value or 3 long vector"""

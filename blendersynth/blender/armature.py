@@ -56,7 +56,7 @@ class PoseBone(BsynObject):
 		return self.matrix_world.to_euler()
 
 	@animatable_property('scale')
-	def set_scale(self, scale: types.VectorLikeOrScalarAlias):
+	def set_scale(self, scale: types.VectorLikeOrScalar):
 		"""Set scale of pose bone.
 
 		:param scale: Scale to set. Either single value or 3 long vector"""

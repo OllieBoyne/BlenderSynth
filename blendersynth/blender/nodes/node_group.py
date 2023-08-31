@@ -1,14 +1,19 @@
-"""Custom compositor node group"""
+"""Custom node groups"""
 import bpy
 from .node_arranger import tidy_tree
 
+# docs-special-members: __init__
+# no-inherited-members
+
 
 class NodeGroup:
+	"""Generic Node Group"""
 	TYPE = 'Compositor'
 
 	def __init__(self, name: str, node_tree: bpy.types.NodeTree):
 		"""
 		A generic NodeGroup class
+
 		:param name: Name of node group
 		:param node_tree: NodeTree to add group to
 		"""
@@ -26,23 +31,34 @@ class NodeGroup:
 		tidy_tree(self.group)
 
 	@property
-	def inputs(self):
+	def inputs(self) -> dict:
+		"""Input sockets"""
 		return self.gn.inputs
 
 	@property
-	def outputs(self):
+	def outputs(self) -> dict:
+		"""Output sockets"""
 		return self.gn.outputs
 
-	def input(self, name):
+	def input(self, name: str) -> bpy.types.NodeSocket:
+		"""Get input socket by name"""
 		return self.inputs[name]
 
-	def output(self, name):
+	def output(self, name: str) -> bpy.types.NodeSocket:
+		"""Get output socket by name"""
 		return self.outputs[name]
 
-	def add_node(self, key):
+	def add_node(self, key: str) -> bpy.types.Node:
+		"""Create a new node in the group by name"""
 		return self.group.nodes.new(key)
 
-	def link(self, from_socket, to_socket):
+	def link(self, from_socket: bpy.types.NodeSocket, to_socket: bpy.types.NodeSocket) -> bpy.types.NodeLink:
+		"""
+		Link two sockets in the group
+
+		:param from_socket: Socket to link from
+		:param to_socket: Socket to link to
+		"""
 		return self.group.links.new(from_socket, to_socket)
 
 	def __str__(self):

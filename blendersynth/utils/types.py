@@ -52,7 +52,6 @@ def sphinxify_type_hint(type_hint):
 	return sphinx_type_hint
 
 
-
 sphinx_mappings = {} # dictionary of Sphinx auto type hint -> Type hint within this file
 wrapper_mappings = {} # dictionary of object -> type hint within this file
 for k in ['VectorLike', 'VectorLikeOrScalar']:
@@ -61,3 +60,10 @@ for k in ['VectorLike', 'VectorLikeOrScalar']:
 	value = f':class:`{k} <{types_loc}.{k}>`'
 	sphinx_mappings[key] = value
 	wrapper_mappings[obj] = value
+
+# to avoid circular referencing, we also create some more type hints here (e.g. Mesh)
+Mesh = 'blendersynth.blender.mesh.Mesh'
+
+for name in ['Mesh']:
+	obj = globals()[name]
+	sphinx_mappings[sphinxify_type_hint(obj)] = f':class:`{name} <{obj}>`'

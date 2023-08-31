@@ -12,11 +12,11 @@ class DeformedGeneratedTextureCoordinates(ShaderNodeGroup):
 	"""Similar to TextureCoordinate's 'Generated'. Same coordinate space, but the vertex positions are deformed by
 	pose and modifiers.
 
-	For example use, see :class:`blendersynth.blender.aov.DisplacementGeneratedAOV`.
+	For example use, see :class:`DisplacementGeneratedAOV <blendersynth.blender.aov.DisplacementGeneratedAOV>`.
 	"""
 
 	def __init__(self, node_tree : bpy.types.NodeTree,
-		mesh: 'blendersynth.blender.mesh.Mesh', bbox_min: types.VectorLike, bbox_max: types.VectorLike):
+		mesh: types.Mesh, bbox_min: types.VectorLike, bbox_max: types.VectorLike):
 		"""To calculate the generated space, either needs mesh or bbox_min, bbox_max.
 
 		:param node_tree: NodeTree to add group to
@@ -48,7 +48,7 @@ class DeformedGeneratedTextureCoordinates(ShaderNodeGroup):
 
 		self.tidy()
 
-	def register_bounds(self, mesh: 'blendersynth.blender.mesh.Mesh', bbox_min: types.VectorLike, bbox_max: types.VectorLike):
+	def register_bounds(self, mesh: types.Mesh, bbox_min: types.VectorLike, bbox_max: types.VectorLike):
 		# calculate bbox_min, bbox_max if not given
 		if mesh:
 			bbox_min, bbox_max = mesh.get_raw_bounds()

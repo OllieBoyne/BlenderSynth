@@ -37,13 +37,20 @@ def manage_item(src):
 			out_txt += f'	{child_fname}\n'
 
 	else:
-		out_txt += f".. automodule:: {fname}\n\t:members:\n\t:inherited-members:"
+		out_txt += f".. automodule:: {fname}\n\t:members:"
 
-		# search for comment in file that says 'docs-special-members'
+		# search python script for flags which affect doc building
+		inherit_members = True
 		with open(src, 'r') as f:
 			for line in f.readlines():
+				if '# no-inherited-members' in line:
+					inherit_members = False
+
 				if '# docs-special-members' in line:
 					out_txt += f"\n\t:special-members: {line.split(': ')[1]}\n"
+
+		if inherit_members:
+			out_txt += '\n\t:inherited-members:'
 
 	with open(new_file, 'w') as f:
 		f.write(out_txt)
