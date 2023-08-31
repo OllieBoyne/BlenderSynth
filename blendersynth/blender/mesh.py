@@ -56,12 +56,13 @@ def _set_object_origin(obj: bpy.types.Object, origin: Vector):
 	with SelectObjects([obj]), CursorAt(origin):
 		bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
 
+
 class Mesh(BsynObject):
 	"""A mesh object. Can be a single mesh, or a hierarchy of meshes."""
 	primitive_list = list(_primitives.keys())
 	"""List of available primitives"""
 
-	def __init__(self, obj, material=None, scene=None, class_id=None):
+	def __init__(self, obj, material: bpy.types.Material = None, scene: bpy.types.Scene = None, class_id: int = None):
 		"""
 		:param obj: Receives either a single mesh, or an empty with children empty & meshes
 		:param material: bpy.types.Material to assign to the mesh
@@ -327,6 +328,13 @@ class Mesh(BsynObject):
 
 		self.assigned_aovs.append(aov)
 
+	def assign_aovs(self, aovs: List[AOV]):
+		"""Assign multiple AOVs to object. Applies to all materials.
+
+		:param aovs: AOVs to assign"""
+		for aov in aovs:
+			self.assign_aov(aov)
+
 	def set_minimum_to(self, axis: str = 'Z', pos: float = 0):
 		"""Set minimum of object to a given position in a given axis.
 
@@ -492,7 +500,6 @@ class Mesh(BsynObject):
 				return bsyn_arm
 
 		raise KeyError(f"Armature `{armature_name}` not found.")
-
 
 	@property
 	def material(self):

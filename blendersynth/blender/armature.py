@@ -128,8 +128,8 @@ class Armature(BsynObject):
 
 		raise TypeError(f"Expected bone to be PoseBone, str, or PoseBone, got {type(bone)}")
 
-	def pose_bone(self, bone: Union[str, bpy.types.PoseBone], rotation: types.VectorLikeAlias = None,
-				  location: types.VectorLikeAlias = None, scale: types.VectorLikeAlias = None,
+	def pose_bone(self, bone: Union[str, bpy.types.PoseBone], rotation: types.VectorLike = None,
+				  location: types.VectorLike = None, scale: types.VectorLike = None,
 				  frame: int = None):
 
 		"""Set the pose of a bone by giving a Euler XYZ rotation and/or location.

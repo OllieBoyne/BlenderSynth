@@ -43,3 +43,29 @@ html_theme_options = {
 
 source_suffix = ['.rst', '.md']
 m2r_parse_relative_links = True
+
+# the below code provides some post-processing of function docstrings for linking to custom Typing hints
+
+from typing import List
+
+module_globals = {}
+with open('../blendersynth/utils/types.py') as f:
+    l = f.read()
+    exec(l, module_globals)
+
+sphinx_mappings = module_globals['sphinx_mappings']
+
+def process_docstring(app, what, name, obj, options, lines: List[str]):
+
+    new_lines = []
+    # replace any instance of sphinx_mappings
+    for line in lines:
+        for k, v in sphinx_mappings.items():
+            line = line.replace(k, v)
+        new_lines.append(line)
+
+    lines.clear()
+    lines.extend(new_lines)
+
+def setup(app):
+    app.connect('autodoc-process-docstring', process_docstring)

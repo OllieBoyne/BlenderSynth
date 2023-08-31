@@ -27,8 +27,8 @@ class Light(BsynObject):
 		return cls(obj)
 
 	@classmethod
-	def create(cls, light_type:str='POINT', name:str='Light', intensity:float=1.0,
-			   color:types.VectorLikeAlias=(1.0, 1.0, 1.0), location:types.VectorLikeAlias=(0, 0, 0)):
+	def create(cls, light_type: str = 'POINT', name: str = 'Light', intensity: float = 1.0,
+			   color: types.VectorLike = (1.0, 1.0, 1.0), location: types.VectorLike = (0, 0, 0)):
 		"""Create a new Light object
 
 		:param light_type: Type of light to create (see :attr:`~blendersynth.blender.light.Light.light_types`)
@@ -80,7 +80,7 @@ class Light(BsynObject):
 		self.set_color(value)
 
 	@animatable_property('color', use_data_object=True)
-	def set_color(self, value: types.VectorLikeAlias):
+	def set_color(self, value: types.VectorLike):
 		"""Set color of light source
 
 		:param value: RGB[A] color

@@ -1,5 +1,5 @@
 import bpy
-from blender.nodes.node_arranger import tidy_tree
+from .nodes.node_arranger import tidy_tree
 from typing import Union
 
 class World():

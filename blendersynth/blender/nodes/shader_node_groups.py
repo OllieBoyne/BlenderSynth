@@ -1,11 +1,12 @@
 """Node Group collections for use in Blender"""
 
 import bpy
-from blendersynth.utils.types import VectorLikeAlias
+from ...utils import types
 import numpy as np
 from mathutils import Vector
 from .node_group import ShaderNodeGroup
 
+# docs-special-members: __init__
 
 class DeformedGeneratedTextureCoordinates(ShaderNodeGroup):
 	"""Similar to TextureCoordinate's 'Generated'. Same coordinate space, but the vertex positions are deformed by
@@ -15,7 +16,7 @@ class DeformedGeneratedTextureCoordinates(ShaderNodeGroup):
 	"""
 
 	def __init__(self, node_tree : bpy.types.NodeTree,
-		mesh: 'blendersynth.blender.mesh.Mesh', bbox_min: VectorLikeAlias, bbox_max: VectorLikeAlias):
+		mesh: 'blendersynth.blender.mesh.Mesh', bbox_min: types.VectorLike, bbox_max: types.VectorLike):
 		"""To calculate the generated space, either needs mesh or bbox_min, bbox_max.
 
 		:param node_tree: NodeTree to add group to
@@ -47,7 +48,7 @@ class DeformedGeneratedTextureCoordinates(ShaderNodeGroup):
 
 		self.tidy()
 
-	def register_bounds(self, mesh: 'blendersynth.blender.mesh.Mesh', bbox_min: VectorLikeAlias, bbox_max: VectorLikeAlias):
+	def register_bounds(self, mesh: 'blendersynth.blender.mesh.Mesh', bbox_min: types.VectorLike, bbox_max: types.VectorLike):
 		# calculate bbox_min, bbox_max if not given
 		if mesh:
 			bbox_min, bbox_max = mesh.get_raw_bounds()

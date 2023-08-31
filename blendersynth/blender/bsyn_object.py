@@ -88,7 +88,7 @@ class BsynObject:
 		self.set_scale(scale)
 
 	@animatable_property('location')
-	def set_location(self, location: types.VectorLikeAlias):
+	def set_location(self, location: types.VectorLike):
 		"""Set location of object.
 
 		:param location: Location vector to set"""
@@ -105,7 +105,7 @@ class BsynObject:
 										 constraint_axis=[ax == 'X', ax == 'Y', ax == 'Z'])
 
 	@animatable_property('rotation_euler')
-	def set_rotation_euler(self, rotation: types.VectorLikeAlias):
+	def set_rotation_euler(self, rotation: types.VectorLike):
 		"""Set euler rotation of object.
 
 		:param rotation: Rotation vector"""

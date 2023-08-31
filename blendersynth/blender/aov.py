@@ -2,7 +2,7 @@
 
 import bpy
 from .nodes import tidy_tree, DeformedGeneratedTextureCoordinates
-from ..utils.types import VectorLikeAlias
+from ..utils import types
 
 ref_frames = ['CAMERA', 'WORLD', 'OBJECT']
 
@@ -147,7 +147,7 @@ class DisplacementGeneratedAOV(AOV):
 	"""
 
 	def __init__(self, *, name: str = None, mesh: 'blendersynth.blender.mesh.Mesh' = None,
-				 bbox_min: VectorLikeAlias = None, bbox_max: VectorLikeAlias = None,
+				 bbox_min: types.VectorLike = None, bbox_max: types.VectorLike = None,
 				 vmin: float = -1, vmax: float = 1):
 		"""Create AOV for displacement under modifiers.
 
@@ -165,6 +165,8 @@ class DisplacementGeneratedAOV(AOV):
 		self.bbox_max = bbox_max
 		self.vmin = vmin
 		self.vmax = vmax
+
+		assert (mesh is not None or (bbox_min is not None and bbox_max is not None)), "Either mesh or bbox_min and bbox_max must be given for DisplacementGeneratedAOV"
 
 	def _add_to_shader(self, shader_node_tree):
 		self.deformed_coords = DeformedGeneratedTextureCoordinates(
@@ -194,7 +196,7 @@ class DisplacementGeneratedAOV(AOV):
 		return map_range_node.outputs['Vector']
 
 	def set_bounds(self, mesh: 'blendersynth.blender.mesh.Mesh' = None,
-				bbox_min: VectorLikeAlias = None, bbox_max: VectorLikeAlias = None):
+				bbox_min: types.VectorLike = None, bbox_max: types.VectorLike = None):
 		"""Set bounds for DeformedGeneratedTextureCoordinates node group
 
 		:param mesh: Mesh to calculate bounds for. Will be used to find bbox_min and bbox_max if given

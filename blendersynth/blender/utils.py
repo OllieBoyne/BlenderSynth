@@ -141,7 +141,7 @@ class CursorAt():
 	"""Context manager for moving the cursor to a specific location in space.
 	On exit, will return the cursor to its original location."""
 
-	def __init__(self, target: types.VectorLikeAlias):
+	def __init__(self, target: types.VectorLike):
 		self.original_location = None
 		self.target = target
 
@@ -252,13 +252,23 @@ def animatable_property(data_path: str, use_data_object: bool = False) -> callab
 				name = line.split(':')[1].strip().removeprefix('param ')
 				param_type = param_types.get(name, inspect._empty)
 				if param_type is not inspect._empty:  # If the parameter has a type hint
-					if hasattr(param_type, '__name__'):
-						class_name = param_type.__name__
 
-					else: # get class name e.g. blendersynth.utils.Object
-						class_name = str(param_type)
+					# For custom classes
+					if param_type in types.wrapper_mappings:
+						new_line = f'{indentation}:type {name}: {types.wrapper_mappings[param_type]}'
 
-					doc_lines.append(f'{indentation}:type {name}: :class:`~{class_name}`')
+					# For built-in classes
+					else:
+						if hasattr(param_type, '__name__'):
+							class_name = param_type.__name__
+
+						else:  # get class name e.g. blendersynth.utils.Object
+							class_name = str(param_type)
+
+						new_line = f'{indentation}:type {name}: :class:`~{class_name}`'
+
+					doc_lines.append(new_line)
+
 
 		# add frame param
 		doc_lines.append(f"\n{indentation}:param frame: Optional frame for animating \n{indentation}:type frame: :class:`~int`")

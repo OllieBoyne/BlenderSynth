@@ -1,6 +1,6 @@
 from .bsyn_object import BsynObject
 import bpy
-from ..utils.types import VectorLikeAlias
+from ..utils import types
 from .utils import GetNewObject
 
 class Empty(BsynObject):
@@ -14,15 +14,15 @@ class Empty(BsynObject):
 			obj.name = name
 
 	@classmethod
-	def create(cls, location: VectorLikeAlias = None, rotation: VectorLikeAlias = None,
-			   scale: VectorLikeAlias = None, radius: float = 1.0, name=None, **kwargs):
+	def create(cls, location: types.VectorLike = None, rotation: types.VectorLike = None,
+			   scale: types.VectorLike = None, radius: float = 1.0, name=None, **kwargs):
 		"""Create and return a new Empty instance."""
 		obj = cls._create_empty_in_blender(location, rotation, scale, radius, **kwargs)
 		return cls(obj, name=name)
 
 	@staticmethod
-	def _create_empty_in_blender(location: VectorLikeAlias = None, rotation: VectorLikeAlias = None,
-								 scale: VectorLikeAlias = None, radius: float = 1.0, **kwargs) -> bpy.types.Object:
+	def _create_empty_in_blender(location: types.VectorLike = None, rotation: types.VectorLike = None,
+								 scale: types.VectorLike = None, radius: float = 1.0, **kwargs) -> bpy.types.Object:
 		"""Private method to create and return a new Empty object in Blender."""
 
 		importer = GetNewObject(bpy.context.scene)
