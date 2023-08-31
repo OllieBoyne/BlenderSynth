@@ -1,0 +1,7 @@
+:code:`blendersynth.blender.nodes.node_group`
+================================================
+
+
+.. automodule:: blendersynth.blender.nodes.node_group
+	:members:
+	:inherited-members:

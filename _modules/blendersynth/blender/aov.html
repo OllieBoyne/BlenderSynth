@@ -88,13 +88,15 @@
 <span></span><span class="sd">&quot;&quot;&quot;Shader AOV manager&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">..utils.node_arranger</span> <span class="kn">import</span> <span class="n">tidy_tree</span>
+<span class="kn">from</span> <span class="nn">.nodes</span> <span class="kn">import</span> <span class="n">tidy_tree</span><span class="p">,</span> <span class="n">DeformedGeneratedTextureCoordinates</span>
+<span class="kn">from</span> <span class="nn">..utils.types</span> <span class="kn">import</span> <span class="n">VectorLikeAlias</span>
 
 <span class="n">ref_frames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CAMERA&#39;</span><span class="p">,</span> <span class="s1">&#39;WORLD&#39;</span><span class="p">,</span> <span class="s1">&#39;OBJECT&#39;</span><span class="p">]</span>
 
 <span class="c1"># Acceptable socket types for AOV colors &amp; nodes</span>
 <span class="n">_socket_color_types</span> <span class="o">=</span> <span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocketVector</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocketColor</span><span class="p">)</span>
 <span class="n">_socket_value_types</span> <span class="o">=</span> <span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocketFloat</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocketInt</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="AOV">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AOV">[docs]</a>
@@ -105,7 +107,8 @@
 <span class="sd">	&quot;&quot;&quot;</span>
 
 	<span class="n">AOV_TYPE</span> <span class="o">=</span> <span class="s1">&#39;COLOR&#39;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 		<span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 			<span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
 
@@ -126,7 +129,6 @@
 		<span class="n">aov</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_aov</span> <span class="o">=</span> <span class="n">aov</span>
 
-
 <div class="viewcode-block" id="AOV.add_to_shader">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AOV.add_to_shader">[docs]</a>
 	<span class="k">def</span> <span class="nf">add_to_shader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shader_node_tree</span><span class="p">):</span>
@@ -141,7 +143,8 @@
 		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out_socket</span><span class="p">,</span> <span class="n">_socket_value_types</span><span class="p">):</span>
 			<span class="n">AOV_TYPE</span> <span class="o">=</span> <span class="s1">&#39;VALUE&#39;</span>
 		<span class="k">else</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output of _add_to_layer must be in </span><span class="si">{</span><span class="n">_socket_color_types</span><span class="si">}</span><span class="s2"> if Color or </span><span class="si">{</span><span class="n">_socket_value_types</span><span class="si">}</span><span class="s2"> if value. Got: `</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out_socket</span><span class="p">)</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+				<span class="sa">f</span><span class="s2">&quot;Output of _add_to_layer must be in </span><span class="si">{</span><span class="n">_socket_color_types</span><span class="si">}</span><span class="s2"> if Color or </span><span class="si">{</span><span class="n">_socket_value_types</span><span class="si">}</span><span class="s2"> if value. Got: `</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out_socket</span><span class="p">)</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
 
 		<span class="n">shader_aov_node</span> <span class="o">=</span> <span class="n">shader_node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ShaderNodeOutputAOV&#39;</span><span class="p">)</span>
 		<span class="n">shader_aov_node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
@@ -165,13 +168,14 @@
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
 
 
+
 <div class="viewcode-block" id="NormalsAOV">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.NormalsAOV">[docs]</a>
 <span class="k">class</span> <span class="nc">NormalsAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-					<span class="n">ref_frame</span><span class="o">=</span><span class="s1">&#39;CAMERA&#39;</span><span class="p">,</span>
-					<span class="n">order</span><span class="o">=</span><span class="s1">&#39;XYZ&#39;</span><span class="p">,</span>
-					<span class="n">polarity</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+				 <span class="n">ref_frame</span><span class="o">=</span><span class="s1">&#39;CAMERA&#39;</span><span class="p">,</span>
+				 <span class="n">order</span><span class="o">=</span><span class="s1">&#39;XYZ&#39;</span><span class="p">,</span>
+				 <span class="n">polarity</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Given a shader node tree, add surface normals as output.</span>
 <span class="sd">		:param shader_node_tree: Shader node tree to add AOV to</span>
 <span class="sd">		:param aov_name: Name of AOV to add</span>
@@ -179,7 +183,7 @@
 <span class="sd">		:param order: Order of components in RGB (default: XYZ)</span>
 <span class="sd">		:param polarity: Polarity of XYZ (1 or -1)</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 		<span class="k">assert</span> <span class="n">ref_frame</span> <span class="ow">in</span> <span class="n">ref_frames</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;ref_frame must be one of </span><span class="si">{</span><span class="n">ref_frames</span><span class="si">}</span><span class="s2">&quot;</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">ref_frame</span> <span class="o">=</span> <span class="n">ref_frame</span>
@@ -222,15 +226,96 @@
 </div>
 
 
-<div class="viewcode-block" id="NOCAOV">
-<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.NOCAOV">[docs]</a>
-<span class="k">class</span> <span class="nc">NOCAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Normalised object coordinates - Gives the position of the object in object space,</span>
-<span class="sd">	normalised to the object&#39;s bounding box.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GeneratedAOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.GeneratedAOV">[docs]</a>
+<span class="k">class</span> <span class="nc">GeneratedAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;&#39;Generated Texture Coordinates&#39;.</span>
+
+<span class="sd">	These are coordinates normalized to 0-1 for the object&#39;s undeformed bounding box, not taking into account</span>
+<span class="sd">	deformation (pose, modifiers). See `Blender docs &lt;https://docs.blender.org/manual/en/latest/render/shader_nodes/input/texture_coordinate.html&gt;`_ for more info.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
 
 	<span class="k">def</span> <span class="nf">_add_to_shader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shader_node_tree</span><span class="p">):</span>
 		<span class="n">texcon_node</span> <span class="o">=</span> <span class="n">shader_node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ShaderNodeTexCoord&#39;</span><span class="p">)</span>
 		<span class="k">return</span> <span class="n">texcon_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Generated&#39;</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="DisplacementGeneratedAOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.DisplacementGeneratedAOV">[docs]</a>
+<span class="k">class</span> <span class="nc">DisplacementGeneratedAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;In the same co-ordinate space as GeneratedAOV, give the displacement vector</span>
+<span class="sd">	for each point under modifiers (e.g. pose).</span>
+
+<span class="sd">	By default, this deformation is mapped from the range [-1 to 1] to [0 to 1], with 0.5 representing no</span>
+<span class="sd">	deformation. Any values outside of this range are clamped.</span>
+<span class="sd">	This can be modified through the input kwargs vmin and vmax.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">mesh</span><span class="p">:</span> <span class="s1">&#39;blendersynth.blender.mesh.Mesh&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+				 <span class="n">bbox_min</span><span class="p">:</span> <span class="n">VectorLikeAlias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bbox_max</span><span class="p">:</span> <span class="n">VectorLikeAlias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+				 <span class="n">vmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Create AOV for displacement under modifiers.</span>
+
+<span class="sd">		:param name: Name of AOV</span>
+<span class="sd">		:param mesh: Mesh to calculate bounds for. Will be used to find bbox_min and bbox_max if given</span>
+<span class="sd">		:param bbox_min: Minimum of bounding box. If not given, calculated from Mesh</span>
+<span class="sd">		:param bbox_max: Maximum of bounding box. If not given, calculated from Mesh</span>
+<span class="sd">		:param vmin: Minimum deformation to map to 0</span>
+<span class="sd">		:param vmax: Maximum value to map to 1</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bbox_min</span> <span class="o">=</span> <span class="n">bbox_min</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bbox_max</span> <span class="o">=</span> <span class="n">bbox_max</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">vmin</span> <span class="o">=</span> <span class="n">vmin</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">vmax</span> <span class="o">=</span> <span class="n">vmax</span>
+
+	<span class="k">def</span> <span class="nf">_add_to_shader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shader_node_tree</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">deformed_coords</span> <span class="o">=</span> <span class="n">DeformedGeneratedTextureCoordinates</span><span class="p">(</span>
+			<span class="n">node_tree</span><span class="o">=</span><span class="n">shader_node_tree</span><span class="p">,</span>
+			<span class="n">mesh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span>
+			<span class="n">bbox_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bbox_min</span><span class="p">,</span>
+			<span class="n">bbox_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bbox_max</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">generated_coords</span> <span class="o">=</span> <span class="n">shader_node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ShaderNodeTexCoord&#39;</span><span class="p">)</span>
+
+		<span class="c1"># subtract one from the other</span>
+		<span class="n">sub_node</span> <span class="o">=</span> <span class="n">shader_node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ShaderNodeVectorMath&#39;</span><span class="p">)</span>
+		<span class="n">sub_node</span><span class="o">.</span><span class="n">operation</span> <span class="o">=</span> <span class="s1">&#39;SUBTRACT&#39;</span>
+
+		<span class="c1"># map result to range 0-1</span>
+		<span class="n">map_range_node</span> <span class="o">=</span> <span class="n">shader_node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ShaderNodeMapRange&#39;</span><span class="p">)</span>
+		<span class="n">map_range_node</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="s1">&#39;FLOAT_VECTOR&#39;</span>
+		<span class="n">map_range_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vmin</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+		<span class="n">map_range_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+
+		<span class="c1"># link up nodes</span>
+		<span class="n">shader_node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deformed_coords</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">],</span> <span class="n">sub_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+		<span class="n">shader_node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generated_coords</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Generated&#39;</span><span class="p">],</span> <span class="n">sub_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">shader_node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">sub_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">],</span> <span class="n">map_range_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">])</span>
+
+		<span class="n">tidy_tree</span><span class="p">(</span><span class="n">shader_node_tree</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">map_range_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="DisplacementGeneratedAOV.set_bounds">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.DisplacementGeneratedAOV.set_bounds">[docs]</a>
+	<span class="k">def</span> <span class="nf">set_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">:</span> <span class="s1">&#39;blendersynth.blender.mesh.Mesh&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+				<span class="n">bbox_min</span><span class="p">:</span> <span class="n">VectorLikeAlias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bbox_max</span><span class="p">:</span> <span class="n">VectorLikeAlias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set bounds for DeformedGeneratedTextureCoordinates node group</span>
+
+<span class="sd">		:param mesh: Mesh to calculate bounds for. Will be used to find bbox_min and bbox_max if given</span>
+<span class="sd">		:param bbox_min: Minimum of bounding box. If not given, calculated from Mesh</span>
+<span class="sd">		:param bbox_max: Maximum of bounding box. If not given, calculated from Mesh</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bbox_min</span> <span class="o">=</span> <span class="n">bbox_min</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bbox_max</span> <span class="o">=</span> <span class="n">bbox_max</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">node_group</span><span class="o">.</span><span class="n">register_bounds</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">bbox_min</span><span class="p">,</span> <span class="n">bbox_max</span><span class="p">)</span></div>
+</div>
+
 
 
 <div class="viewcode-block" id="UVAOV">
@@ -258,6 +343,7 @@
 		<span class="k">return</span> <span class="n">attr_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Instance Index&#39;</span><span class="p">]</span></div>
 
 
+
 <div class="viewcode-block" id="InstanceIDAOV">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.InstanceIDAOV">[docs]</a>
 <span class="k">class</span> <span class="nc">InstanceIDAOV</span><span class="p">(</span><span class="n">AttrAOV</span><span class="p">):</span>
@@ -266,6 +352,7 @@
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">attribute_type</span> <span class="o">=</span> <span class="s1">&#39;OBJECT&#39;</span>
 	<span class="n">attribute_name</span> <span class="o">=</span> <span class="s1">&#39;instance_id&#39;</span></div>
+
 
 
 <div class="viewcode-block" id="ClassIDAOV">
@@ -280,6 +367,7 @@
 	<span class="n">attribute_name</span> <span class="o">=</span> <span class="s1">&#39;class_id&#39;</span></div>
 
 
+
 <div class="viewcode-block" id="AttrRGBAOV">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AttrRGBAOV">[docs]</a>
 <span class="k">class</span> <span class="nc">AttrRGBAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
@@ -292,8 +380,8 @@
 	<span class="n">attribute_type</span> <span class="o">=</span> <span class="kc">None</span>
 	<span class="n">attribute_name</span> <span class="o">=</span> <span class="kc">None</span>
 
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
 		<span class="c1"># Create Int Index -&gt; HSV as a node group, so the &#39;num_objects&#39; parameter can be edited centrally</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">node_groups</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;IdxToHue&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;ShaderNodeTree&#39;</span><span class="p">)</span>
@@ -304,7 +392,8 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">input_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;NodeGroupInput&#39;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">output_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;NodeGroupOutput&#39;</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">div_node</span> <span class="o">=</span> <span class="n">div_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ShaderNodeMath&#39;</span><span class="p">)</span>  <span class="c1"># Need to keep reference so can update at runtime</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">div_node</span> <span class="o">=</span> <span class="n">div_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+			<span class="s1">&#39;ShaderNodeMath&#39;</span><span class="p">)</span>  <span class="c1"># Need to keep reference so can update at runtime</span>
 		<span class="n">div_node</span><span class="o">.</span><span class="n">operation</span> <span class="o">=</span> <span class="s1">&#39;DIVIDE&#39;</span>
 		<span class="n">div_node</span><span class="o">.</span><span class="n">use_clamp</span> <span class="o">=</span> <span class="kc">True</span>
 		<span class="n">div_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span>
@@ -312,7 +401,7 @@
 		<span class="n">hsv_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ShaderNodeHueSaturation&#39;</span><span class="p">)</span>
 		<span class="n">hsv_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Saturation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="mi">1</span>
 		<span class="n">hsv_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="mi">1</span>
-		<span class="n">hsv_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Color&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># Red</span>
+		<span class="n">hsv_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Color&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Red</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Index&#39;</span><span class="p">],</span> <span class="n">div_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">div_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Value&#39;</span><span class="p">],</span> <span class="n">hsv_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Hue&#39;</span><span class="p">])</span>
@@ -342,6 +431,7 @@
 		<span class="k">return</span> <span class="mi">0</span></div>
 
 
+
 <div class="viewcode-block" id="InstanceRGBAOV">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.InstanceRGBAOV">[docs]</a>
 <span class="k">class</span> <span class="nc">InstanceRGBAOV</span><span class="p">(</span><span class="n">AttrRGBAOV</span><span class="p">):</span>
@@ -357,6 +447,7 @@
 	<span class="k">def</span> <span class="nf">N</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Update the divisor node with the current number of instances&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;NUM_MESHES&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span></div>
+
 
 
 <div class="viewcode-block" id="ClassRGBAOV">

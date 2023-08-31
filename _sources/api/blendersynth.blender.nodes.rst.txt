@@ -1,0 +1,10 @@
+:code:`blendersynth.blender.nodes`
+=====================================
+
+
+.. toctree::
+	:maxdepth: 1
+
+	blendersynth.blender.nodes.node_arranger
+	blendersynth.blender.nodes.node_group
+	blendersynth.blender.nodes.shader_node_groups

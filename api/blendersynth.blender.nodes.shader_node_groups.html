@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blendersynth.annotations.keypoints &mdash; BlenderSynth 2023 documentation</title>
+  <title>blendersynth.blender.nodes.shader_node_groups &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="blendersynth.annotations.utils" href="blendersynth.annotations.utils.html" />
-    <link rel="prev" title="blendersynth.annotations.bbox" href="blendersynth.annotations.bbox.html" /> 
+    <link rel="next" title="blendersynth.blender.other_objects" href="blendersynth.blender.other_objects.html" />
+    <link rel="prev" title="blendersynth.blender.nodes.node_group" href="blendersynth.blender.nodes.node_group.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -56,8 +56,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
@@ -77,10 +77,11 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations.keypoints</span></code></li>
+          <li class="breadcrumb-item"><a href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+          <li class="breadcrumb-item"><a href="blendersynth.blender.nodes.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes.shader_node_groups</span></code></li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/blendersynth.annotations.keypoints.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/blendersynth.blender.nodes.shader_node_groups.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -88,16 +89,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-annotations-keypoints">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations.keypoints</span></code><a class="headerlink" href="#blendersynth-annotations-keypoints" title="Link to this heading"></a></h1>
+  <section id="module-blendersynth.blender.nodes.shader_node_groups">
+<span id="blendersynth-blender-nodes-shader-node-groups"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes.shader_node_groups</span></code><a class="headerlink" href="#module-blendersynth.blender.nodes.shader_node_groups" title="Link to this heading"></a></h1>
+<p>Node Group collections for use in Blender</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.shader_node_groups.DeformedGeneratedTextureCoordinates">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.nodes.shader_node_groups.</span></span><span class="sig-name descname"><span class="pre">DeformedGeneratedTextureCoordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/shader_node_groups.html#DeformedGeneratedTextureCoordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.shader_node_groups.DeformedGeneratedTextureCoordinates" title="Link to this definition"></a></dt>
+<dd><p>Similar to TextureCoordinate’s ‘Generated’. Same coordinate space, but the vertex positions are deformed by
+pose and modifiers.</p>
+<p>For example use, see <a class="reference internal" href="blendersynth.blender.aov.html#blendersynth.blender.aov.DisplacementGeneratedAOV" title="blendersynth.blender.aov.DisplacementGeneratedAOV"><code class="xref py py-class docutils literal notranslate"><span class="pre">blendersynth.blender.aov.DisplacementGeneratedAOV</span></code></a>.</p>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="blendersynth.annotations.bbox.html" class="btn btn-neutral float-left" title="blendersynth.annotations.bbox" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="blendersynth.annotations.utils.html" class="btn btn-neutral float-right" title="blendersynth.annotations.utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="blendersynth.blender.nodes.node_group.html" class="btn btn-neutral float-left" title="blendersynth.blender.nodes.node_group" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="blendersynth.blender.other_objects.html" class="btn btn-neutral float-right" title="blendersynth.blender.other_objects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

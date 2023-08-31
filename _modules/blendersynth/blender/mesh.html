@@ -403,6 +403,16 @@
 		<span class="n">verts</span> <span class="o">/=</span> <span class="n">verts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># convert from homogeneous coordinates</span>
 		<span class="k">return</span> <span class="n">verts</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
 
+<div class="viewcode-block" id="Mesh.get_raw_bounds">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.get_raw_bounds">[docs]</a>
+	<span class="k">def</span> <span class="nf">get_raw_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">Vector</span><span class="p">,</span> <span class="n">Vector</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Get the minimum and maximum bounds of all meshes in the object, under no deformations or transformations.&quot;&quot;&quot;</span>
+		<span class="n">verts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v</span><span class="o">.</span><span class="n">co</span> <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">])</span>
+		<span class="n">bbox_min</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)])</span>
+		<span class="n">bbox_max</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)])</span>
+		<span class="k">return</span> <span class="n">bbox_min</span><span class="p">,</span> <span class="n">bbox_max</span></div>
+
+
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">materials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="p">{</span><span class="n">m</span> <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="p">}</span>

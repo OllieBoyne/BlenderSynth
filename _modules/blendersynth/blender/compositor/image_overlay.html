@@ -86,7 +86,7 @@
              
   <h1>Source code for blendersynth.blender.compositor.image_overlay</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Overlay RGB image in compositor&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">.node_group</span> <span class="kn">import</span> <span class="n">CompositorNodeGroup</span>
+<span class="kn">from</span> <span class="nn">..nodes</span> <span class="kn">import</span> <span class="n">CompositorNodeGroup</span>
 <span class="kn">import</span> <span class="nn">bpy</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">random</span>
@@ -112,8 +112,8 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
 
 		<span class="c1"># define I/O</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;NodeSocketColor&#39;</span><span class="p">,</span> <span class="s1">&#39;Image&#39;</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;NodeSocketColor&#39;</span><span class="p">,</span> <span class="s1">&#39;Image&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;NodeSocketColor&#39;</span><span class="p">,</span> <span class="s1">&#39;Image&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;NodeSocketColor&#39;</span><span class="p">,</span> <span class="s1">&#39;Image&#39;</span><span class="p">)</span>
 
 		<span class="c1"># create nodes</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeImage&#39;</span><span class="p">)</span>

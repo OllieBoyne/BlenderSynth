@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blendersynth.blender.compositor.mask_overlay &mdash; BlenderSynth 2023 documentation</title>
+  <title>blendersynth.blender.nodes.node_arranger &mdash; BlenderSynth 2023 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="blendersynth.blender.compositor.visuals" href="blendersynth.blender.compositor.visuals.html" />
-    <link rel="prev" title="blendersynth.blender.compositor.image_overlay" href="blendersynth.blender.compositor.image_overlay.html" /> 
+    <link rel="next" title="blendersynth.blender.nodes.node_group" href="blendersynth.blender.nodes.node_group.html" />
+    <link rel="prev" title="blendersynth.blender.nodes" href="blendersynth.blender.nodes.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -78,10 +78,10 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
-          <li class="breadcrumb-item"><a href="blendersynth.blender.compositor.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.compositor</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.compositor.mask_overlay</span></code></li>
+          <li class="breadcrumb-item"><a href="blendersynth.blender.nodes.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes.node_arranger</span></code></li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/blendersynth.blender.compositor.mask_overlay.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/blendersynth.blender.nodes.node_arranger.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -89,12 +89,38 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.blender.compositor.mask_overlay">
-<span id="blendersynth-blender-compositor-mask-overlay"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.compositor.mask_overlay</span></code><a class="headerlink" href="#module-blendersynth.blender.compositor.mask_overlay" title="Link to this heading"></a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="blendersynth.blender.compositor.mask_overlay.MaskOverlay">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.compositor.mask_overlay.</span></span><span class="sig-name descname"><span class="pre">MaskOverlay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_antialiasing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Color'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/mask_overlay.html#MaskOverlay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.mask_overlay.MaskOverlay" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+  <section id="module-blendersynth.blender.nodes.node_arranger">
+<span id="blendersynth-blender-nodes-node-arranger"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes.node_arranger</span></code><a class="headerlink" href="#module-blendersynth.blender.nodes.node_arranger" title="Link to this heading"></a></h1>
+<p>Utilities for neatly arranging nodes in the node editor,
+to make debugging easier.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_arranger.calc_depth">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.nodes.node_arranger.</span></span><span class="sig-name descname"><span class="pre">calc_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_island</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_arranger.html#calc_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_arranger.calc_depth" title="Link to this definition"></a></dt>
+<dd><p>Given a node island (i.e. all nodes in the same fully connected component),
+set the depth of each node to be the maximum depth of all its input nodes + 1.
+Once complete, normalize these depths so the first item is 0</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_arranger.split_to_islands">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.nodes.node_arranger.</span></span><span class="sig-name descname"><span class="pre">split_to_islands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_arranger.html#split_to_islands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_arranger.split_to_islands" title="Link to this definition"></a></dt>
+<dd><p>Given a node list, return a list of sets, each one being a fully disconnected island</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_arranger.tidy_tree">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.nodes.node_arranger.</span></span><span class="sig-name descname"><span class="pre">tidy_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dX</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dY</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_arranger.html#tidy_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_arranger.tidy_tree" title="Link to this definition"></a></dt>
+<dd><p>Search through tree, positioning nodes in a grid based on their depth and connectivity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node_tree</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">NodeTree</span></code>) – node tree to tidy</p></li>
+<li><p><strong>dX</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – horizontal distance between nodes</p></li>
+<li><p><strong>dY</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – vertical distance between nodes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 
@@ -102,8 +128,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="blendersynth.blender.compositor.image_overlay.html" class="btn btn-neutral float-left" title="blendersynth.blender.compositor.image_overlay" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="blendersynth.blender.compositor.visuals.html" class="btn btn-neutral float-right" title="blendersynth.blender.compositor.visuals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="blendersynth.blender.nodes.html" class="btn btn-neutral float-left" title="blendersynth.blender.nodes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="blendersynth.blender.nodes.node_group.html" class="btn btn-neutral float-right" title="blendersynth.blender.nodes.node_group" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

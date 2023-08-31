@@ -88,52 +88,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.annotations.bbox">
-<span id="blendersynth-annotations-bbox"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations.bbox</span></code><a class="headerlink" href="#module-blendersynth.annotations.bbox" title="Link to this heading"></a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.annotations.bbox.bounding_box">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.annotations.bbox.</span></span><span class="sig-name descname"><span class="pre">bounding_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x1y1x2y2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/annotations/bbox.html#bounding_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.annotations.bbox.bounding_box" title="Link to this definition"></a></dt>
-<dd><p>Get the bounding box of an object in camera space.
-Achieve this by projecting all vertices of the object to the image plane,
-and taking the min/max of the resulting coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>object</strong> (<a class="reference internal" href="blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh" title="blendersynth.blender.mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – Mesh</p></li>
-<li><p><strong>camera</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code>) – bpy.types.Camera (if None, use bpy.context.scene.camera)</p></li>
-<li><p><strong>scene</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code>) – bpy.types.Scene (if None, use bpy.context.scene)</p></li>
-<li><p><strong>return_fmt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – one of [‘x1y1x2y2’, ‘xywh’]</p></li>
-<li><p><strong>normalized</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – if True, return normalized coordinates (0-1) instead of pixel coordinates</p></li>
-<li><p><strong>invert_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – if True, y is measured from the top of the image, otherwise from the bottom (Blender measures from bottom)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.annotations.bbox.bounding_boxes">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.annotations.bbox.</span></span><span class="sig-name descname"><span class="pre">bounding_boxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objects</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x1y1x2y2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/annotations/bbox.html#bounding_boxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.annotations.bbox.bounding_boxes" title="Link to this definition"></a></dt>
-<dd><p>Run <cite>bounding_box</cite> for multiple objects</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>objects</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh" title="blendersynth.blender.mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>]) – List of Mesh objects</p></li>
-<li><p><strong>camera</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code>) – bpy.types.Camera (if None, use bpy.context.scene.camera)</p></li>
-<li><p><strong>scene</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code>) – bpy.types.Scene (if None, use bpy.context.scene)</p></li>
-<li><p><strong>return_fmt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – one of [‘x1y1x2y2’, ‘xywh’]</p></li>
-<li><p><strong>normalized</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – if True, return normalized coordinates (0-1) instead of pixel coordinates</p></li>
-<li><p><strong>invert_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – if True, y is measured from the top of the image, otherwise from the bottom (Blender measures from bottom)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>]</p>
-</dd>
-</dl>
-</dd></dl>
-
+  <section id="blendersynth-annotations-bbox">
+<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations.bbox</span></code><a class="headerlink" href="#blendersynth-annotations-bbox" title="Link to this heading"></a></h1>
 </section>
 
 
