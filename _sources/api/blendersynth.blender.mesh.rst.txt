@@ -1,7 +1,6 @@
 :code:`blendersynth.blender.mesh`
 ====================================
 
-
 .. automodule:: blendersynth.blender.mesh
 	:members:
 	:inherited-members:

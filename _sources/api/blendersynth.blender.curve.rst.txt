@@ -1,7 +1,6 @@
 :code:`blendersynth.blender.curve`
 =====================================
 
-
 .. automodule:: blendersynth.blender.curve
 	:members:
 	:inherited-members:

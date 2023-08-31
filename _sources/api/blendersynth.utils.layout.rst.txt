@@ -1,7 +1,6 @@
 :code:`blendersynth.utils.layout`
 ====================================
 
-
 .. automodule:: blendersynth.utils.layout
 	:members:
 	:inherited-members:

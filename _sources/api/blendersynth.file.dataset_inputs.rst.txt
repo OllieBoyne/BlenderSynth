@@ -1,7 +1,6 @@
 :code:`blendersynth.file.dataset_inputs`
 ===========================================
 
-
 .. automodule:: blendersynth.file.dataset_inputs
 	:members:
 	:inherited-members:

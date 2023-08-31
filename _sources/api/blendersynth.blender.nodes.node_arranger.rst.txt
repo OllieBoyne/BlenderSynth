@@ -1,7 +1,6 @@
 :code:`blendersynth.blender.nodes.node_arranger`
 ===================================================
 
-
 .. automodule:: blendersynth.blender.nodes.node_arranger
 	:members:
 	:inherited-members:

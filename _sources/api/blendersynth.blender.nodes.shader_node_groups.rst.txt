@@ -1,7 +1,8 @@
 :code:`blendersynth.blender.nodes.shader_node_groups`
 ========================================================
 
-
 .. automodule:: blendersynth.blender.nodes.shader_node_groups
 	:members:
 	:inherited-members:
+	:special-members: __init__
+

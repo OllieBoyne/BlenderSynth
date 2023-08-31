@@ -1,7 +1,6 @@
 :code:`blendersynth.utils.blender_setup.blender_python_path`
 ===============================================================
 
-
 .. automodule:: blendersynth.utils.blender_setup.blender_python_path
 	:members:
 	:inherited-members:

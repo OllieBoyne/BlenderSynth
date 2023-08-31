@@ -1,7 +1,6 @@
 :code:`blendersynth.run.pre_ops`
 ===================================
 
-
 .. automodule:: blendersynth.run.pre_ops
 	:members:
 	:inherited-members:

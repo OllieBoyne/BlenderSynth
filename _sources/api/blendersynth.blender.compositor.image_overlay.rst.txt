@@ -1,7 +1,6 @@
 :code:`blendersynth.blender.compositor.image_overlay`
 ========================================================
 
-
 .. automodule:: blendersynth.blender.compositor.image_overlay
 	:members:
 	:inherited-members:

@@ -1,7 +1,6 @@
 :code:`blendersynth.blender.material`
 ========================================
 
-
 .. automodule:: blendersynth.blender.material
 	:members:
 	:inherited-members:

@@ -1,7 +1,6 @@
 :code:`blendersynth.file.ffmpeg_utils`
 =========================================
 
-
 .. automodule:: blendersynth.file.ffmpeg_utils
 	:members:
 	:inherited-members:

@@ -1,7 +1,6 @@
 :code:`blendersynth.file.tempfiles`
 ======================================
 
-
 .. automodule:: blendersynth.file.tempfiles
 	:members:
 	:inherited-members:

@@ -1,7 +1,6 @@
 :code:`blendersynth.blender.camera`
 ======================================
 
-
 .. automodule:: blendersynth.blender.camera
 	:members:
 	:inherited-members:

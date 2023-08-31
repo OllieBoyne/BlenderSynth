@@ -1,7 +1,6 @@
 :code:`blendersynth.blender.aov`
 ===================================
 
-
 .. automodule:: blendersynth.blender.aov
 	:members:
 	:inherited-members:

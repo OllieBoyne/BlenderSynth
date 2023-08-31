@@ -1,7 +1,6 @@
 :code:`blendersynth.run.run_this_script`
 ===========================================
 
-
 .. automodule:: blendersynth.run.run_this_script
 	:members:
 	:inherited-members:

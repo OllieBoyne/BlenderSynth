@@ -88,11 +88,12 @@
 <span></span><span class="sd">&quot;&quot;&quot;Node Group collections for use in Blender&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">blendersynth.utils.types</span> <span class="kn">import</span> <span class="n">VectorLikeAlias</span>
+<span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">types</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">mathutils</span> <span class="kn">import</span> <span class="n">Vector</span>
 <span class="kn">from</span> <span class="nn">.node_group</span> <span class="kn">import</span> <span class="n">ShaderNodeGroup</span>
 
+<span class="c1"># docs-special-members: __init__</span>
 
 <div class="viewcode-block" id="DeformedGeneratedTextureCoordinates">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.shader_node_groups.html#blendersynth.blender.nodes.shader_node_groups.DeformedGeneratedTextureCoordinates">[docs]</a>
@@ -103,8 +104,10 @@
 <span class="sd">	For example use, see :class:`blendersynth.blender.aov.DisplacementGeneratedAOV`.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
+<div class="viewcode-block" id="DeformedGeneratedTextureCoordinates.__init__">
+<a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.shader_node_groups.html#blendersynth.blender.nodes.shader_node_groups.DeformedGeneratedTextureCoordinates.__init__">[docs]</a>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_tree</span> <span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeTree</span><span class="p">,</span>
-		<span class="n">mesh</span><span class="p">:</span> <span class="s1">&#39;blendersynth.blender.mesh.Mesh&#39;</span><span class="p">,</span> <span class="n">bbox_min</span><span class="p">:</span> <span class="n">VectorLikeAlias</span><span class="p">,</span> <span class="n">bbox_max</span><span class="p">:</span> <span class="n">VectorLikeAlias</span><span class="p">):</span>
+		<span class="n">mesh</span><span class="p">:</span> <span class="s1">&#39;blendersynth.blender.mesh.Mesh&#39;</span><span class="p">,</span> <span class="n">bbox_min</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">,</span> <span class="n">bbox_max</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;To calculate the generated space, either needs mesh or bbox_min, bbox_max.</span>
 
 <span class="sd">		:param node_tree: NodeTree to add group to</span>
@@ -134,9 +137,10 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">])</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">])</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">tidy</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">tidy</span><span class="p">()</span></div>
 
-	<span class="k">def</span> <span class="nf">register_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">:</span> <span class="s1">&#39;blendersynth.blender.mesh.Mesh&#39;</span><span class="p">,</span> <span class="n">bbox_min</span><span class="p">:</span> <span class="n">VectorLikeAlias</span><span class="p">,</span> <span class="n">bbox_max</span><span class="p">:</span> <span class="n">VectorLikeAlias</span><span class="p">):</span>
+
+	<span class="k">def</span> <span class="nf">register_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">:</span> <span class="s1">&#39;blendersynth.blender.mesh.Mesh&#39;</span><span class="p">,</span> <span class="n">bbox_min</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">,</span> <span class="n">bbox_max</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
 		<span class="c1"># calculate bbox_min, bbox_max if not given</span>
 		<span class="k">if</span> <span class="n">mesh</span><span class="p">:</span>
 			<span class="n">bbox_min</span><span class="p">,</span> <span class="n">bbox_max</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_raw_bounds</span><span class="p">()</span>

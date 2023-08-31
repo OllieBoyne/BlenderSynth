@@ -1,7 +1,6 @@
 :code:`blendersynth.utils.blender_importer`
 ==============================================
 
-
 .. automodule:: blendersynth.utils.blender_importer
 	:members:
 	:inherited-members:

@@ -1,7 +1,6 @@
 :code:`blendersynth.blender.other_objects`
 =============================================
 
-
 .. automodule:: blendersynth.blender.other_objects
 	:members:
 	:inherited-members:

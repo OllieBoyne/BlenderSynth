@@ -239,7 +239,7 @@
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Context manager for moving the cursor to a specific location in space.</span>
 <span class="sd">	On exit, will return the cursor to its original location.&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeAlias</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">original_location</span> <span class="o">=</span> <span class="kc">None</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span>
 
@@ -359,13 +359,23 @@
 				<span class="n">name</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s1">&#39;param &#39;</span><span class="p">)</span>
 				<span class="n">param_type</span> <span class="o">=</span> <span class="n">param_types</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">_empty</span><span class="p">)</span>
 				<span class="k">if</span> <span class="n">param_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">inspect</span><span class="o">.</span><span class="n">_empty</span><span class="p">:</span>  <span class="c1"># If the parameter has a type hint</span>
-					<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">param_type</span><span class="p">,</span> <span class="s1">&#39;__name__&#39;</span><span class="p">):</span>
-						<span class="n">class_name</span> <span class="o">=</span> <span class="n">param_type</span><span class="o">.</span><span class="vm">__name__</span>
 
-					<span class="k">else</span><span class="p">:</span> <span class="c1"># get class name e.g. blendersynth.utils.Object</span>
-						<span class="n">class_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">param_type</span><span class="p">)</span>
+					<span class="c1"># For custom classes</span>
+					<span class="k">if</span> <span class="n">param_type</span> <span class="ow">in</span> <span class="n">types</span><span class="o">.</span><span class="n">wrapper_mappings</span><span class="p">:</span>
+						<span class="n">new_line</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">indentation</span><span class="si">}</span><span class="s1">:type </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">types</span><span class="o">.</span><span class="n">wrapper_mappings</span><span class="p">[</span><span class="n">param_type</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
 
-					<span class="n">doc_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">indentation</span><span class="si">}</span><span class="s1">:type </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: :class:`~</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s1">`&#39;</span><span class="p">)</span>
+					<span class="c1"># For built-in classes</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">param_type</span><span class="p">,</span> <span class="s1">&#39;__name__&#39;</span><span class="p">):</span>
+							<span class="n">class_name</span> <span class="o">=</span> <span class="n">param_type</span><span class="o">.</span><span class="vm">__name__</span>
+
+						<span class="k">else</span><span class="p">:</span>  <span class="c1"># get class name e.g. blendersynth.utils.Object</span>
+							<span class="n">class_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">param_type</span><span class="p">)</span>
+
+						<span class="n">new_line</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">indentation</span><span class="si">}</span><span class="s1">:type </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: :class:`~</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s1">`&#39;</span>
+
+					<span class="n">doc_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+
 
 		<span class="c1"># add frame param</span>
 		<span class="n">doc_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">indentation</span><span class="si">}</span><span class="s2">:param frame: Optional frame for animating </span><span class="se">\n</span><span class="si">{</span><span class="n">indentation</span><span class="si">}</span><span class="s2">:type frame: :class:`~int`&quot;</span><span class="p">)</span>

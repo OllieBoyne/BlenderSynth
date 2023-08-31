@@ -1,7 +1,6 @@
 :code:`blendersynth.blender.render`
 ======================================
 
-
 .. automodule:: blendersynth.blender.render
 	:members:
 	:inherited-members:

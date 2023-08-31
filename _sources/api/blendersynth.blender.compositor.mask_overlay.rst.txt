@@ -1,7 +1,6 @@
 :code:`blendersynth.blender.compositor.mask_overlay`
 =======================================================
 
-
 .. automodule:: blendersynth.blender.compositor.mask_overlay
 	:members:
 	:inherited-members:

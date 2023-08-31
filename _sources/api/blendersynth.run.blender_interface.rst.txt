@@ -1,7 +1,6 @@
 :code:`blendersynth.run.blender_interface`
 =============================================
 
-
 .. automodule:: blendersynth.run.blender_interface
 	:members:
 	:inherited-members:

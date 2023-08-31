@@ -1,7 +1,6 @@
 :code:`blendersynth.blender.compositor.visuals`
 ==================================================
 
-
 .. automodule:: blendersynth.blender.compositor.visuals
 	:members:
 	:inherited-members:
