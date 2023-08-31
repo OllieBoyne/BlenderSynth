@@ -43,7 +43,7 @@ cam_normals_aov = bsyn.aov.NormalsAOV(ref_frame='CAMERA', polarity=[-1, 1, -1])
 instancing_aov = bsyn.aov.InstanceRGBAOV()
 class_aov = bsyn.aov.ClassRGBAOV()
 UVAOV = bsyn.aov.UVAOV()  # UV Coordinates
-NOCAOV = bsyn.aov.NOCAOV()  # Normalized Object Coordinates (NOC)
+NOCAOV = bsyn.aov.GeneratedAOV()  # Normalized Object Coordinates (NOC)
 
 for aov in [cam_normals_aov, instancing_aov, class_aov, UVAOV, NOCAOV]:
 	for obj in all_objects:

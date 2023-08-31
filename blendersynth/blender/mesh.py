@@ -296,6 +296,13 @@ class Mesh(BsynObject):
 		verts /= verts[3]  # convert from homogeneous coordinates
 		return verts[:3].T
 
+	def get_raw_bounds(self) -> [Vector, Vector]:
+		"""Get the minimum and maximum bounds of all meshes in the object, under no deformations or transformations."""
+		verts = np.array([v.co for mesh in self._meshes for v in mesh.data.vertices])
+		bbox_min = Vector([*np.min(verts, axis=0)])
+		bbox_max = Vector([*np.max(verts, axis=0)])
+		return bbox_min, bbox_max
+
 	@property
 	def materials(self):
 		return {m for mesh in self._meshes for m in mesh.data.materials}

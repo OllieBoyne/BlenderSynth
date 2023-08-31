@@ -1,6 +1,6 @@
 import bpy
 from .bsyn_object import BsynObject
-from ..utils.node_arranger import tidy_tree
+from .nodes import tidy_tree
 
 
 def _new_shader_node(node_tree, node_type):

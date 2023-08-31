@@ -1,21 +1,18 @@
 import bpy
-import numpy as np
 from ..utils import get_node_by_name
 import os
 import shutil
 from ..render import render, render_depth
-from .node_group import CompositorNodeGroup
+from ..nodes import CompositorNodeGroup
 from ..aov import AOV
-from ..mesh import Mesh
 from .mask_overlay import MaskOverlay
 from .visuals import DepthVis
 from .image_overlay import KeypointsOverlay, BoundingBoxOverlay, AlphaImageOverlay, AxesOverlay
-
-
-from typing import Union, List
-from ...utils.node_arranger import tidy_tree
-
+from ..nodes import tidy_tree
 from ..world import world
+
+
+from typing import Union
 
 # Mapping of file formats to extensions
 format_to_extension = {

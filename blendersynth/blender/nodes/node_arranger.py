@@ -99,31 +99,31 @@ def calc_depth(node_island):
 
 
 def tidy_tree(node_tree: bpy.types.NodeTree, dX: int = 400, dY: int = 200):
-    """Search through tree, positioning nodes in a grid based on their depth and connectivity.
+	"""Search through tree, positioning nodes in a grid based on their depth and connectivity.
 
-    :param node_tree: node tree to tidy
-    :param dX: horizontal distance between nodes
-    :param dY: vertical distance between nodes"""
+	:param node_tree: node tree to tidy
+	:param dX: horizontal distance between nodes
+	:param dY: vertical distance between nodes"""
 
-    nodes = node_tree.nodes
-    islands = split_to_islands(nodes)
+	nodes = node_tree.nodes
+	islands = split_to_islands(nodes)
 
-    y = 0  # track running height to manage multiple islands
+	y = 0  # track running height to manage multiple islands
 
-    height = defaultdict(int)  # track height of each depth level
-    for island in islands:
-        island = calc_depth(island)
+	height = defaultdict(int)  # track height of each depth level
+	for island in islands:
+		island = calc_depth(island)
 
-        # want to center each depth level, so set heights accordingly
-        for i in range(max(node['depth'] for node in island) + 1):
-            # Adjusting the initial height calculation to account for node sizes.
-            depth_nodes = [node for node in island if node['depth'] == i]
-            total_height_for_depth = sum(node.dimensions.y for node in depth_nodes)
-            spacing_needed = dY * (len(depth_nodes) - 1)
-            height[i] = -(total_height_for_depth + spacing_needed) / 2
+		# want to center each depth level, so set heights accordingly
+		for i in range(max(node['depth'] for node in island) + 1):
+			# Adjusting the initial height calculation to account for node sizes.
+			depth_nodes = [node for node in island if node['depth'] == i]
+			total_height_for_depth = sum(node.dimensions.y for node in depth_nodes)
+			spacing_needed = dY * (len(depth_nodes) - 1)
+			height[i] = -(total_height_for_depth + spacing_needed) / 2
 
-        for node in island:
-            node.location = (node['depth'] * dX, y + height[node['depth']])
-            height[node['depth']] += node.dimensions.y + dY  # Incrementing by the node's height
+		for node in island:
+			node.location = (node['depth'] * dX, y + height[node['depth']])
+			height[node['depth']] += node.dimensions.y + dY  # Incrementing by the node's height
 
-        y += max(height.values()) + dY
+		y += max(height.values()) + dY

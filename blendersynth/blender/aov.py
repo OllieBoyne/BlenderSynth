@@ -1,13 +1,15 @@
 """Shader AOV manager"""
 
 import bpy
-from ..utils.node_arranger import tidy_tree
+from .nodes import tidy_tree, DeformedGeneratedTextureCoordinates
+from ..utils.types import VectorLikeAlias
 
 ref_frames = ['CAMERA', 'WORLD', 'OBJECT']
 
 # Acceptable socket types for AOV colors & nodes
 _socket_color_types = (bpy.types.NodeSocketVector, bpy.types.NodeSocketColor)
 _socket_value_types = (bpy.types.NodeSocketFloat, bpy.types.NodeSocketInt)
+
 
 class AOV:
 	"""A generic Arbitrary Output Value.
@@ -16,7 +18,8 @@ class AOV:
 	"""
 
 	AOV_TYPE = 'COLOR'
-	def __init__(self, name=None, **kwargs):
+
+	def __init__(self, *, name=None, **kwargs):
 		if name is None:
 			name = self.__class__.__name__
 
@@ -37,7 +40,6 @@ class AOV:
 		aov.name = self.name
 		self._aov = aov
 
-
 	def add_to_shader(self, shader_node_tree):
 		"""Add AOV to shader node tree"""
 		# add_to_shader must return output socket to connect to node
@@ -50,7 +52,8 @@ class AOV:
 		elif isinstance(out_socket, _socket_value_types):
 			AOV_TYPE = 'VALUE'
 		else:
-			raise ValueError(f"Output of _add_to_layer must be in {_socket_color_types} if Color or {_socket_value_types} if value. Got: `{type(out_socket)}`")
+			raise ValueError(
+				f"Output of _add_to_layer must be in {_socket_color_types} if Color or {_socket_value_types} if value. Got: `{type(out_socket)}`")
 
 		shader_aov_node = shader_node_tree.nodes.new('ShaderNodeOutputAOV')
 		shader_aov_node.name = self.name
@@ -69,11 +72,12 @@ class AOV:
 	def __str__(self):
 		return self.name
 
+
 class NormalsAOV(AOV):
-	def __init__(self, name=None,
-					ref_frame='CAMERA',
-					order='XYZ',
-					polarity=(1, 1, 1)):
+	def __init__(self, *, name=None,
+				 ref_frame='CAMERA',
+				 order='XYZ',
+				 polarity=(1, 1, 1)):
 		"""Given a shader node tree, add surface normals as output.
 		:param shader_node_tree: Shader node tree to add AOV to
 		:param aov_name: Name of AOV to add
@@ -81,7 +85,7 @@ class NormalsAOV(AOV):
 		:param order: Order of components in RGB (default: XYZ)
 		:param polarity: Polarity of XYZ (1 or -1)
 		"""
-		super().__init__(name)
+		super().__init__(name=name)
 		assert ref_frame in ref_frames, f"ref_frame must be one of {ref_frames}"
 
 		self.ref_frame = ref_frame
@@ -120,13 +124,88 @@ class NormalsAOV(AOV):
 		"""Some AOVs may need render_time updates from scene context, hence this method"""
 		pass
 
-class NOCAOV(AOV):
-	"""Normalised object coordinates - Gives the position of the object in object space,
-	normalised to the object's bounding box."""
+
+class GeneratedAOV(AOV):
+	"""'Generated Texture Coordinates'.
+
+	These are coordinates normalized to 0-1 for the object's undeformed bounding box, not taking into account
+	deformation (pose, modifiers). See `Blender docs <https://docs.blender.org/manual/en/latest/render/shader_nodes/input/texture_coordinate.html>`_ for more info.
+	"""
 
 	def _add_to_shader(self, shader_node_tree):
 		texcon_node = shader_node_tree.nodes.new('ShaderNodeTexCoord')
 		return texcon_node.outputs['Generated']
+
+
+class DisplacementGeneratedAOV(AOV):
+	"""In the same co-ordinate space as GeneratedAOV, give the displacement vector
+	for each point under modifiers (e.g. pose).
+
+	By default, this deformation is mapped from the range [-1 to 1] to [0 to 1], with 0.5 representing no
+	deformation. Any values outside of this range are clamped.
+	This can be modified through the input kwargs vmin and vmax.
+	"""
+
+	def __init__(self, *, name: str = None, mesh: 'blendersynth.blender.mesh.Mesh' = None,
+				 bbox_min: VectorLikeAlias = None, bbox_max: VectorLikeAlias = None,
+				 vmin: float = -1, vmax: float = 1):
+		"""Create AOV for displacement under modifiers.
+
+		:param name: Name of AOV
+		:param mesh: Mesh to calculate bounds for. Will be used to find bbox_min and bbox_max if given
+		:param bbox_min: Minimum of bounding box. If not given, calculated from Mesh
+		:param bbox_max: Maximum of bounding box. If not given, calculated from Mesh
+		:param vmin: Minimum deformation to map to 0
+		:param vmax: Maximum value to map to 1
+		"""
+
+		super().__init__(name=name)
+		self.mesh = mesh
+		self.bbox_min = bbox_min
+		self.bbox_max = bbox_max
+		self.vmin = vmin
+		self.vmax = vmax
+
+	def _add_to_shader(self, shader_node_tree):
+		self.deformed_coords = DeformedGeneratedTextureCoordinates(
+			node_tree=shader_node_tree,
+			mesh=self.mesh,
+			bbox_min=self.bbox_min,
+			bbox_max=self.bbox_max)
+
+		self.generated_coords = shader_node_tree.nodes.new('ShaderNodeTexCoord')
+
+		# subtract one from the other
+		sub_node = shader_node_tree.nodes.new('ShaderNodeVectorMath')
+		sub_node.operation = 'SUBTRACT'
+
+		# map result to range 0-1
+		map_range_node = shader_node_tree.nodes.new('ShaderNodeMapRange')
+		map_range_node.data_type = 'FLOAT_VECTOR'
+		map_range_node.inputs[7].default_value = [self.vmin] * 3
+		map_range_node.inputs[8].default_value = [self.vmax] * 3
+
+		# link up nodes
+		shader_node_tree.links.new(self.deformed_coords.outputs['Vector'], sub_node.inputs[0])
+		shader_node_tree.links.new(self.generated_coords.outputs['Generated'], sub_node.inputs[1])
+		shader_node_tree.links.new(sub_node.outputs['Vector'], map_range_node.inputs['Vector'])
+
+		tidy_tree(shader_node_tree)
+		return map_range_node.outputs['Vector']
+
+	def set_bounds(self, mesh: 'blendersynth.blender.mesh.Mesh' = None,
+				bbox_min: VectorLikeAlias = None, bbox_max: VectorLikeAlias = None):
+		"""Set bounds for DeformedGeneratedTextureCoordinates node group
+
+		:param mesh: Mesh to calculate bounds for. Will be used to find bbox_min and bbox_max if given
+		:param bbox_min: Minimum of bounding box. If not given, calculated from Mesh
+		:param bbox_max: Maximum of bounding box. If not given, calculated from Mesh
+		"""
+		self.mesh = mesh
+		self.bbox_min = bbox_min
+		self.bbox_max = bbox_max
+		self.node_group.register_bounds(mesh, bbox_min, bbox_max)
+
 
 class UVAOV(AOV):
 	"""UV coordinates"""
@@ -147,12 +226,14 @@ class AttrAOV(AOV):
 		attr_node.attribute_name = self.attribute_name
 		return attr_node.outputs['Instance Index']
 
+
 class InstanceIDAOV(AttrAOV):
 	"""Instance ID - given to each object on creation.
 	Output is an integer corresponding to the object's instance ID (0-indexed)
 	"""
 	attribute_type = 'OBJECT'
 	attribute_name = 'instance_id'
+
 
 class ClassIDAOV(AttrAOV):
 	"""Class ID - given to each object on creation.
@@ -162,6 +243,7 @@ class ClassIDAOV(AttrAOV):
 	"""
 	attribute_type = 'OBJECT'
 	attribute_name = 'class_id'
+
 
 class AttrRGBAOV(AOV):
 	"""
@@ -173,8 +255,8 @@ class AttrRGBAOV(AOV):
 	attribute_type = None
 	attribute_name = None
 
-	def __init__(self, name=None):
-		super().__init__(name)
+	def __init__(self, *, name=None):
+		super().__init__(name=name)
 
 		# Create Int Index -> HSV as a node group, so the 'num_objects' parameter can be edited centrally
 		self.group = bpy.data.node_groups.new(name='IdxToHue', type='ShaderNodeTree')
@@ -185,7 +267,8 @@ class AttrRGBAOV(AOV):
 		self.input_node = self.group.nodes.new('NodeGroupInput')
 		self.output_node = self.group.nodes.new('NodeGroupOutput')
 
-		self.div_node = div_node = self.group.nodes.new('ShaderNodeMath')  # Need to keep reference so can update at runtime
+		self.div_node = div_node = self.group.nodes.new(
+			'ShaderNodeMath')  # Need to keep reference so can update at runtime
 		div_node.operation = 'DIVIDE'
 		div_node.use_clamp = True
 		div_node.inputs[1].default_value = self.N
@@ -193,7 +276,7 @@ class AttrRGBAOV(AOV):
 		hsv_node = self.group.nodes.new('ShaderNodeHueSaturation')
 		hsv_node.inputs['Saturation'].default_value = 1
 		hsv_node.inputs['Value'].default_value = 1
-		hsv_node.inputs['Color'].default_value = (1, 0, 0, 1) # Red
+		hsv_node.inputs['Color'].default_value = (1, 0, 0, 1)  # Red
 
 		self.group.links.new(self.input_node.outputs['Index'], div_node.inputs[0])
 		self.group.links.new(div_node.outputs['Value'], hsv_node.inputs['Hue'])
@@ -219,6 +302,7 @@ class AttrRGBAOV(AOV):
 	def N(self):
 		return 0
 
+
 class InstanceRGBAOV(AttrRGBAOV):
 	"""
 	Similar to InstanceIDAOV, but outputs an RGB value corresponding to the object's instance ID.
@@ -232,6 +316,7 @@ class InstanceRGBAOV(AttrRGBAOV):
 	def N(self):
 		"""Update the divisor node with the current number of instances"""
 		return bpy.context.scene.get('NUM_MESHES', 0) + 1
+
 
 class ClassRGBAOV(AttrRGBAOV):
 	"""

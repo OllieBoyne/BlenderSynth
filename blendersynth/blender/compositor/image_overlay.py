@@ -1,5 +1,5 @@
 """Overlay RGB image in compositor"""
-from .node_group import CompositorNodeGroup
+from ..nodes import CompositorNodeGroup
 import bpy
 import cv2
 import random
@@ -23,8 +23,8 @@ class AlphaImageOverlay(CompositorNodeGroup):
 			self.height = scene.render.resolution_y
 
 		# define I/O
-		self.group.inputs.new(f'NodeSocketColor', 'Image')
-		self.group.outputs.new(f'NodeSocketColor', 'Image')
+		self.group.inputs.new('NodeSocketColor', 'Image')
+		self.group.outputs.new('NodeSocketColor', 'Image')
 
 		# create nodes
 		self.overlay_img = self.group.nodes.new('CompositorNodeImage')

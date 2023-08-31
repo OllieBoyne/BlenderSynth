@@ -7,7 +7,7 @@
 # self.node_tree.links.new(self.render_layers_node.outputs[input_name], mix_node.inputs[2])
 # self.node_tree.links.new(mix_node.outputs['Image'], node.inputs['Image'])
 
-from .node_group import CompositorNodeGroup
+from ..nodes import CompositorNodeGroup
 
 class MaskOverlay(CompositorNodeGroup):
 	def __init__(self, name, node_tree, index=0, use_antialiasing=True, dtype='Color'):

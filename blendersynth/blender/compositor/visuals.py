@@ -1,4 +1,4 @@
-from .node_group import CompositorNodeGroup
+from ..nodes import CompositorNodeGroup
 import bpy
 
 class DepthVis(CompositorNodeGroup):

@@ -2,7 +2,7 @@
 
 import blendersynth as bsyn
 
-bsyn.run_this_script(debug=True)
+bsyn.run_this_script(debug=False)
 
 
 class WorldPositionAOV(bsyn.aov.AOV):
@@ -27,7 +27,7 @@ class WorldPositionAOV(bsyn.aov.AOV):
 monkey = bsyn.Mesh.from_primitive('monkey', scale=2)
 light = bsyn.Light.create('POINT', location=(0, -5, 0), intensity=100)
 
-aov = WorldPositionAOV('WorldPosition')
+aov = WorldPositionAOV(name='WorldPosition')
 monkey.assign_aov(aov)
 
 # Set up render parameters
