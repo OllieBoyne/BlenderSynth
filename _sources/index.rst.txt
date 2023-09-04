@@ -3,7 +3,7 @@
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: Getting Started
+   :caption: BlenderSynth
 
    About BlenderSynth <https://ollieboyne.github.io/BlenderSynth/>
    getting_started/installation
