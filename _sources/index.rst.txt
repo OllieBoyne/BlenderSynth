@@ -3,6 +3,15 @@
 .. toctree::
    :maxdepth: 2
    :hidden:
+   :caption: Getting Started
+
+   About BlenderSynth <https://ollieboyne.github.io/BlenderSynth/>
+   getting_started/installation
+   getting_started/troubleshooting
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
    :caption: Examples
 
    python/quickstart
