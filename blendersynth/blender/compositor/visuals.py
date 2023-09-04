@@ -25,3 +25,5 @@ class DepthVis(CompositorNodeGroup):
 		self.group.links.new(self.map_range_node.outputs['Value'], self.multiple_node.inputs[0])
 		self.group.links.new(self.rgb_node.outputs['RGBA'], self.multiple_node.inputs[1])
 		self.group.links.new(self.multiple_node.outputs['Value'], self.output_node.inputs['Image'])
+
+		self.tidy()

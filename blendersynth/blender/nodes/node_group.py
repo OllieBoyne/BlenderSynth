@@ -1,6 +1,9 @@
 """Custom node groups"""
 import bpy
 from .node_arranger import tidy_tree
+import numpy as np
+import os
+import cv2
 
 # docs-special-members: __init__
 # no-inherited-members
@@ -67,6 +70,14 @@ class NodeGroup:
 	def update(self, camera=None, scene=None):
 		pass
 
+	def save_image(self, loc: str, image_data: np.ndarray):
+		"""Save an image to a location. Will also reload any node reference to the image.
+
+		:param loc: Location to save image to"""
+		cv2.imwrite(loc, image_data)
+		fname = os.path.basename(loc)
+		if fname in bpy.data.images:
+			bpy.data.images[fname].reload()
 
 class CompositorNodeGroup(NodeGroup):
 	"""Node Group for use in the compositor"""

@@ -2,8 +2,6 @@
 from ..nodes import CompositorNodeGroup
 import bpy
 import cv2
-import random
-import string
 import numpy as np
 from ...file.tempfiles import create_temp_file
 from typing import List
@@ -122,9 +120,9 @@ class KeypointsOverlay(AlphaImageOverlay):
 				cv2.line(self.img, (int(kp[0]) + size, int(kp[1]) - size), (int(kp[0]) - size, int(kp[1]) + size),
 						 color, self.thickness)
 			else:
-				raise ValueError("Invalid marker: {}".format(marker))
+				raise ValueError("Invalid marker: {}".format(self.marker))
 
-		cv2.imwrite(self.temp_img_loc, self.img)
+		self.save_image(self.temp_img_loc, self.img)
 
 class BoundingBoxOverlay(AlphaImageOverlay):
 	"""Overlay which draws bounding boxes on top of the render."""
@@ -152,7 +150,7 @@ class BoundingBoxOverlay(AlphaImageOverlay):
 			cv2.rectangle(self.img, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])),
 						  col, self.thickness)
 
-		cv2.imwrite(self.temp_img_loc, self.img)
+		self.save_image(self.temp_img_loc, self.img)
 
 class AxesOverlay(AlphaImageOverlay):
 	"""Overlay which draws axes on top of an existing render"""
@@ -188,4 +186,4 @@ class AxesOverlay(AlphaImageOverlay):
 				self.img = cv2.line(self.img, (x, y), (x2, y2),
 							   (255 * (i == 2), 255 * (i == 1), 255 * (i == 0), 255), self.thickness)
 
-		cv2.imwrite(self.temp_img_loc, self.img)
+		self.save_image(self.temp_img_loc, self.img)
