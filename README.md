@@ -10,6 +10,7 @@ We produce support for:
 - Custom Shader [AOVs](https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html) (eg. UVs, Normals, etc.)
 - Multi-threading support
 - Efficient run-speed
+- Multiview rendering
 
 ## Installation
 
