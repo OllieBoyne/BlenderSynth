@@ -55,5 +55,6 @@ with open("docs/index.rst", "w") as f:
     f.write(f".. mdinclude:: {copy_markdown_file('README.md')}\n\n")
 
     # Write the toctrees
+    write_toctree(f, 'Getting Started', ['About BlenderSynth <https://ollieboyne.github.io/BlenderSynth/>', 'getting_started/installation.rst', 'getting_started/troubleshooting.rst'])
     write_toctree(f, 'Examples', sort_by(top_examples, examples_sort_order))
     write_toctree(f, api_header, api_files)
