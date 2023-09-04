@@ -1,8 +1,19 @@
-# BlenderSynth
+![](docs/logo.png)
 
 ![](docs/splash.png)
 
-[Documentation](https://ollieboyne.github.io/BlenderSynth/) | [GitHub](https://github.com/OllieBoyne/BlenderSynth)
+<p align="center">
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
+  </a>
+    <a href="https://pypi.org/project/BlenderSynth/">
+        <img src="https://badge.fury.io/py/BlenderSynth.svg" alt="PyPI version">
+    </a>
+  </p>
+
+<p align="center"> <a href="https://ollieboyne.github.io/BlenderSynth/">Documentation</a> |
+<a href="https://github.com/OllieBoyne/BlenderSynth">GitHub</a>
+</p>
 
 Synthetic Blender pipeline - aimed at generating large synthetic datasets.
 

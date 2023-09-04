@@ -1,6 +1,6 @@
 import blendersynth as bsyn
 import numpy as np
-bsyn.run_this_script(debug = False)  # If called from Python, this will run the current script in Blender
+bsyn.run_this_script(debug = True)  # If called from Python, this will run the current script in Blender
 # If debug set to True, this will open Blender while running
 
 comp = bsyn.Compositor()  # Create a new compositor - this manages all the render layers
@@ -20,7 +20,10 @@ for i in range(N):
 	objects.append(object)
 
 obj_pass_idx = objects[0].assign_pass_index(1)  # To show masking, we assign a pass index to the first object
-point_light = bsyn.Light.create('POINT', location=(1, 0, 0), intensity=1000.)  # Create light object
+
+# add some lights
+point_light = bsyn.Light.create('POINT', location=(0, 0, 6), intensity=1000.)
+sun_light = bsyn.Light.create('SUN')
 
 # Set some render settings
 bsyn.render.set_cycles_samples(10)
@@ -30,7 +33,7 @@ camera = bsyn.Camera()
 ## RENDER PASSES
 # Here we show several different rendering methods
 bsyn.render.render_depth()  # Enable standard Blender depth pass
-depth_vis = comp.get_depth_visual(max_depth=5)  # Create a visual of the depth pass
+depth_vis = comp.get_depth_visual(max_depth=20)  # Create a visual of the depth pass
 rgb_mask = comp.get_mask(obj_pass_idx, 'Image')  # create an RGB mask (i.e. only render monkey)
 bounding_box_visual = comp.get_bounding_box_visual()
 keypoints_visual = comp.get_keypoints_visual()  # Create a visual of keypoints
@@ -54,15 +57,16 @@ output_folder = 'data_formats'
 comp.define_output('Image', output_folder, file_name='rgb', mode='image')  # render RGB layer (note mode='image')
 comp.define_output(rgb_mask, output_folder, name='rgb_masked', mode='image') # render RGB layer masked by monkey
 comp.define_output(bounding_box_visual, output_folder, name='bounding_box_visual', mode='image')
-comp.define_output(instancing_aov, output_folder, name='instancing', mode='image')  # render instancing layer (note mode='image')
-comp.define_output(class_aov, output_folder, name='semantic', mode='image')  # render class layer (note mode='image'
 comp.define_output(keypoints_visual, output_folder, name='keypoints', mode='image')
-comp.define_output(depth_vis, output_folder, name='depth', mode='image')  # render depth layer (note mode='image'
+comp.define_output(depth_vis, output_folder, name='depth', mode='image')  # render depth layer (note mode='image')
 
-comp.define_output(cam_normals_aov, output_folder, name='normals', mode='data')  # render normals layer (note mode='data')
+# For the following, we render as raw data (i.e. no colour post-processing)
+comp.define_output(instancing_aov, output_folder, name='instancing', mode='image')
+comp.define_output(class_aov, output_folder, name='semantic', mode='image')
+comp.define_output(cam_normals_aov, output_folder, name='normals', mode='data')
 comp.define_output(UVAOV, output_folder, name='UV', mode='data')
 comp.define_output(NOCAOV, output_folder, name='NOC', mode='data')
-comp.define_output('Depth', output_folder, file_format='OPEN_EXR', mode='data')  # render depth as EXR (as not in 0-1 range)
+comp.define_output('Depth', output_folder, file_format='OPEN_EXR', mode='data')
 
 # we will plot all cube keypoints
 keypoints = []
