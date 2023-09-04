@@ -8,11 +8,12 @@ from ..aov import AOV
 from .mask_overlay import MaskOverlay
 from .visuals import DepthVis
 from .image_overlay import KeypointsOverlay, BoundingBoxOverlay, AlphaImageOverlay, AxesOverlay
+from ...annotations import Annotation, AnnotationHandler
 from ..nodes import tidy_tree
 from ..world import world
+from ..camera import Camera
 
-
-from typing import Union
+from typing import Union, List
 
 # Mapping of file formats to extensions
 format_to_extension = {
@@ -55,8 +56,8 @@ def remove_ext(fname):
 class Compositor:
 	"""Compositor output - for handling file outputs, and managing Compositor node tree"""
 
-	def __init__(self, view_layer='ViewLayer', background_color:tuple=None,
-				 rgb_color_space:str='Filmic sRGB'):
+	def __init__(self, view_layer='ViewLayer', background_color: tuple = None,
+				 rgb_color_space: str = 'Filmic sRGB'):
 		"""
 		:param view_layer: Name of View Layer to render
 		:param background_color: If given, RGB[A] tuple in range [0-1], will overwrite World background with solid color (while retaining lighting effects).
@@ -67,7 +68,7 @@ class Compositor:
 		self.node_tree = bpy.context.scene.node_tree
 		# self.file_output_nodes = []
 
-		self.view_layer = view_layer#
+		self.view_layer = view_layer  #
 
 		self.file_output_nodes = {}  # Mapping of output name to FileOutputNode
 		self.mask_nodes = {}  # Mapping of mask pass index to CompositorNodeGroup
@@ -91,9 +92,9 @@ class Compositor:
 	def render_layers_node(self):
 		return get_node_by_name(self.node_tree, 'Render Layers')
 
-	def _get_render_layer_output(self, key:str):
+	def _get_render_layer_output(self, key: str):
 		"""Get output socket from Render Layers node"""
-		if key == 'Image': # special case
+		if key == 'Image':  # special case
 			return self._rgb_socket
 		else:
 			return self.render_layers_node.outputs[key]
@@ -138,16 +139,16 @@ class Compositor:
 		cng = BoundingBoxOverlay(f"Bounding Box Visual", self.node_tree, col=col, thickness=thickness)
 		self.node_tree.links.new(self._get_render_layer_output('Image'), cng.input('Image'))
 
-		if 'BBox' in self.overlays:
+		if 'bbox' in self.overlays:
 			raise ValueError("Only allowed one BBox overlay (it can contain multiple objects).")
 
-		self.overlays['BBox'] = cng
+		self.overlays['bbox'] = cng
 
 		self.tidy_tree()
 		return cng
 
-	def get_keypoints_visual(self, marker:str='x', color:tuple=(0, 0, 255), size:int=5,
-							 thickness:int=2) -> KeypointsOverlay:
+	def get_keypoints_visual(self, marker: str = 'x', color: tuple = (0, 0, 255), size: int = 5,
+							 thickness: int = 2) -> KeypointsOverlay:
 		"""
 		Initialize a keypoints overlay node.
 
@@ -161,15 +162,15 @@ class Compositor:
 							   size=size, thickness=thickness)
 		self.node_tree.links.new(self._get_render_layer_output('Image'), cng.input('Image'))
 
-		if 'Keypoints' in self.overlays:
+		if 'keypoints' in self.overlays:
 			raise ValueError("Only allowed one Keypoints overlay.")
 
-		self.overlays['Keypoints'] = cng
+		self.overlays['keypoints'] = cng
 
 		self.tidy_tree()
 		return cng
 
-	def get_axes_visual(self, size:int=1, thickness:int=2) -> AxesOverlay:
+	def get_axes_visual(self, size: int = 1, thickness: int = 2) -> AxesOverlay:
 		"""
 		Initialize an axes overlay node.
 
@@ -178,13 +179,13 @@ class Compositor:
 		"""
 
 		cng = AxesOverlay(f"Axes Visual", self.node_tree,
-							   size=size, thickness=thickness)
+						  size=size, thickness=thickness)
 		self.node_tree.links.new(self._get_render_layer_output('Image'), cng.input('Image'))
 
-		if 'Axes' in self.overlays:
+		if 'axes' in self.overlays:
 			raise ValueError("Only allowed one Axes overlay.")
 
-		self.overlays['Axes'] = cng
+		self.overlays['axes'] = cng
 		self.tidy_tree()
 		return cng
 
@@ -199,7 +200,8 @@ class Compositor:
 		# No need to store these overlays separately in self.overlays, but need to check they're all present
 		for overlay in visuals:
 			if overlay not in self.overlays.values():
-				raise ValueError(f"Visual {overlay} not found in Compositor. Make sure it was obtained via the Compositor.")
+				raise ValueError(
+					f"Visual {overlay} not found in Compositor. Make sure it was obtained via the Compositor.")
 
 		# Stack the output of the previous to the input of the next
 		for va, vb in zip(visuals, visuals[1:]):
@@ -217,7 +219,7 @@ class Compositor:
 			render_depth()
 
 		# convert col to 0-1, RGBA
-		col = ([i/255 for i in col] + [1])[:4]
+		col = ([i / 255 for i in col] + [1])[:4]
 
 		cng = DepthVis(self.node_tree, max_depth=max_depth, col=col)
 		self.node_tree.links.new(self._get_render_layer_output('Depth'), cng.input('Depth'))
@@ -261,8 +263,7 @@ class Compositor:
 		if name in self.file_output_nodes:
 			raise ValueError(f"File output `{name}` already exists. Only call define_output once per output type.")
 
-
-		if file_name is None: # if fname is not given, use input_name
+		if file_name is None:  # if fname is not given, use input_name
 			file_name = name
 
 		file_name = remove_ext(file_name)
@@ -313,7 +314,7 @@ class Compositor:
 		node = self.file_output_nodes[str(key)]
 		node.file_slots[0].path = fname
 
-	def update_all_filenames(self, fname:str):
+	def update_all_filenames(self, fname: str):
 		"""Reassign all filenames (not directories) for all file output nodes.
 
 		:param fname: new filename, without extension"""
@@ -326,16 +327,18 @@ class Compositor:
 		node = self.file_output_nodes[str(key)]
 		node.base_path = directory
 
-	def fix_namings(self):
+	def _fix_namings(self, prefix=None):
 		"""After rendering,
 		File Output node has property that frame number gets added to filename.
 		Fix that here"""
 
+		prefix = '' if prefix is None else prefix + '_'
+
 		for node in self.file_output_nodes.values():
 			# get expected file name and extension
 			ext = format_to_extension[node.format.file_format]
-			target_file_name = os.path.join(node.base_path, node.file_slots[0].path + ext)
-			bad_file_name = get_badfname(target_file_name)
+			bad_file_name = get_badfname(os.path.join(node.base_path, node.file_slots[0].path + ext))
+			target_file_name = os.path.join(node.base_path, prefix + node.file_slots[0].path + ext)
 			shutil.move(
 				bad_file_name,
 				target_file_name
@@ -346,41 +349,56 @@ class Compositor:
 		for aov in self.aovs:
 			aov.update()
 
-	def render(self, camera=None, scene=None, overlay_kwargs=None,
-			   animation=False, frame_start=0, frame_end=250):
-		"""Render the scene"""
-		if overlay_kwargs is None:
-			overlay_kwargs = {}
+	def render(self, camera: Union[Camera, List[Camera]] = None, scene: bpy.types.Scene = None,
+			   annotations: AnnotationHandler = None,
+			   animation: bool = False, frame_start: int = 0, frame_end: int = 250):
+		"""Render the scene.
+
+		:param camera: Camera(s) to render from. If None, will use `scene.camera`. If multiple, will render each camera
+		separately, appending the camera's names as the output file names.
+		:param scene: Scene to render. If None, will use `bpy.context.scene`.
+		:param annotations: Object containing annotation information for each camera view to be used for overlays
+		:param animation: If True, will render an animation, using `frame_start` and `frame_end` as the start and end frames.
+		:param frame_start: Start frame for animation.
+		:param frame_end: End frame for animation.
+		"""
+
 
 		if scene is None:
 			scene = bpy.context.scene
 
+		_original_active_camera = bpy.context.scene.camera
 		if camera is None:
-			camera = scene.camera
+			camera = Camera()
 
-		for k in overlay_kwargs.keys():
-			assert k in self.overlays, f"overlay_kwarg {k} not in overlays: {[*self.overlays.keys()]}."
-
-		for oname, overlay in self.overlays.items():
-			args = overlay_kwargs.get(oname, {})
-			if isinstance(args, dict):
-				overlay.update(camera=camera, scene=scene, **args)  # multi kwargs
-			else:
-				overlay.update(args, camera=camera, scene=scene)  # single arg
-
-
-		self.update_aovs()
 
 		if animation:
 			scene.frame_start = frame_start
 			scene.frame_end = frame_end
 
-		render(animation=animation)
+		multi_camera = isinstance(camera, list)
+		if not multi_camera:
+			camera = [camera]
 
-		if not animation:
-			self.fix_namings()
+		for cam in camera:
+			annotation = annotations.get_by_camera(cam.name)
 
-	def _set_rgb_color_space(self, color_space:str='Filmic sRGB'):
+			# apply overlays PER CAMERA
+			for oname, overlay in self.overlays.items():
+				overlay.update(getattr(annotation, oname), camera=cam, scene=scene)  # multi kwargs
+
+			self.update_aovs()
+
+			scene.camera = cam.obj
+			render(animation=animation)
+
+			if not animation:
+				self._fix_namings(prefix=cam.name if multi_camera else None)
+
+		# reset active camera
+		scene.camera = _original_active_camera
+
+	def _set_rgb_color_space(self, color_space: str = 'Filmic sRGB'):
 		"""Color spaces are all handled manually within compositor (so that we keep
 		AOVs in raw space). So set the color space for RGB socket here."""
 
@@ -391,7 +409,7 @@ class Compositor:
 		self.node_tree.links.new(self._rgb_socket, color_space_node.inputs[0])
 		self._rgb_socket = color_space_node.outputs[0]
 
-	def _set_background_color(self, color:tuple=(0, 0, 0)):
+	def _set_background_color(self, color: tuple = (0, 0, 0)):
 		"""Set a solid background color, instead of transparent.
 		Will remove the visuals of existing world background (but not the lighting effects).
 

@@ -1,6 +1,6 @@
 import blendersynth as bsyn
 import numpy as np
-bsyn.run_this_script(debug = True)  # If called from Python, this will run the current script in Blender
+bsyn.run_this_script(debug = False)  # If called from Python, this will run the current script in Blender
 # If debug set to True, this will open Blender while running
 
 comp = bsyn.Compositor()  # Create a new compositor - this manages all the render layers
@@ -69,13 +69,10 @@ comp.define_output(NOCAOV, output_folder, name='NOC', mode='data')
 comp.define_output('Depth', output_folder, file_format='OPEN_EXR', mode='data')
 
 # we will plot all cube keypoints
-keypoints = []
-for obj in objects:
-	if 'Cube' in obj.name:
-		keypoints += bsyn.annotations.keypoints.project_keypoints(obj.get_keypoints([*range(8)]))
+cube_vertices = np.concatenate([obj.get_keypoints([*range(8)]) for obj in objects if 'Cube' in obj.name])
+keypoints = bsyn.annotations.keypoints.project_keypoints(cube_vertices)
 
 # and all bounding boxes
 bounding_boxes = bsyn.annotations.bounding_boxes(objects, camera)
 
-overlay_kwargs = dict(Keypoints=keypoints, BBox=bounding_boxes)
-comp.render(camera=camera, overlay_kwargs=overlay_kwargs)  # render all the different passes - see output folder for results
+comp.render(camera=camera, annotations=keypoints + bounding_boxes)  # render all the different passes - see output folder for results

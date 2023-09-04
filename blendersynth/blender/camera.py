@@ -134,7 +134,7 @@ class Camera(BsynObject):
 		self.rotation_euler = _look_at_rotation(self.camera, at, up)
 
 	def look_at_object(self, obj: Union[Mesh, bpy.types.Object],
-					   up: types.VectorLike = mathutils.Vector((0, 1, 0))):
+					   up: types.VectorLike = mathutils.Vector((0, 0, 1))):
 		"""Look at an object, with up vector.
 
 		:param obj: Object to look at
