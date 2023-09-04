@@ -494,6 +494,21 @@ For the target bones, sets poses to zero, and removes any IK constraints.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.apply_global_rotation">
+<span class="sig-name descname"><span class="pre">apply_global_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'X'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degrees</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/armature.html#PoseBone.apply_global_rotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.apply_global_rotation" title="Link to this definition"></a></dt>
+<dd><p>Equivalent to selecting the bone in Blender, and applying a global rotation about an axis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>axis</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – X, Y, or Z</p></li>
+<li><p><strong>val</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Rotation amount in radians</p></li>
+<li><p><strong>degrees</strong> – If true, rotation is given in degrees</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.axes">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">axes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.axes" title="Link to this definition"></a></dt>
@@ -521,6 +536,12 @@ For the target bones, sets poses to zero, and removes any IK constraints.</p>
 <dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.head_location">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">head_location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span></em><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.head_location" title="Link to this definition"></a></dt>
 <dd><p>Gets the world location of the head (start) of the bone.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.local_rotation_euler">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_rotation_euler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Euler</span></em><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.local_rotation_euler" title="Link to this definition"></a></dt>
+<dd><p>Rotation of pose bone in local space (ignoring parent transforms)</p>
 </dd></dl>
 
 <dl class="py property">
@@ -564,7 +585,7 @@ For the target bones, sets poses to zero, and removes any IK constraints.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.rotation_euler">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation_euler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Euler</span></em><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.rotation_euler" title="Link to this definition"></a></dt>
-<dd><p>Rotation in euler XYZ angles</p>
+<dd><p>Rotation of pose bone in world space</p>
 </dd></dl>
 
 <dl class="py method">
@@ -603,14 +624,21 @@ For the target bones, sets poses to zero, and removes any IK constraints.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.armature.PoseBone.set_scale">
-<span class="sig-name descname"><span class="pre">set_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.set_scale" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.armature.PoseBone.set_scale" title="Link to this definition"></a></dt>
 <dd><p>Set scale of pose bone.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>scale</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLikeOrScalar" title="blendersynth.utils.types.VectorLikeOrScalar"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLikeOrScalar</span></code></a>) – Scale to set. Either single value or 3 long vector</p></li>
-<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+<li><p><strong>update</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Update the scene after setting</p></li>
 </ul>
+</dd>
+</dl>
+<p>scale. For batch operations, can be faster to set this to False, and call <cite>bsyn.context.view_layer.update()</cite>
+after all operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p>
 </dd>
 </dl>
 </dd></dl>

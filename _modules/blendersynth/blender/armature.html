@@ -86,6 +86,7 @@
              
   <h1>Source code for blendersynth.blender.armature</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Armature object for managing pose&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span><span class="p">,</span> <span class="n">animatable_property</span>
 <span class="kn">from</span> <span class="nn">.other_objects</span> <span class="kn">import</span> <span class="n">Empty</span>
@@ -142,17 +143,56 @@
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Rotation of pose bone in world space&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
 
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">local_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Rotation of pose bone in local space (ignoring parent transforms)&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span>
+
+	<span class="nd">@local_rotation_euler</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">local_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="PoseBone.apply_global_rotation">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.apply_global_rotation">[docs]</a>
+	<span class="k">def</span> <span class="nf">apply_global_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Equivalent to selecting the bone in Blender, and applying a global rotation about an axis</span>
+
+<span class="sd">		:param axis: X, Y, or Z</span>
+<span class="sd">		:param val: Rotation amount in radians</span>
+<span class="sd">		:param degrees: If true, rotation is given in degrees&quot;&quot;&quot;</span>
+
+		<span class="k">if</span> <span class="n">degrees</span><span class="p">:</span>
+			<span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+		<span class="k">with</span> <span class="n">SetMode</span><span class="p">(</span><span class="s1">&#39;POSE&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="p">):</span>
+			<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">]):</span>
+				<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">bones</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">bones</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+
+				<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">orient_axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">orient_type</span> <span class="o">=</span> <span class="s1">&#39;GLOBAL&#39;</span><span class="p">,</span>
+										 <span class="n">constraint_axis</span><span class="o">=</span><span class="p">[</span><span class="n">axis</span><span class="o">==</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">==</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">==</span><span class="s1">&#39;Z&#39;</span><span class="p">])</span></div>
+
+
 	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeOrScalar</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeOrScalar</span><span class="p">,</span> <span class="n">update</span><span class="p">:</span><span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set scale of pose bone.</span>
 
-<span class="sd">		:param scale: Scale to set. Either single value or 3 long vector&quot;&quot;&quot;</span>
+<span class="sd">		:param scale: Scale to set. Either single value or 3 long vector</span>
+<span class="sd">		:param update: Update the scene after setting</span>
+<span class="sd">		scale. For batch operations, can be faster to set this to False, and call `bsyn.context.view_layer.update()`</span>
+<span class="sd">		after all operations.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
 			<span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
+
+		<span class="k">if</span> <span class="n">update</span><span class="p">:</span>
+			<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
 
 
 <div class="viewcode-block" id="BoneConstraint">
