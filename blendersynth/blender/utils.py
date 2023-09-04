@@ -88,13 +88,25 @@ class SelectObjects:
 
 	def __init__(self, objects: list = ()):
 		"""Initialize with a list of objects to select
-		:param objects: list of bpy.types.Object"""
+		:param objects: list of bpy.types.Object
+		"""
 		self.objects = objects
+
+		self.mode = bpy.context.mode
+		assert self.mode in ['OBJECT', 'POSE', 'EDIT'], "Currently only OBJECT, POSE, EDIT supported for SelectObjects"
+
+		self._ops = None
+		if self.mode == 'OBJECT':
+			self._ops = bpy.ops.object
+		elif self.mode == 'POSE':
+			self._ops = bpy.ops.pose
+		elif self.mode == 'EDIT':
+			self._ops = bpy.ops.edit
 
 	def __enter__(self):
 		self.old_objs = bpy.context.selected_objects
 		# deselect all
-		bpy.ops.object.select_all(action='DESELECT')
+		self._ops.select_all(action='DESELECT')
 
 		# select objects
 		for obj in self.objects:

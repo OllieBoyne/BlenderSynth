@@ -39,6 +39,7 @@ annotations = conditional_import(IS_BLENDER_RUN, '.annotations')
 layout = conditional_import(IS_BLENDER_RUN, '.utils.layout')
 mathutils = conditional_import(IS_BLENDER_RUN, 'mathutils')
 bpy = conditional_import(IS_BLENDER_RUN, 'bpy')
+blender_utils = conditional_import(IS_BLENDER_RUN, '.blender.utils')
 
 # Vanilla only imports
 execute_jobs = conditional_import(not IS_BLENDER_RUN, '.run.run', 'execute_jobs')

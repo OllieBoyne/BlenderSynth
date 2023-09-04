@@ -1,4 +1,5 @@
 """Armature object for managing pose"""
+import numpy as np
 
 from .bsyn_object import BsynObject, animatable_property
 from .other_objects import Empty
@@ -53,17 +54,53 @@ class PoseBone(BsynObject):
 
 	@property
 	def rotation_euler(self) -> mathutils.Euler:
+		"""Rotation of pose bone in world space"""
 		return self.matrix_world.to_euler()
 
+	@property
+	def local_rotation_euler(self) -> mathutils.Euler:
+		"""Rotation of pose bone in local space (ignoring parent transforms)"""
+		return self.obj.rotation_euler
+
+	@local_rotation_euler.setter
+	def local_rotation_euler(self, value: mathutils.Euler):
+		self.obj.rotation_euler = value
+
+	def apply_global_rotation(self, axis:str='X', val:float=0.0, degrees=False):
+		"""Equivalent to selecting the bone in Blender, and applying a global rotation about an axis
+
+		:param axis: X, Y, or Z
+		:param val: Rotation amount in radians
+		:param degrees: If true, rotation is given in degrees"""
+
+		if degrees:
+			val = np.deg2rad(val)
+
+		with SetMode('POSE', object=self.armature):
+			with SelectObjects([self.obj]):
+				bpy.context.object.data.bones.active = self.armature.data.bones[self.name]
+
+				bpy.ops.transform.rotate(value=val, orient_axis=axis, orient_type = 'GLOBAL',
+										 constraint_axis=[axis=='X', axis=='Y', axis=='Z'])
+
 	@animatable_property('scale')
-	def set_scale(self, scale: types.VectorLikeOrScalar):
+	def set_scale(self, scale: types.VectorLikeOrScalar, update:bool = True):
 		"""Set scale of pose bone.
 
-		:param scale: Scale to set. Either single value or 3 long vector"""
+		:param scale: Scale to set. Either single value or 3 long vector
+		:param update: Update the scene after setting
+		scale. For batch operations, can be faster to set this to False, and call `bsyn.context.view_layer.update()`
+		after all operations.
+		"""
+
 		if isinstance(scale, (int, float)):
 			scale = (scale, scale, scale)
 
 		self.obj.scale = scale
+
+		if update:
+			bpy.context.view_layer.update()
+
 
 class BoneConstraint(BsynObject):
 	"""Generic pose bone constraint object"""

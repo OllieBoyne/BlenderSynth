@@ -7,10 +7,11 @@ from mathutils import Vector
 from .node_group import ShaderNodeGroup
 
 # docs-special-members: __init__
+# no-inherited-members
 
 class DeformedGeneratedTextureCoordinates(ShaderNodeGroup):
-	"""Similar to TextureCoordinate's 'Generated'. Same coordinate space, but the vertex positions are deformed by
-	pose and modifiers.
+	"""
+	A :class:`ShaderNodeGroup` that outputs generated texture coordinates, but in the deformed space.
 
 	For example use, see :class:`DisplacementGeneratedAOV <blendersynth.blender.aov.DisplacementGeneratedAOV>`.
 	"""
