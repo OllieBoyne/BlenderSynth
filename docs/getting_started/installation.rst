@@ -1,4 +1,4 @@
 Installation
 =========
 
-.. mdinclude:: installation.md
+.. mdinclude:: _installation.md

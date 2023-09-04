@@ -1,4 +1,4 @@
 Troubleshooting
 =========
 
-.. mdinclude:: troubleshooting.md
+.. mdinclude:: _troubleshooting.md
