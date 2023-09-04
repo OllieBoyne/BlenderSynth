@@ -59,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../python/capturing_pose.html">Capturing pose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python/custom_aov.html">Custom AOV</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python/inverse_kinematics.html">Inverse kinematics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/multiview_rendering.html">Multiview rendering</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -122,14 +123,6 @@ Inside the loop, only call <cite>update_filename</cite> or <cite>update_director
 <dd class="field-odd"><p>Name of output. If not given, will take the str representation of input_data</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.fix_namings">
-<span class="sig-name descname"><span class="pre">fix_namings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.fix_namings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.fix_namings" title="Link to this definition"></a></dt>
-<dd><p>After rendering,
-File Output node has property that frame number gets added to filename.
-Fix that here</p>
 </dd></dl>
 
 <dl class="py method">
@@ -207,8 +200,24 @@ and any values below that are depth/max_depth * col.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.render" title="Link to this definition"></a></dt>
-<dd><p>Render the scene</p>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.render" title="Link to this definition"></a></dt>
+<dd><p>Render the scene.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>camera</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.camera.html#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="blendersynth.blender.camera.html#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a>]]) – Camera(s) to render from. If None, will use <cite>scene.camera</cite>. If multiple, will render each camera</p>
+</dd>
+</dl>
+<p>separately, appending the camera’s names as the output file names.
+:type scene: <code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code>
+:param scene: Scene to render. If None, will use <cite>bpy.context.scene</cite>.
+:type annotations: <a class="reference internal" href="blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.AnnotationHandler" title="blendersynth.annotations.annotation_handler.AnnotationHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationHandler</span></code></a>
+:param annotations: Object containing annotation information for each camera view to be used for overlays
+:type animation: <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>
+:param animation: If True, will render an animation, using <cite>frame_start</cite> and <cite>frame_end</cite> as the start and end frames.
+:type frame_start: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>
+:param frame_start: Start frame for animation.
+:type frame_end: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>
+:param frame_end: End frame for animation.</p>
 </dd></dl>
 
 <dl class="py method">

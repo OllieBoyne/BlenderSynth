@@ -24,6 +24,7 @@
    python/custom_aov
    python/inverse_kinematics
    markdown/examples.README.md
+   python/multiview_rendering
 
 .. toctree::
    :maxdepth: 2

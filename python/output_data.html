@@ -59,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="capturing_pose.html">Capturing pose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="custom_aov.html">Custom AOV</a></li>
 <li class="toctree-l1"><a class="reference internal" href="inverse_kinematics.html">Inverse kinematics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiview_rendering.html">Multiview rendering</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -99,7 +100,7 @@
 <a class="reference external image-reference" href="../_static/images/resources%20data_formats_output.png"><img alt="" src="../_images/resources%2520data_formats_output.png" /></a>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># If called from Python, this will run the current script in Blender</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># If called from Python, this will run the current script in Blender</span>
 <span class="c1"># If debug set to True, this will open Blender while running</span>
 
 <span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>  <span class="c1"># Create a new compositor - this manages all the render layers</span>
@@ -168,16 +169,13 @@
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Depth&#39;</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;OPEN_EXR&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 
 <span class="c1"># we will plot all cube keypoints</span>
-<span class="n">keypoints</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
-	<span class="k">if</span> <span class="s1">&#39;Cube&#39;</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-		<span class="n">keypoints</span> <span class="o">+=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">keypoints</span><span class="o">.</span><span class="n">project_keypoints</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_keypoints</span><span class="p">([</span><span class="o">*</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">)]))</span>
+<span class="n">cube_vertices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">obj</span><span class="o">.</span><span class="n">get_keypoints</span><span class="p">([</span><span class="o">*</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">)])</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span> <span class="k">if</span> <span class="s1">&#39;Cube&#39;</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+<span class="n">keypoints</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">keypoints</span><span class="o">.</span><span class="n">project_keypoints</span><span class="p">(</span><span class="n">cube_vertices</span><span class="p">)</span>
 
 <span class="c1"># and all bounding boxes</span>
 <span class="n">bounding_boxes</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">bounding_boxes</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">camera</span><span class="p">)</span>
 
-<span class="n">overlay_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Keypoints</span><span class="o">=</span><span class="n">keypoints</span><span class="p">,</span> <span class="n">BBox</span><span class="o">=</span><span class="n">bounding_boxes</span><span class="p">)</span>
-<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">camera</span><span class="o">=</span><span class="n">camera</span><span class="p">,</span> <span class="n">overlay_kwargs</span><span class="o">=</span><span class="n">overlay_kwargs</span><span class="p">)</span>  <span class="c1"># render all the different passes - see output folder for results</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">camera</span><span class="o">=</span><span class="n">camera</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="n">keypoints</span> <span class="o">+</span> <span class="n">bounding_boxes</span><span class="p">)</span>  <span class="c1"># render all the different passes - see output folder for results</span>
 </pre></div>
 </div>
 </section>

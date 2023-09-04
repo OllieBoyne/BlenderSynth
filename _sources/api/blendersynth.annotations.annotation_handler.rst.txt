@@ -1,0 +1,6 @@
+:code:`blendersynth.annotations.annotation_handler`
+======================================================
+
+.. automodule:: blendersynth.annotations.annotation_handler
+	:members:
+	:inherited-members:

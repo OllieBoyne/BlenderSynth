@@ -30,7 +30,6 @@ bounding_boxes = bsyn.annotations.bounding_boxes(objects)
 keypoints = bsyn.annotations.keypoints.project_keypoints([obj.centroid() for obj in objects])
 
 # Calculate axes in 2D. In 3D, use e.g. monkey.axes
-axes = bsyn.annotations.get_multiple_axes(objects)
+axes = bsyn.annotations.get_axes(objects)
 
-overlay_kwargs = dict(BBox=bounding_boxes, Keypoints=keypoints, Axes=axes)
-comp.render(overlay_kwargs=overlay_kwargs)
+comp.render(annotations=axes + keypoints + bounding_boxes)

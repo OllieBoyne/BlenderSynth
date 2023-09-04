@@ -56,6 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../python/capturing_pose.html">Capturing pose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python/custom_aov.html">Custom AOV</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python/inverse_kinematics.html">Inverse kinematics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/multiview_rendering.html">Multiview rendering</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -243,7 +244,7 @@
 <div class="viewcode-block" id="Camera.look_at_object">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.look_at_object">[docs]</a>
 	<span class="k">def</span> <span class="nf">look_at_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">],</span>
-					   <span class="n">up</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))):</span>
+					   <span class="n">up</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Look at an object, with up vector.</span>
 
 <span class="sd">		:param obj: Object to look at</span>

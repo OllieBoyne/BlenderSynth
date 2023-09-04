@@ -1,0 +1,9 @@
+Multiview rendering
+===================
+
+.. mdinclude:: ../markdown/examples.multiview_rendering.md
+
+
+.. literalinclude:: ../_static/python/examples.multiview_rendering.py
+   :language: python
+	

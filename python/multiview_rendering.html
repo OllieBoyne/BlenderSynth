@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multiview rendering &mdash; BlenderSynth 2023 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=a4664895"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="blendersynth.annotations" href="../api/blendersynth.annotations.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="../markdown/examples.README.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BlenderSynth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">BlenderSynth</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://ollieboyne.github.io/BlenderSynth/">About BlenderSynth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mesh_importing.html">Mesh importing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="texturing.html">Texturing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output_data.html">Output data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset_creation/index.html">Dataset creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capturing_pose.html">Capturing pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_aov.html">Custom AOV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inverse_kinematics.html">Inverse kinematics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Multiview rendering</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.annotations.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.file.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.file</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.run.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.run</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BlenderSynth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Multiview rendering</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/python/multiview_rendering.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="multiview-rendering">
+<h1>Multiview rendering<a class="headerlink" href="#multiview-rendering" title="Link to this heading"></a></h1>
+<p>In this example, we show how to render from multiple cameras within a scene, to generate data similar to the images below:</p>
+<a class="reference external image-reference" href="../_static/images/resources%20multiview_rendering.png"><img alt="Multiview rendering" src="../_images/resources%2520multiview_rendering.png" /></a>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">monkey</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_primitive</span><span class="p">(</span><span class="s1">&#39;monkey&#39;</span><span class="p">)</span>
+
+<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_resolution</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_cycles_samples</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># we will create 4 cameras, one from each side of the monkey, facing the monkey</span>
+<span class="n">cameras</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">camera_radius</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+	<span class="n">camera</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Camera</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Cam</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+	<span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="n">camera_radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">camera_radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
+	<span class="n">camera</span><span class="o">.</span><span class="n">look_at_object</span><span class="p">(</span><span class="n">monkey</span><span class="p">)</span>
+	<span class="n">cameras</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">camera</span><span class="p">)</span>
+
+	<span class="c1"># we&#39;ll add a point light at each camera too</span>
+	<span class="n">light</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Light</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;POINT&#39;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">camera</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="n">intensity</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
+
+<span class="c1"># we&#39;ll render RGB, normals, and bounding boxes</span>
+<span class="n">normal_aov</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">aov</span><span class="o">.</span><span class="n">NormalsAOV</span><span class="p">(</span><span class="n">polarity</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">monkey</span><span class="o">.</span><span class="n">assign_aov</span><span class="p">(</span><span class="n">normal_aov</span><span class="p">)</span>
+
+
+<span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>
+<span class="n">output_folder</span> <span class="o">=</span> <span class="s1">&#39;multiview&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">normal_aov</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;normals&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+
+<span class="n">bounding_boxes</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">bounding_boxes</span><span class="p">([</span><span class="n">monkey</span><span class="p">],</span> <span class="n">cameras</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">get_bounding_box_visual</span><span class="p">(),</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;bounding_box_visual&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">)</span>
+
+<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">camera</span><span class="o">=</span><span class="n">cameras</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="n">bounding_boxes</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../markdown/examples.README.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/blendersynth.annotations.html" class="btn btn-neutral float-right" title="blendersynth.annotations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ollie Boyne.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
