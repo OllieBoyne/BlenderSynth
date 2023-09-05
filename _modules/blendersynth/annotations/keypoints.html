@@ -99,7 +99,7 @@
 <span class="kn">from</span> <span class="nn">..blender.camera</span> <span class="kn">import</span> <span class="n">Camera</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="k">def</span> <span class="nf">_project_keypoints</span><span class="p">(</span><span class="n">points3d</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">camera</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_project_keypoints</span><span class="p">(</span><span class="n">points3d</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">camera</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Project 3D world points to 2D image coordinates.</span>
 
 <span class="sd">	Projects using :func:`blendersynth.annotations.utils.project_points`.</span>
@@ -107,6 +107,8 @@
 <span class="sd">	:param points3d: Nx3 array of 3D points</span>
 <span class="sd">	:param scene: scene to use (if None, `use bpy.context.scene`)</span>
 <span class="sd">	:param camera: camera to project through (if None, use `bpy.context.scene.camera`)</span>
+
+<span class="sd">	:return: Nx2 array of 2D image coordinates</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
 	<span class="k">if</span> <span class="n">scene</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -116,7 +118,7 @@
 		<span class="n">camera</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">camera</span>
 
 	<span class="c1"># project points</span>
-	<span class="k">return</span> <span class="n">project_points</span><span class="p">(</span><span class="n">points3d</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">camera</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+	<span class="k">return</span> <span class="n">project_points</span><span class="p">(</span><span class="n">points3d</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">camera</span><span class="p">)</span>
 
 <div class="viewcode-block" id="project_keypoints">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.keypoints.html#blendersynth.annotations.keypoints.project_keypoints">[docs]</a>
