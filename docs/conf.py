@@ -71,14 +71,15 @@ def replace_sphinx_hint(line, search_for, replacement):
 	type_name = ' '.join(x)
 
 	# lowercase, remove all non a-zA-Z, and remove data/class
-	type_hint = type_hint.lower().replace('data', '').replace('class', '').replace(' ', '')
+	type_hint = type_hint.lower().replace('py:data', '').replace('py:class', '').replace(' ', '')
 	type_hint = re.sub('[^a-zA-Z]', '', type_hint)
+	type_hint = type_hint.replace('typingoptional', '') # remove optional wrapper
 
 	# same for search_for
-	search_for = search_for.lower().replace('data', '').replace('class', '').replace(' ', '')
+	search_for = search_for.lower().replace('py:data', '').replace('py:class', '').replace(' ', '')
 	search_for = re.sub('[^a-zA-Z]', '', search_for)
 
-	if search_for in type_hint:
+	if search_for == type_hint:
 		return type_name + ' ' + replacement, True
 
 	else:

@@ -11,12 +11,12 @@ ANN_TYPES = ['bbox', 'keypoints', 'axes']
 class Annotation:
 	"""A class for storing annotations for a single image."""
 
-	def __init__(self, bbox: types.BboxAnnotation = None, keypoints: types.KeypointAnnotation = None,
-				 axes: types.AxesAnnotation = None):
+	def __init__(self, bbox: types.BboxAnnotation = None, keypoints: types.KeypointOrAxesAnnotation = None,
+				 axes: types.KeypointOrAxesAnnotation = None):
 		"""
 
 		:param bbox: Bounding box tuple per instance
-		:param keypoints: [N x 2] ayyrray per instance
+		:param keypoints: [N x 2] array per instance
 		:param axes: [4 x 2] array per instance
 		"""
 		self.bbox = bbox
@@ -31,10 +31,10 @@ class Annotation:
 		setattr(self, item, value)
 		return self
 
-	def set(self, item, value, inplace=False) -> 'Annotation':
+	def set(self, item: str, value, inplace:bool=False) -> 'Annotation':
 		"""Return a new Annotation, with item set to value.
 
-		:param item: A key in :attr:`_ann_types`
+		:param item: A key in :class:`ANN_TYPES`
 		:param value: Value to set
 		:param inplace: If True, set in place and return self
 		"""

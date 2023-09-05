@@ -27,14 +27,12 @@ VectorLikeOrScalar = Union[VectorLike, int, float]
 """
 
 ## Annotations
-KeypointAnnotation = List[np.ndarray]
-"""Keypoint Annotations, an N x 2 ndarray per instance"""
+KeypointOrAxesAnnotation = List[np.ndarray]
+"""Keypoint Annotations, an N x 2 ndarray per instance,
+or Axes annotation, a 4 x 2 ndarray per instance"""
 
 BboxAnnotation = List[VectorLike]
 """Bbox annotation, a 1D array per instance"""
-
-AxesAnnotation = List[np.ndarray]
-"""Axes annotation, a 4 x 2 ndarray per instance"""
 
 
 # convert our type hint to Sphinx so it can be searched for in documentaton
@@ -74,7 +72,7 @@ def sphinxify_type_hint(py_type):
 
 sphinx_mappings = {}  # dictionary of Sphinx auto type hint -> Type hint within this file
 wrapper_mappings = {}  # dictionary of object -> type hint within this file
-for k in ['VectorLike', 'VectorLikeOrScalar', 'KeypointAnnotation', 'BboxAnnotation', 'AxesAnnotation']:
+for k in ['VectorLike', 'VectorLikeOrScalar', 'KeypointOrAxesAnnotation', 'BboxAnnotation']:
 	obj = globals()[k]
 	key = sphinxify_type_hint(obj)
 	value = f':class:`{k} <{types_loc}.{k}>`'
