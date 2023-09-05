@@ -17,7 +17,7 @@ api_header = "API"
 
 # preference for sorting, will defer to this where possible
 examples_sort_order = ['quickstart', 'mesh_importing', 'texturing', 'output_data', 'dataset_creation', 'animation', 'capturing_pose',
-                       'custom_aov', 'inverse_kinematics']
+                       'custom_aov', 'inverse_kinematics', 'multiview_rendering']
 
 def get_sort_index(name, sort_order):
     """Get the index of the first 'match' in the sort order, or the length of the sort order if no match.

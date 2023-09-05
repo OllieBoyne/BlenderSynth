@@ -5,7 +5,7 @@ from .annotation_handler import AnnotationHandler
 from ..blender.camera import Camera
 from typing import List, Union
 
-def _project_keypoints(points3d: np.ndarray, camera:bpy.types.Camera=None, scene:bpy.types.Scene=None):
+def _project_keypoints(points3d: np.ndarray, camera:bpy.types.Camera=None, scene:bpy.types.Scene=None) -> np.ndarray:
 	"""Project 3D world points to 2D image coordinates.
 
 	Projects using :func:`blendersynth.annotations.utils.project_points`.
@@ -13,6 +13,8 @@ def _project_keypoints(points3d: np.ndarray, camera:bpy.types.Camera=None, scene
 	:param points3d: Nx3 array of 3D points
 	:param scene: scene to use (if None, `use bpy.context.scene`)
 	:param camera: camera to project through (if None, use `bpy.context.scene.camera`)
+
+	:return: Nx2 array of 2D image coordinates
 	"""
 
 	if scene is None:
@@ -22,7 +24,7 @@ def _project_keypoints(points3d: np.ndarray, camera:bpy.types.Camera=None, scene
 		camera = scene.camera
 
 	# project points
-	return project_points(points3d, scene, camera).tolist()
+	return project_points(points3d, scene, camera)
 
 def project_keypoints(points3d: np.ndarray, camera: Union[Camera, List[Camera]] = None, scene: bpy.types.Scene=None) -> AnnotationHandler:
 	"""Project 3D world points to 2D image coordinates for each camera.

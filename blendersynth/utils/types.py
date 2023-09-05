@@ -1,4 +1,5 @@
-from typing import Union, List, Tuple
+from typing import Union, List, Tuple, ForwardRef
+
 try:
 	from mathutils import Vector
 except ImportError:
@@ -25,36 +26,55 @@ VectorLikeOrScalar = Union[VectorLike, int, float]
 - :class:`float`
 """
 
+## Annotations
+KeypointAnnotation = List[np.ndarray]
+"""Keypoint Annotations, an N x 2 ndarray per instance"""
+
+BboxAnnotation = List[VectorLike]
+"""Bbox annotation, a 1D array per instance"""
+
+AxesAnnotation = List[np.ndarray]
+"""Axes annotation, a 4 x 2 ndarray per instance"""
+
 
 # convert our type hint to Sphinx so it can be searched for in documentaton
-def sphinxify_type_hint(type_hint):
+def sphinxify_type_hint(py_type):
+	if py_type is List:  # Handle built-in types
+		return ":py:class:`typing.List`"
+	if py_type is Tuple:
+		return ":py:class:`typing.Tuple`"
+	if py_type is int:
+		return ":py:class:`int`"
+	if py_type is float:
+		return ":py:class:`float`"
 
-	type_hint_str = str(type_hint)
+	if isinstance(py_type, ForwardRef):
+		return f":py:class:`~{py_type.__forward_arg__}`"
 
-	# Replace Python types with their Sphinx roles
-	type_mapping = {
-		'typing.Union': ':py:data:`~typing.Union`\\',
-		'Vector': ':py:class:`~mathutils.Vector`',
-
-		# when mathutils.Vector imported as a string, need this line too
-		'ForwardRef(\'mathutils.:py:class:`~mathutils.Vector`\')': ':py:class:`~mathutils.Vector`',
-
-		'numpy.ndarray': ':py:class:`~numpy.ndarray`',
-		'typing.List': ':py:class:`~typing.List`',
-		'typing.Tuple': ':py:data:`~typing.Tuple`',
-	}
-
-	# Wrap the type hint in backticks and replace types
-	sphinx_type_hint = type_hint_str
-	for py_type, sphinx_type in type_mapping.items():
-		sphinx_type_hint = sphinx_type_hint.replace(py_type, sphinx_type)
-
-	return sphinx_type_hint
+	elif isinstance(py_type, str):
+		return f":py:class:`~{py_type}`"
 
 
-sphinx_mappings = {} # dictionary of Sphinx auto type hint -> Type hint within this file
-wrapper_mappings = {} # dictionary of object -> type hint within this file
-for k in ['VectorLike', 'VectorLikeOrScalar']:
+	elif hasattr(py_type, "__origin__") and hasattr(py_type, "__args__"):
+		origin = py_type.__origin__
+		args = py_type.__args__
+		sphinx_args = ", ".join(sphinxify_type_hint(arg) for arg in args)
+
+		if origin is Union:
+			origin_name = 'Union'
+		else:
+			origin_name = origin.__name__ if hasattr(origin, '__name__') else str(origin).split('.')[-1]
+
+		return f":py:data:`~typing.{origin_name}`[{sphinx_args}]"
+
+
+	else:
+		return f":py:class:`~{py_type.__module__}.{py_type.__name__}`"
+
+
+sphinx_mappings = {}  # dictionary of Sphinx auto type hint -> Type hint within this file
+wrapper_mappings = {}  # dictionary of object -> type hint within this file
+for k in ['VectorLike', 'VectorLikeOrScalar', 'KeypointAnnotation', 'BboxAnnotation', 'AxesAnnotation']:
 	obj = globals()[k]
 	key = sphinxify_type_hint(obj)
 	value = f':class:`{k} <{types_loc}.{k}>`'

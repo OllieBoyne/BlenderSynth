@@ -381,7 +381,7 @@ class Compositor:
 			camera = [camera]
 
 		for cam in camera:
-			annotation = annotations.get_by_camera(cam.name)
+			annotation = annotations.get_annotation_by_camera(cam.name)
 
 			# apply overlays PER CAMERA
 			for oname, overlay in self.overlays.items():
