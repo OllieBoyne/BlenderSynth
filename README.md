@@ -24,6 +24,7 @@ BlenderSynth provides support for:
 - Fine-grained node control
 - Multi-threading
 - Efficient run-speed
+- Multiview rendering
 
 ## Usage
 
