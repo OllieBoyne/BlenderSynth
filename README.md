@@ -15,16 +15,7 @@
 <a href="https://github.com/OllieBoyne/BlenderSynth">GitHub</a>
 </p>
 
-Synthetic Blender pipeline - aimed at generating large synthetic datasets.
-
-This library contains a collection of features for generating synthetic datasets. Compared to other tools, BlenderSynth is (a) more specialised for uncommon data formats, and (b) is designed for generating large scale datasets quickly and efficiently.
-
-BlenderSynth provides support for:
-- Custom Shader [AOVs](https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html) (eg. UVs, Normals, etc.)
-- Fine-grained node control
-- Multi-threading
-- Efficient run-speed
-- Multiview rendering
+BlenderSynth is a Python library for generating large scale synthetic datasets using [Blender](https://www.blender.org/). Compared to other tools, BlenderSynth provides support for: <b>Custom <a href="https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html">Shader AOVs</a></b> to render rich per-pixel information; **node control**; **multithreading** support; and **multiview** rendering support.
 
 ## Usage
 
