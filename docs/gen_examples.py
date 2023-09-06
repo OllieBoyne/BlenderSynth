@@ -12,8 +12,12 @@ make_dirs([static_python_dir, python_dir])
 
 always_caps_words = ['AOV'] # always capitalize these words
 
+def is_py_script(src):
+	file = os.path.basename(src)
+	return file.endswith(".py") and not file.startswith('_')
+
 def is_script_directory(src):
-	contains_scripts = any(file.endswith(".py") for file in os.listdir(src))
+	contains_scripts = any(is_py_script(file) for file in os.listdir(src))
 	subfolders_contain_scripts = any(is_script_directory(os.path.join(src, file)) for file in os.listdir(src) if os.path.isdir(os.path.join(src, file)))
 	return contains_scripts or subfolders_contain_scripts
 
@@ -73,7 +77,7 @@ def copy_python_script(src):
 		return rel_to_docs(out_src)
 
 
-	elif src.endswith(".py"):
+	elif is_py_script(src):
 		static_python_src = os.path.join(static_python_dir, sep_conv(src, '.'))
 		copyfile(src, static_python_src)
 
