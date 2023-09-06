@@ -33,6 +33,6 @@ comp.define_output('Image', file_name='rgb', directory=output_folder)
 comp.define_output(normal_aov, file_name='normals', directory=output_folder)
 
 bounding_boxes = bsyn.annotations.bounding_boxes([monkey], cameras)
-comp.define_output(comp.get_bounding_box_visual(), output_folder, name='bounding_box_visual', mode='image')
+comp.define_output(comp.get_bounding_box_visual(), output_folder, name='bounding_box_visual')
 
 comp.render(camera=cameras, annotations=bounding_boxes)

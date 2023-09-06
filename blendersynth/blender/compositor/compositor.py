@@ -33,8 +33,13 @@ format_to_extension = {
 	# Add more formats if needed
 }
 
+AVAILABLE_FORMATS = ['BMP', 'IRIS', 'PNG', 'JPEG', 'JPEG2000', 'TARGA', 'TARGA_RAW', 'CINEON', 'DPX',
+					 'OPEN_EXR_MULTILAYER',
+					 'OPEN_EXR', 'HDR', 'TIFF']
+"""List of available output file formats"""
 
-def get_badfname(fname, N=100):
+
+def _get_badfname(fname, N=100):
 	"""Search for filename in the format
 	<main_fname><i:04d>.<ext>
 	where i is the frame number. if no file found for i < N, raise error.
@@ -84,7 +89,7 @@ class Compositor:
 		if background_color is not None:
 			self._set_background_color(background_color)
 
-	def tidy_tree(self):
+	def _tidy_tree(self):
 		"""Tidy up node tree"""
 		tidy_tree(self.node_tree)
 
@@ -124,7 +129,7 @@ class Compositor:
 			self.node_tree.links.new(self._get_render_layer_output('IndexOB'), cng.input('IndexOB'))
 			self.mask_nodes[index] = cng
 
-		self.tidy_tree()
+		self._tidy_tree()
 		return self.mask_nodes[index]
 
 	def get_bounding_box_visual(self, col=(0., 0., 255., 255.), thickness=5) -> BoundingBoxOverlay:
@@ -144,7 +149,7 @@ class Compositor:
 
 		self.overlays['bbox'] = cng
 
-		self.tidy_tree()
+		self._tidy_tree()
 		return cng
 
 	def get_keypoints_visual(self, marker: str = 'x', color: tuple = (0, 0, 255), size: int = 5,
@@ -167,7 +172,7 @@ class Compositor:
 
 		self.overlays['keypoints'] = cng
 
-		self.tidy_tree()
+		self._tidy_tree()
 		return cng
 
 	def get_axes_visual(self, size: int = 1, thickness: int = 2) -> AxesOverlay:
@@ -186,7 +191,7 @@ class Compositor:
 			raise ValueError("Only allowed one Axes overlay.")
 
 		self.overlays['axes'] = cng
-		self.tidy_tree()
+		self._tidy_tree()
 		return cng
 
 	def stack_visuals(self, *visuals: AlphaImageOverlay) -> AlphaImageOverlay:
@@ -224,34 +229,38 @@ class Compositor:
 		cng = DepthVis(self.node_tree, max_depth=max_depth, col=col)
 		self.node_tree.links.new(self._get_render_layer_output('Depth'), cng.input('Depth'))
 
-		self.tidy_tree()
+		self._tidy_tree()
 		return cng
 
-	def define_output(self, input_data: Union[str, CompositorNodeGroup, AOV], directory, file_name=None, mode='image',
-					  file_format='PNG', color_mode='RGBA', jpeg_quality=90,
-					  png_compression=15, color_depth='8', EXR_color_depth='32',
-					  name=None):
+	def define_output(self, input_data: Union[str, CompositorNodeGroup, AOV], directory: str = '.',
+					  file_name: str = None,
+					  file_format: str = 'PNG', color_mode: str = 'RGBA', jpeg_quality: int = 90,
+					  png_compression: int = 15, color_depth: str = '8', EXR_color_depth: str = '32',
+					  name: str = None):
 		"""Add a connection between a valid render output, and a file output node.
-		Supports changing view output.
 
 		This should only be called once per output (NOT inside a loop).
-		Inside the loop, only call `update_filename` or `update_directory`
+		Inside the loop, only call :attr:`~update_filename`, :attr:`update_all_filenames` :attr:`~update_directory`
 
-		:mode: if 'image', export in sRGB color space. If 'data', export in raw linear color space
+		All outputs will be defined in raw colour space (no colour correction), except for the RGB output,
+		and any overlays on this output (e.g. Bounding Box Visualization)
 
-		:input_data: Can take one of three forms:
-			- `string`, will get the input_data from that key in the render_layers_node
-			- `CompositorNodeGroup`, will use that node as input
-			- `AOV`, will use that AOV as input (storing AOV)
-
-		:name: Name of output. If not given, will take the str representation of input_data
+		:param input_data: If :class:`str`,  will get the input_data from that key in the render_layers_node. If :class:`~CompositorNodeGroup`, use that node as input. If :class:`AOV`, use that AOV as input (storing AOV).
+		:param directory: Directory to save output to
+		:param file_name: Name of file to save output to. If None, will use `name` (or `input_data` if `name` is None)
+		:param file_format: File format to save output as. Must be in :class:`AVAILABLE_FORMATS`
+		:param color_mode: Color mode to save output as.
+		:param jpeg_quality: Quality of JPEG output.
+		:param png_compression: Compression of PNG output.
+		:param color_depth: Color depth of output.
+		:param EXR_color_depth: Color depth of EXR output.
+		:param name: Name of output. If not given, will take the str representation of input_data
 		"""
 
 		if isinstance(input_data, AOV):
 			self.aovs.append(input_data)
 			input_data = input_data.name  # name is sufficient to pull from render_layers_node
 
-		assert mode in ['image', 'data'], f"mode must be 'image' or 'data', got {mode}"
 		assert file_format in format_to_extension, f"File format `{file_format}` not supported. Options are: {list(format_to_extension.keys())}"
 
 		if name is None:
@@ -289,10 +298,6 @@ class Compositor:
 		node.base_path = directory
 		node.file_slots[0].path = file_name
 
-		if mode == 'data':
-			node.format.color_management = 'OVERRIDE'
-			node.format.display_settings.display_device = 'None'
-
 		# File format kwargs
 		node.format.file_format = file_format
 		node.format.color_mode = color_mode
@@ -302,7 +307,7 @@ class Compositor:
 
 		self.file_output_nodes[name] = node
 
-		self.tidy_tree()
+		self._tidy_tree()
 		return name
 
 	def update_filename(self, key: str, fname: str):
@@ -337,14 +342,14 @@ class Compositor:
 		for node in self.file_output_nodes.values():
 			# get expected file name and extension
 			ext = format_to_extension[node.format.file_format]
-			bad_file_name = get_badfname(os.path.join(node.base_path, node.file_slots[0].path + ext))
+			bad_file_name = _get_badfname(os.path.join(node.base_path, node.file_slots[0].path + ext))
 			target_file_name = os.path.join(node.base_path, prefix + node.file_slots[0].path + ext)
 			shutil.move(
 				bad_file_name,
 				target_file_name
 			)
 
-	def update_aovs(self):
+	def _update_aovs(self):
 		"""Update any AOVs that are connected to the render layers node"""
 		for aov in self.aovs:
 			aov.update()
@@ -354,8 +359,7 @@ class Compositor:
 			   animation: bool = False, frame_start: int = 0, frame_end: int = 250):
 		"""Render the scene.
 
-		:param camera: Camera(s) to render from. If None, will use `scene.camera`. If multiple, will render each camera
-		separately, appending the camera's names as the output file names.
+		:param camera: Camera(s) to render from. If None, will use `scene.camera`. If multiple, will render each camera separately, appending the camera's names as the output file names.
 		:param scene: Scene to render. If None, will use `bpy.context.scene`.
 		:param annotations: Object containing annotation information for each camera view to be used for overlays
 		:param animation: If True, will render an animation, using `frame_start` and `frame_end` as the start and end frames.
@@ -363,14 +367,12 @@ class Compositor:
 		:param frame_end: End frame for animation.
 		"""
 
-
 		if scene is None:
 			scene = bpy.context.scene
 
 		_original_active_camera = bpy.context.scene.camera
 		if camera is None:
 			camera = Camera()
-
 
 		if animation:
 			scene.frame_start = frame_start
@@ -381,13 +383,14 @@ class Compositor:
 			camera = [camera]
 
 		for cam in camera:
-			annotation = annotations.get_annotation_by_camera(cam.name)
+			if annotations is not None:
+				annotation = annotations.get_annotation_by_camera(cam.name)
 
-			# apply overlays PER CAMERA
-			for oname, overlay in self.overlays.items():
-				overlay.update(getattr(annotation, oname), camera=cam, scene=scene)  # multi kwargs
+				# apply overlays PER CAMERA
+				for oname, overlay in self.overlays.items():
+					overlay.update(getattr(annotation, oname), camera=cam, scene=scene)  # multi kwargs
 
-			self.update_aovs()
+			self._update_aovs()
 
 			scene.camera = cam.obj
 			render(animation=animation)
