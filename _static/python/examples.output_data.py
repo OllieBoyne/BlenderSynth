@@ -54,19 +54,21 @@ for aov in [cam_normals_aov, instancing_aov, class_aov, UVAOV, NOCAOV]:
 
 # Now we assign our render passes to the compositor, telling it what files to output
 output_folder = 'data_formats'
-comp.define_output('Image', output_folder, file_name='rgb', mode='image')  # render RGB layer (note mode='image')
-comp.define_output(rgb_mask, output_folder, name='rgb_masked', mode='image') # render RGB layer masked by monkey
-comp.define_output(bounding_box_visual, output_folder, name='bounding_box_visual', mode='image')
-comp.define_output(keypoints_visual, output_folder, name='keypoints', mode='image')
-comp.define_output(depth_vis, output_folder, name='depth', mode='image')  # render depth layer (note mode='image')
 
-# For the following, we render as raw data (i.e. no colour post-processing)
-comp.define_output(instancing_aov, output_folder, name='instancing', mode='image')
-comp.define_output(class_aov, output_folder, name='semantic', mode='image')
-comp.define_output(cam_normals_aov, output_folder, name='normals', mode='data')
+# All of the following will have Blender's Filmic colour correction by default
+comp.define_output('Image', output_folder, file_name='rgb')  # render RGB layer
+comp.define_output(rgb_mask, output_folder, name='rgb_masked') # render RGB layer masked by monkey
+comp.define_output(bounding_box_visual, output_folder, name='bounding_box_visual')
+comp.define_output(keypoints_visual, output_folder, name='keypoints')
+
+# All of the following will not have any colour correction
+comp.define_output(depth_vis, output_folder)  # render visual of depth layer
+comp.define_output(instancing_aov, output_folder, name='instancing')
+comp.define_output(class_aov, output_folder, name='semantic')
+comp.define_output(cam_normals_aov, output_folder, name='normals')
 comp.define_output(UVAOV, output_folder, name='UV', mode='data')
 comp.define_output(NOCAOV, output_folder, name='NOC', mode='data')
-comp.define_output('Depth', output_folder, file_format='OPEN_EXR', mode='data')
+comp.define_output('Depth', output_folder, file_format='OPEN_EXR')
 
 # we will plot all cube keypoints
 cube_vertices = np.concatenate([obj.get_keypoints([*range(8)]) for obj in objects if 'Cube' in obj.name])

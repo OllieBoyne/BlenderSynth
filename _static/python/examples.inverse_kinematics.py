@@ -35,7 +35,7 @@ camera.look_at(obj.centroid())
 comp = bsyn.Compositor()
 render_dir = 'inverse_kinematics/rgb'
 os.makedirs(render_dir, exist_ok=True)
-comp.define_output('Image', directory=render_dir, file_name='rgb', mode='image')
+comp.define_output('Image', directory=render_dir, file_name='rgb')
 comp.render(animation=True, frame_end=num_frames)
 
 # convert rendered frames to video

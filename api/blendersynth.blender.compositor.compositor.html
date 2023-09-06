@@ -98,29 +98,38 @@
              
   <section id="module-blendersynth.blender.compositor.compositor">
 <span id="blendersynth-blender-compositor-compositor"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.compositor.compositor</span></code><a class="headerlink" href="#module-blendersynth.blender.compositor.compositor" title="Link to this heading"></a></h1>
+<dl class="py data">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.compositor.compositor.</span></span><span class="sig-name descname"><span class="pre">AVAILABLE_FORMATS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['BMP',</span> <span class="pre">'IRIS',</span> <span class="pre">'PNG',</span> <span class="pre">'JPEG',</span> <span class="pre">'JPEG2000',</span> <span class="pre">'TARGA',</span> <span class="pre">'TARGA_RAW',</span> <span class="pre">'CINEON',</span> <span class="pre">'DPX',</span> <span class="pre">'OPEN_EXR_MULTILAYER',</span> <span class="pre">'OPEN_EXR',</span> <span class="pre">'HDR',</span> <span class="pre">'TIFF']</span></em><a class="headerlink" href="#blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS" title="Link to this definition"></a></dt>
+<dd><p>List of available output file formats</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.compositor.compositor.</span></span><span class="sig-name descname"><span class="pre">Compositor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ViewLayer'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rgb_color_space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Filmic</span> <span class="pre">sRGB'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor" title="Link to this definition"></a></dt>
 <dd><p>Compositor output - for handling file outputs, and managing Compositor node tree</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.define_output">
-<span class="sig-name descname"><span class="pre">define_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'image'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PNG'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RGBA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jpeg_quality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">png_compression</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EXR_color_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'32'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.define_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.define_output" title="Link to this definition"></a></dt>
-<dd><p>Add a connection between a valid render output, and a file output node.
-Supports changing view output.</p>
+<span class="sig-name descname"><span class="pre">define_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PNG'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RGBA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jpeg_quality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">png_compression</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EXR_color_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'32'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.define_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.define_output" title="Link to this definition"></a></dt>
+<dd><p>Add a connection between a valid render output, and a file output node.</p>
 <p>This should only be called once per output (NOT inside a loop).
-Inside the loop, only call <cite>update_filename</cite> or <cite>update_directory</cite></p>
+Inside the loop, only call <a class="reference internal" href="#blendersynth.blender.compositor.compositor.Compositor.update_filename" title="blendersynth.blender.compositor.compositor.Compositor.update_filename"><code class="xref py py-attr docutils literal notranslate"><span class="pre">update_filename</span></code></a>, <a class="reference internal" href="#blendersynth.blender.compositor.compositor.Compositor.update_all_filenames" title="blendersynth.blender.compositor.compositor.Compositor.update_all_filenames"><code class="xref py py-attr docutils literal notranslate"><span class="pre">update_all_filenames</span></code></a> <a class="reference internal" href="#blendersynth.blender.compositor.compositor.Compositor.update_directory" title="blendersynth.blender.compositor.compositor.Compositor.update_directory"><code class="xref py py-attr docutils literal notranslate"><span class="pre">update_directory</span></code></a></p>
+<p>All outputs will be defined in raw colour space (no colour correction), except for the RGB output,
+and any overlays on this output (e.g. Bounding Box Visualization)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Mode<span class="colon">:</span></dt>
-<dd class="field-odd"><p>if ‘image’, export in sRGB color space. If ‘data’, export in raw linear color space</p>
-</dd>
-<dt class="field-even">Input_data<span class="colon">:</span></dt>
-<dd class="field-even"><p>Can take one of three forms:
-- <cite>string</cite>, will get the input_data from that key in the render_layers_node
-- <cite>CompositorNodeGroup</cite>, will use that node as input
-- <cite>AOV</cite>, will use that AOV as input (storing AOV)</p>
-</dd>
-<dt class="field-odd">Name<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Name of output. If not given, will take the str representation of input_data</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a>, <a class="reference internal" href="blendersynth.blender.aov.html#blendersynth.blender.aov.AOV" title="blendersynth.blender.aov.AOV"><code class="xref py py-class docutils literal notranslate"><span class="pre">AOV</span></code></a>]) – If <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>,  will get the input_data from that key in the render_layers_node. If <code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code>, use that node as input. If <code class="xref py py-class docutils literal notranslate"><span class="pre">AOV</span></code>, use that AOV as input (storing AOV).</p></li>
+<li><p><strong>directory</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Directory to save output to</p></li>
+<li><p><strong>file_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of file to save output to. If None, will use <cite>name</cite> (or <cite>input_data</cite> if <cite>name</cite> is None)</p></li>
+<li><p><strong>file_format</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – File format to save output as. Must be in <a class="reference internal" href="#blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS" title="blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS"><code class="xref py py-class docutils literal notranslate"><span class="pre">AVAILABLE_FORMATS</span></code></a></p></li>
+<li><p><strong>color_mode</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Color mode to save output as.</p></li>
+<li><p><strong>jpeg_quality</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Quality of JPEG output.</p></li>
+<li><p><strong>png_compression</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Compression of PNG output.</p></li>
+<li><p><strong>color_depth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Color depth of output.</p></li>
+<li><p><strong>EXR_color_depth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Color depth of EXR output.</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of output. If not given, will take the str representation of input_data</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -204,20 +213,16 @@ and any values below that are depth/max_depth * col.</p>
 <dd><p>Render the scene.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>camera</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.camera.html#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="blendersynth.blender.camera.html#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a>]]) – Camera(s) to render from. If None, will use <cite>scene.camera</cite>. If multiple, will render each camera</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>camera</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.camera.html#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="blendersynth.blender.camera.html#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a>]]) – Camera(s) to render from. If None, will use <cite>scene.camera</cite>. If multiple, will render each camera separately, appending the camera’s names as the output file names.</p></li>
+<li><p><strong>scene</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code>) – Scene to render. If None, will use <cite>bpy.context.scene</cite>.</p></li>
+<li><p><strong>annotations</strong> (<a class="reference internal" href="blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.AnnotationHandler" title="blendersynth.annotations.annotation_handler.AnnotationHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationHandler</span></code></a>) – Object containing annotation information for each camera view to be used for overlays</p></li>
+<li><p><strong>animation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, will render an animation, using <cite>frame_start</cite> and <cite>frame_end</cite> as the start and end frames.</p></li>
+<li><p><strong>frame_start</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Start frame for animation.</p></li>
+<li><p><strong>frame_end</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – End frame for animation.</p></li>
+</ul>
 </dd>
 </dl>
-<p>separately, appending the camera’s names as the output file names.
-:type scene: <code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code>
-:param scene: Scene to render. If None, will use <cite>bpy.context.scene</cite>.
-:type annotations: <a class="reference internal" href="blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.AnnotationHandler" title="blendersynth.annotations.annotation_handler.AnnotationHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationHandler</span></code></a>
-:param annotations: Object containing annotation information for each camera view to be used for overlays
-:type animation: <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>
-:param animation: If True, will render an animation, using <cite>frame_start</cite> and <cite>frame_end</cite> as the start and end frames.
-:type frame_start: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>
-:param frame_start: Start frame for animation.
-:type frame_end: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>
-:param frame_end: End frame for animation.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -236,12 +241,6 @@ and any values below that are depth/max_depth * col.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.tidy_tree">
-<span class="sig-name descname"><span class="pre">tidy_tree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.tidy_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.tidy_tree" title="Link to this definition"></a></dt>
-<dd><p>Tidy up node tree</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.update_all_filenames">
 <span class="sig-name descname"><span class="pre">update_all_filenames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.update_all_filenames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.update_all_filenames" title="Link to this definition"></a></dt>
 <dd><p>Reassign all filenames (not directories) for all file output nodes.</p>
@@ -250,12 +249,6 @@ and any values below that are depth/max_depth * col.</p>
 <dd class="field-odd"><p><strong>fname</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – new filename, without extension</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.update_aovs">
-<span class="sig-name descname"><span class="pre">update_aovs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.update_aovs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.update_aovs" title="Link to this definition"></a></dt>
-<dd><p>Update any AOVs that are connected to the render layers node</p>
 </dd></dl>
 
 <dl class="py method">
@@ -278,15 +271,6 @@ and any values below that are depth/max_depth * col.</p>
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.get_badfname">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.compositor.compositor.</span></span><span class="sig-name descname"><span class="pre">get_badfname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#get_badfname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.get_badfname" title="Link to this definition"></a></dt>
-<dd><p>Search for filename in the format
-&lt;main_fname&gt;&lt;i:04d&gt;.&lt;ext&gt;
-where i is the frame number. if no file found for i &lt; N, raise error.
-otherwise, return found file</p>
 </dd></dl>
 
 </section>
