@@ -66,8 +66,8 @@ comp.define_output(depth_vis, output_folder)  # render visual of depth layer
 comp.define_output(instancing_aov, output_folder, name='instancing')
 comp.define_output(class_aov, output_folder, name='semantic')
 comp.define_output(cam_normals_aov, output_folder, name='normals')
-comp.define_output(UVAOV, output_folder, name='UV', mode='data')
-comp.define_output(NOCAOV, output_folder, name='NOC', mode='data')
+comp.define_output(UVAOV, output_folder, name='UV')
+comp.define_output(NOCAOV, output_folder, name='NOC')
 comp.define_output('Depth', output_folder, file_format='OPEN_EXR')
 
 # we will plot all cube keypoints
