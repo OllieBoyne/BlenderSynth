@@ -15,7 +15,7 @@
 <a href="https://github.com/OllieBoyne/BlenderSynth">GitHub</a>
 </p>
 
-BlenderSynth is a Python library for generating large scale synthetic datasets using [Blender](https://www.blender.org/). Compared to other tools, BlenderSynth provides support for: <b>Custom <a href="https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html">Shader AOVs</a></b> to render rich per-pixel information; **node control**; **multithreading** support; and **multiview** rendering support.
+BlenderSynth is a Python library for generating large scale synthetic datasets using [Blender](https://www.blender.org/). Compared to other tools, BlenderSynth provides support for: <b>Custom <a href="https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html">Shader AOVs</a></b> to render rich per-pixel information; **node control**; <b><a href="https://ollieboyne.github.io/BlenderSynth/python/dataset_creation/index.html">multithreading</a></b> support; and <b><a href="https://ollieboyne.github.io/BlenderSynth/python/multiview_rendering.html">multiview</a></b> rendering support.
 
 ## Usage
 
