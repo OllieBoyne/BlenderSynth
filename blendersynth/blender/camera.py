@@ -11,7 +11,7 @@ from ..utils import types
 
 def _look_at_rotation(obj_camera: bpy.types.Object,
 					  at: mathutils.Vector = mathutils.Vector((0, 0, 0)),
-					  up: mathutils.Vector = mathutils.Vector((0, 1, 0))) -> mathutils.Euler:
+					  up: mathutils.Vector = mathutils.Vector((0, 0, 1))) -> mathutils.Euler:
 	"""	Rotate camera to look at 'at', with 'up' maintained.
 
 	:param obj_camera: Camera object
@@ -149,7 +149,7 @@ class Camera(BsynObject):
 		self.location = pos
 		self.euler = euler
 
-	def place_and_look_at(self, pos, at, up=mathutils.Vector((0, 1, 0))):
+	def place_and_look_at(self, pos, at, up=mathutils.Vector((0, 0, 1))):
 		pos = handle_vec(pos)
 		at = handle_vec(at)
 		up = handle_vec(up)

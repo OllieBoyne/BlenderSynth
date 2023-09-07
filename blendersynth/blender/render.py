@@ -34,11 +34,11 @@ def render_with_gpu(force_enable=True, silent=False):
 	enabled_gpus = devices.enabled_gpus
 	if enabled_gpus:
 		if not silent:
-			print(f'Using GPU devices {enabled_gpus}')
+			print(f'Using GPU devices {enabled_gpus.names}')
 
 	elif not silent:
 		print("No GPU devices available and enabled.\n" +
-		f"Available GPUs: {devices.available_gpus}\n" +
+		f"Available GPUs: {devices.available_gpus.names}\n" +
 		"Either set force_enable=True or enable a GPU device in Blender.\n"
 	    "Using CPU instead...")
 
