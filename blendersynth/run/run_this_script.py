@@ -26,12 +26,15 @@ def _copy_over_script(filepath:str) -> str:
 
 
 
-def run_this_script(debug:bool=False):
+def run_this_script(*args, debug:bool=False, **kwargs):
 	"""Run the script in which this function is called from Blender.
 
 	Will also place a copy of the script inside Blender.
 
-	:param debug: If True, open a Blender instance after all code is executed, otherwise run in background"""
+	:param debug: If True, open a Blender instance after all code is executed, otherwise run in background
+
+	args & kwargs are passed to the script being run as command line arguments.
+	"""
 
 	running_in_blender = 'bpy' in sys.modules
 
@@ -47,7 +50,13 @@ def run_this_script(debug:bool=False):
 
 		commands = [blender_path] + \
 			['--background'] * (not debug) + \
-			['--python', caller_path]
+			['--python', caller_path, '--']
+
+		for arg in args:
+			commands += [f'--{arg}']
+
+		for key, value in kwargs.items():
+			commands += [f'--{key}', str(value)]
 
 		subprocess.call(commands, env=env)
 

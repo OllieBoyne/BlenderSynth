@@ -1,4 +1,5 @@
 import bpy
+from .devices import Devices
 
 ENGINES = ['BLENDER_EEVEE', 'BLENDER_WORKBENCH', 'CYCLES']
 """List of valid render engines"""
@@ -12,6 +13,35 @@ def render(animation:bool=False):
 		bpy.ops.render.render(animation=True)
 	else:
 		bpy.ops.render.render(write_still=True)
+
+def render_with_cpu():
+	"""Render with CPU"""
+	bpy.context.scene.cycles.device = 'CPU'
+
+def render_with_gpu(force_enable=True, silent=False):
+	"""Render with GPU.
+
+	:param force_enable: If True, enable all GPU devices. Otherwise, use the devices that are already enabled. To enable separately, either change your settings in blender, or see :attr:`blendersynth.blender.devices.Devices.set_device_usage`
+	:param silent: If True, do not print information about device being used.
+	"""
+	bpy.context.scene.cycles.device = 'GPU'
+
+	devices = Devices()
+
+	if force_enable:
+		devices.set_device_usage(cpu=True, cuda=True, opencl=True, metal=True)
+
+	enabled_gpus = devices.enabled_gpus
+	if enabled_gpus:
+		if not silent:
+			print(f'Using GPU devices {enabled_gpus}')
+
+	elif not silent:
+		print("No GPU devices available and enabled.\n" +
+		f"Available GPUs: {devices.available_gpus}\n" +
+		"Either set force_enable=True or enable a GPU device in Blender.\n"
+	    "Using CPU instead...")
+
 
 
 def set_engine(engine: str):
