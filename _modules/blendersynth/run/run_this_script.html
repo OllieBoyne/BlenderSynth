@@ -122,12 +122,15 @@
 
 <div class="viewcode-block" id="run_this_script">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run_this_script.html#blendersynth.run.run_this_script.run_this_script">[docs]</a>
-<span class="k">def</span> <span class="nf">run_this_script</span><span class="p">(</span><span class="n">debug</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">run_this_script</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">debug</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Run the script in which this function is called from Blender.</span>
 
 <span class="sd">	Will also place a copy of the script inside Blender.</span>
 
-<span class="sd">	:param debug: If True, open a Blender instance after all code is executed, otherwise run in background&quot;&quot;&quot;</span>
+<span class="sd">	:param debug: If True, open a Blender instance after all code is executed, otherwise run in background</span>
+
+<span class="sd">	args &amp; kwargs are passed to the script being run as command line arguments.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
 
 	<span class="n">running_in_blender</span> <span class="o">=</span> <span class="s1">&#39;bpy&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span>
 
@@ -143,7 +146,13 @@
 
 		<span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="n">blender_path</span><span class="p">]</span> <span class="o">+</span> \
 			<span class="p">[</span><span class="s1">&#39;--background&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="ow">not</span> <span class="n">debug</span><span class="p">)</span> <span class="o">+</span> \
-			<span class="p">[</span><span class="s1">&#39;--python&#39;</span><span class="p">,</span> <span class="n">caller_path</span><span class="p">]</span>
+			<span class="p">[</span><span class="s1">&#39;--python&#39;</span><span class="p">,</span> <span class="n">caller_path</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">]</span>
+
+		<span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+			<span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;--</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+
+		<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+			<span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;--</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span>
 
 		<span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
 

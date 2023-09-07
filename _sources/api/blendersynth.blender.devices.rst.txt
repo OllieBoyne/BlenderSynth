@@ -1,0 +1,6 @@
+:code:`blendersynth.blender.devices`
+=======================================
+
+.. automodule:: blendersynth.blender.devices
+	:members:
+	:inherited-members:
