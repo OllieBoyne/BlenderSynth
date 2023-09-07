@@ -136,11 +136,11 @@
 	<span class="n">enabled_gpus</span> <span class="o">=</span> <span class="n">devices</span><span class="o">.</span><span class="n">enabled_gpus</span>
 	<span class="k">if</span> <span class="n">enabled_gpus</span><span class="p">:</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
-			<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using GPU devices </span><span class="si">{</span><span class="n">enabled_gpus</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+			<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using GPU devices </span><span class="si">{</span><span class="n">enabled_gpus</span><span class="o">.</span><span class="n">names</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 	<span class="k">elif</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
 		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No GPU devices available and enabled.</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
-		<span class="sa">f</span><span class="s2">&quot;Available GPUs: </span><span class="si">{</span><span class="n">devices</span><span class="o">.</span><span class="n">available_gpus</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+		<span class="sa">f</span><span class="s2">&quot;Available GPUs: </span><span class="si">{</span><span class="n">devices</span><span class="o">.</span><span class="n">available_gpus</span><span class="o">.</span><span class="n">names</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
 		<span class="s2">&quot;Either set force_enable=True or enable a GPU device in Blender.</span><span class="se">\n</span><span class="s2">&quot;</span>
 	    <span class="s2">&quot;Using CPU instead...&quot;</span><span class="p">)</span></div>
 
