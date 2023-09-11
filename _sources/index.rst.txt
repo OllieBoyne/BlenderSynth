@@ -1,3 +1,6 @@
+BlenderSynth
+=====
+
 .. mdinclude:: markdown/README.md
 
 .. toctree::
