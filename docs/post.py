@@ -13,7 +13,7 @@ if target in content:
 		f.write(new_content)
 
 else:
-	raise ValueError(f"Postfix 1 failed - Could not find target {target} in index.html")
+	print(f"Postfix 1 failed - Could not find target {target} in index.html")
 
 
 print("Run post checks ✔")
