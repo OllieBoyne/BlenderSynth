@@ -83,7 +83,7 @@ class Compositor:
 		# We set view transform to 'Raw' to avoid any gamma correction to all non-Image layers
 		bpy.context.scene.view_settings.view_transform = 'Raw'
 
-		# Socket to be used as RGB input for anything. Defined separately in case of applying overlays (e.g. background colour)
+		# Socket to be used as RGB input for anything. Defined separately in case of applying overlays (e.g. background color)
 		self._rgb_socket = get_node_by_name(self.node_tree, 'Render Layers').outputs['Image']
 		self._set_rgb_color_space(rgb_color_space)
 		if background_color is not None:
@@ -132,10 +132,9 @@ class Compositor:
 		self._tidy_tree()
 		return self.mask_nodes[index]
 
-	def get_bounding_box_visual(self, col=(0., 0., 255., 255.), thickness=5) -> BoundingBoxOverlay:
+	def get_bounding_box_visual(self, col=(0., 0., 255., 255.), thickness:int=5) -> BoundingBoxOverlay:
 		"""
-		return a CompositorNodeGroup,
-		which will render the bounding boxes of the objects
+		Return a bounding box visual overlay.
 
 		:param col: (3,) or (N, 3) Color(s) of bounding box(es) [in BGR]
 		:param thickness: (,) or (N,) Thickness(es) of bounding box(es)
@@ -155,7 +154,7 @@ class Compositor:
 	def get_keypoints_visual(self, marker: str = 'x', color: tuple = (0, 0, 255), size: int = 5,
 							 thickness: int = 2) -> KeypointsOverlay:
 		"""
-		Initialize a keypoints overlay node.
+		Return a keypoints visual overlay.
 
 		:param marker: Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default 'x'
 		:param size: Size of marker. Default 5
@@ -177,7 +176,7 @@ class Compositor:
 
 	def get_axes_visual(self, size: int = 1, thickness: int = 2) -> AxesOverlay:
 		"""
-		Initialize an axes overlay node.
+		Return an axes visual overlay.
 
 		:param size: Size of axes. Default 100
 		:param thickness: Thickness of axes. Default 2
@@ -214,11 +213,12 @@ class Compositor:
 
 		return visuals[-1]
 
-	def get_depth_visual(self, max_depth=1, col=(255, 255, 255)):
+	def get_depth_visual(self, max_depth=1, col:tuple=(255, 255, 255)) -> CompositorNodeGroup:
 		"""Get depth visual, which normalizes depth values so max_depth = col,
 		and any values below that are depth/max_depth * col.
 
-		Col = 0-255 RGB or RGBA"""
+		:param max_depth: Maximum depth value to normalize to
+		:param col: Color of maximum depth value. 0-255 RGB or RGBA."""
 
 		if 'Depth' not in self.render_layers_node.outputs:
 			render_depth()
@@ -236,13 +236,13 @@ class Compositor:
 					  file_name: str = None,
 					  file_format: str = 'PNG', color_mode: str = 'RGBA', jpeg_quality: int = 90,
 					  png_compression: int = 15, color_depth: str = '8', EXR_color_depth: str = '32',
-					  name: str = None):
+					  name: str = None) -> str:
 		"""Add a connection between a valid render output, and a file output node.
 
 		This should only be called once per output (NOT inside a loop).
 		Inside the loop, only call :attr:`~update_filename`, :attr:`update_all_filenames` :attr:`~update_directory`
 
-		All outputs will be defined in raw colour space (no colour correction), except for the RGB output,
+		All outputs will be defined in raw color space (no color correction), except for the RGB output,
 		and any overlays on this output (e.g. Bounding Box Visualization)
 
 		:param input_data: If :class:`str`,  will get the input_data from that key in the render_layers_node. If :class:`~CompositorNodeGroup`, use that node as input. If :class:`AOV`, use that AOV as input (storing AOV).
@@ -255,6 +255,9 @@ class Compositor:
 		:param color_depth: Color depth of output.
 		:param EXR_color_depth: Color depth of EXR output.
 		:param name: Name of output. If not given, will take the str representation of input_data
+
+		:returns: Name of output, which can be used to update filename or directory
+
 		"""
 
 		if isinstance(input_data, AOV):
@@ -327,8 +330,12 @@ class Compositor:
 		for node in self.file_output_nodes.values():
 			node.file_slots[0].path = fname
 
-	def update_directory(self, key, directory):
-		"""Reassign the directory for a given file output node"""
+	def update_directory(self, key: str, directory: str):
+		"""Reassign the directory for a given file output node
+
+		:param key: key of output, as given in `define_output`
+		:param directory: new directory
+		"""
 		node = self.file_output_nodes[str(key)]
 		node.base_path = directory
 

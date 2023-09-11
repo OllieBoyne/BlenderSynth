@@ -100,7 +100,12 @@ class Mesh(BsynObject):
 		self.assigned_aovs = []
 		self._armatures = {}  # name : armature, to prevent multiple instances of armatures
 
-	def set_class_id(self, class_id):
+	def set_class_id(self, class_id: int):
+		"""Set the class ID of the object.
+
+		:param class_id: Class ID to assign to object
+		"""
+
 		assert isinstance(class_id, int), f"Class ID must be an integer, not {type(class_id)}"
 		assert class_id >= 0, f"Class ID must be >= 0, not {class_id}"
 

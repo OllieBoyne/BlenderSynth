@@ -7,6 +7,8 @@ import mathutils
 from typing import Union, List, Tuple
 from ..utils import types
 
+# docs-special-members: __init__
+
 # define Blender Array type
 blender_array_type = Union[List[float], mathutils.Vector, np.ndarray, Tuple[float, ...], Tuple[int, ...]]
 blender_array_or_scalar = Union[blender_array_type, int, float]
@@ -88,6 +90,7 @@ class SelectObjects:
 
 	def __init__(self, objects: list = ()):
 		"""Initialize with a list of objects to select
+
 		:param objects: list of bpy.types.Object
 		"""
 		self.objects = objects
@@ -121,7 +124,7 @@ class SelectObjects:
 
 
 class SetMode:
-	"""Context manager for changing the mode of a specific object in Blender (e.g., to 'POSE'),
+	"""Context manager for changing the mode of a specific object in Blender (e.g., to `POSE`),
 	returning to the original mode on exit."""
 
 	def __init__(self, target_mode:str, object:bpy.types.Object=None):
@@ -154,6 +157,10 @@ class CursorAt():
 	On exit, will return the cursor to its original location."""
 
 	def __init__(self, target: types.VectorLike):
+		"""Initialize with the target location
+
+		:param target: Location to move the cursor to"""
+
 		self.original_location = None
 		self.target = target
 
@@ -165,7 +172,7 @@ class CursorAt():
 		bpy.context.scene.cursor.location = self.original_location
 
 
-def get_node_by_name(node_tree: bpy.types.NodeTree, key: str, raise_error=False) -> bpy.types.Node:
+def get_node_by_name(node_tree: bpy.types.NodeTree, key: str, raise_error:bool=False) -> bpy.types.Node:
 	"""Given a nodetree and a key, return the first node found with label matching key.
 
 	:param node_tree: Node tree to search
@@ -201,7 +208,7 @@ def handle_vec(vec, expected_length: int = 3) -> mathutils.Vector:
 def animatable_property(data_path: str, use_data_object: bool = False) -> callable:
 	"""Decorator that wraps around a function to take a frame number and value, and set the property at that frame.
 
-	example usage::
+	Example usage::
 
 		@animatable('location')
 		def set_location(self, value):
@@ -211,13 +218,14 @@ def animatable_property(data_path: str, use_data_object: bool = False) -> callab
 
 	``obj.set_location((1, 2, 3))``
 
-	To set the property at a specific frame, use the decorator:
+	To set the property at a specific frame, simply add the frame keyword:
 
 	``obj.set_location((1, 2, 3), frame=10)``
 
-	Which will call the set_location function, followed by
+	Which is functionally equivalent to::
 
-	``self.object.keyframe_insert(data_path='location', frame=10)``
+		obj.set_location((1, 2, 3))
+		obj.object.keyframe_insert(data_path='location', frame=10)
 
 	:param data_path: the data path of the property to set
 	:param use_data_object: whether to use the data object or the object itself

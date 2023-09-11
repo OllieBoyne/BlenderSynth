@@ -30,7 +30,7 @@ class MaskOverlay(CompositorNodeGroup):
 		self.mask_node.use_antialiasing = use_antialiasing
 
 		self.mix_node = self.group.nodes.new('CompositorNodeMixRGB')
-		self.mix_node.inputs[1].default_value = (0, 0, 0, 1)  # to set colour to black
+		self.mix_node.inputs[1].default_value = (0, 0, 0, 1)  # to set color to black
 
 		self.alpha_node = self.group.nodes.new('CompositorNodeSetAlpha')  # to set alpha to 0
 		self.alpha_node.mode = 'APPLY'

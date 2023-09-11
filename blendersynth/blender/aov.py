@@ -10,13 +10,15 @@ ref_frames = ['CAMERA', 'WORLD', 'OBJECT']
 _socket_color_types = (bpy.types.NodeSocketVector, bpy.types.NodeSocketColor)
 _socket_value_types = (bpy.types.NodeSocketFloat, bpy.types.NodeSocketInt)
 
+
 # docs-special-members: __init__
 # no-inherited-members
 
 
 class AOV:
 	"""A generic Arbitrary Output Value.
-	An AOV is a float or color value that can be output from a shader to the renderer.
+	An AOV is a float or color value per-point that is calculated at the rendering stage,
+	and can be output in a compositor to form an image.
 	See `Blender docs <https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html>`_ for more info.
 	"""
 
@@ -77,11 +79,12 @@ class AOV:
 
 
 class NormalsAOV(AOV):
-	def __init__(self, *, name=None,
-				 ref_frame='CAMERA',
-				 order='XYZ',
-				 polarity=(1, 1, 1)):
+	def __init__(self, *, name: str = None,
+				 ref_frame: str = 'CAMERA',
+				 order: str = 'XYZ',
+				 polarity: tuple = (1, 1, 1)):
 		"""Given a shader node tree, add surface normals as output.
+
 		:param shader_node_tree: Shader node tree to add AOV to
 		:param aov_name: Name of AOV to add
 		:param ref_frame: Reference frame to use for normals
@@ -122,10 +125,6 @@ class NormalsAOV(AOV):
 		shader_node_tree.links.new(map_range_node.outputs['Vector'], sep_xyz_node.inputs['Vector'])
 
 		return comb_xyz_node.outputs['Vector']
-
-	def update(self, scene=None):
-		"""Some AOVs may need render_time updates from scene context, hence this method"""
-		pass
 
 
 class GeneratedAOV(AOV):
@@ -169,7 +168,8 @@ class DisplacementGeneratedAOV(AOV):
 		self.vmin = vmin
 		self.vmax = vmax
 
-		assert (mesh is not None or (bbox_min is not None and bbox_max is not None)), "Either mesh or bbox_min and bbox_max must be given for DisplacementGeneratedAOV"
+		assert (mesh is not None or (
+					bbox_min is not None and bbox_max is not None)), "Either mesh or bbox_min and bbox_max must be given for DisplacementGeneratedAOV"
 
 	def _add_to_shader(self, shader_node_tree):
 		self.deformed_coords = DeformedGeneratedTextureCoordinates(
@@ -199,7 +199,7 @@ class DisplacementGeneratedAOV(AOV):
 		return map_range_node.outputs['Vector']
 
 	def set_bounds(self, mesh: types.Mesh = None,
-				bbox_min: types.VectorLike = None, bbox_max: types.VectorLike = None):
+				   bbox_min: types.VectorLike = None, bbox_max: types.VectorLike = None):
 		"""Set bounds for DeformedGeneratedTextureCoordinates node group
 
 		:param mesh: Mesh to calculate bounds for. Will be used to find bbox_min and bbox_max if given
@@ -213,7 +213,7 @@ class DisplacementGeneratedAOV(AOV):
 
 
 class UVAOV(AOV):
-	"""UV coordinates"""
+	"""UV coordinates. See `Blender docs <https://docs.blender.org/manual/en/latest/editors/uv/index.html#editors-uv-index>`_ for more info."""
 
 	def _add_to_shader(self, shader_node_tree):
 		texcon_node = shader_node_tree.nodes.new('ShaderNodeTexCoord')
@@ -243,7 +243,7 @@ class InstanceIDAOV(AttrAOV):
 class ClassIDAOV(AttrAOV):
 	"""Class ID - given to each object on creation.
 	Output is an integer corresponding to the object's class ID (0-indexed)
-	Class IDs can be manually set either when creating a Mesh, or by using the Mesh's set_class_id() method.
+	Class IDs can be manually set either when creating a Mesh, or by using the Mesh's :meth:`~blendersynth.blender.mesh.Mesh.set_class_id` method.
 	If not set, will default to a different index from each primitive.
 	"""
 	attribute_type = 'OBJECT'
@@ -253,9 +253,9 @@ class ClassIDAOV(AttrAOV):
 class AttrRGBAOV(AOV):
 	"""
 	For a given numerical attribute, outputs a color corresponding to the attribute's value.
-	For N objects total, samples evenly on a distribution of hues, on a colour scale of S = 1, V = 1
-	Runs update() method to change the value of N, which is called before rendering.
-	N can be a property of the object to update.
+	Object with attribute value `i` has HSV color `(i/N, 1, 1)`.
+	`N` can be a property of the object to update.
+	Runs :meth:`~update()` method to change the value of `N`, which is called before rendering.
 	"""
 	attribute_type = None
 	attribute_name = None
@@ -310,24 +310,22 @@ class AttrRGBAOV(AOV):
 
 class InstanceRGBAOV(AttrRGBAOV):
 	"""
-	Similar to InstanceIDAOV, but outputs an RGB value corresponding to the object's instance ID.
-	For N instances total, samples evenly on a distribution of hues, on a colour scale of S = 1, V = 1.
-	Updates N at render time by reading the scene property 'NUM_MESHES'
+	:class:`~InstanceIDAOV` as an :class:`~AttrRGBAOV` for visualisation.
+	Updates `N` at render time by reading the scene property 'NUM_MESHES'
 	"""
 	attribute_type = 'OBJECT'
 	attribute_name = 'instance_id'
 
 	@property
 	def N(self):
-		"""Update the divisor node with the current number of instances"""
+		"""Total number of meshes in the scene"""
 		return bpy.context.scene.get('NUM_MESHES', 0) + 1
 
 
 class ClassRGBAOV(AttrRGBAOV):
 	"""
-	Similar to ClassIDAOV, but outputs an RGB value corresponding to the object's class ID.
-	For N classes total, samples evenly on a distribution of hues, on a colour scale of S = 1, V = 1.
-	Updates N at render time by reading the scene property 'MAX_CLASSES'
+	:class:`~ClassIDAOV` but as an :class:`~AttrRGBAOV` for visualisation.
+	Updates `N` at render time by reading the scene property `MAX_CLASSES`
 	"""
 	attribute_type = 'OBJECT'
 	attribute_name = 'class_id'

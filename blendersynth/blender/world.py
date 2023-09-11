@@ -2,6 +2,7 @@ import bpy
 from .nodes.node_arranger import tidy_tree
 from typing import Union
 
+
 class World():
 	"""World object - for managing world nodes, HDRIs, etc."""
 
@@ -14,7 +15,7 @@ class World():
 		self.hdri_link = None
 		self._setup_nodes()
 
-		self.set_color((0.051,) * 3)  # match blender's default world colour
+		self.set_color((0.051,) * 3)  # match blender's default world color
 
 	def _check_exists(self):
 		"""Node tree may have been wiped, eg by loading a new file.
@@ -65,7 +66,7 @@ class World():
 
 		self.mode = 'HDRI'
 
-	def set_color(self, color: Union[list, tuple], affect_scene:bool=True):
+	def set_color(self, color: Union[list, tuple], affect_scene: bool = True):
 		"""Set the world color.
 
 		:param color: RGB or RGBA color
@@ -81,13 +82,12 @@ class World():
 		self.node_background.inputs["Color"].default_value = color
 		self._lighting_from_background(affect_scene)
 
-	def set_hdri(self, pth:str, affect_scene:bool=True, intensity:float=None):
+	def set_hdri(self, pth: str, affect_scene: bool = True, intensity: float = None):
 		"""Set the HDRI image location
 
 		:param pth: Path to the HDRI image (.hdr or .exr)
 		:param affect_scene: Toggle for whether color's lighting should affect the scene (if False, functions as a solid background color)
 		:param intensity: [Optional] Set the intensity of the HDRI lighting"""
-
 
 		self._setup_hdri()
 		self.world_nodes['Environment Texture'].image = bpy.data.images.load(pth)
@@ -96,10 +96,10 @@ class World():
 		if intensity:
 			self.set_intensity(intensity)
 
-	def set_intensity(self, intensity:float=1.):
+	def set_intensity(self, intensity: float = 1.):
 		"""Set the intensity of the color/HDRI.
 
-		:param float: The intensity value
+		:param intensity: The intensity value
 		"""
 		self.world_nodes["Background"].inputs[1].default_value = intensity
 
