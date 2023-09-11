@@ -1,19 +1,19 @@
 """Postprocessing html docs for minor fixes"""
+import re
 
-# fix 1 - remove BlenderSynth title from index.html
-target = '<h1>BlenderSynth<a class="headerlink" href="#blendersynth" title="Permalink to this heading"></a></h1>'
+regexSearch = re.compile(r'<h1>BlenderSynth<.*></h1>')
 
 with open('_build/index.html', 'r') as f:
 	content = f.read()
 
-if target in content:
-	new_content = content.replace(target, '')
+if re.search(regexSearch, content):
+	new_content = re.sub(regexSearch, '', content)
 
 	with open('_build/index.html', 'w') as f:
 		f.write(new_content)
 
 else:
-	print(f"Postfix 1 failed - Could not find target {target} in index.html")
+	print(f"Postfix 1 failed - Could not find target BlenderSynth title in index.html")
 
 
 print("Run post checks ✔")

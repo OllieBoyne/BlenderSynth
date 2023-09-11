@@ -52,7 +52,7 @@ api_files = [os.path.join(api_path, f"blendersynth.{f}") for f in sorted(list_su
 top_examples = generate_example_docs()
 with open("docs/index.rst", "w") as f:
     f.write('BlenderSynth\n')
-    f.write('=====\n\n')
+    f.write('============\n\n')
 
     # Include the README
     f.write(f".. mdinclude:: {copy_markdown_file('README.md')}\n\n")
