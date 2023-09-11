@@ -24,6 +24,10 @@ def render_with_gpu(force_enable=True, silent=False):
 	:param force_enable: If True, enable all GPU devices. Otherwise, use the devices that are already enabled. To enable separately, either change your settings in blender, or see :attr:`blendersynth.blender.devices.Devices.set_device_usage`
 	:param silent: If True, do not print information about device being used.
 	"""
+
+	# Needed to update the device list
+	bpy.context.preferences.addons['cycles'].preferences.get_devices()
+
 	bpy.context.scene.cycles.device = 'GPU'
 
 	devices = Devices()
