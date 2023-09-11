@@ -127,6 +127,10 @@
 <span class="sd">	:param force_enable: If True, enable all GPU devices. Otherwise, use the devices that are already enabled. To enable separately, either change your settings in blender, or see :attr:`blendersynth.blender.devices.Devices.set_device_usage`</span>
 <span class="sd">	:param silent: If True, do not print information about device being used.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="c1"># Needed to update the device list</span>
+	<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">addons</span><span class="p">[</span><span class="s1">&#39;cycles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">get_devices</span><span class="p">()</span>
+
 	<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">cycles</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;GPU&#39;</span>
 
 	<span class="n">devices</span> <span class="o">=</span> <span class="n">Devices</span><span class="p">()</span>
