@@ -1,5 +1,5 @@
 BlenderSynth
-=====
+============
 
 .. mdinclude:: markdown/README.md
 
