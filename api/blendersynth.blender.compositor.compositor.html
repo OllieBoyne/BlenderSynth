@@ -114,7 +114,7 @@
 <dd><p>Add a connection between a valid render output, and a file output node.</p>
 <p>This should only be called once per output (NOT inside a loop).
 Inside the loop, only call <a class="reference internal" href="#blendersynth.blender.compositor.compositor.Compositor.update_filename" title="blendersynth.blender.compositor.compositor.Compositor.update_filename"><code class="xref py py-attr docutils literal notranslate"><span class="pre">update_filename</span></code></a>, <a class="reference internal" href="#blendersynth.blender.compositor.compositor.Compositor.update_all_filenames" title="blendersynth.blender.compositor.compositor.Compositor.update_all_filenames"><code class="xref py py-attr docutils literal notranslate"><span class="pre">update_all_filenames</span></code></a> <a class="reference internal" href="#blendersynth.blender.compositor.compositor.Compositor.update_directory" title="blendersynth.blender.compositor.compositor.Compositor.update_directory"><code class="xref py py-attr docutils literal notranslate"><span class="pre">update_directory</span></code></a></p>
-<p>All outputs will be defined in raw colour space (no colour correction), except for the RGB output,
+<p>All outputs will be defined in raw color space (no color correction), except for the RGB output,
 and any overlays on this output (e.g. Bounding Box Visualization)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -131,13 +131,19 @@ and any overlays on this output (e.g. Bounding Box Visualization)</p>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of output. If not given, will take the str representation of input_data</p></li>
 </ul>
 </dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Name of output, which can be used to update filename or directory</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.get_axes_visual">
 <span class="sig-name descname"><span class="pre">get_axes_visual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_axes_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_axes_visual" title="Link to this definition"></a></dt>
-<dd><p>Initialize an axes overlay node.</p>
+<dd><p>Return an axes visual overlay.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -154,13 +160,12 @@ and any overlays on this output (e.g. Bounding Box Visualization)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.get_bounding_box_visual">
 <span class="sig-name descname"><span class="pre">get_bounding_box_visual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.0,</span> <span class="pre">0.0,</span> <span class="pre">255.0,</span> <span class="pre">255.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_bounding_box_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_bounding_box_visual" title="Link to this definition"></a></dt>
-<dd><p>return a CompositorNodeGroup,
-which will render the bounding boxes of the objects</p>
+<dd><p>Return a bounding box visual overlay.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>col</strong> – (3,) or (N, 3) Color(s) of bounding box(es) [in BGR]</p></li>
-<li><p><strong>thickness</strong> – (,) or (N,) Thickness(es) of bounding box(es)</p></li>
+<li><p><strong>thickness</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – (,) or (N,) Thickness(es) of bounding box(es)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -174,13 +179,23 @@ which will render the bounding boxes of the objects</p>
 <span class="sig-name descname"><span class="pre">get_depth_visual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_depth_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_depth_visual" title="Link to this definition"></a></dt>
 <dd><p>Get depth visual, which normalizes depth values so max_depth = col,
 and any values below that are depth/max_depth * col.</p>
-<p>Col = 0-255 RGB or RGBA</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_depth</strong> – Maximum depth value to normalize to</p></li>
+<li><p><strong>col</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – Color of maximum depth value. 0-255 RGB or RGBA.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.get_keypoints_visual">
 <span class="sig-name descname"><span class="pre">get_keypoints_visual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">marker</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_keypoints_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_keypoints_visual" title="Link to this definition"></a></dt>
-<dd><p>Initialize a keypoints overlay node.</p>
+<dd><p>Return a keypoints visual overlay.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -255,6 +270,14 @@ and any values below that are depth/max_depth * col.</p>
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.update_directory">
 <span class="sig-name descname"><span class="pre">update_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.update_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.update_directory" title="Link to this definition"></a></dt>
 <dd><p>Reassign the directory for a given file output node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – key of output, as given in <cite>define_output</cite></p></li>
+<li><p><strong>directory</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – new directory</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

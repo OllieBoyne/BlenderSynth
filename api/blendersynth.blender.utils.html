@@ -103,6 +103,17 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">CursorAt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#CursorAt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.CursorAt" title="Link to this definition"></a></dt>
 <dd><p>Context manager for moving the cursor to a specific location in space.
 On exit, will return the cursor to its original location.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.utils.CursorAt.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#CursorAt.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.CursorAt.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize with the target location</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Location to move the cursor to</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -111,6 +122,11 @@ On exit, will return the cursor to its original location.</p>
 <dd><p>Context manager for getting the newly imported object(s) to the scene.</p>
 <p>On exit, will return the newly imported object(s).</p>
 <p>Assumes that either (1) only one object is imported, or (2) there is a hierarchy to the imported objects, and the top level object is the one to return.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.utils.GetNewObject.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#GetNewObject.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.GetNewObject.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -118,20 +134,41 @@ On exit, will return the cursor to its original location.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">SelectObjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#SelectObjects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.SelectObjects" title="Link to this definition"></a></dt>
 <dd><p>Context manager for selecting objects.
 On exit, will reselect the objects that were selected before entering the context.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.utils.SelectObjects.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#SelectObjects.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.SelectObjects.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize with a list of objects to select</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>objects</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>) – list of bpy.types.Object</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.utils.SetMode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">SetMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#SetMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.SetMode" title="Link to this definition"></a></dt>
-<dd><p>Context manager for changing the mode of a specific object in Blender (e.g., to ‘POSE’),
+<dd><p>Context manager for changing the mode of a specific object in Blender (e.g., to <cite>POSE</cite>),
 returning to the original mode on exit.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.utils.SetMode.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#SetMode.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.SetMode.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize with the target mode and object
+:type target_mode: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
+:param target_mode: Mode to set the object to
+:type object: <code class="xref py py-class docutils literal notranslate"><span class="pre">Object</span></code>
+:param object: bpy.types.Object to set the mode of</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="blendersynth.blender.utils.animatable_property">
 <span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">animatable_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#animatable_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.animatable_property" title="Link to this definition"></a></dt>
 <dd><p>Decorator that wraps around a function to take a frame number and value, and set the property at that frame.</p>
-<p>example usage:</p>
+<p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@animatable</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">value</span>
@@ -139,10 +176,13 @@ returning to the original mode on exit.</p>
 </div>
 <p>If you want to set the property at the current frame, use the setter as normal:</p>
 <p><code class="docutils literal notranslate"><span class="pre">obj.set_location((1,</span> <span class="pre">2,</span> <span class="pre">3))</span></code></p>
-<p>To set the property at a specific frame, use the decorator:</p>
+<p>To set the property at a specific frame, simply add the frame keyword:</p>
 <p><code class="docutils literal notranslate"><span class="pre">obj.set_location((1,</span> <span class="pre">2,</span> <span class="pre">3),</span> <span class="pre">frame=10)</span></code></p>
-<p>Which will call the set_location function, followed by</p>
-<p><code class="docutils literal notranslate"><span class="pre">self.object.keyframe_insert(data_path='location',</span> <span class="pre">frame=10)</span></code></p>
+<p>Which is functionally equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="o">.</span><span class="n">set_location</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -165,7 +205,7 @@ returning to the original mode on exit.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>node_tree</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">NodeTree</span></code>) – Node tree to search</p></li>
 <li><p><strong>key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Key to search for</p></li>
-<li><p><strong>raise_error</strong> – If True, raise KeyError if key not found</p></li>
+<li><p><strong>raise_error</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, raise KeyError if key not found</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>

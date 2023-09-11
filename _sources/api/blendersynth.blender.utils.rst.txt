@@ -4,3 +4,5 @@
 .. automodule:: blendersynth.blender.utils
 	:members:
 	:inherited-members:
+	:special-members: __init__
+

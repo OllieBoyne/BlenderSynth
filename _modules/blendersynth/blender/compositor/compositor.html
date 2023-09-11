@@ -179,7 +179,7 @@
 		<span class="c1"># We set view transform to &#39;Raw&#39; to avoid any gamma correction to all non-Image layers</span>
 		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">view_settings</span><span class="o">.</span><span class="n">view_transform</span> <span class="o">=</span> <span class="s1">&#39;Raw&#39;</span>
 
-		<span class="c1"># Socket to be used as RGB input for anything. Defined separately in case of applying overlays (e.g. background colour)</span>
+		<span class="c1"># Socket to be used as RGB input for anything. Defined separately in case of applying overlays (e.g. background color)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">get_node_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="s1">&#39;Render Layers&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_set_rgb_color_space</span><span class="p">(</span><span class="n">rgb_color_space</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">background_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -233,10 +233,9 @@
 
 <div class="viewcode-block" id="Compositor.get_bounding_box_visual">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_bounding_box_visual">[docs]</a>
-	<span class="k">def</span> <span class="nf">get_bounding_box_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">255.</span><span class="p">,</span> <span class="mf">255.</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoundingBoxOverlay</span><span class="p">:</span>
+	<span class="k">def</span> <span class="nf">get_bounding_box_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">255.</span><span class="p">,</span> <span class="mf">255.</span><span class="p">),</span> <span class="n">thickness</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoundingBoxOverlay</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		return a CompositorNodeGroup,</span>
-<span class="sd">		which will render the bounding boxes of the objects</span>
+<span class="sd">		Return a bounding box visual overlay.</span>
 
 <span class="sd">		:param col: (3,) or (N, 3) Color(s) of bounding box(es) [in BGR]</span>
 <span class="sd">		:param thickness: (,) or (N,) Thickness(es) of bounding box(es)</span>
@@ -259,7 +258,7 @@
 	<span class="k">def</span> <span class="nf">get_keypoints_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">marker</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
 							 <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KeypointsOverlay</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Initialize a keypoints overlay node.</span>
+<span class="sd">		Return a keypoints visual overlay.</span>
 
 <span class="sd">		:param marker: Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default &#39;x&#39;</span>
 <span class="sd">		:param size: Size of marker. Default 5</span>
@@ -284,7 +283,7 @@
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_axes_visual">[docs]</a>
 	<span class="k">def</span> <span class="nf">get_axes_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AxesOverlay</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Initialize an axes overlay node.</span>
+<span class="sd">		Return an axes visual overlay.</span>
 
 <span class="sd">		:param size: Size of axes. Default 100</span>
 <span class="sd">		:param thickness: Thickness of axes. Default 2</span>
@@ -327,11 +326,12 @@
 
 <div class="viewcode-block" id="Compositor.get_depth_visual">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_depth_visual">[docs]</a>
-	<span class="k">def</span> <span class="nf">get_depth_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)):</span>
+	<span class="k">def</span> <span class="nf">get_depth_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">CompositorNodeGroup</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Get depth visual, which normalizes depth values so max_depth = col,</span>
 <span class="sd">		and any values below that are depth/max_depth * col.</span>
 
-<span class="sd">		Col = 0-255 RGB or RGBA&quot;&quot;&quot;</span>
+<span class="sd">		:param max_depth: Maximum depth value to normalize to</span>
+<span class="sd">		:param col: Color of maximum depth value. 0-255 RGB or RGBA.&quot;&quot;&quot;</span>
 
 		<span class="k">if</span> <span class="s1">&#39;Depth&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
 			<span class="n">render_depth</span><span class="p">()</span>
@@ -352,13 +352,13 @@
 					  <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 					  <span class="n">file_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;PNG&#39;</span><span class="p">,</span> <span class="n">color_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;RGBA&#39;</span><span class="p">,</span> <span class="n">jpeg_quality</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">90</span><span class="p">,</span>
 					  <span class="n">png_compression</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="n">color_depth</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span> <span class="n">EXR_color_depth</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;32&#39;</span><span class="p">,</span>
-					  <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+					  <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Add a connection between a valid render output, and a file output node.</span>
 
 <span class="sd">		This should only be called once per output (NOT inside a loop).</span>
 <span class="sd">		Inside the loop, only call :attr:`~update_filename`, :attr:`update_all_filenames` :attr:`~update_directory`</span>
 
-<span class="sd">		All outputs will be defined in raw colour space (no colour correction), except for the RGB output,</span>
+<span class="sd">		All outputs will be defined in raw color space (no color correction), except for the RGB output,</span>
 <span class="sd">		and any overlays on this output (e.g. Bounding Box Visualization)</span>
 
 <span class="sd">		:param input_data: If :class:`str`,  will get the input_data from that key in the render_layers_node. If :class:`~CompositorNodeGroup`, use that node as input. If :class:`AOV`, use that AOV as input (storing AOV).</span>
@@ -371,6 +371,9 @@
 <span class="sd">		:param color_depth: Color depth of output.</span>
 <span class="sd">		:param EXR_color_depth: Color depth of EXR output.</span>
 <span class="sd">		:param name: Name of output. If not given, will take the str representation of input_data</span>
+
+<span class="sd">		:returns: Name of output, which can be used to update filename or directory</span>
+
 <span class="sd">		&quot;&quot;&quot;</span>
 
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">AOV</span><span class="p">):</span>
@@ -452,8 +455,12 @@
 
 <div class="viewcode-block" id="Compositor.update_directory">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.update_directory">[docs]</a>
-	<span class="k">def</span> <span class="nf">update_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Reassign the directory for a given file output node&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">update_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Reassign the directory for a given file output node</span>
+
+<span class="sd">		:param key: key of output, as given in `define_output`</span>
+<span class="sd">		:param directory: new directory</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
 		<span class="n">node</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">directory</span></div>
 
