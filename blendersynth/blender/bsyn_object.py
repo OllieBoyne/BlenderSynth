@@ -6,6 +6,13 @@ import bpy
 from typing import Union
 from ..utils import types
 
+from typing import TYPE_CHECKING
+
+# for documentation, import these types
+if TYPE_CHECKING:
+	from .curve import Curve
+
+
 
 class BsynObject:
 	"""Generic class for BlenderSynth objects.

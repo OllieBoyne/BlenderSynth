@@ -4,14 +4,14 @@ import inspect
 import bpy
 import numpy as np
 import mathutils
-from typing import Union, List, Tuple
+from typing import Union, List, Tuple, TYPE_CHECKING
 from ..utils import types
+from functools import wraps
 
 # docs-special-members: __init__
 
-# define Blender Array type
-blender_array_type = Union[List[float], mathutils.Vector, np.ndarray, Tuple[float, ...], Tuple[int, ...]]
-blender_array_or_scalar = Union[blender_array_type, int, float]
+if TYPE_CHECKING:
+	from .bsyn_object import BsynObject
 
 def _quaternion_equal(a: mathutils.Quaternion, b: mathutils.Quaternion, tol=1e-6):
 	"""Check if two quaternion rotations are functionally equal"""

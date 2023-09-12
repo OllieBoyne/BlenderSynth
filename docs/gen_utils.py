@@ -11,7 +11,7 @@ def make_dirs(dirs):
 	for d in dirs:
 		os.makedirs(d, exist_ok=True)
 
-def sep_conv(s, k = "%20"):
+def sep_conv(s, k = "."):
 	"""Replace all separators with k."""
 	return s.replace(os.sep, k)
 

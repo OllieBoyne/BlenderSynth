@@ -42,7 +42,7 @@ html_theme_options = {
 	'collapse_navigation': True,
 }
 
-html_favicon = '_static/assets/favicon.ico'
+html_favicon = 'assets/favicon.ico'
 html_title = 'BlenderSynth'
 
 source_suffix = ['.rst', '.md']

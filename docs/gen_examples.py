@@ -12,6 +12,8 @@ make_dirs([static_python_dir, python_dir])
 
 always_caps_words = ['AOV'] # always capitalize these words
 
+blacklist = ['README.md']
+
 def is_py_script(src):
 	file = os.path.basename(src)
 	return file.endswith(".py") and not file.startswith('_')
@@ -123,6 +125,9 @@ def generate_example_docs():
 	"""Generate documentation for examples."""
 	items = []
 	for f in os.listdir("examples"):
+		if f in blacklist:
+			continue
+
 		i = copy_python_script(os.path.join("examples", f))
 		if i is not None:
 			items.append(i)
