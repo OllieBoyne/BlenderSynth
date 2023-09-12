@@ -99,14 +99,14 @@
 <span class="kn">import</span> <span class="nn">bpy</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">mathutils</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">types</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 
 <span class="c1"># docs-special-members: __init__</span>
 
-<span class="c1"># define Blender Array type</span>
-<span class="n">blender_array_type</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span>
-<span class="n">blender_array_or_scalar</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">blender_array_type</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+	<span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span>
 
 <span class="k">def</span> <span class="nf">_quaternion_equal</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Quaternion</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Quaternion</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Check if two quaternion rotations are functionally equal&quot;&quot;&quot;</span>

@@ -27,7 +27,6 @@ BlenderSynth
    python/custom_aov
    python/inverse_kinematics
    python/multiview_rendering
-   markdown/examples.README.md
 
 .. toctree::
    :maxdepth: 2

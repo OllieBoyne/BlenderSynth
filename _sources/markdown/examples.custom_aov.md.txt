@@ -2,6 +2,6 @@ This script shows how to create a custom shader AOV - in this example, the XYZ p
 
 If you create a custom AOV that you think might be useful to others, consider making a pull request to add it to the default set of AOVs!
 
-![](../_static/images/resources%20custom_aov.png)
+![](../_static/images/resources.custom_aov.png)
 
 Note: creating custom nodes requires a reasonable understanding of Blender's node trees. It is often easier to make the trees in Blender to test them, and then implement them in code.

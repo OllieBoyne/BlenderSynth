@@ -1,6 +1,6 @@
-![](_static/images/docs%20logo.png)
+![](_static/images/docs.logo.png)
 
-![](_static/images/docs%20splash.png)
+![](_static/images/docs.splash.png)
 
 <p align="center">
   <a href="https://opensource.org/licenses/MIT">
@@ -45,4 +45,4 @@ If you use BlenderSynth in your work, please cite:
 
 Rendering speed compared to [BlenderProc](https://github.com/DLR-RM/BlenderProc):
 
-![](_static/images/docs%20benchmark-1.png)
+![](_static/images/docs.benchmark-1.png)
