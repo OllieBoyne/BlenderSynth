@@ -111,6 +111,8 @@
 <span class="k">class</span> <span class="nc">PoseBone</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="nb">object</span>
+		<span class="nb">object</span><span class="o">.</span><span class="n">rotation_mode</span> <span class="o">=</span> <span class="s1">&#39;XYZ&#39;</span>  <span class="c1"># all rotations done in XYZ Euler mode</span>
+
 
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -324,6 +326,7 @@
 				<span class="k">if</span> <span class="n">bones</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">bones</span><span class="p">:</span>
 					<span class="k">if</span> <span class="n">rot</span><span class="p">:</span>
 						<span class="n">bone</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+						<span class="nb">print</span><span class="p">(</span><span class="n">bone</span><span class="o">.</span><span class="n">rotation_euler</span><span class="p">)</span>
 					<span class="k">if</span> <span class="n">location</span><span class="p">:</span>
 						<span class="n">bone</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 					<span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
