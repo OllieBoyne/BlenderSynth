@@ -209,7 +209,6 @@ class Armature(BsynObject):
 				if bones is None or bone.name in bones:
 					if rot:
 						bone.rotation_euler = (0, 0, 0)
-						print(bone.rotation_euler)
 					if location:
 						bone.location = (0, 0, 0)
 					if scale:
