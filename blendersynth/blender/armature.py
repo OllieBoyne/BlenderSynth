@@ -14,6 +14,8 @@ import mathutils
 class PoseBone(BsynObject):
 	def __init__(self, object: bpy.types.PoseBone):
 		self._object = object
+		object.rotation_mode = 'XYZ'  # all rotations done in XYZ Euler mode
+
 
 	@property
 	def name(self) -> str:
@@ -207,6 +209,7 @@ class Armature(BsynObject):
 				if bones is None or bone.name in bones:
 					if rot:
 						bone.rotation_euler = (0, 0, 0)
+						print(bone.rotation_euler)
 					if location:
 						bone.location = (0, 0, 0)
 					if scale:
