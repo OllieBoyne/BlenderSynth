@@ -1,7 +1,7 @@
 import os.path
 
 import bpy
-from .utils import GetNewObject, SelectObjects, handle_vec, CursorAt
+from .utils import GetNewObject, SelectObjects, handle_vec, CursorAt, animatable_property
 from .bsyn_object import BsynObject
 from .material import Material
 from .armature import Armature
@@ -516,3 +516,35 @@ class Mesh(BsynObject):
 		for mesh in self._meshes:
 			mesh.data.materials.clear()
 			mesh.data.materials.append(material.object)
+
+	@property
+	def shape_keys(self) -> bpy.types.ShapeKey:
+		"""Get the first shape keys object available"""
+		for mesh in self._meshes:
+			if mesh.data.shape_keys is not None:
+				return mesh.data.shape_keys
+
+		raise ValueError("No mesh found with shape keys.")
+
+	def set_shape_key(self, name: str, value: float, frame: int = None):
+		"""Set shape key to a given value.
+
+		:param name: Name of shape key
+		:param value: Value to set shape key to
+		:param frame: If not None, set keyframe at this frame
+		"""
+
+		shape_key = self.shape_keys.key_blocks[name]
+		shape_key.value = value
+
+		if frame is not None:
+			shape_key.keyframe_insert(data_path="value", frame=frame)
+
+	def set_shape_keys(self, data: dict, frame: int = None):
+		"""Set multiple shape keys at once.
+
+		:param data: Dictionary of shape key names to values
+		:param frame: If not None, set keyframe at this frame
+		"""
+		for k, v in data.items():
+			self.set_shape_key(k, v, frame=frame)

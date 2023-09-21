@@ -61,7 +61,7 @@ class Light(BsynObject):
 	def energy(self, value):
 		self.set_energy(value)
 
-	@animatable_property('energy', use_data_object=True)
+	@animatable_property('energy', 'data')
 	def set_energy(self, value: float):
 		"""Set energy of light source
 
@@ -79,7 +79,7 @@ class Light(BsynObject):
 	def color(self, value):
 		self.set_color(value)
 
-	@animatable_property('color', use_data_object=True)
+	@animatable_property('color', 'data')
 	def set_color(self, value: types.VectorLike):
 		"""Set color of light source
 

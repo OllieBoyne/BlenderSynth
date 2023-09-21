@@ -205,7 +205,7 @@ def handle_vec(vec, expected_length: int = 3) -> mathutils.Vector:
 	return vec
 
 
-def animatable_property(data_path: str, use_data_object: bool = False) -> callable:
+def animatable_property(data_path: str, id_path: str = '') -> callable:
 	"""Decorator that wraps around a function to take a frame number and value, and set the property at that frame.
 
 	Example usage::
@@ -228,7 +228,7 @@ def animatable_property(data_path: str, use_data_object: bool = False) -> callab
 		obj.object.keyframe_insert(data_path='location', frame=10)
 
 	:param data_path: the data path of the property to set
-	:param use_data_object: whether to use the data object or the object itself
+	:param id_path: Use for animating ID blocks other than object (e.g. 'data')
 	"""
 
 	def wrapper(func):
@@ -240,7 +240,7 @@ def animatable_property(data_path: str, use_data_object: bool = False) -> callab
 			frame = args[0] if len(args) > 0 else frame
 			func(self, value, **kwargs)
 			if frame is not None:
-				object = self.object if not use_data_object else self.object.data
+				object = self.object if id_path == '' else eval(f'self.{id_path}')
 				object.keyframe_insert(data_path=data_path, frame=frame)
 
 

@@ -5,7 +5,6 @@ import numpy as np
 from subprocess import Popen
 import atexit
 
-from .blender_interface import LOG_PREPEND
 from datetime import datetime, timedelta
 import os
 
@@ -20,11 +19,11 @@ class BlenderThread():
 	def __init__(self, command, jobs, log_loc, progress_loc, name='', timeout: int = 100, to_stdout: bool = False,
 				 MAX_PER_JOB: int = 100, script_directory: str = None):
 		"""
-		:progress_loc: .log file to write progress to
-		:timeout: longest time in (s) without render after which process is finished/failed.
-		:to_stdout: If True, print to stdout instead of to a log file.
-		:MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.
-		:script_directory: If given, add this to `sys.path` before running the script.
+		:param progress_loc: .log file to write progress to
+		:param timeout: longest time in (s) without render after which process is finished/failed.
+		:param to_stdout: If True, print to stdout instead of to a log file.
+		:param MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.
+		:param script_directory: If given, add this to `sys.path` before running the script.
 		"""
 
 		self.command = command

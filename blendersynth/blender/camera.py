@@ -91,7 +91,7 @@ class Camera(BsynObject):
 	def fov(self, fov):
 		self.set_fov(fov)
 
-	@animatable_property('lens', use_data_object=True)  # FOV is not animatable, so keyframe focal length instead
+	@animatable_property('lens', 'data')  # FOV is not animatable, so keyframe focal length instead
 	def set_fov(self, fov):
 		self.camera.data.angle = fov * np.pi / 180
 		self.update()
@@ -104,7 +104,7 @@ class Camera(BsynObject):
 	def clip_start(self, clip_start):
 		self.set_clip_start(clip_start)
 
-	@animatable_property('clip_start', use_data_object=True)
+	@animatable_property('clip_start', 'data')
 	def set_clip_start(self, clip_start):
 		self.camera.data.clip_start = clip_start
 		self.update()
@@ -117,7 +117,7 @@ class Camera(BsynObject):
 	def clip_end(self, clip_end):
 		self.set_clip_end(clip_end)
 
-	@animatable_property('clip_end', use_data_object=True)
+	@animatable_property('clip_end', 'data')
 	def set_clip_end(self, clip_end):
 		self.camera.data.clip_end = clip_end
 		self.update()
