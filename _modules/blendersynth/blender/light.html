@@ -164,7 +164,7 @@
 	<span class="k">def</span> <span class="nf">energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_energy</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;energy&#39;</span><span class="p">,</span> <span class="n">use_data_object</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;energy&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
 	<span class="k">def</span> <span class="nf">set_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set energy of light source</span>
 
@@ -182,7 +182,7 @@
 	<span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">use_data_object</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
 	<span class="k">def</span> <span class="nf">set_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Set color of light source</span>
 

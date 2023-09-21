@@ -332,7 +332,7 @@
 
 <div class="viewcode-block" id="animatable_property">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.animatable_property">[docs]</a>
-<span class="k">def</span> <span class="nf">animatable_property</span><span class="p">(</span><span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_data_object</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">callable</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">animatable_property</span><span class="p">(</span><span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">id_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">callable</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Decorator that wraps around a function to take a frame number and value, and set the property at that frame.</span>
 
 <span class="sd">	Example usage::</span>
@@ -355,7 +355,7 @@
 <span class="sd">		obj.object.keyframe_insert(data_path=&#39;location&#39;, frame=10)</span>
 
 <span class="sd">	:param data_path: the data path of the property to set</span>
-<span class="sd">	:param use_data_object: whether to use the data object or the object itself</span>
+<span class="sd">	:param id_path: Use for animating ID blocks other than object (e.g. &#39;data&#39;)</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
 	<span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
@@ -367,7 +367,7 @@
 			<span class="n">frame</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">frame</span>
 			<span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 			<span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-				<span class="nb">object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">use_data_object</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">data</span>
+				<span class="nb">object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="k">if</span> <span class="n">id_path</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="nb">eval</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;self.</span><span class="si">{</span><span class="n">id_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 				<span class="nb">object</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
 
 

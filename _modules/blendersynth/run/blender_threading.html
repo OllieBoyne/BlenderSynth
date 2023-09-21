@@ -100,7 +100,6 @@
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span>
 <span class="kn">import</span> <span class="nn">atexit</span>
 
-<span class="kn">from</span> <span class="nn">.blender_interface</span> <span class="kn">import</span> <span class="n">LOG_PREPEND</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -117,11 +116,11 @@
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">jobs</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">,</span> <span class="n">progress_loc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">to_stdout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 				 <span class="n">MAX_PER_JOB</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">script_directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		:progress_loc: .log file to write progress to</span>
-<span class="sd">		:timeout: longest time in (s) without render after which process is finished/failed.</span>
-<span class="sd">		:to_stdout: If True, print to stdout instead of to a log file.</span>
-<span class="sd">		:MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.</span>
-<span class="sd">		:script_directory: If given, add this to `sys.path` before running the script.</span>
+<span class="sd">		:param progress_loc: .log file to write progress to</span>
+<span class="sd">		:param timeout: longest time in (s) without render after which process is finished/failed.</span>
+<span class="sd">		:param to_stdout: If True, print to stdout instead of to a log file.</span>
+<span class="sd">		:param MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.</span>
+<span class="sd">		:param script_directory: If given, add this to `sys.path` before running the script.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>

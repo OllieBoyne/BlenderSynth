@@ -167,7 +167,7 @@ returning to the original mode on exit.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="blendersynth.blender.utils.animatable_property">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">animatable_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#animatable_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.animatable_property" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">animatable_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#animatable_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.animatable_property" title="Link to this definition"></a></dt>
 <dd><p>Decorator that wraps around a function to take a frame number and value, and set the property at that frame.</p>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@animatable</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
@@ -188,7 +188,7 @@ returning to the original mode on exit.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the data path of the property to set</p></li>
-<li><p><strong>use_data_object</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – whether to use the data object or the object itself</p></li>
+<li><p><strong>id_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Use for animating ID blocks other than object (e.g. ‘data’)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
