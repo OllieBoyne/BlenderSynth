@@ -146,3 +146,7 @@ class Material(BsynObject):
 	def scale(self, value):
 		self._scale = value
 		self.scale_node.outputs[0].default_value = value
+
+	@property
+	def name(self):
+		return self.obj.name

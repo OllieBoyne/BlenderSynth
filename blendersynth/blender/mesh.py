@@ -56,6 +56,17 @@ def _set_object_origin(obj: bpy.types.Object, origin: Vector):
 	with SelectObjects([obj]), CursorAt(origin):
 		bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
 
+def _find_material(obj):
+	"""Return first material found in an object"""
+	if obj.type == 'MESH':
+		for mat in obj.data.materials:
+			return mat
+
+	for child in obj.children:
+		if child.type == 'MESH':
+			for mat in child.data.materials:
+				return mat
+
 
 class Mesh(BsynObject):
 	"""A mesh object. Can be a single mesh, or a hierarchy of meshes."""
@@ -83,6 +94,8 @@ class Mesh(BsynObject):
 		# Manage materials here
 		if material is not None:
 			self._material = Material.from_blender_material(material)
+		elif _find_material(obj) is not None:
+			self._material = Material.from_blender_material(_find_material(obj))
 		else:
 			self._material = Material('NewMaterial')
 
