@@ -7,7 +7,8 @@ from ..utils.blender_setup.blender_locator import get_blender_path
 from ..file.tempfiles import create_temp_file, cleanup_temp_files as cleanup
 from shutil import copyfile
 
-def _copy_over_script(filepath:str) -> str:
+
+def _copy_over_script(filepath: str) -> str:
 	"""Copies over a python script to a tempfile, returning the path.
 	Removes certain lines so it can run in blender"""
 	remove_lines_containing = ['.run_this_script']
@@ -25,9 +26,8 @@ def _copy_over_script(filepath:str) -> str:
 	return new_filepath
 
 
-
-def run_this_script(*args, open_blender:bool=False,
-					debug=False, IDE='PyCharm', port=5678, host='localhost',
+def run_this_script(*args, open_blender: bool = False,
+					debug: bool = False, IDE: str = 'PyCharm', port: int = 5678, host: str = 'localhost',
 					**kwargs):
 	"""Run the script in which this function is called from Blender.
 

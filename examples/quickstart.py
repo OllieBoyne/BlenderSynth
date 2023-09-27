@@ -1,8 +1,8 @@
 """Script showing the basics of using BlenderSynth"""
 
 import blendersynth as bsyn
-bsyn.run_this_script(open_blender= False)  # If called from Python, this will run the current script in Blender
-# If debug set to True, this will open Blender while running
+
+bsyn.run_this_script(open_blender=False)  # If called from Python, this will run the current script in Blender
 
 comp = bsyn.Compositor()  # Create a new compositor - this manages all the render layers
 
@@ -15,5 +15,5 @@ bsyn.render.set_cycles_samples(10)
 bsyn.render.set_resolution(256, 256)
 bsyn.render.set_transparent()
 
-comp.define_output('Image', directory='quickstart', file_name='rgb')  # render RGB layer (note mode='image')
-comp.render() # render the result
+comp.define_output('Image', directory='quickstart', file_name='rgb')  # render RGB layer
+comp.render()  # render the result

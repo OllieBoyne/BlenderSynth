@@ -3,6 +3,7 @@
 import bpy
 from .nodes import tidy_tree, DeformedGeneratedTextureCoordinates
 from ..utils import types
+from typing import Union
 
 ref_frames = ['CAMERA', 'WORLD', 'OBJECT']
 
@@ -82,11 +83,10 @@ class NormalsAOV(AOV):
 	def __init__(self, *, name: str = None,
 				 ref_frame: str = 'CAMERA',
 				 order: str = 'XYZ',
-				 polarity: tuple = (1, 1, 1)):
+				 polarity: Union[tuple, list] = (1, 1, 1)):
 		"""Given a shader node tree, add surface normals as output.
 
-		:param shader_node_tree: Shader node tree to add AOV to
-		:param aov_name: Name of AOV to add
+		:param name: Name of AOV to add
 		:param ref_frame: Reference frame to use for normals
 		:param order: Order of components in RGB (default: XYZ)
 		:param polarity: Polarity of XYZ (1 or -1)
@@ -169,7 +169,7 @@ class DisplacementGeneratedAOV(AOV):
 		self.vmax = vmax
 
 		assert (mesh is not None or (
-					bbox_min is not None and bbox_max is not None)), "Either mesh or bbox_min and bbox_max must be given for DisplacementGeneratedAOV"
+				bbox_min is not None and bbox_max is not None)), "Either mesh or bbox_min and bbox_max must be given for DisplacementGeneratedAOV"
 
 	def _add_to_shader(self, shader_node_tree):
 		self.deformed_coords = DeformedGeneratedTextureCoordinates(

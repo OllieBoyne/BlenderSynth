@@ -2,8 +2,7 @@
 
 import blendersynth as bsyn
 
-bsyn.run_this_script(open_blender=False)
-
+bsyn.run_this_script()
 
 class WorldPositionAOV(bsyn.aov.AOV):
 	def _add_to_shader(self, shader_node_tree):
