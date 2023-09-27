@@ -47,7 +47,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://ollieboyne.github.io/BlenderSynth/">About BlenderSynth</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/troubleshooting.html">Debugging &amp; Troubleshooting</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
@@ -103,7 +103,7 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;In this example, we will import a mesh from a .obj file and render it with a material.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
-<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">open_blender</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Load a OBJ file</span>
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="s1">&#39;../resources/monkeys/obj/monkey.obj&#39;</span><span class="p">)</span>

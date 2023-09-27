@@ -2,7 +2,7 @@
 
 import blendersynth as bsyn
 
-bsyn.run_this_script(debug=False)
+bsyn.run_this_script(open_blender=False)
 
 
 class WorldPositionAOV(bsyn.aov.AOV):

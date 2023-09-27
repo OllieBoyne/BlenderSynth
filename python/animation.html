@@ -47,7 +47,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://ollieboyne.github.io/BlenderSynth/">About BlenderSynth</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/troubleshooting.html">Debugging &amp; Troubleshooting</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
@@ -101,7 +101,7 @@
 <a class="reference external image-reference" href="../_static/images/resources.animation_output.gif"><img alt="" src="../_images/resources.animation_output.gif" /></a>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Simple animation example&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
-<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># If called from Python, this will run the current script in Blender</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">open_blender</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># If called from Python, this will run the current script in Blender</span>
 <span class="c1"># If debug set to True, this will open Blender while running</span>
 
 <span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>  <span class="c1"># Create a new compositor - this manages all the render layers</span>

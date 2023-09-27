@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; BlenderSynth</title>
+  <title>Debugging &mdash; BlenderSynth</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
@@ -45,7 +45,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://ollieboyne.github.io/BlenderSynth/">About BlenderSynth</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Debugging &amp; Troubleshooting</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -83,7 +83,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">&lt;no title&gt;</li>
+      <li class="breadcrumb-item active">Debugging</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/getting_started/_troubleshooting.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -93,8 +93,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <p>Note that <code class="docutils literal notranslate"><span class="pre">bsyn</span></code> imports all <code class="docutils literal notranslate"><span class="pre">bpy</span></code> functionality, so you can call any <code class="docutils literal notranslate"><span class="pre">bpy</span></code> function as if you would normally.</p>
+  <section id="debugging">
+<h1>Debugging<a class="headerlink" href="#debugging" title="Link to this heading"></a></h1>
+<p>Breakpoint debugging is supported for both PyCharm and VSCode. To enable it:</p>
+<ol class="arabic simple">
+<li><p>Set-up your Python Debug Server for either <a class="reference external" href="https://www.jetbrains.com/help/pycharm/remote-debugging-with-product.html#remote-debug-config">PyCharm</a> or <a class="reference external" href="https://code.visualstudio.com/docs/python/debugging#_command-line-debugging">VSCode</a> and start it</p></li>
+<li><p>In your script, include <code class="docutils literal notranslate"><span class="pre">bsyn.run_this_script(debug</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">port_number</span> <span class="pre">=</span> <span class="pre">&lt;YOUR</span> <span class="pre">PORT</span> <span class="pre">NUMBER&gt;,</span> <span class="pre">host</span> <span class="pre">=</span> <span class="pre">&lt;HOST</span> <span class="pre">NAME&gt;)</span></code></p></li>
+<li><p>Run the script - breakpoints should now work!</p></li>
+</ol>
+</section>
+<section id="troubleshooting">
+<h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h1>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">bsyn</span></code> imports all <code class="docutils literal notranslate"><span class="pre">bpy</span></code> functionality, so you can call any <code class="docutils literal notranslate"><span class="pre">bpy</span></code> function as if you would normally.</p>
 <p>If any issues with the Blender scripts not having the correct modules, try <code class="docutils literal notranslate"><span class="pre">bsyn.fix_blender_modules()</span></code>, or to completely reconfigure Blender, <code class="docutils literal notranslate"><span class="pre">bsyn.fix_blender_install()</span></code>. If installing from local clone, use <code class="docutils literal notranslate"><span class="pre">local=True</span></code> argument to both. If you are making changes to the local clone, use <code class="docutils literal notranslate"><span class="pre">editable=True</span></code> to install in editable mode.</p>
+</section>
 
 
            </div>

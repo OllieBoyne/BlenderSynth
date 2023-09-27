@@ -1,7 +1,7 @@
 """In this example, we will import a mesh from a .obj file and render it with a material."""
 
 import blendersynth as bsyn
-bsyn.run_this_script(debug = False)
+bsyn.run_this_script(open_blender= False)
 
 # Load a OBJ file
 mesh = bsyn.Mesh.from_obj('../resources/monkeys/obj/monkey.obj')

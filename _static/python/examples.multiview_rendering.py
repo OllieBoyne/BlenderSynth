@@ -2,7 +2,7 @@ import blendersynth as bsyn
 import numpy as np
 import os
 
-bsyn.run_this_script(debug=False)
+bsyn.run_this_script(open_blender=False)
 
 monkey = bsyn.Mesh.from_primitive('monkey')
 

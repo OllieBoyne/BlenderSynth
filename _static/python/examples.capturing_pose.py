@@ -1,6 +1,6 @@
 """Script to show how to capture the pose of 3D objects."""
 import blendersynth as bsyn
-bsyn.run_this_script(debug = False)
+bsyn.run_this_script(open_blender= False)
 
 # Load Blender script and set-up render properties
 bsyn.load_blend('../resources/scenes/capturing_pose.blend')  # load from scene
