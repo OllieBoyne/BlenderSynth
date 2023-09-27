@@ -1,7 +1,7 @@
 """Here, we show texture importing"""
 
 import blendersynth as bsyn
-bsyn.run_this_script(open_blender= False)
+bsyn.run_this_script()
 
 mesh = bsyn.Mesh.from_primitive('monkey')
 mesh.material = bsyn.Material.from_image('../resources/monkeys/green_checkerboard.png')  # load texture

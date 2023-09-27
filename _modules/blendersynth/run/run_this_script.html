@@ -102,7 +102,8 @@
 <span class="kn">from</span> <span class="nn">..file.tempfiles</span> <span class="kn">import</span> <span class="n">create_temp_file</span><span class="p">,</span> <span class="n">cleanup_temp_files</span> <span class="k">as</span> <span class="n">cleanup</span>
 <span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copyfile</span>
 
-<span class="k">def</span> <span class="nf">_copy_over_script</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<span class="k">def</span> <span class="nf">_copy_over_script</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Copies over a python script to a tempfile, returning the path.</span>
 <span class="sd">	Removes certain lines so it can run in blender&quot;&quot;&quot;</span>
 	<span class="n">remove_lines_containing</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.run_this_script&#39;</span><span class="p">]</span>
@@ -120,11 +121,10 @@
 	<span class="k">return</span> <span class="n">new_filepath</span>
 
 
-
 <div class="viewcode-block" id="run_this_script">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run_this_script.html#blendersynth.run.run_this_script.run_this_script">[docs]</a>
-<span class="k">def</span> <span class="nf">run_this_script</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">open_blender</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-					<span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">IDE</span><span class="o">=</span><span class="s1">&#39;PyCharm&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5678</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">run_this_script</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">open_blender</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+					<span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">IDE</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;PyCharm&#39;</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5678</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
 					<span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Run the script in which this function is called from Blender.</span>
 

@@ -99,12 +99,10 @@
 <h1>Inverse kinematics<a class="headerlink" href="#inverse-kinematics" title="Link to this heading"></a></h1>
 <p>In this example, we show how to use Armatures and PoseBones. We deform a mesh using Inverse Kinematics to produce this animation:</p>
 <a class="reference external image-reference" href="../_static/images/resources.inverse_kinematics.gif"><img alt="" src="../_images/resources.inverse_kinematics.gif" /></a>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;We use inverse kinematics to deform a bendy rod&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
 
-<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">open_blender</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">()</span>
 
 <span class="c1"># Load object from .fbx file (complete with rigging)</span>
 <span class="n">obj</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_fbx</span><span class="p">(</span><span class="s1">&#39;../resources/objects/bendy_rod/bendy_rod.fbx&#39;</span><span class="p">)</span>

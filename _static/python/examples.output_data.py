@@ -1,7 +1,7 @@
 import blendersynth as bsyn
 import numpy as np
-bsyn.run_this_script(open_blender= False)  # If called from Python, this will run the current script in Blender
-# If debug set to True, this will open Blender while running
+
+bsyn.run_this_script()
 
 comp = bsyn.Compositor()  # Create a new compositor - this manages all the render layers
 

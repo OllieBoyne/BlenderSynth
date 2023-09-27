@@ -97,12 +97,13 @@
              
   <section id="quickstart">
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h1>
+<p>The script below renders a simple image of a monkey mesh.</p>
 <a class="reference external image-reference" href="../_static/images/resources.quickstart.png"><img alt="" src="../_images/resources.quickstart.png" /></a>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Script showing the basics of using BlenderSynth&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
-<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">open_blender</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># If called from Python, this will run the current script in Blender</span>
-<span class="c1"># If debug set to True, this will open Blender while running</span>
+
+<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">open_blender</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># If called from Python, this will run the current script in Blender</span>
 
 <span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>  <span class="c1"># Create a new compositor - this manages all the render layers</span>
 
@@ -115,8 +116,8 @@
 <span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_resolution</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_transparent</span><span class="p">()</span>
 
-<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;quickstart&#39;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">)</span>  <span class="c1"># render RGB layer (note mode=&#39;image&#39;)</span>
-<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">()</span> <span class="c1"># render the result</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;quickstart&#39;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">)</span>  <span class="c1"># render RGB layer</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>  <span class="c1"># render the result</span>
 </pre></div>
 </div>
 </section>

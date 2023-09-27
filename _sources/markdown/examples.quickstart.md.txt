@@ -1,1 +1,3 @@
+The script below renders a simple image of a monkey mesh.
+
 ![](../_static/images/resources.quickstart.png)
