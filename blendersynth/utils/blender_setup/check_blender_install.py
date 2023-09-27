@@ -2,7 +2,9 @@ import subprocess
 import os
 from blendersynth.utils.blender_setup.blender_locator import find_blender_python, get_blender_path, remove_config, write_to_config, read_from_config, remove_from_config, set_blender_path
 
-dependencies = ['imageio', 'numpy', 'appdirs', 'tqdm', 'opencv-python', 'ffmpeg-python', 'pyyaml']
+dependencies = ['imageio', 'numpy', 'appdirs', 'tqdm', 'opencv-python', 'ffmpeg-python', 'pyyaml',
+				'pydevd-pycharm', 'debugpy' # for debugging
+				]
 
 def check_module(python_executable, module_name):
 	try:

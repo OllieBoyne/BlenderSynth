@@ -26,12 +26,18 @@ def _copy_over_script(filepath:str) -> str:
 
 
 
-def run_this_script(*args, debug:bool=False, **kwargs):
+def run_this_script(*args, open_blender:bool=False,
+					debug=False, IDE='PyCharm', port=5678, host='localhost',
+					**kwargs):
 	"""Run the script in which this function is called from Blender.
 
 	Will also place a copy of the script inside Blender.
 
-	:param debug: If True, open a Blender instance after all code is executed, otherwise run in background
+	:param open_blender: If True, open a Blender instance after all code is executed, otherwise run in background
+	:param debug: If True, will run in debug mode
+	:param IDE: IDE to use for debugging. Currently only PyCharm and VSCode are supported
+	:param port: Port to use for debugging
+	:param host: Host to use for debugging
 
 	args & kwargs are passed to the script being run as command line arguments.
 	"""
@@ -49,8 +55,8 @@ def run_this_script(*args, debug:bool=False, **kwargs):
 		blender_path = get_blender_path()
 
 		commands = [blender_path] + \
-			['--background'] * (not debug) + \
-			['--python', caller_path, '--']
+				   ['--background'] * (not open_blender) + \
+				   ['--python', caller_path, '--']
 
 		for arg in args:
 			commands += [f'--{arg}']
@@ -64,8 +70,22 @@ def run_this_script(*args, debug:bool=False, **kwargs):
 		sys.exit()  # exit the script once blender is finished
 
 	else:
-		# blender is running this script
+
 		if debug:
+			IDE = IDE.lower()
+			assert IDE in ['pycharm', 'vscode'], f"IDE `{IDE}` not supported, only PyCharm and VSCode are supported"
+
+			if IDE == 'pycharm':
+				import pydevd_pycharm
+				pydevd_pycharm.settrace(host, port=port, stdoutToServer=True, stderrToServer=True, suspend=False)
+
+			elif IDE == 'vscode':
+				import debugpy
+				debugpy.listen((host, port))
+				debugpy.wait_for_client()
+
+		# blender is running this script
+		if open_blender:
 			# load the script into blender for viewing
 			import bpy
 			from ..utils import layout

@@ -3,7 +3,7 @@
 import os
 import blendersynth as bsyn
 
-bsyn.run_this_script(debug=False)
+bsyn.run_this_script(open_blender=False)
 
 # Load object from .fbx file (complete with rigging)
 obj = bsyn.Mesh.from_fbx('../resources/objects/bendy_rod/bendy_rod.fbx')
