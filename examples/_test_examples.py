@@ -9,10 +9,10 @@ for script in example_scripts:
 	result = subprocess.run(['python', script], capture_output=True, text=True)
 
 	# scan stdout for errors
-	lines = result.stdout.split('\n')
+	lines = result.stderr.split('\n') +  result.stdout.split('\n')
 	for i, line in enumerate(lines):
 		if 'Error' in line:
-			print("\n".join([f"✖ Error in script {script}:", *lines[i:-3], '']))
+			print("\n".join([f"✖ Error in script {script}:", *lines[i:i+3], '']))
 			break
 
 	else:

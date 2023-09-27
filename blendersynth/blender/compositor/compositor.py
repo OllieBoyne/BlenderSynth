@@ -71,7 +71,6 @@ class Compositor:
 		# Create compositor node tree
 		bpy.context.scene.use_nodes = True
 		self.node_tree = bpy.context.scene.node_tree
-		# self.file_output_nodes = []
 
 		self.view_layer = view_layer  #
 

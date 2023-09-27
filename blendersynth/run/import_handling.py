@@ -6,7 +6,9 @@ from typing import Union
 package_name = 'blendersynth'
 
 def conditional_import(condition: bool, src: str, name:str=None) -> Union['IllegalImport', object]:
-	"""Imports a module if condition,
+	"""
+	[No longer used in __init__.py, but kept here for reference]
+	Imports a module if condition,
 	otherwise returns IllegalImport.
 
 	:param condition: If True, import the module
