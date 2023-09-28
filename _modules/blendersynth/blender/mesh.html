@@ -719,6 +719,11 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">set_shape_key</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
 
 
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">_all_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;List of all objects associated with this object.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span>
+
 <div class="viewcode-block" id="Mesh.add_child">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.add_child">[docs]</a>
 	<span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;Mesh&#39;</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]):</span>
