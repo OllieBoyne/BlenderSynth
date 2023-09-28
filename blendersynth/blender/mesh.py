@@ -574,12 +574,21 @@ class Mesh(BsynObject):
 		:param obj: Object to add as child
 		"""
 
+		new_objects = []
 		if isinstance(obj, Mesh):
 			self._meshes += obj._meshes
 			self._other_objects += obj._other_objects
+			new_objects = obj._all_objects
 
 		else:
 			if obj.type == 'MESH':
 				self._meshes.append(obj)
 			else:
 				self._other_objects.append(obj)
+
+			new_objects.append(obj)
+
+		# add as children
+		with SelectObjects([self.obj] + new_objects):
+			bpy.context.view_layer.objects.active = self.obj
+			bpy.ops.object.parent_set(type='OBJECT', keep_transform=True)
