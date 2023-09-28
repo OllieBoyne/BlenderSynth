@@ -120,6 +120,17 @@
 
 	<span class="k">return</span> <span class="n">new_filepath</span>
 
+<div class="viewcode-block" id="is_blender_running">
+<a class="viewcode-back" href="../../../api/blendersynth.run.run_this_script.html#blendersynth.run.run_this_script.is_blender_running">[docs]</a>
+<span class="k">def</span> <span class="nf">is_blender_running</span><span class="p">():</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Returns True if blender is running, False otherwise&quot;&quot;&quot;</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="kn">import</span> <span class="nn">bpy</span>
+		<span class="k">return</span> <span class="n">bpy</span><span class="o">.</span><span class="vm">__file__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+	<span class="k">except</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">False</span></div>
+
+
 
 <div class="viewcode-block" id="run_this_script">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run_this_script.html#blendersynth.run.run_this_script.run_this_script">[docs]</a>
@@ -139,7 +150,7 @@
 <span class="sd">	args &amp; kwargs are passed to the script being run as command line arguments.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
-	<span class="n">running_in_blender</span> <span class="o">=</span> <span class="s1">&#39;bpy&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span>
+	<span class="n">running_in_blender</span> <span class="o">=</span> <span class="n">is_blender_running</span><span class="p">()</span>
 
 	<span class="n">caller_path</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">filename</span>  <span class="c1"># path of script that called this function</span>
 

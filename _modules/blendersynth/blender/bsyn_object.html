@@ -116,17 +116,17 @@
 
 <span class="sd">	Assigned an .obj (eg bpy.types.Mesh for a Mesh) which is the main Blender object it represents.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="n">_object</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># corresponding blender object</span>
+	<span class="n">_object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># corresponding blender object</span>
 
 	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">obj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">obj</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;self._object not set. Ensure it is set in the Object&#39;s __init__ function.&quot;</span><span class="p">)</span>
 
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object</span>
 
 	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">object</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span>
 
 	<span class="nd">@property</span>
