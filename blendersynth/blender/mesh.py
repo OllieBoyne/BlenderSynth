@@ -561,3 +561,20 @@ class Mesh(BsynObject):
 		"""
 		for k, v in data.items():
 			self.set_shape_key(k, v, frame=frame)
+
+	def add_child(self, obj: Union['Mesh', bpy.types.Object]):
+		"""Add child Mesh or Object to this object.
+		This will make the child object move with this object.
+
+		:param obj: Object to add as child
+		"""
+
+		if isinstance(obj, Mesh):
+			self._meshes += obj._meshes
+			self._other_objects += obj._other_objects
+
+		else:
+			if obj.type == 'MESH':
+				self._meshes.append(obj)
+			else:
+				self._other_objects.append(obj)
