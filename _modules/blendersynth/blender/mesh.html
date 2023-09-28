@@ -733,15 +733,24 @@
 <span class="sd">		:param obj: Object to add as child</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 
+		<span class="n">new_objects</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span> <span class="o">+=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_meshes</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span> <span class="o">+=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_other_objects</span>
+			<span class="n">new_objects</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_all_objects</span>
 
 		<span class="k">else</span><span class="p">:</span>
 			<span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;MESH&#39;</span><span class="p">:</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 			<span class="k">else</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+			<span class="n">new_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+		<span class="c1"># add as children</span>
+		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">]</span> <span class="o">+</span> <span class="n">new_objects</span><span class="p">):</span>
+			<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span>
+			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">parent_set</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;OBJECT&#39;</span><span class="p">,</span> <span class="n">keep_transform</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
