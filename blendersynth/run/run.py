@@ -57,12 +57,20 @@ class BlenderCommand:
 
 class Runner:
 	def __init__(self, script, jsons, output_directory, num_threads=1,
-				 print_to_stdout=False,
+				 print_to_stdout=False, distributed:tuple=None,
 				 **script_kwargs):
 		"""
 		:param jsons: N sized list of .json files, each with info about the given job
 		:param num_threads: threads to run in parallel (default = 1)
+		:param distributed: tuple of (machine index, total machines) for distributed rendering
 		"""
+
+		# if distributed, split jsons into chunks
+		if distributed is not None:
+			machine_index, total_machines = distributed
+			assert machine_index < total_machines, "machine_index must be less than total_machines"
+			jsons = _list_split(jsons, total_machines)[machine_index]
+
 		self.jsons = jsons
 		self.num_threads = num_threads
 
@@ -81,7 +89,7 @@ class Runner:
 
 
 def execute_jobs(script: str, json_src: Union[list, str], output_directory: str, num_threads: int = 1,
-				 print_to_stdout: bool = False, **script_kwargs):
+				 print_to_stdout: bool = False, distributed:tuple=None, **script_kwargs):
 	"""
 	Execute a script, given a list of jobs to execute.
 
@@ -91,6 +99,7 @@ def execute_jobs(script: str, json_src: Union[list, str], output_directory: str,
 	:param output_directory: directory to save output files
 	:param num_threads: threads to run in parallel (default = 1)
 	:param print_to_stdout: If True, print to stdout instead of saving to file
+	:param distributed: tuple of (machine index, total machines) for distributed rendering
 	"""
 
 	assert not (num_threads > 1 and print_to_stdout), "Cannot print to stdout with multiple threads"
@@ -101,6 +110,7 @@ def execute_jobs(script: str, json_src: Union[list, str], output_directory: str,
 		json_src = sorted([os.path.join(json_src, f) for f in os.listdir(json_src) if f.endswith(".json")])
 
 	Runner(script, json_src, output_directory, num_threads, print_to_stdout=print_to_stdout,
+			distributed=distributed,
 		   **script_kwargs)
 
 	cleanup()
