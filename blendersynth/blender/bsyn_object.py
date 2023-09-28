@@ -33,7 +33,7 @@ class BsynObject:
 		return self.obj
 
 	@property
-	def data(self):
+	def data(self) -> bpy.types.ID:
 		return self.object.data
 
 	def remove(self):
