@@ -9,14 +9,14 @@ def fix_blender_modules(local=False, editable=False):
 	check_blender_install(force_install_dependencies=True, blendersynth_from_local=local,
 						  blendersynth_editable=editable)
 
-from .run.run_this_script import run_this_script
+from .run.run_this_script import run_this_script, is_blender_running
 
 from .utils.blender_setup.blender_locator import get_blender_path
 from .run.import_handling import conditional_import, IllegalImport
 from typing import TYPE_CHECKING
 
 is_building_docs = 'sphinx' in sys.modules
-is_blender = 'bpy' in sys.modules
+is_blender = is_blender_running()
 BLENDER_IMPORTS = is_building_docs or is_blender  # if blender is running this script, or if building docs
 
 if BLENDER_IMPORTS or TYPE_CHECKING:

@@ -25,6 +25,14 @@ def _copy_over_script(filepath: str) -> str:
 
 	return new_filepath
 
+def is_blender_running():
+	"""Returns True if blender is running, False otherwise"""
+	try:
+		import bpy
+		return bpy.__file__ is not None
+	except:
+		return False
+
 
 def run_this_script(*args, open_blender: bool = False,
 					debug: bool = False, IDE: str = 'PyCharm', port: int = 5678, host: str = 'localhost',
@@ -42,7 +50,7 @@ def run_this_script(*args, open_blender: bool = False,
 	args & kwargs are passed to the script being run as command line arguments.
 	"""
 
-	running_in_blender = 'bpy' in sys.modules
+	running_in_blender = is_blender_running()
 
 	caller_path = inspect.stack()[1].filename  # path of script that called this function
 

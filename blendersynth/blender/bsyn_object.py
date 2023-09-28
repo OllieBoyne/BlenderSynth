@@ -19,17 +19,17 @@ class BsynObject:
 
 	Assigned an .obj (eg bpy.types.Mesh for a Mesh) which is the main Blender object it represents.
 	"""
-	_object = None  # corresponding blender object
+	_object: bpy.types.Object = None  # corresponding blender object
 
 	@property
-	def obj(self):
+	def obj(self) -> bpy.types.Object:
 		if self._object is None:
 			raise ValueError("self._object not set. Ensure it is set in the Object's __init__ function.")
 
 		return self._object
 
 	@property
-	def object(self):
+	def object(self) -> bpy.types.Object:
 		return self.obj
 
 	@property

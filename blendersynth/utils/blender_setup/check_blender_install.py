@@ -1,10 +1,35 @@
 import subprocess
 import os
+import sys
 from blendersynth.utils.blender_setup.blender_locator import find_blender_python, get_blender_path, remove_config, write_to_config, read_from_config, remove_from_config, set_blender_path
 
 dependencies = ['imageio', 'numpy', 'appdirs', 'tqdm', 'opencv-python', 'ffmpeg-python', 'pyyaml',
 				'pydevd-pycharm', 'debugpy' # for debugging
 				]
+
+def setup_blender_stubs():
+	"""Install blender stubs in vanilla python environment,
+	for correct Blender version"""
+
+	vanilla_python_executable = sys.executable
+
+	# Get Blender version from the output
+	script_code = "import bpy; print('VERSION' + '.'.join(map(str, bpy.app.version)))"
+	result = subprocess.run(['blender', '--background', '--python-expr', script_code], capture_output=True, text=True)
+
+	for line in result.stdout.split('\n'):
+		if line.startswith('VERSION'):
+			blender_version = line[len('VERSION'):].strip()
+			break
+	else:
+		raise Exception("Could not get Blender version")
+
+	# Install stubs
+	# TODO: Use blender_version here
+	if not check_module(vanilla_python_executable, "blender-stubs"):
+		_install_module(vanilla_python_executable, "blender-stubs")
+
+
 
 def check_module(python_executable, module_name):
 	try:
@@ -62,6 +87,8 @@ def check_blender_install(force_all=False,
 
 	Force: if True, will run first time setup (overwriting any existing config.ini)
 	regardless"""
+
+	setup_blender_stubs() # check blender stubs
 
 	if force_all:
 		remove_config() # remove config file if it exists to force first time setup
