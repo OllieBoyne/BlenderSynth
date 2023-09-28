@@ -717,6 +717,26 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">set_shape_key</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Mesh.add_child">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.add_child">[docs]</a>
+	<span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;Mesh&#39;</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Add child Mesh or Object to this object.</span>
+<span class="sd">		This will make the child object move with this object.</span>
+
+<span class="sd">		:param obj: Object to add as child</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span> <span class="o">+=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_meshes</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span> <span class="o">+=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_other_objects</span>
+
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;MESH&#39;</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_other_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
