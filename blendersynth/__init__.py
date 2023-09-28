@@ -17,10 +17,9 @@ from typing import TYPE_CHECKING
 
 is_building_docs = 'sphinx' in sys.modules
 is_blender = 'bpy' in sys.modules
-is_typing = TYPE_CHECKING
-BLENDER_IMPORTS = is_building_docs or is_blender or is_typing  # if blender is running this script, or if building docs
+BLENDER_IMPORTS = is_building_docs or is_blender  # if blender is running this script, or if building docs
 
-if BLENDER_IMPORTS:
+if BLENDER_IMPORTS or TYPE_CHECKING:
 	from .blender.mesh import Mesh
 	from .blender.material import Material
 	from .blender.curve import Curve
@@ -69,5 +68,5 @@ if is_blender:
 	from .run.pre_ops import on_script_open
 	on_script_open()
 
-if not BLENDER_IMPORTS:
+if not (BLENDER_IMPORTS or TYPE_CHECKING):
 	check_blender_install(blendersynth_from_local='--local' in sys.argv)  # check install here
