@@ -589,6 +589,5 @@ class Mesh(BsynObject):
 			new_objects.append(obj)
 
 		# add as children
-		with SelectObjects([self.obj] + new_objects):
-			bpy.context.view_layer.objects.active = self.obj
+		with SelectObjects(new_objects, active_object=self.obj):
 			bpy.ops.object.parent_set(type='OBJECT', keep_transform=True)

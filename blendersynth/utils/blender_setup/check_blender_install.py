@@ -25,7 +25,7 @@ def setup_blender_stubs():
 		raise Exception("Could not get Blender version")
 
 	# Install stubs
-	# TODO: Use blender_version here
+	# Should really use blender_version here
 	if not check_module(vanilla_python_executable, "blender-stubs"):
 		_install_module(vanilla_python_executable, "blender-stubs")
 

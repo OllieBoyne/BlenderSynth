@@ -88,12 +88,19 @@ class SelectObjects:
 	"""Context manager for selecting objects.
 	On exit, will reselect the objects that were selected before entering the context."""
 
-	def __init__(self, objects: list = ()):
+	def __init__(self, objects: List[bpy.types.Object] = (), active_object: bpy.types.Object = None):
 		"""Initialize with a list of objects to select
 
 		:param objects: list of bpy.types.Object
-		"""
+		:param active_object: [Optional] The `active object <https://docs.blender.org/manual/en/latest/scene_layout/object/selecting.html#>`_ to set"""
+
 		self.objects = objects
+
+		if active_object is not None:
+			if active_object not in self.objects:
+				self.objects.append(active_object)
+
+			bpy.context.view_layer.objects.active = active_object
 
 		self.mode = bpy.context.mode
 		assert self.mode in ['OBJECT', 'POSE', 'EDIT'], "Currently only OBJECT, POSE, EDIT supported for SelectObjects"
