@@ -193,12 +193,19 @@
 
 <div class="viewcode-block" id="SelectObjects.__init__">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.SelectObjects.__init__">[docs]</a>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objects</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">()):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">active_object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Initialize with a list of objects to select</span>
 
 <span class="sd">		:param objects: list of bpy.types.Object</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">		:param active_object: [Optional] The `active object &lt;https://docs.blender.org/manual/en/latest/scene_layout/object/selecting.html#&gt;`_ to set&quot;&quot;&quot;</span>
+
 		<span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="n">objects</span>
+
+		<span class="k">if</span> <span class="n">active_object</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">active_object</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">active_object</span><span class="p">)</span>
+
+			<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="n">active_object</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">mode</span>
 		<span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;OBJECT&#39;</span><span class="p">,</span> <span class="s1">&#39;POSE&#39;</span><span class="p">,</span> <span class="s1">&#39;EDIT&#39;</span><span class="p">],</span> <span class="s2">&quot;Currently only OBJECT, POSE, EDIT supported for SelectObjects&quot;</span>

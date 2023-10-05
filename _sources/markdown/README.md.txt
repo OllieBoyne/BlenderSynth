@@ -1,6 +1,10 @@
-![](_static/images/docs.logo.png)
+<a href="https://ollieboyne.github.io/BlenderSynth/">
+<img src="docs/logo.png" alt="BlenderSynth logo"/>
+</a>
 
-![](_static/images/docs.splash.png)
+<a href="https://ollieboyne.github.io/BlenderSynth/python/output_data.html">
+<img src="docs/splash.png" alt="BlenderSynth rendering example"/>
+</a>
 
 <p align="center">
   <a href="https://opensource.org/licenses/MIT">
@@ -11,8 +15,10 @@
     </a>
   </p>
 
-<p align="center"> <a href="https://ollieboyne.github.io/BlenderSynth/">Documentation</a> |
-<a href="https://github.com/OllieBoyne/BlenderSynth">GitHub</a>
+<p align="center"> 
+<a href="https://ollieboyne.github.io/BlenderSynth/">Documentation</a> |
+<a href="https://github.com/OllieBoyne/BlenderSynth">GitHub</a> |
+<a href="https://pypi.org/project/blendersynth/">PyPI</a>
 </p>
 
 BlenderSynth is a Python library for generating large scale synthetic datasets using [Blender](https://www.blender.org/). Compared to other tools, BlenderSynth provides support for: <b>Custom <a href="https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html">Shader AOVs</a></b> to render rich per-pixel information; **node control**; <b><a href="https://ollieboyne.github.io/BlenderSynth/python/dataset_creation/index.html">multithreading</a></b> support; and <b><a href="https://ollieboyne.github.io/BlenderSynth/python/multiview_rendering.html">multiview</a></b> rendering support.
