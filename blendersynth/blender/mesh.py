@@ -169,8 +169,19 @@ class Mesh(BsynObject):
 		return obj
 
 	@classmethod
+	def from_numpy(cls, vertices: np.ndarray, faces: np.ndarray, name="New_Mesh") -> 'Mesh':
+		"""Create Mesh from numpy arrays of vertices and faces."""
+		mesh = bpy.data.meshes.new(name=name)
+		obj = bpy.data.objects.new(name, mesh)
+		bpy.context.collection.objects.link(obj)
+		mesh.from_pydata(vertices.tolist(), [], faces.tolist())
+		mesh.update()
+
+		return cls(obj, class_id=default_ids['loaded_mesh'])
+
+	@classmethod
 	def from_obj(cls, obj_loc: str, class_id: int = None,
-				 forward_axis: str = '-Z', up_axis: str = 'Y'):
+				 forward_axis: str = '-Z', up_axis: str = 'Y') -> 'Mesh':
 		"""Load object from .obj file.
 
 		:param obj_loc: Location of .obj file
@@ -207,7 +218,7 @@ class Mesh(BsynObject):
 		return cls(obj, class_id=class_id)
 
 	@classmethod
-	def from_glb(cls, glb_loc: str, class_id: int = None):
+	def from_glb(cls, glb_loc: str, class_id: int = None) -> 'Mesh':
 		"""Load object from .glb file.
 
 		:param glb_loc: Location of .glb file
@@ -227,12 +238,12 @@ class Mesh(BsynObject):
 		return cls(importer.imported_obj, class_id=class_id)
 
 	@classmethod
-	def from_gltf(cls, gltf_loc: str, class_id: int = None):
+	def from_gltf(cls, gltf_loc: str, class_id: int = None) -> 'Mesh':
 		"""Alias for :meth:`~blendersynth.blender.Mesh.from_glb`"""
 		return cls.from_glb(gltf_loc, class_id=class_id)
 
 	@classmethod
-	def from_fbx(cls, fbx_loc: str, class_id: int = None):
+	def from_fbx(cls, fbx_loc: str, class_id: int = None) -> 'Mesh':
 		"""Load object from .fbx file.
 
 		:param fbx_loc: Location of .fbx file
@@ -252,36 +263,50 @@ class Mesh(BsynObject):
 	@property
 	def origin(self) -> Union[Vector, List[Vector]]:
 		"""
-		If single object, return Vector of origin.
-		If multiple objects, return list of Vectors of centroid of each mesh."""
-		if len(self._all_objects) == 1:
-			return self._meshes[0].location
+		Return origin of primary object.
 
-		else:
-			return [m.location for m in self._all_objects]
+		To get origins of all objects within the mesh, use :attr:`~blendersynth.blender.Mesh.all_origins`
+		"""
+		return self.obj.location
 
 	@origin.setter
-	def origin(self, origin):
-		"""Set origin of object.
-		If single mesh, expects Vector.
-		If multiple meshes, expects list of Vectors"""
+	def origin(self, origin: Vector):
+		"""Set origin of primary object.
 
-		if len(self._all_objects) == 1:
+		:param origin: Origin to set
+
+		To set origins of all objects within the mesh, use :attr:`~blendersynth.blender.Mesh.all_origins`
+		"""
+		try:
+			vec = handle_vec(origin)
+		except ValueError:
+			raise ValueError(f"Error with setting origin. Expects a 3 long Vector. Received: {origin}")
+
+		_set_object_origin(self._meshes[0], vec)
+
+
+
+	@property
+	def all_origins(self) -> List[Vector]:
+		"""Return list of origins of all objects within the mesh"""
+		return [m.location for m in self._all_objects]
+
+	@all_origins.setter
+	def all_origins(self, origins: List[Vector]):
+		"""
+		Set origins of all objects within the mesh.
+		:param origins: List of origins to set
+		"""
+
+		assert len(origins) == len(self._all_objects), f"Expected {len(self._all_objects)} origins, got {len(origins)}"
+
+		for i in range(len(self._all_objects)):
 			try:
-				vec = handle_vec(origin)
-			except ValueError:
-				raise ValueError(f"Error with setting origin. Expects a 3 long Vector. Received: {origin}")
+				vec = handle_vec(origins[i])
+				_set_object_origin(self._all_objects[i], vec)
+			except:
+				raise ValueError(f"Error with setting origins. Expects a list of {len(self._all_objects)} 3-long Vector. Received: {origins}")
 
-			_set_object_origin(self._meshes[0], vec)
-
-		else:
-			for i in range(len(self._all_objects)):
-				try:
-					vec = handle_vec(origin[i])
-					_set_object_origin(self._all_objects[i], vec)
-				except:
-					raise ValueError(
-						f"Error with setting origin. Expects a list of {len(self._all_objects)} 3-long Vector. Received: {origin}")
 
 	def _get_all_vertices(self, ref_frame='WORLD') -> np.ndarray:
 		"""
@@ -420,23 +445,29 @@ class Mesh(BsynObject):
 			for material in self.materials:
 				bpy.data.materials.remove(material, do_unlink=True)
 
-	def centroid(self, method: str = 'median') -> Vector:
+	def centroid(self, method: str = 'median', seperate: bool =False) -> Vector:
 		"""
 		Return the centroid of the mesh(es)
 
 		:param method: See :attr:`~blendersynth.blender.mesh.Mesh.origin_to_centroid` for options.
+		:param seperate: If True, will return a list of centroids for each object, rather than a single centroid.
 		:return: Centroid of the mesh(es). If multiple meshes, will average the centroids.
 		"""
 
-		original_origins = deepcopy(self.origin)
-		self.origin_to_centroid(method=method)
-		centroid = deepcopy(self.origin)
-		self.origin = original_origins
+		if seperate:
+			original_origins = deepcopy(self.all_origins)
+			self.origin_to_centroid(method=method)
+			centroids = deepcopy(self.all_origins)
+			self.all_origins = original_origins
+			return sum(centroids) / len(centroids)
 
-		if len(self._meshes) > 1:
-			return sum(centroid) / len(self._meshes)
+		else:
+			original_origin = deepcopy(self.origin)
+			self.origin_to_centroid(method=method)
+			centroid = deepcopy(self.origin)
+			self.origin = original_origin
+			return centroid
 
-		return centroid
 
 	def _set_origin_manual(self, origin: Vector, all_meshes=True):
 		"""Override to set origin manually. Should only be used by internal functions."""
@@ -531,13 +562,24 @@ class Mesh(BsynObject):
 			mesh.data.materials.append(material.object)
 
 	@property
-	def shape_keys(self) -> bpy.types.ShapeKey:
+	def shape_keys(self) -> bpy.types.Key:
 		"""Get the first shape keys object available"""
 		for mesh in self._meshes:
 			if mesh.data.shape_keys is not None:
 				return mesh.data.shape_keys
 
-		raise ValueError("No mesh found with shape keys.")
+		return None
+
+	def get_shape_key(self, name: str) -> bpy.types.ShapeKey:
+		"""Get a given shape key object"""
+		keys = self.shape_keys
+		if keys is None:
+			raise ValueError(f"Tried to get key '{name}' - no shape keys available.")
+
+		elif name not in keys.key_blocks:
+			raise ValueError(f"Tried to get key '{name}' - not found in shape keys.")
+
+		return keys.key_blocks[name]
 
 	def set_shape_key(self, name: str, value: float, frame: int = None):
 		"""Set shape key to a given value.
@@ -547,7 +589,7 @@ class Mesh(BsynObject):
 		:param frame: If not None, set keyframe at this frame
 		"""
 
-		shape_key = self.shape_keys.key_blocks[name]
+		shape_key = self.get_shape_key(name)
 		shape_key.value = value
 
 		if frame is not None:
@@ -561,6 +603,35 @@ class Mesh(BsynObject):
 		"""
 		for k, v in data.items():
 			self.set_shape_key(k, v, frame=frame)
+
+	def set_shape_key_data(self, name: str, data: np.ndarray):
+		"""Set shape key to a given value.
+
+		:param name: Name of shape key
+		:param data: Data to set shape key to
+		"""
+
+		# self.get_shape_key(name).data.foreach_set("co", data.ravel())
+		for i, coord in enumerate(data):
+			self.get_shape_key(name).data[i].co = coord
+
+	def make_shape_key(self, name: str, data: np.ndarray):
+		"""Create a new shape key, optionally with data.
+
+		:param name: Name of shape key
+		:param data: Data to set shape key to
+		"""
+
+		if self.shape_keys is None:
+			self.obj.shape_key_add(name="Basis") # add basis shape key
+
+		if name in self.shape_keys.key_blocks:
+			raise ValueError(f"Shape key `{name}` already exists.")
+
+		self.obj.shape_key_add(name=name)
+		if data is not None:
+			self.set_shape_key_data(name, data)
+
 
 	@property
 	def _all_objects(self):
