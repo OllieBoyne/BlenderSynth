@@ -274,11 +274,25 @@
 		<span class="k">return</span> <span class="n">obj</span></div>
 
 
+<div class="viewcode-block" id="Mesh.from_numpy">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_numpy">[docs]</a>
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">from_numpy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">vertices</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">faces</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;New_Mesh&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Create Mesh from numpy arrays of vertices and faces.&quot;&quot;&quot;</span>
+		<span class="n">mesh</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meshes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+		<span class="n">obj</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
+		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+		<span class="n">mesh</span><span class="o">.</span><span class="n">from_pydata</span><span class="p">(</span><span class="n">vertices</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="p">[],</span> <span class="n">faces</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+		<span class="n">mesh</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+		<span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="n">default_ids</span><span class="p">[</span><span class="s1">&#39;loaded_mesh&#39;</span><span class="p">])</span></div>
+
+
 <div class="viewcode-block" id="Mesh.from_obj">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_obj">[docs]</a>
 	<span class="nd">@classmethod</span>
 	<span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj_loc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-				 <span class="n">forward_axis</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;-Z&#39;</span><span class="p">,</span> <span class="n">up_axis</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span><span class="p">):</span>
+				 <span class="n">forward_axis</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;-Z&#39;</span><span class="p">,</span> <span class="n">up_axis</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Load object from .obj file.</span>
 
 <span class="sd">		:param obj_loc: Location of .obj file</span>
@@ -318,7 +332,7 @@
 <div class="viewcode-block" id="Mesh.from_glb">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_glb">[docs]</a>
 	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">from_glb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">glb_loc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">from_glb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">glb_loc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Load object from .glb file.</span>
 
 <span class="sd">		:param glb_loc: Location of .glb file</span>
@@ -341,7 +355,7 @@
 <div class="viewcode-block" id="Mesh.from_gltf">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_gltf">[docs]</a>
 	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">from_gltf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">gltf_loc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">from_gltf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">gltf_loc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Alias for :meth:`~blendersynth.blender.Mesh.from_glb`&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_glb</span><span class="p">(</span><span class="n">gltf_loc</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="n">class_id</span><span class="p">)</span></div>
 
@@ -349,7 +363,7 @@
 <div class="viewcode-block" id="Mesh.from_fbx">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.from_fbx">[docs]</a>
 	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">from_fbx</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fbx_loc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">from_fbx</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fbx_loc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Load object from .fbx file.</span>
 
 <span class="sd">		:param fbx_loc: Location of .fbx file</span>
@@ -370,36 +384,50 @@
 	<span class="nd">@property</span>
 	<span class="k">def</span> <span class="nf">origin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Vector</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector</span><span class="p">]]:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		If single object, return Vector of origin.</span>
-<span class="sd">		If multiple objects, return list of Vectors of centroid of each mesh.&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">location</span>
+<span class="sd">		Return origin of primary object.</span>
 
-		<span class="k">else</span><span class="p">:</span>
-			<span class="k">return</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">location</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">]</span>
+<span class="sd">		To get origins of all objects within the mesh, use :attr:`~blendersynth.blender.Mesh.all_origins`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">location</span>
 
 	<span class="nd">@origin</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">origin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set origin of object.</span>
-<span class="sd">		If single mesh, expects Vector.</span>
-<span class="sd">		If multiple meshes, expects list of Vectors&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">origin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span> <span class="n">Vector</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set origin of primary object.</span>
 
-		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="sd">		:param origin: Origin to set</span>
+
+<span class="sd">		To set origins of all objects within the mesh, use :attr:`~blendersynth.blender.Mesh.all_origins`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">vec</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error with setting origin. Expects a 3 long Vector. Received: </span><span class="si">{</span><span class="n">origin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+		<span class="n">_set_object_origin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vec</span><span class="p">)</span>
+
+
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">all_origins</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return list of origins of all objects within the mesh&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">location</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">]</span>
+
+	<span class="nd">@all_origins</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">all_origins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origins</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector</span><span class="p">]):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Set origins of all objects within the mesh.</span>
+<span class="sd">		:param origins: List of origins to set</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">origins</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">)</span><span class="si">}</span><span class="s2"> origins, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">origins</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">)):</span>
 			<span class="k">try</span><span class="p">:</span>
-				<span class="n">vec</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
-			<span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error with setting origin. Expects a 3 long Vector. Received: </span><span class="si">{</span><span class="n">origin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+				<span class="n">vec</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">origins</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+				<span class="n">_set_object_origin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">vec</span><span class="p">)</span>
+			<span class="k">except</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error with setting origins. Expects a list of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">)</span><span class="si">}</span><span class="s2"> 3-long Vector. Received: </span><span class="si">{</span><span class="n">origins</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-			<span class="n">_set_object_origin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vec</span><span class="p">)</span>
-
-		<span class="k">else</span><span class="p">:</span>
-			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">)):</span>
-				<span class="k">try</span><span class="p">:</span>
-					<span class="n">vec</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">origin</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-					<span class="n">_set_object_origin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">vec</span><span class="p">)</span>
-				<span class="k">except</span><span class="p">:</span>
-					<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-						<span class="sa">f</span><span class="s2">&quot;Error with setting origin. Expects a list of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">)</span><span class="si">}</span><span class="s2"> 3-long Vector. Received: </span><span class="si">{</span><span class="n">origin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="nf">_get_all_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref_frame</span><span class="o">=</span><span class="s1">&#39;WORLD&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
@@ -561,23 +589,29 @@
 
 <div class="viewcode-block" id="Mesh.centroid">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.centroid">[docs]</a>
-	<span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;median&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
+	<span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;median&#39;</span><span class="p">,</span> <span class="n">seperate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Return the centroid of the mesh(es)</span>
 
 <span class="sd">		:param method: See :attr:`~blendersynth.blender.mesh.Mesh.origin_to_centroid` for options.</span>
+<span class="sd">		:param seperate: If True, will return a list of centroids for each object, rather than a single centroid.</span>
 <span class="sd">		:return: Centroid of the mesh(es). If multiple meshes, will average the centroids.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 
-		<span class="n">original_origins</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">origin_to_centroid</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
-		<span class="n">centroid</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">original_origins</span>
+		<span class="k">if</span> <span class="n">seperate</span><span class="p">:</span>
+			<span class="n">original_origins</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_origins</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">origin_to_centroid</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+			<span class="n">centroids</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_origins</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">all_origins</span> <span class="o">=</span> <span class="n">original_origins</span>
+			<span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">centroids</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">centroids</span><span class="p">)</span>
 
-		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-			<span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">centroid</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">original_origin</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">origin_to_centroid</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+			<span class="n">centroid</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">original_origin</span>
+			<span class="k">return</span> <span class="n">centroid</span></div>
 
-		<span class="k">return</span> <span class="n">centroid</span></div>
 
 
 	<span class="k">def</span> <span class="nf">_set_origin_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">all_meshes</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -682,13 +716,27 @@
 			<span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">material</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
 
 	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">shape_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">ShapeKey</span><span class="p">:</span>
+	<span class="k">def</span> <span class="nf">shape_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Key</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Get the first shape keys object available&quot;&quot;&quot;</span>
 		<span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meshes</span><span class="p">:</span>
 			<span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape_keys</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 				<span class="k">return</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape_keys</span>
 
-		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No mesh found with shape keys.&quot;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Mesh.get_shape_key">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.get_shape_key">[docs]</a>
+	<span class="k">def</span> <span class="nf">get_shape_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">ShapeKey</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Get a given shape key object&quot;&quot;&quot;</span>
+		<span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_keys</span>
+		<span class="k">if</span> <span class="n">keys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tried to get key &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; - no shape keys available.&quot;</span><span class="p">)</span>
+
+		<span class="k">elif</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">keys</span><span class="o">.</span><span class="n">key_blocks</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tried to get key &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; - not found in shape keys.&quot;</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">keys</span><span class="o">.</span><span class="n">key_blocks</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+
 
 <div class="viewcode-block" id="Mesh.set_shape_key">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.set_shape_key">[docs]</a>
@@ -700,7 +748,7 @@
 <span class="sd">		:param frame: If not None, set keyframe at this frame</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 
-		<span class="n">shape_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_keys</span><span class="o">.</span><span class="n">key_blocks</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+		<span class="n">shape_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_shape_key</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 		<span class="n">shape_key</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
 
 		<span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -717,6 +765,41 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">set_shape_key</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Mesh.set_shape_key_data">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.set_shape_key_data">[docs]</a>
+	<span class="k">def</span> <span class="nf">set_shape_key_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set shape key to a given value.</span>
+
+<span class="sd">		:param name: Name of shape key</span>
+<span class="sd">		:param data: Data to set shape key to</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="c1"># self.get_shape_key(name).data.foreach_set(&quot;co&quot;, data.ravel())</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">get_shape_key</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">co</span> <span class="o">=</span> <span class="n">coord</span></div>
+
+
+<div class="viewcode-block" id="Mesh.make_shape_key">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.make_shape_key">[docs]</a>
+	<span class="k">def</span> <span class="nf">make_shape_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Create a new shape key, optionally with data.</span>
+
+<span class="sd">		:param name: Name of shape key</span>
+<span class="sd">		:param data: Data to set shape key to</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_keys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">shape_key_add</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Basis&quot;</span><span class="p">)</span> <span class="c1"># add basis shape key</span>
+
+		<span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_keys</span><span class="o">.</span><span class="n">key_blocks</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape key `</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">` already exists.&quot;</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">shape_key_add</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">set_shape_key_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+
 
 
 	<span class="nd">@property</span>

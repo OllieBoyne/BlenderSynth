@@ -114,6 +114,12 @@ This will make the child object move with this object.</p>
 </dl>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.all_origins">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_origins</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">mathutils.Vector</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.all_origins" title="Link to this definition"></a></dt>
+<dd><p>Return list of origins of all objects within the mesh</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.animate_path">
 <span class="sig-name descname"><span class="pre">animate_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">250)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.animate_path" title="Link to this definition"></a></dt>
@@ -169,11 +175,14 @@ This will make the child object move with this object.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.centroid">
-<span class="sig-name descname"><span class="pre">centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.centroid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.centroid" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seperate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.centroid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.centroid" title="Link to this definition"></a></dt>
 <dd><p>Return the centroid of the mesh(es)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>method</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – See <a class="reference internal" href="#blendersynth.blender.mesh.Mesh.origin_to_centroid" title="blendersynth.blender.mesh.Mesh.origin_to_centroid"><code class="xref py py-attr docutils literal notranslate"><span class="pre">origin_to_centroid</span></code></a> for options.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – See <a class="reference internal" href="#blendersynth.blender.mesh.Mesh.origin_to_centroid" title="blendersynth.blender.mesh.Mesh.origin_to_centroid"><code class="xref py py-attr docutils literal notranslate"><span class="pre">origin_to_centroid</span></code></a> for options.</p></li>
+<li><p><strong>seperate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, will return a list of centroids for each object, rather than a single centroid.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></p>
@@ -246,6 +255,9 @@ the object never goes below (mode=’min’) or above (mode=’max’) the given
 <li><p><strong>class_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Class ID to assign to object</p></li>
 </ul>
 </dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#blendersynth.blender.mesh.Mesh" title="blendersynth.blender.mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a></p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -260,6 +272,9 @@ the object never goes below (mode=’min’) or above (mode=’max’) the given
 <li><p><strong>class_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Class ID to assign to object</p></li>
 </ul>
 </dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#blendersynth.blender.mesh.Mesh" title="blendersynth.blender.mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a></p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -267,6 +282,22 @@ the object never goes below (mode=’min’) or above (mode=’max’) the given
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.from_gltf">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_gltf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gltf_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.from_gltf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.from_gltf" title="Link to this definition"></a></dt>
 <dd><p>Alias for <code class="xref py py-meth docutils literal notranslate"><span class="pre">from_glb()</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#blendersynth.blender.mesh.Mesh" title="blendersynth.blender.mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.from_numpy">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'New_Mesh'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.from_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.from_numpy" title="Link to this definition"></a></dt>
+<dd><p>Create Mesh from numpy arrays of vertices and faces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#blendersynth.blender.mesh.Mesh" title="blendersynth.blender.mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -281,6 +312,9 @@ the object never goes below (mode=’min’) or above (mode=’max’) the given
 <li><p><strong>forward_axis</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Axis to use as forward axis</p></li>
 <li><p><strong>up_axis</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Axis to use as up axis</p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#blendersynth.blender.mesh.Mesh" title="blendersynth.blender.mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a></p>
 </dd>
 </dl>
 <p>Note: we use bpy.ops.wm.obj_import instead of bpy.ops.import_scene.obj because the latter
@@ -378,10 +412,35 @@ If no name given, return first armature found.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.get_shape_key">
+<span class="sig-name descname"><span class="pre">get_shape_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.get_shape_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.get_shape_key" title="Link to this definition"></a></dt>
+<dd><p>Get a given shape key object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeKey</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.location">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span></em><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.location" title="Link to this definition"></a></dt>
 <dd><p>Location of object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.make_shape_key">
+<span class="sig-name descname"><span class="pre">make_shape_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.make_shape_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.make_shape_key" title="Link to this definition"></a></dt>
+<dd><p>Create a new shape key, optionally with data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of shape key</p></li>
+<li><p><strong>data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>) – Data to set shape key to</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
@@ -393,8 +452,8 @@ If no name given, return first armature found.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.origin">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">mathutils.Vector</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.origin" title="Link to this definition"></a></dt>
-<dd><p>If single object, return Vector of origin.
-If multiple objects, return list of Vectors of centroid of each mesh.</p>
+<dd><p>Return origin of primary object.</p>
+<p>To get origins of all objects within the mesh, use <code class="xref py py-attr docutils literal notranslate"><span class="pre">all_origins</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -542,6 +601,20 @@ If multiple objects, return list of Vectors of centroid of each mesh.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.set_shape_key_data">
+<span class="sig-name descname"><span class="pre">set_shape_key_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.set_shape_key_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.set_shape_key_data" title="Link to this definition"></a></dt>
+<dd><p>Set shape key to a given value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of shape key</p></li>
+<li><p><strong>data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>) – Data to set shape key to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.set_shape_keys">
 <span class="sig-name descname"><span class="pre">set_shape_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.set_shape_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.set_shape_keys" title="Link to this definition"></a></dt>
 <dd><p>Set multiple shape keys at once.</p>
@@ -557,7 +630,7 @@ If multiple objects, return list of Vectors of centroid of each mesh.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.shape_keys">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape_keys</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bpy.types.ShapeKey</span></em><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.shape_keys" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape_keys</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bpy.types.Key</span></em><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.shape_keys" title="Link to this definition"></a></dt>
 <dd><p>Get the first shape keys object available</p>
 </dd></dl>
 
