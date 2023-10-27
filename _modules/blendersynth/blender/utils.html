@@ -179,10 +179,11 @@
 
 <span class="k">def</span> <span class="nf">_select</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Select/deselect an object&quot;&quot;&quot;</span>
-	<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;select_set&#39;</span><span class="p">):</span>  <span class="c1"># e.g. Mesh</span>
-		<span class="n">obj</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-	<span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;select&#39;</span><span class="p">):</span>  <span class="c1"># e.g. PoseBone</span>
-		<span class="n">obj</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="n">state</span>
+	<span class="k">if</span> <span class="n">_is_object_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+		<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;select_set&#39;</span><span class="p">):</span>  <span class="c1"># e.g. Mesh</span>
+			<span class="n">obj</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;select&#39;</span><span class="p">):</span>  <span class="c1"># e.g. PoseBone</span>
+			<span class="n">obj</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="n">state</span>
 
 
 <div class="viewcode-block" id="SelectObjects">

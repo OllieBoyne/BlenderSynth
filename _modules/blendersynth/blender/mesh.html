@@ -833,6 +833,31 @@
 		<span class="c1"># add as children</span>
 		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="n">new_objects</span><span class="p">,</span> <span class="n">active_object</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
 			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">parent_set</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;OBJECT&#39;</span><span class="p">,</span> <span class="n">keep_transform</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Mesh.join">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.join">[docs]</a>
+	<span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_meshes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="s1">&#39;Mesh&#39;</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]]):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Join other meshes into this mesh.</span>
+<span class="sd">		:param other_meshes: List of either Mesh or blender Object types</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">objects_to_join</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="k">for</span> <span class="n">other</span> <span class="ow">in</span> <span class="n">other_meshes</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
+				<span class="n">objects_to_join</span> <span class="o">+=</span> <span class="n">other</span><span class="o">.</span><span class="n">_all_objects</span>
+
+			<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">):</span>
+				<span class="n">objects_to_join</span> <span class="o">+=</span> <span class="n">other</span>
+
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot join object of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2"> into Mesh.&quot;</span><span class="p">)</span>
+
+		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="n">objects_to_join</span><span class="p">,</span> <span class="n">active_object</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
+			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div>
 </div>
 
 </pre></div>
