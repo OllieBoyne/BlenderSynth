@@ -78,10 +78,11 @@ class GetNewObject():
 
 def _select(obj, state=True):
 	"""Select/deselect an object"""
-	if hasattr(obj, 'select_set'):  # e.g. Mesh
-		obj.select_set(state)
-	elif hasattr(obj, 'select'):  # e.g. PoseBone
-		obj.select = state
+	if _is_object_valid(obj):
+		if hasattr(obj, 'select_set'):  # e.g. Mesh
+			obj.select_set(state)
+		elif hasattr(obj, 'select'):  # e.g. PoseBone
+			obj.select = state
 
 
 class SelectObjects:

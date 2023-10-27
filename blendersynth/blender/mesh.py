@@ -662,3 +662,25 @@ class Mesh(BsynObject):
 		# add as children
 		with SelectObjects(new_objects, active_object=self.obj):
 			bpy.ops.object.parent_set(type='OBJECT', keep_transform=True)
+
+	def join(self, other_meshes: Union[List['Mesh'], List[bpy.types.Object]]):
+		"""
+		Join other meshes into this mesh.
+		:param other_meshes: List of either Mesh or blender Object types
+		:return:
+		"""
+
+		objects_to_join = []
+
+		for other in other_meshes:
+			if isinstance(other, Mesh):
+				objects_to_join += other._all_objects
+
+			elif isinstance(other, bpy.types.Object):
+				objects_to_join += other
+
+			else:
+				raise ValueError(f"Cannot join object of type {type(other)} into Mesh.")
+
+		with SelectObjects(objects_to_join, active_object=self.obj):
+			bpy.ops.object.join()
