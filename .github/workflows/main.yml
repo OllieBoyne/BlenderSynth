@@ -30,6 +30,7 @@ jobs:
           pip install tqdm
           pip install ffmpeg-python
           pip install sphinx_autodoc_typehints
+          pip install git+https://github.com/sphinx-contrib/googleanalytics
 
       - name: Build docs
         run: |

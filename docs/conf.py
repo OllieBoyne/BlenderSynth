@@ -20,7 +20,7 @@ release = '2023'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = ['sphinx.ext.autodoc', 'sphinx_autodoc_typehints', 'sphinx.ext.viewcode',
-			  'm2r2', 'sphinx.ext.napoleon']
+			  'm2r2', 'sphinx.ext.napoleon', 'sphinxcontrib.googleanalytics']
 
 templates_path = ['_templates']
 source_dir = 'docs'
@@ -47,6 +47,8 @@ html_title = 'BlenderSynth'
 
 source_suffix = ['.rst', '.md']
 m2r_parse_relative_links = True
+
+googleanalytics_id = 'G-KSC02MB8NM'
 
 # the below code provides some post-processing of function docstrings for linking to custom Typing hints
 
