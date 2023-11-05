@@ -137,6 +137,7 @@ class SetMode:
 
 	def __init__(self, target_mode:str, object:bpy.types.Object=None):
 		"""Initialize with the target mode and object
+
 		:param target_mode: Mode to set the object to
 		:param object: bpy.types.Object to set the mode of"""
 		self.target_mode = target_mode.upper()
@@ -195,7 +196,7 @@ def get_node_by_name(node_tree: bpy.types.NodeTree, key: str, raise_error:bool=F
 		raise KeyError(f"Key {key} not found in node tree!\nLabels are: {[n.name for n in node_tree.nodes]}")
 
 
-def handle_vec(vec, expected_length: int = 3) -> mathutils.Vector:
+def handle_vec(vec: types.VectorLike, expected_length: int = 3) -> mathutils.Vector:
 	"""Check `vec` is expected_length. Convert from tuple or ndarray to mathutils.Vector.
 
 	:param vec: Vector to check

@@ -1,4 +1,4 @@
-import appdirs
+import platformdirs
 import os
 import configparser
 import shutil
@@ -7,7 +7,8 @@ import warnings
 
 appname = "blendersynth"
 appauthor = "BlenderSynth"
-config_dir = appdirs.user_config_dir(appname, appauthor)
+config_dir = platformdirs.user_config_dir(appname, appauthor)
+os.makedirs(config_dir, exist_ok=True)
 config_file = os.path.join(config_dir, "config.ini")
 
 
@@ -63,7 +64,7 @@ def set_blender_path(_blender_path: str = None) -> str:
 	3) Blender in PATH
 	4) Ask user for path
 
-	When it finds a valid path, it will save it to the Config file stored in user's `appdirs.user_config_dir`
+	When it finds a valid path, it will save it to the Config file stored in user's `platformdirs.user_config_dir`
 	"""
 
 
