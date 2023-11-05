@@ -106,39 +106,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.blender.nodes.node_arranger">
-<span id="blendersynth-blender-nodes-node-arranger"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes.node_arranger</span></code><a class="headerlink" href="#module-blendersynth.blender.nodes.node_arranger" title="Link to this heading"></a></h1>
-<p>Utilities for neatly arranging nodes in the node editor,
-to make debugging easier.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_arranger.calc_depth">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.nodes.node_arranger.</span></span><span class="sig-name descname"><span class="pre">calc_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_island</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_arranger.html#calc_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_arranger.calc_depth" title="Link to this definition"></a></dt>
-<dd><p>Given a node island (i.e. all nodes in the same fully connected component),
-set the depth of each node to be the maximum depth of all its input nodes + 1.
-Once complete, normalize these depths so the first item is 0</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_arranger.split_to_islands">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.nodes.node_arranger.</span></span><span class="sig-name descname"><span class="pre">split_to_islands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_arranger.html#split_to_islands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_arranger.split_to_islands" title="Link to this definition"></a></dt>
-<dd><p>Given a node list, return a list of sets, each one being a fully disconnected island</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_arranger.tidy_tree">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.nodes.node_arranger.</span></span><span class="sig-name descname"><span class="pre">tidy_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dX</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dY</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_arranger.html#tidy_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_arranger.tidy_tree" title="Link to this definition"></a></dt>
-<dd><p>Search through tree, positioning nodes in a grid based on their depth and connectivity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>node_tree</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">NodeTree</span></code>) – node tree to tidy</p></li>
-<li><p><strong>dX</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – horizontal distance between nodes</p></li>
-<li><p><strong>dY</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – vertical distance between nodes</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
+  <section id="blendersynth-blender-nodes-node-arranger">
+<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes.node_arranger</span></code><a class="headerlink" href="#blendersynth-blender-nodes-node-arranger" title="Link to this heading"></a></h1>
 </section>
 
 

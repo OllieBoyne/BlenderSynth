@@ -105,75 +105,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.run.blender_threading">
-<span id="blendersynth-run-blender-threading"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.blender_threading</span></code><a class="headerlink" href="#module-blendersynth.run.blender_threading" title="Link to this heading"></a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="blendersynth.run.blender_threading.BlenderThread">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.run.blender_threading.</span></span><span class="sig-name descname"><span class="pre">BlenderThread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MAX_PER_JOB</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/blender_threading.html#BlenderThread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.blender_threading.BlenderThread" title="Link to this definition"></a></dt>
-<dd><p>Manages a list of jobs, which it feeds into sequential Blender instances in a single thread.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.run.blender_threading.BlenderThread.check_in">
-<span class="sig-name descname"><span class="pre">check_in</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/blender_threading.html#BlenderThread.check_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.blender_threading.BlenderThread.check_in" title="Link to this definition"></a></dt>
-<dd><p>Checks if current job still running, if not move to next job.
-If all jobs complete, set self.finished = True</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.run.blender_threading.BlenderThread.check_status">
-<span class="sig-name descname"><span class="pre">check_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/blender_threading.html#BlenderThread.check_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.blender_threading.BlenderThread.check_status" title="Link to this definition"></a></dt>
-<dd><p>True if still running successfully, False if exceeded timeout</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="blendersynth.run.blender_threading.BlenderThread.num_rendered">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_rendered</span></span><a class="headerlink" href="#blendersynth.run.blender_threading.BlenderThread.num_rendered" title="Link to this definition"></a></dt>
-<dd><p>Read through Log file to find how many renders have been completed</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.run.blender_threading.BlenderThread.start_job">
-<span class="sig-name descname"><span class="pre">start_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/blender_threading.html#BlenderThread.start_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.blender_threading.BlenderThread.start_job" title="Link to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>job</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Index of job to start</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.run.blender_threading.BlenderThread.terminate">
-<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/blender_threading.html#BlenderThread.terminate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.blender_threading.BlenderThread.terminate" title="Link to this definition"></a></dt>
-<dd><p>End process</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="blendersynth.run.blender_threading.BlenderThreadManager">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.run.blender_threading.</span></span><span class="sig-name descname"><span class="pre">BlenderThreadManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_to_stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MAX_PER_JOB</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/blender_threading.html#BlenderThreadManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.blender_threading.BlenderThreadManager" title="Link to this definition"></a></dt>
-<dd><p>Manager of multiple <a class="reference internal" href="#blendersynth.run.blender_threading.BlenderThread" title="blendersynth.run.blender_threading.BlenderThread"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlenderThread</span></code></a> instances</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.run.blender_threading.BlenderThreadManager.start">
-<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress_bars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_every</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/blender_threading.html#BlenderThreadManager.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.blender_threading.BlenderThreadManager.start" title="Link to this definition"></a></dt>
-<dd><p>Start all threads and job progress
-:type progress_bars: <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>
-:param progress_bars: Show progress bars for each thread and overall progress
-:type tick: <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>
-:param tick: How often to update progress bars
-:type report_every: <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>
-:param report_every: How often to print status updates to log
-:type offset: <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>
-:param offset: How long to wait before starting each thread (to avoid memory issues)</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.run.blender_threading.BlenderThreadManager.terminate">
-<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/blender_threading.html#BlenderThreadManager.terminate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.blender_threading.BlenderThreadManager.terminate" title="Link to this definition"></a></dt>
-<dd><p>End all threads</p>
-</dd></dl>
-
-</dd></dl>
-
+  <section id="blendersynth-run-blender-threading">
+<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.blender_threading</span></code><a class="headerlink" href="#blendersynth-run-blender-threading" title="Link to this heading"></a></h1>
 </section>
 
 
