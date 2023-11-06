@@ -1,0 +1,6 @@
+:code:`blendersynth.blender.boolean`
+=======================================
+
+.. automodule:: blendersynth.blender.boolean
+	:members:
+	:inherited-members:
