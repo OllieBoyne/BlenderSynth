@@ -106,8 +106,86 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-blender-compositor-mask-overlay">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.compositor.mask_overlay</span></code><a class="headerlink" href="#blendersynth-blender-compositor-mask-overlay" title="Link to this heading"></a></h1>
+  <section id="module-blendersynth.blender.compositor.mask_overlay">
+<span id="blendersynth-blender-compositor-mask-overlay"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.compositor.mask_overlay</span></code><a class="headerlink" href="#module-blendersynth.blender.compositor.mask_overlay" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.mask_overlay.MaskOverlay">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.compositor.mask_overlay.</span></span><span class="sig-name descname"><span class="pre">MaskOverlay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_antialiasing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Color'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/mask_overlay.html#MaskOverlay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.mask_overlay.MaskOverlay" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.mask_overlay.MaskOverlay.add_node">
+<span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.compositor.mask_overlay.MaskOverlay.add_node" title="Link to this definition"></a></dt>
+<dd><p>Create a new node in the group by name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.mask_overlay.MaskOverlay.input">
+<span class="sig-name descname"><span class="pre">input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.compositor.mask_overlay.MaskOverlay.input" title="Link to this definition"></a></dt>
+<dd><p>Get input socket by name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSocket</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.mask_overlay.MaskOverlay.inputs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#blendersynth.blender.compositor.mask_overlay.MaskOverlay.inputs" title="Link to this definition"></a></dt>
+<dd><p>Input sockets</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.mask_overlay.MaskOverlay.link">
+<span class="sig-name descname"><span class="pre">link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_socket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_socket</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.compositor.mask_overlay.MaskOverlay.link" title="Link to this definition"></a></dt>
+<dd><p>Link two sockets in the group</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>from_socket</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSocket</span></code>) – Socket to link from</p></li>
+<li><p><strong>to_socket</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSocket</span></code>) – Socket to link to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeLink</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.mask_overlay.MaskOverlay.output">
+<span class="sig-name descname"><span class="pre">output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.compositor.mask_overlay.MaskOverlay.output" title="Link to this definition"></a></dt>
+<dd><p>Get output socket by name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSocket</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.mask_overlay.MaskOverlay.outputs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#blendersynth.blender.compositor.mask_overlay.MaskOverlay.outputs" title="Link to this definition"></a></dt>
+<dd><p>Output sockets</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.mask_overlay.MaskOverlay.save_image">
+<span class="sig-name descname"><span class="pre">save_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.compositor.mask_overlay.MaskOverlay.save_image" title="Link to this definition"></a></dt>
+<dd><p>Save an image to a location. Will also reload any node reference to the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>loc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Location to save image to</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

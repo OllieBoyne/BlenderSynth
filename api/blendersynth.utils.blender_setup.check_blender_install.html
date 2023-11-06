@@ -106,8 +106,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-utils-blender-setup-check-blender-install">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup.check_blender_install</span></code><a class="headerlink" href="#blendersynth-utils-blender-setup-check-blender-install" title="Link to this heading"></a></h1>
+  <section id="module-blendersynth.utils.blender_setup.check_blender_install">
+<span id="blendersynth-utils-blender-setup-check-blender-install"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup.check_blender_install</span></code><a class="headerlink" href="#module-blendersynth.utils.blender_setup.check_blender_install" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.check_blender_install.check_blender_install">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.check_blender_install.</span></span><span class="sig-name descname"><span class="pre">check_blender_install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_find_blender</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_find_blender_python</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_install_dependencies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blendersynth_from_local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blendersynth_editable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/check_blender_install.html#check_blender_install"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.check_blender_install.check_blender_install" title="Link to this definition"></a></dt>
+<dd><p>Check if Blender is installed correctly and has all necessary packages.
+If not, run first time setup.</p>
+<p>On first time setup, will create a file, config.ini, in the user’s config,
+containing the necessary info.</p>
+<p>Force: if True, will run first time setup (overwriting any existing config.ini)
+regardless</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.check_blender_install.install_module">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.check_blender_install.</span></span><span class="sig-name descname"><span class="pre">install_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upgrade</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">editable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/check_blender_install.html#install_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.check_blender_install.install_module" title="Link to this definition"></a></dt>
+<dd><p>Install a module to Blender Python.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>module_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of module to install</p></li>
+<li><p><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – version of module to install</p></li>
+<li><p><strong>upgrade</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – if True, will upgrade module if it is already installed</p></li>
+<li><p><strong>editable</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – if True, will install module in editable mode</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.check_blender_install.setup_blender_stubs">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.check_blender_install.</span></span><span class="sig-name descname"><span class="pre">setup_blender_stubs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/check_blender_install.html#setup_blender_stubs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.check_blender_install.setup_blender_stubs" title="Link to this definition"></a></dt>
+<dd><p>Install blender stubs in vanilla python environment,
+for correct Blender version</p>
+</dd></dl>
+
 </section>
 
 

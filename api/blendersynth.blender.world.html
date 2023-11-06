@@ -105,8 +105,54 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-blender-world">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.world</span></code><a class="headerlink" href="#blendersynth-blender-world" title="Link to this heading"></a></h1>
+  <section id="module-blendersynth.blender.world">
+<span id="blendersynth-blender-world"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.world</span></code><a class="headerlink" href="#module-blendersynth.blender.world" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.blender.world.World">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.world.</span></span><span class="sig-name descname"><span class="pre">World</span></span><a class="reference internal" href="../_modules/blendersynth/blender/world.html#World"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.world.World" title="Link to this definition"></a></dt>
+<dd><p>World object - for managing world nodes, HDRIs, etc.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.world.World.set_color">
+<span class="sig-name descname"><span class="pre">set_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affect_scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/world.html#World.set_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.world.World.set_color" title="Link to this definition"></a></dt>
+<dd><p>Set the world color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>color</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>]) – RGB or RGBA color</p></li>
+<li><p><strong>affect_scene</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Toggle for whether color’s lighting should affect the scene (if False, functions as a solid background color)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.world.World.set_hdri">
+<span class="sig-name descname"><span class="pre">set_hdri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affect_scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/world.html#World.set_hdri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.world.World.set_hdri" title="Link to this definition"></a></dt>
+<dd><p>Set the HDRI image location</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Path to the HDRI image (.hdr or .exr)</p></li>
+<li><p><strong>affect_scene</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Toggle for whether color’s lighting should affect the scene (if False, functions as a solid background color)</p></li>
+<li><p><strong>intensity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – [Optional] Set the intensity of the HDRI lighting</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.world.World.set_intensity">
+<span class="sig-name descname"><span class="pre">set_intensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intensity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/world.html#World.set_intensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.world.World.set_intensity" title="Link to this definition"></a></dt>
+<dd><p>Set the intensity of the color/HDRI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>intensity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The intensity value</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

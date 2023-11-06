@@ -105,8 +105,38 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-run-import-handling">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.import_handling</span></code><a class="headerlink" href="#blendersynth-run-import-handling" title="Link to this heading"></a></h1>
+  <section id="module-blendersynth.run.import_handling">
+<span id="blendersynth-run-import-handling"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.import_handling</span></code><a class="headerlink" href="#module-blendersynth.run.import_handling" title="Link to this heading"></a></h1>
+<p>For calling errors if a user tries run certain operations in the wrong python environment</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.run.import_handling.IllegalImport">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.run.import_handling.</span></span><span class="sig-name descname"><span class="pre">IllegalImport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">REQUIRES_BLENDER</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/import_handling.html#IllegalImport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.import_handling.IllegalImport" title="Link to this definition"></a></dt>
+<dd><p>Object which raises error on any interaction, to tell users they have used BlenderSynth incorrectly.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.run.import_handling.conditional_import">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.run.import_handling.</span></span><span class="sig-name descname"><span class="pre">conditional_import</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">condition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/import_handling.html#conditional_import"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.import_handling.conditional_import" title="Link to this definition"></a></dt>
+<dd><p>[No longer used in __init__.py, but kept here for reference]
+Imports a module if condition,
+otherwise returns IllegalImport.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>condition</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, import the module</p></li>
+<li><p><strong>src</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The module to import</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The name of the module to import. If None, the last part of src is used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="#blendersynth.run.import_handling.IllegalImport" title="blendersynth.run.import_handling.IllegalImport"><code class="xref py py-class docutils literal notranslate"><span class="pre">IllegalImport</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The imported module, or IllegalImport if condition is False</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

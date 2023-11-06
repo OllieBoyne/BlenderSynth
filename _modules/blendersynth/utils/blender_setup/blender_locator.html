@@ -102,7 +102,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.utils.blender_setup.blender_locator</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">appdirs</span>
+<span></span><span class="kn">import</span> <span class="nn">platformdirs</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">configparser</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
@@ -111,7 +111,8 @@
 
 <span class="n">appname</span> <span class="o">=</span> <span class="s2">&quot;blendersynth&quot;</span>
 <span class="n">appauthor</span> <span class="o">=</span> <span class="s2">&quot;BlenderSynth&quot;</span>
-<span class="n">config_dir</span> <span class="o">=</span> <span class="n">appdirs</span><span class="o">.</span><span class="n">user_config_dir</span><span class="p">(</span><span class="n">appname</span><span class="p">,</span> <span class="n">appauthor</span><span class="p">)</span>
+<span class="n">config_dir</span> <span class="o">=</span> <span class="n">platformdirs</span><span class="o">.</span><span class="n">user_config_dir</span><span class="p">(</span><span class="n">appname</span><span class="p">,</span> <span class="n">appauthor</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">config_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">config_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config_dir</span><span class="p">,</span> <span class="s2">&quot;config.ini&quot;</span><span class="p">)</span>
 
 
@@ -178,7 +179,7 @@
 <span class="sd">	3) Blender in PATH</span>
 <span class="sd">	4) Ask user for path</span>
 
-<span class="sd">	When it finds a valid path, it will save it to the Config file stored in user&#39;s `appdirs.user_config_dir`</span>
+<span class="sd">	When it finds a valid path, it will save it to the Config file stored in user&#39;s `platformdirs.user_config_dir`</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
 

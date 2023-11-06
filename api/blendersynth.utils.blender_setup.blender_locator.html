@@ -106,8 +106,98 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-utils-blender-setup-blender-locator">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup.blender_locator</span></code><a class="headerlink" href="#blendersynth-utils-blender-setup-blender-locator" title="Link to this heading"></a></h1>
+  <section id="module-blendersynth.utils.blender_setup.blender_locator">
+<span id="blendersynth-utils-blender-setup-blender-locator"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.blender_setup.blender_locator</span></code><a class="headerlink" href="#module-blendersynth.utils.blender_setup.blender_locator" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.find_blender_python">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">find_blender_python</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blender_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/blender_locator.html#find_blender_python"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.find_blender_python" title="Link to this definition"></a></dt>
+<dd><p>Given a blender executable, find the python interpreter it uses</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>blender_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – path to blender executable</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.get_blender_path">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">get_blender_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/blender_locator.html#get_blender_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.get_blender_path" title="Link to this definition"></a></dt>
+<dd><p>Return blender path,
+or None if no config file found</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.is_blender_in_path">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">is_blender_in_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/blender_locator.html#is_blender_in_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.is_blender_in_path" title="Link to this definition"></a></dt>
+<dd><p>Check if blender is in the PATH (i.e. can be run from the command line with ‘blender’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.read_from_config">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">read_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BLENDER_SETUP'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/blender_locator.html#read_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.read_from_config" title="Link to this definition"></a></dt>
+<dd><p>Load config, and read value from cfg[section]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.remove_config">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">remove_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/blender_locator.html#remove_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.remove_config" title="Link to this definition"></a></dt>
+<dd><p>Remove config file</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.remove_from_config">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">remove_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BLENDER_SETUP'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/blender_locator.html#remove_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.remove_from_config" title="Link to this definition"></a></dt>
+<dd><p>Load config, and remove key from cfg[section]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.set_blender_path">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">set_blender_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_blender_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/blender_locator.html#set_blender_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.set_blender_path" title="Link to this definition"></a></dt>
+<dd><p>First time set-up of Blender Path. Will try to find Blender path in following order of
+precedence:
+:rtype: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+<ol class="arabic simple">
+<li><p>Input argument _blender_path</p></li>
+<li><p>Environment variable <cite>BLENDER_PATH</cite></p></li>
+<li><p>Blender in PATH</p></li>
+<li><p>Ask user for path</p></li>
+</ol>
+<p>When it finds a valid path, it will save it to the Config file stored in user’s <cite>platformdirs.user_config_dir</cite></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.validate_blender_path">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">validate_blender_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blender_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/blender_locator.html#validate_blender_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.validate_blender_path" title="Link to this definition"></a></dt>
+<dd><p>Check if <cite>blender_path</cite> is a valid blender executable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>blender_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – path to blender executable</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.blender_setup.blender_locator.write_to_config">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.blender_setup.blender_locator.</span></span><span class="sig-name descname"><span class="pre">write_to_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BLENDER_SETUP'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/blender_setup/blender_locator.html#write_to_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.blender_setup.blender_locator.write_to_config" title="Link to this definition"></a></dt>
+<dd><p>Load config, and write key value pair to cfg[section]</p>
+</dd></dl>
+
 </section>
 
 

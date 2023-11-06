@@ -105,8 +105,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-annotations-utils">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations.utils</span></code><a class="headerlink" href="#blendersynth-annotations-utils" title="Link to this heading"></a></h1>
+  <section id="module-blendersynth.annotations.utils">
+<span id="blendersynth-annotations-utils"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.annotations.utils</span></code><a class="headerlink" href="#module-blendersynth.annotations.utils" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.annotations.utils.project_point_to_image">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.annotations.utils.</span></span><span class="sig-name descname"><span class="pre">project_point_to_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/annotations/utils.html#project_point_to_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.annotations.utils.project_point_to_image" title="Link to this definition"></a></dt>
+<dd><p>Return 2D (x, y) image coordinates of a 3D point P.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>) – 3D point</p></li>
+<li><p><strong>scene</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code>) – Blender scene</p></li>
+<li><p><strong>camera</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code>) – Camera to project through</p></li>
+<li><p><strong>invert_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – if True, y is measured from the top of the image, otherwise from the bottom (Blender measures from bottom)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.annotations.utils.project_points">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.annotations.utils.</span></span><span class="sig-name descname"><span class="pre">project_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">camera</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/annotations/utils.html#project_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.annotations.utils.project_points" title="Link to this definition"></a></dt>
+<dd><p>Project points to image plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>) – Nx3 matrix of points</p></li>
+<li><p><strong>scene</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code>) – Blender scene</p></li>
+<li><p><strong>camera</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code>) – Camera to project through</p></li>
+<li><p><strong>invert_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – if True, y is measured from the top of the image, otherwise from the bottom</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nx2 matrix of 2D image coordinates</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

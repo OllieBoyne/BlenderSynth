@@ -104,8 +104,48 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-utils-types">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.types</span></code><a class="headerlink" href="#blendersynth-utils-types" title="Link to this heading"></a></h1>
+  <section id="module-blendersynth.utils.types">
+<span id="blendersynth-utils-types"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.types</span></code><a class="headerlink" href="#module-blendersynth.utils.types" title="Link to this heading"></a></h1>
+<dl class="py data">
+<dt class="sig sig-object py" id="blendersynth.utils.types.BboxAnnotation">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.types.</span></span><span class="sig-name descname"><span class="pre">BboxAnnotation</span></span><a class="headerlink" href="#blendersynth.utils.types.BboxAnnotation" title="Link to this definition"></a></dt>
+<dd><p>Bbox annotation, a 1D array per instance</p>
+<p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>]]</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="blendersynth.utils.types.KeypointOrAxesAnnotation">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.types.</span></span><span class="sig-name descname"><span class="pre">KeypointOrAxesAnnotation</span></span><a class="headerlink" href="#blendersynth.utils.types.KeypointOrAxesAnnotation" title="Link to this definition"></a></dt>
+<dd><p>Keypoint Annotations, an N x 2 ndarray per instance,
+or Axes annotation, a 4 x 2 ndarray per instance</p>
+<p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="blendersynth.utils.types.VectorLike">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.types.</span></span><span class="sig-name descname"><span class="pre">VectorLike</span></span><a class="headerlink" href="#blendersynth.utils.types.VectorLike" title="Link to this definition"></a></dt>
+<dd><p>A type hint that represents vector-like objects. Can be any of:</p>
+<ul class="simple">
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">mathutils.Vector</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p></li>
+</ul>
+<p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>]</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="blendersynth.utils.types.VectorLikeOrScalar">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.types.</span></span><span class="sig-name descname"><span class="pre">VectorLikeOrScalar</span></span><a class="headerlink" href="#blendersynth.utils.types.VectorLikeOrScalar" title="Link to this definition"></a></dt>
+<dd><p>A type hint that represents vector-like objects. Can be any of:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p></li>
+</ul>
+<p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</p>
+</dd></dl>
+
 </section>
 
 
