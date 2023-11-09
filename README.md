@@ -13,6 +13,9 @@
     <a href="https://pypi.org/project/BlenderSynth/">
         <img src="https://badge.fury.io/py/BlenderSynth.svg" alt="PyPI version">
     </a>
+    <a href="https://black.readthedocs.io">
+        <img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black">    
+    </a>    
   </p>
 
 <p align="center"> 

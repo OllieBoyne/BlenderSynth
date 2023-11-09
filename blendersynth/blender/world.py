@@ -3,112 +3,114 @@ from .nodes.node_arranger import tidy_tree
 from typing import Union
 
 
-class World():
-	"""World object - for managing world nodes, HDRIs, etc."""
+class World:
+    """World object - for managing world nodes, HDRIs, etc."""
 
-	def __init__(self):
-		self.mode = 'Color'
-		self.world = bpy.data.worlds["World"]
-		self.node_tree = self.world.node_tree
-		self.world_nodes = self.node_tree.nodes
+    def __init__(self):
+        self.mode = "Color"
+        self.world = bpy.data.worlds["World"]
+        self.node_tree = self.world.node_tree
+        self.world_nodes = self.node_tree.nodes
 
-		self.hdri_link = None
-		self._setup_nodes()
+        self.hdri_link = None
+        self._setup_nodes()
 
-		self.set_color((0.051,) * 3)  # match blender's default world color
+        self.set_color((0.051,) * 3)  # match blender's default world color
 
-	def _check_exists(self):
-		"""Node tree may have been wiped, eg by loading a new file.
-		Check if the nodes exist, and if not, recreate them."""
+    def _check_exists(self):
+        """Node tree may have been wiped, eg by loading a new file.
+        Check if the nodes exist, and if not, recreate them."""
 
-		try:
-			self.node_tree.rna_type
-		except ReferenceError:
-			self.__init__()
+        try:
+            self.node_tree.rna_type
+        except ReferenceError:
+            self.__init__()
 
-	def _setup_nodes(self):
+    def _setup_nodes(self):
+        self._check_exists()
+        nodes = self.world_nodes
+        nodes.clear()
 
-		self._check_exists()
-		nodes = self.world_nodes
-		nodes.clear()
+        self.node_texture = nodes.new(type="ShaderNodeTexEnvironment")
+        self.node_background = nodes.new(type="ShaderNodeBackground")
+        self.node_output = nodes.new(type="ShaderNodeOutputWorld")
 
-		self.node_texture = nodes.new(type='ShaderNodeTexEnvironment')
-		self.node_background = nodes.new(type='ShaderNodeBackground')
-		self.node_output = nodes.new(type='ShaderNodeOutputWorld')
+        self.node_tree.links.new(
+            self.node_background.outputs["Background"],
+            self.node_output.inputs["Surface"],
+        )
 
-		self.node_tree.links.new(self.node_background.outputs["Background"], self.node_output.inputs["Surface"])
+        tidy_tree(self.node_tree)
 
-		tidy_tree(self.node_tree)
+    def _setup_color(self):
+        self._check_exists()
+        if self.mode == "Color":
+            return
 
-	def _setup_color(self):
+        if self.hdri_link is not None:
+            self.node_tree.links.remove(self.hdri_link)
 
-		self._check_exists()
-		if self.mode == 'Color':
-			return
+        tidy_tree(self.node_tree)
 
-		if self.hdri_link is not None:
-			self.node_tree.links.remove(self.hdri_link)
+        self.mode = "Color"
 
-		tidy_tree(self.node_tree)
+    def _setup_hdri(self):
+        self._check_exists()
+        if self.mode == "HDRI":
+            return
 
-		self.mode = 'Color'
+        # Link the nodes
+        self.hdri_link = self.node_tree.links.new(
+            self.node_texture.outputs["Color"], self.node_background.inputs["Color"]
+        )
+        tidy_tree(self.node_tree)
 
-	def _setup_hdri(self):
+        self.mode = "HDRI"
 
-		self._check_exists()
-		if self.mode == 'HDRI':
-			return
+    def set_color(self, color: Union[list, tuple], affect_scene: bool = True):
+        """Set the world color.
 
-		# Link the nodes
-		self.hdri_link = self.node_tree.links.new(self.node_texture.outputs["Color"],
-												  self.node_background.inputs["Color"])
-		tidy_tree(self.node_tree)
+        :param color: RGB or RGBA color
+        :param affect_scene: Toggle for whether color's lighting should affect the scene (if False, functions as a solid background color)
+        """
 
-		self.mode = 'HDRI'
+        self._setup_color()
 
-	def set_color(self, color: Union[list, tuple], affect_scene: bool = True):
-		"""Set the world color.
+        assert len(color) in [3, 4], "Color must be RGB or RGBA"
 
-		:param color: RGB or RGBA color
-		:param affect_scene: Toggle for whether color's lighting should affect the scene (if False, functions as a solid background color)"""
+        if len(color) == 3:
+            color = (*color, 1.0)
 
-		self._setup_color()
+        self.node_background.inputs["Color"].default_value = color
+        self._lighting_from_background(affect_scene)
 
-		assert len(color) in [3, 4], "Color must be RGB or RGBA"
+    def set_hdri(self, pth: str, affect_scene: bool = True, intensity: float = None):
+        """Set the HDRI image location
 
-		if len(color) == 3:
-			color = (*color, 1.0)
+        :param pth: Path to the HDRI image (.hdr or .exr)
+        :param affect_scene: Toggle for whether color's lighting should affect the scene (if False, functions as a solid background color)
+        :param intensity: [Optional] Set the intensity of the HDRI lighting"""
 
-		self.node_background.inputs["Color"].default_value = color
-		self._lighting_from_background(affect_scene)
+        self._setup_hdri()
+        self.world_nodes["Environment Texture"].image = bpy.data.images.load(pth)
+        self._lighting_from_background(affect_scene)
 
-	def set_hdri(self, pth: str, affect_scene: bool = True, intensity: float = None):
-		"""Set the HDRI image location
+        if intensity:
+            self.set_intensity(intensity)
 
-		:param pth: Path to the HDRI image (.hdr or .exr)
-		:param affect_scene: Toggle for whether color's lighting should affect the scene (if False, functions as a solid background color)
-		:param intensity: [Optional] Set the intensity of the HDRI lighting"""
+    def set_intensity(self, intensity: float = 1.0):
+        """Set the intensity of the color/HDRI.
 
-		self._setup_hdri()
-		self.world_nodes['Environment Texture'].image = bpy.data.images.load(pth)
-		self._lighting_from_background(affect_scene)
+        :param intensity: The intensity value
+        """
+        self.world_nodes["Background"].inputs[1].default_value = intensity
 
-		if intensity:
-			self.set_intensity(intensity)
+    def set_transparent(self, transparent=True):
+        bpy.context.scene.render.film_transparent = transparent
 
-	def set_intensity(self, intensity: float = 1.):
-		"""Set the intensity of the color/HDRI.
-
-		:param intensity: The intensity value
-		"""
-		self.world_nodes["Background"].inputs[1].default_value = intensity
-
-	def set_transparent(self, transparent=True):
-		bpy.context.scene.render.film_transparent = transparent
-
-	def _lighting_from_background(self, val=True):
-		"""Change the ability for the background to influence lighting on the scene"""
-		self.world.cycles_visibility.diffuse = val
+    def _lighting_from_background(self, val=True):
+        """Change the ability for the background to influence lighting on the scene"""
+        self.world.cycles_visibility.diffuse = val
 
 
 world = World()

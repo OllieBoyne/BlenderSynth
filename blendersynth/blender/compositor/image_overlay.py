@@ -6,184 +6,263 @@ import numpy as np
 from ...file.tempfiles import create_temp_file
 from typing import List
 
+
 class AlphaImageOverlay(CompositorNodeGroup):
-	"""Overlay an image on top of the render, using the alpha channel of the image as a mask"""
-	def __init__(self, name='AlphaImageOverlay', node_tree=None, scene=None):
-		"""Create a mix node which overlays an image on top of the input image."""
+    """Overlay an image on top of the render, using the alpha channel of the image as a mask"""
 
-		super().__init__(name, node_tree)
+    def __init__(self, name="AlphaImageOverlay", node_tree=None, scene=None):
+        """Create a mix node which overlays an image on top of the input image."""
 
-		# Set default width and height
-		self.width = 1000
-		self.height = 1000
-		if scene:
-			self.width = scene.render.resolution_x
-			self.height = scene.render.resolution_y
+        super().__init__(name, node_tree)
 
-		# define I/O
-		self.group.inputs.new('NodeSocketColor', 'Image')
-		self.group.outputs.new('NodeSocketColor', 'Image')
+        # Set default width and height
+        self.width = 1000
+        self.height = 1000
+        if scene:
+            self.width = scene.render.resolution_x
+            self.height = scene.render.resolution_y
 
-		# create nodes
-		self.overlay_img = self.group.nodes.new('CompositorNodeImage')
-		self.mix_node = self.group.nodes.new('CompositorNodeMixRGB')
-		self.sep_color_node = self.group.nodes.new('CompositorNodeSepRGBA')
+        # define I/O
+        self.group.inputs.new("NodeSocketColor", "Image")
+        self.group.outputs.new("NodeSocketColor", "Image")
 
-		# link up internal nodes
-		self.group.links.new(self.overlay_img.outputs['Image'], self.sep_color_node.inputs['Image'])
+        # create nodes
+        self.overlay_img = self.group.nodes.new("CompositorNodeImage")
+        self.mix_node = self.group.nodes.new("CompositorNodeMixRGB")
+        self.sep_color_node = self.group.nodes.new("CompositorNodeSepRGBA")
 
-		self.group.links.new(self.input_node.outputs['Image'], self.mix_node.inputs[1])
-		self.group.links.new(self.overlay_img.outputs['Image'], self.mix_node.inputs[2])
-		self.group.links.new(self.sep_color_node.outputs[3], self.mix_node.inputs['Fac']) # alpha
+        # link up internal nodes
+        self.group.links.new(
+            self.overlay_img.outputs["Image"], self.sep_color_node.inputs["Image"]
+        )
 
-		self.group.links.new(self.mix_node.outputs['Image'], self.output_node.inputs['Image'])
+        self.group.links.new(self.input_node.outputs["Image"], self.mix_node.inputs[1])
+        self.group.links.new(self.overlay_img.outputs["Image"], self.mix_node.inputs[2])
+        self.group.links.new(
+            self.sep_color_node.outputs[3], self.mix_node.inputs["Fac"]
+        )  # alpha
 
-		self.create_img()
+        self.group.links.new(
+            self.mix_node.outputs["Image"], self.output_node.inputs["Image"]
+        )
 
-		self.tidy()
+        self.create_img()
 
-	def create_img(self):
+        self.tidy()
 
-		# create temp image to draw keypoints on, with 8 random alphanumeric characters
-		# 8 random alphanum chars
-		self.temp_img_loc = create_temp_file('.png')
+    def create_img(self):
+        # create temp image to draw keypoints on, with 8 random alphanumeric characters
+        # 8 random alphanum chars
+        self.temp_img_loc = create_temp_file(".png")
 
-		# initialize as white
-		self.img = np.ones((self.height, self.width, 3), dtype=np.uint8) * 255
-		cv2.imwrite(self.temp_img_loc, self.img)
+        # initialize as white
+        self.img = np.ones((self.height, self.width, 3), dtype=np.uint8) * 255
+        cv2.imwrite(self.temp_img_loc, self.img)
 
-		# connect this image to the overlay node
-		self.overlay_img.image = bpy.data.images.load(self.temp_img_loc)
-		return self.temp_img_loc
+        # connect this image to the overlay node
+        self.overlay_img.image = bpy.data.images.load(self.temp_img_loc)
+        return self.temp_img_loc
 
 
 class KeypointsOverlay(AlphaImageOverlay):
-	"""Overlay which draws keypoints on top of the render."""
-	def __init__(self, name='KeypointsOverlay', node_tree=None, scene=None, camera=None,
-				 marker: str = 'x', size: int = 5,
-				 color: tuple = (0, 0, 255),
-				 thickness:int=2):
-		"""
+    """Overlay which draws keypoints on top of the render."""
 
-		:param name:
-		:param node_tree:
-		:param scene:
-		:param camera:
-		:param marker: Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default 'x'
-		:param size: Size of marker. Default 5
-		:param color: Color of marker, RGB or RGBA, default (0, 0, 255) (red)
-		:param thickness: Thickness of marker. Default 2
-		"""
-		super().__init__(name, node_tree)
+    def __init__(
+        self,
+        name="KeypointsOverlay",
+        node_tree=None,
+        scene=None,
+        camera=None,
+        marker: str = "x",
+        size: int = 5,
+        color: tuple = (0, 0, 255),
+        thickness: int = 2,
+    ):
+        """
 
-		self.marker = marker
-		self.size = size
-		self.color = color
-		self.thickness = thickness
+        :param name:
+        :param node_tree:
+        :param scene:
+        :param camera:
+        :param marker: Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default 'x'
+        :param size: Size of marker. Default 5
+        :param color: Color of marker, RGB or RGBA, default (0, 0, 255) (red)
+        :param thickness: Thickness of marker. Default 2
+        """
+        super().__init__(name, node_tree)
 
-	def update(self, keypoints: np.ndarray, scene:bpy.types.Scene=None,
-			   camera:bpy.types.Camera=None):
-		"""Given [N x 3] keypoints, draw them onto a new temp image.
+        self.marker = marker
+        self.size = size
+        self.color = color
+        self.thickness = thickness
 
-		:param keypoints: N x 3 keypoints
-		:param scene: Scene to draw from
-		:param camera: Camera
+    def update(
+        self,
+        keypoints: np.ndarray,
+        scene: bpy.types.Scene = None,
+        camera: bpy.types.Camera = None,
+    ):
+        """Given [N x 3] keypoints, draw them onto a new temp image.
 
-		"""
+        :param keypoints: N x 3 keypoints
+        :param scene: Scene to draw from
+        :param camera: Camera
 
-		self.width = scene.render.resolution_x
-		self.height = scene.render.resolution_y
+        """
 
-		# reset image to black, with alpha = 0
-		self.img = np.zeros((self.height, self.width, 4), dtype=np.uint8)
+        self.width = scene.render.resolution_x
+        self.height = scene.render.resolution_y
 
-		color = self.color
-		if len(color) == 3:
-			color = (*color, 255) # add alpha
+        # reset image to black, with alpha = 0
+        self.img = np.zeros((self.height, self.width, 4), dtype=np.uint8)
 
-		# draw keypoints on image
-		size = self.size
-		for kp in keypoints:
-			if self.marker in ['c', 'circle']:
-				cv2.circle(self.img, (int(kp[0]), int(kp[1])), size, color, self.thickness)
-			elif self.marker in ['s', 'square']:
-				cv2.rectangle(self.img, (int(kp[0]) - size, int(kp[1]) - size), (int(kp[0]) + size, int(kp[1]) + size),
-							  color, self.thickness)
-			elif self.marker in ['t', 'triangle']:
-				points = np.array([[kp[0], kp[1] - size], [kp[0] - size, kp[1] + size], [kp[0] + size, kp[1] + size]],
-								  dtype=np.int32)
-				cv2.polylines(self.img, [points], isClosed=True, color=color, thickness=self.thickness)
-				cv2.fillPoly(self.img, [points], color=color)
-			elif self.marker == 'x':
-				cv2.line(self.img, (int(kp[0]) - size, int(kp[1]) - size), (int(kp[0]) + size, int(kp[1]) + size),
-						 color, self.thickness)
-				cv2.line(self.img, (int(kp[0]) + size, int(kp[1]) - size), (int(kp[0]) - size, int(kp[1]) + size),
-						 color, self.thickness)
-			else:
-				raise ValueError("Invalid marker: {}".format(self.marker))
+        color = self.color
+        if len(color) == 3:
+            color = (*color, 255)  # add alpha
 
-		self.save_image(self.temp_img_loc, self.img)
+        # draw keypoints on image
+        size = self.size
+        for kp in keypoints:
+            if self.marker in ["c", "circle"]:
+                cv2.circle(
+                    self.img, (int(kp[0]), int(kp[1])), size, color, self.thickness
+                )
+            elif self.marker in ["s", "square"]:
+                cv2.rectangle(
+                    self.img,
+                    (int(kp[0]) - size, int(kp[1]) - size),
+                    (int(kp[0]) + size, int(kp[1]) + size),
+                    color,
+                    self.thickness,
+                )
+            elif self.marker in ["t", "triangle"]:
+                points = np.array(
+                    [
+                        [kp[0], kp[1] - size],
+                        [kp[0] - size, kp[1] + size],
+                        [kp[0] + size, kp[1] + size],
+                    ],
+                    dtype=np.int32,
+                )
+                cv2.polylines(
+                    self.img,
+                    [points],
+                    isClosed=True,
+                    color=color,
+                    thickness=self.thickness,
+                )
+                cv2.fillPoly(self.img, [points], color=color)
+            elif self.marker == "x":
+                cv2.line(
+                    self.img,
+                    (int(kp[0]) - size, int(kp[1]) - size),
+                    (int(kp[0]) + size, int(kp[1]) + size),
+                    color,
+                    self.thickness,
+                )
+                cv2.line(
+                    self.img,
+                    (int(kp[0]) + size, int(kp[1]) - size),
+                    (int(kp[0]) - size, int(kp[1]) + size),
+                    color,
+                    self.thickness,
+                )
+            else:
+                raise ValueError("Invalid marker: {}".format(self.marker))
+
+        self.save_image(self.temp_img_loc, self.img)
+
 
 class BoundingBoxOverlay(AlphaImageOverlay):
-	"""Overlay which draws bounding boxes on top of the render."""
-	def __init__(self, name='BoundingBoxOverlay', node_tree=None, scene=None, camera=None,
-				 col:tuple=(0, 0, 255, 255), thickness:int=2):
-		super().__init__(name, node_tree)
-		self.col = col
-		self.thickness = int(thickness)  # cv2 requires int
+    """Overlay which draws bounding boxes on top of the render."""
 
-	def update(self, bboxes, scene=None, camera=None):
-		"""Given [N x 4] bounding boxes, draw them onto a new temp image."""
+    def __init__(
+        self,
+        name="BoundingBoxOverlay",
+        node_tree=None,
+        scene=None,
+        camera=None,
+        col: tuple = (0, 0, 255, 255),
+        thickness: int = 2,
+    ):
+        super().__init__(name, node_tree)
+        self.col = col
+        self.thickness = int(thickness)  # cv2 requires int
 
-		self.width = scene.render.resolution_x
-		self.height = scene.render.resolution_y
+    def update(self, bboxes, scene=None, camera=None):
+        """Given [N x 4] bounding boxes, draw them onto a new temp image."""
 
-		# reset image to black, with alpha = 0
-		self.img = np.zeros((self.height, self.width, 4), dtype=np.uint8)
+        self.width = scene.render.resolution_x
+        self.height = scene.render.resolution_y
 
-		col = self.col
-		if len(col) == 3:
-			col = (col[0], col[1], col[2], 255)
+        # reset image to black, with alpha = 0
+        self.img = np.zeros((self.height, self.width, 4), dtype=np.uint8)
 
-		# draw bounding boxes on image
-		for bbox in bboxes:
-			cv2.rectangle(self.img, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])),
-						  col, self.thickness)
+        col = self.col
+        if len(col) == 3:
+            col = (col[0], col[1], col[2], 255)
 
-		self.save_image(self.temp_img_loc, self.img)
+        # draw bounding boxes on image
+        for bbox in bboxes:
+            cv2.rectangle(
+                self.img,
+                (int(bbox[0]), int(bbox[1])),
+                (int(bbox[2]), int(bbox[3])),
+                col,
+                self.thickness,
+            )
+
+        self.save_image(self.temp_img_loc, self.img)
+
 
 class AxesOverlay(AlphaImageOverlay):
-	"""Overlay which draws axes on top of an existing render"""
+    """Overlay which draws axes on top of an existing render"""
 
-	def __init__(self, name='BoundingBoxOverlay', node_tree=None, scene=None, camera=None,
-				 size: int = 1, thickness: int = 2):
-		super().__init__(name, node_tree)
+    def __init__(
+        self,
+        name="BoundingBoxOverlay",
+        node_tree=None,
+        scene=None,
+        camera=None,
+        size: int = 1,
+        thickness: int = 2,
+    ):
+        super().__init__(name, node_tree)
 
-		self.size = size
-		self.thickness = thickness
+        self.size = size
+        self.thickness = thickness
 
-	def update(self, points:List[np.ndarray], scene:bpy.types.Scene=None,
-			   camera:bpy.types.Camera=None):
-		"""Plot axes onto the image.
+    def update(
+        self,
+        points: List[np.ndarray],
+        scene: bpy.types.Scene = None,
+        camera: bpy.types.Camera = None,
+    ):
+        """Plot axes onto the image.
 
-		:param points: list of N x 4 2D points of centre + XYZ unit axes
-		:param scene: Scene
-		:param camera: Camera"""
+        :param points: list of N x 4 2D points of centre + XYZ unit axes
+        :param scene: Scene
+        :param camera: Camera"""
 
-		self.width = scene.render.resolution_x
-		self.height = scene.render.resolution_y
-		self.img = np.zeros((self.height, self.width, 4), dtype=np.uint8)
+        self.width = scene.render.resolution_x
+        self.height = scene.render.resolution_y
+        self.img = np.zeros((self.height, self.width, 4), dtype=np.uint8)
 
-		for P in points:
-			centre = P[0].astype(int)
-			for i, point in enumerate(P[1:]):
-				offset = point - centre
-				point2 = centre + offset * self.size
-				x, y = map(int, centre)
-				x2, y2 = map(int, point2)
-				# note BGR color order
-				# and -y because image y-axis is flipped
-				self.img = cv2.line(self.img, (x, y), (x2, y2),
-							   (255 * (i == 2), 255 * (i == 1), 255 * (i == 0), 255), self.thickness)
+        for P in points:
+            centre = P[0].astype(int)
+            for i, point in enumerate(P[1:]):
+                offset = point - centre
+                point2 = centre + offset * self.size
+                x, y = map(int, centre)
+                x2, y2 = map(int, point2)
+                # note BGR color order
+                # and -y because image y-axis is flipped
+                self.img = cv2.line(
+                    self.img,
+                    (x, y),
+                    (x2, y2),
+                    (255 * (i == 2), 255 * (i == 1), 255 * (i == 0), 255),
+                    self.thickness,
+                )
 
-		self.save_image(self.temp_img_loc, self.img)
+        self.save_image(self.temp_img_loc, self.img)

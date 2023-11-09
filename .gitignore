@@ -3,5 +3,9 @@ blender-3.3.1-linux-x64
 */__pycache__
 *.pyc
 
+
+testing
+
+
 build
 *.egg-info

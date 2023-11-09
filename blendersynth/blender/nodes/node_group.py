@@ -10,80 +10,86 @@ import cv2
 
 
 class NodeGroup:
-	"""Generic Node Group"""
-	TYPE = 'Compositor'
+    """Generic Node Group"""
 
-	def __init__(self, name: str, node_tree: bpy.types.NodeTree):
-		"""
-		A generic NodeGroup class
+    TYPE = "Compositor"
 
-		:param name: Name of node group
-		:param node_tree: NodeTree to add group to
-		"""
-		self.name = name
-		self.node_tree = node_tree
-		self.group = bpy.data.node_groups.new(type=f'{self.TYPE}NodeTree', name=name)
+    def __init__(self, name: str, node_tree: bpy.types.NodeTree):
+        """
+        A generic NodeGroup class
 
-		self.gn = group_node = node_tree.nodes.new(f"{self.TYPE}NodeGroup")
-		group_node.node_tree = self.group
+        :param name: Name of node group
+        :param node_tree: NodeTree to add group to
+        """
+        self.name = name
+        self.node_tree = node_tree
+        self.group = bpy.data.node_groups.new(type=f"{self.TYPE}NodeTree", name=name)
 
-		self.input_node = self.group.nodes.new("NodeGroupInput")
-		self.output_node = self.group.nodes.new("NodeGroupOutput")
+        self.gn = group_node = node_tree.nodes.new(f"{self.TYPE}NodeGroup")
+        group_node.node_tree = self.group
 
-	def tidy(self):
-		tidy_tree(self.group)
+        self.input_node = self.group.nodes.new("NodeGroupInput")
+        self.output_node = self.group.nodes.new("NodeGroupOutput")
 
-	@property
-	def inputs(self) -> dict:
-		"""Input sockets"""
-		return self.gn.inputs
+    def tidy(self):
+        tidy_tree(self.group)
 
-	@property
-	def outputs(self) -> dict:
-		"""Output sockets"""
-		return self.gn.outputs
+    @property
+    def inputs(self) -> dict:
+        """Input sockets"""
+        return self.gn.inputs
 
-	def input(self, name: str) -> bpy.types.NodeSocket:
-		"""Get input socket by name"""
-		return self.inputs[name]
+    @property
+    def outputs(self) -> dict:
+        """Output sockets"""
+        return self.gn.outputs
 
-	def output(self, name: str) -> bpy.types.NodeSocket:
-		"""Get output socket by name"""
-		return self.outputs[name]
+    def input(self, name: str) -> bpy.types.NodeSocket:
+        """Get input socket by name"""
+        return self.inputs[name]
 
-	def add_node(self, key: str) -> bpy.types.Node:
-		"""Create a new node in the group by name"""
-		return self.group.nodes.new(key)
+    def output(self, name: str) -> bpy.types.NodeSocket:
+        """Get output socket by name"""
+        return self.outputs[name]
 
-	def link(self, from_socket: bpy.types.NodeSocket, to_socket: bpy.types.NodeSocket) -> bpy.types.NodeLink:
-		"""
-		Link two sockets in the group
+    def add_node(self, key: str) -> bpy.types.Node:
+        """Create a new node in the group by name"""
+        return self.group.nodes.new(key)
 
-		:param from_socket: Socket to link from
-		:param to_socket: Socket to link to
-		"""
-		return self.group.links.new(from_socket, to_socket)
+    def link(
+        self, from_socket: bpy.types.NodeSocket, to_socket: bpy.types.NodeSocket
+    ) -> bpy.types.NodeLink:
+        """
+        Link two sockets in the group
 
-	def __str__(self):
-		return f"{self.TYPE}NodeGroup({self.name})"
+        :param from_socket: Socket to link from
+        :param to_socket: Socket to link to
+        """
+        return self.group.links.new(from_socket, to_socket)
 
-	def update(self, camera=None, scene=None):
-		pass
+    def __str__(self):
+        return f"{self.TYPE}NodeGroup({self.name})"
 
-	def save_image(self, loc: str, image_data: np.ndarray):
-		"""Save an image to a location. Will also reload any node reference to the image.
+    def update(self, camera=None, scene=None):
+        pass
 
-		:param loc: Location to save image to"""
-		cv2.imwrite(loc, image_data)
-		fname = os.path.basename(loc)
-		if fname in bpy.data.images:
-			bpy.data.images[fname].reload()
+    def save_image(self, loc: str, image_data: np.ndarray):
+        """Save an image to a location. Will also reload any node reference to the image.
+
+        :param loc: Location to save image to"""
+        cv2.imwrite(loc, image_data)
+        fname = os.path.basename(loc)
+        if fname in bpy.data.images:
+            bpy.data.images[fname].reload()
+
 
 class CompositorNodeGroup(NodeGroup):
-	"""Node Group for use in the compositor"""
-	TYPE = 'Compositor'
+    """Node Group for use in the compositor"""
+
+    TYPE = "Compositor"
 
 
 class ShaderNodeGroup(NodeGroup):
-	"""Node Group for use in the shader editor"""
-	TYPE = 'Shader'
+    """Node Group for use in the shader editor"""
+
+    TYPE = "Shader"
