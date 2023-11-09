@@ -110,20 +110,20 @@
 <div class="viewcode-block" id="on_script_open">
 <a class="viewcode-back" href="../../../api/blendersynth.run.pre_ops.html#blendersynth.run.pre_ops.on_script_open">[docs]</a>
 <span class="k">def</span> <span class="nf">on_script_open</span><span class="p">():</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	On script open:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    On script open:</span>
 
-<span class="sd">	- Set Engine to CYCLES</span>
-<span class="sd">	- Delete default Cube &amp; Light</span>
-<span class="sd">	- Disable splash screen</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="n">render</span><span class="o">.</span><span class="n">set_engine</span><span class="p">(</span><span class="s1">&#39;CYCLES&#39;</span><span class="p">)</span>
+<span class="sd">    - Set Engine to CYCLES</span>
+<span class="sd">    - Delete default Cube &amp; Light</span>
+<span class="sd">    - Disable splash screen</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">render</span><span class="o">.</span><span class="n">set_engine</span><span class="p">(</span><span class="s2">&quot;CYCLES&quot;</span><span class="p">)</span>
 
-	<span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="s1">&#39;Cube&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-	<span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="s1">&#39;Light&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-	<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="s2">&quot;Cube&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="s2">&quot;Light&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 
-	<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">show_splash</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># disable splash screen</span></div>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">show_splash</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># disable splash screen</span></div>
 
 </pre></div>
 

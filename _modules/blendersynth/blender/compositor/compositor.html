@@ -111,7 +111,12 @@
 <span class="kn">from</span> <span class="nn">..aov</span> <span class="kn">import</span> <span class="n">AOV</span>
 <span class="kn">from</span> <span class="nn">.mask_overlay</span> <span class="kn">import</span> <span class="n">MaskOverlay</span>
 <span class="kn">from</span> <span class="nn">.visuals</span> <span class="kn">import</span> <span class="n">DepthVis</span>
-<span class="kn">from</span> <span class="nn">.image_overlay</span> <span class="kn">import</span> <span class="n">KeypointsOverlay</span><span class="p">,</span> <span class="n">BoundingBoxOverlay</span><span class="p">,</span> <span class="n">AlphaImageOverlay</span><span class="p">,</span> <span class="n">AxesOverlay</span>
+<span class="kn">from</span> <span class="nn">.image_overlay</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">KeypointsOverlay</span><span class="p">,</span>
+    <span class="n">BoundingBoxOverlay</span><span class="p">,</span>
+    <span class="n">AlphaImageOverlay</span><span class="p">,</span>
+    <span class="n">AxesOverlay</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">...annotations</span> <span class="kn">import</span> <span class="n">Annotation</span><span class="p">,</span> <span class="n">AnnotationHandler</span>
 <span class="kn">from</span> <span class="nn">..nodes</span> <span class="kn">import</span> <span class="n">tidy_tree</span>
 <span class="kn">from</span> <span class="nn">..world</span> <span class="kn">import</span> <span class="n">world</span>
@@ -121,465 +126,555 @@
 
 <span class="c1"># Mapping of file formats to extensions</span>
 <span class="n">format_to_extension</span> <span class="o">=</span> <span class="p">{</span>
-	<span class="s1">&#39;BMP&#39;</span><span class="p">:</span> <span class="s1">&#39;.bmp&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;IRIS&#39;</span><span class="p">:</span> <span class="s1">&#39;.rgb&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;PNG&#39;</span><span class="p">:</span> <span class="s1">&#39;.png&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;JPEG&#39;</span><span class="p">:</span> <span class="s1">&#39;.jpg&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;JPEG2000&#39;</span><span class="p">:</span> <span class="s1">&#39;.jp2&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;TARGA&#39;</span><span class="p">:</span> <span class="s1">&#39;.tga&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;TARGA_RAW&#39;</span><span class="p">:</span> <span class="s1">&#39;.tga&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;CINEON&#39;</span><span class="p">:</span> <span class="s1">&#39;.cin&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;DPX&#39;</span><span class="p">:</span> <span class="s1">&#39;.dpx&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;OPEN_EXR_MULTILAYER&#39;</span><span class="p">:</span> <span class="s1">&#39;.exr&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;OPEN_EXR&#39;</span><span class="p">:</span> <span class="s1">&#39;.exr&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;HDR&#39;</span><span class="p">:</span> <span class="s1">&#39;.hdr&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;TIFF&#39;</span><span class="p">:</span> <span class="s1">&#39;.tif&#39;</span><span class="p">,</span>
-	<span class="c1"># Add more formats if needed</span>
+    <span class="s2">&quot;BMP&quot;</span><span class="p">:</span> <span class="s2">&quot;.bmp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;IRIS&quot;</span><span class="p">:</span> <span class="s2">&quot;.rgb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PNG&quot;</span><span class="p">:</span> <span class="s2">&quot;.png&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;JPEG&quot;</span><span class="p">:</span> <span class="s2">&quot;.jpg&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;JPEG2000&quot;</span><span class="p">:</span> <span class="s2">&quot;.jp2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TARGA&quot;</span><span class="p">:</span> <span class="s2">&quot;.tga&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TARGA_RAW&quot;</span><span class="p">:</span> <span class="s2">&quot;.tga&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CINEON&quot;</span><span class="p">:</span> <span class="s2">&quot;.cin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DPX&quot;</span><span class="p">:</span> <span class="s2">&quot;.dpx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OPEN_EXR_MULTILAYER&quot;</span><span class="p">:</span> <span class="s2">&quot;.exr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OPEN_EXR&quot;</span><span class="p">:</span> <span class="s2">&quot;.exr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HDR&quot;</span><span class="p">:</span> <span class="s2">&quot;.hdr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TIFF&quot;</span><span class="p">:</span> <span class="s2">&quot;.tif&quot;</span><span class="p">,</span>
+    <span class="c1"># Add more formats if needed</span>
 <span class="p">}</span>
 
-<span class="n">AVAILABLE_FORMATS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BMP&#39;</span><span class="p">,</span> <span class="s1">&#39;IRIS&#39;</span><span class="p">,</span> <span class="s1">&#39;PNG&#39;</span><span class="p">,</span> <span class="s1">&#39;JPEG&#39;</span><span class="p">,</span> <span class="s1">&#39;JPEG2000&#39;</span><span class="p">,</span> <span class="s1">&#39;TARGA&#39;</span><span class="p">,</span> <span class="s1">&#39;TARGA_RAW&#39;</span><span class="p">,</span> <span class="s1">&#39;CINEON&#39;</span><span class="p">,</span> <span class="s1">&#39;DPX&#39;</span><span class="p">,</span>
-					 <span class="s1">&#39;OPEN_EXR_MULTILAYER&#39;</span><span class="p">,</span>
-					 <span class="s1">&#39;OPEN_EXR&#39;</span><span class="p">,</span> <span class="s1">&#39;HDR&#39;</span><span class="p">,</span> <span class="s1">&#39;TIFF&#39;</span><span class="p">]</span>
+<span class="n">AVAILABLE_FORMATS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;BMP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;IRIS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PNG&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;JPEG&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;JPEG2000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TARGA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TARGA_RAW&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CINEON&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DPX&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OPEN_EXR_MULTILAYER&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OPEN_EXR&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HDR&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TIFF&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 <span class="sd">&quot;&quot;&quot;List of available output file formats&quot;&quot;&quot;</span>
 
 
 <span class="k">def</span> <span class="nf">_get_badfname</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Search for filename in the format</span>
-<span class="sd">	&lt;main_fname&gt;&lt;i:04d&gt;.&lt;ext&gt;</span>
-<span class="sd">	where i is the frame number. if no file found for i &lt; N, raise error.</span>
-<span class="sd">	otherwise, return found file</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="n">f</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-		<span class="n">fname</span> <span class="o">=</span> <span class="n">f</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">04d</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">ext</span>
-		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-			<span class="k">return</span> <span class="n">fname</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search for filename in the format</span>
+<span class="sd">    &lt;main_fname&gt;&lt;i:04d&gt;.&lt;ext&gt;</span>
+<span class="sd">    where i is the frame number. if no file found for i &lt; N, raise error.</span>
+<span class="sd">    otherwise, return found file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">f</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">f</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">04d</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">ext</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">fname</span>
 
-	<span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">remove_ext</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-	<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fname</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># remove extension if given</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fname</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># remove extension if given</span>
 
 
 <div class="viewcode-block" id="Compositor">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor">[docs]</a>
 <span class="k">class</span> <span class="nc">Compositor</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Compositor output - for handling file outputs, and managing Compositor node tree&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compositor output - for handling file outputs, and managing Compositor node tree&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view_layer</span><span class="o">=</span><span class="s1">&#39;ViewLayer&#39;</span><span class="p">,</span> <span class="n">background_color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-				 <span class="n">rgb_color_space</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Filmic sRGB&#39;</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		:param view_layer: Name of View Layer to render</span>
-<span class="sd">		:param background_color: If given, RGB[A] tuple in range [0-1], will overwrite World background with solid color (while retaining lighting effects).</span>
-<span class="sd">		:param rgb_color_space: Color transform for RGB only.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="c1"># Create compositor node tree</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">use_nodes</span> <span class="o">=</span> <span class="kc">True</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">node_tree</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">view_layer</span><span class="o">=</span><span class="s2">&quot;ViewLayer&quot;</span><span class="p">,</span>
+        <span class="n">background_color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">rgb_color_space</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Filmic sRGB&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param view_layer: Name of View Layer to render</span>
+<span class="sd">        :param background_color: If given, RGB[A] tuple in range [0-1], will overwrite World background with solid color (while retaining lighting effects).</span>
+<span class="sd">        :param rgb_color_space: Color transform for RGB only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create compositor node tree</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">use_nodes</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">node_tree</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">view_layer</span> <span class="o">=</span> <span class="n">view_layer</span>  <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view_layer</span> <span class="o">=</span> <span class="n">view_layer</span>  <span class="c1">#</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Mapping of output name to FileOutputNode</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">mask_nodes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Mapping of mask pass index to CompositorNodeGroup</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">overlays</span> <span class="o">=</span> <span class="p">{}</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">aovs</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List of AOVs (used to update before rendering)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Mapping of output name to FileOutputNode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask_nodes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Mapping of mask pass index to CompositorNodeGroup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aovs</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List of AOVs (used to update before rendering)</span>
 
-		<span class="c1"># We set view transform to &#39;Raw&#39; to avoid any gamma correction to all non-Image layers</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">view_settings</span><span class="o">.</span><span class="n">view_transform</span> <span class="o">=</span> <span class="s1">&#39;Raw&#39;</span>
+        <span class="c1"># We set view transform to &#39;Raw&#39; to avoid any gamma correction to all non-Image layers</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">view_settings</span><span class="o">.</span><span class="n">view_transform</span> <span class="o">=</span> <span class="s2">&quot;Raw&quot;</span>
 
-		<span class="c1"># Socket to be used as RGB input for anything. Defined separately in case of applying overlays (e.g. background color)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">get_node_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="s1">&#39;Render Layers&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">]</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_set_rgb_color_space</span><span class="p">(</span><span class="n">rgb_color_space</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">background_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">_set_background_color</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
+        <span class="c1"># Socket to be used as RGB input for anything. Defined separately in case of applying overlays (e.g. background color)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">get_node_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="s2">&quot;Render Layers&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span>
+            <span class="s2">&quot;Image&quot;</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_rgb_color_space</span><span class="p">(</span><span class="n">rgb_color_space</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">background_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_background_color</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">_tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Tidy up node tree&quot;&quot;&quot;</span>
-		<span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tidy up node tree&quot;&quot;&quot;</span>
+        <span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">render_layers_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="n">get_node_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="s1">&#39;Render Layers&#39;</span><span class="p">)</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">render_layers_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">get_node_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="s2">&quot;Render Layers&quot;</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">_get_render_layer_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Get output socket from Render Layers node&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;Image&#39;</span><span class="p">:</span>  <span class="c1"># special case</span>
-			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">def</span> <span class="nf">_get_render_layer_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get output socket from Render Layers node&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;Image&quot;</span><span class="p">:</span>  <span class="c1"># special case</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Compositor.get_mask">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_mask">[docs]</a>
-	<span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">input_rgb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">],</span> <span class="n">anti_aliasing</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompositorNodeGroup</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Get mask node from pass index. If not found, create new mask node&quot;&quot;&quot;</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">view_layers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">view_layer</span><span class="p">]</span><span class="o">.</span><span class="n">use_pass_object_index</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Make sure object index is enabled</span>
+    <span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">input_rgb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">],</span> <span class="n">anti_aliasing</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompositorNodeGroup</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get mask node from pass index. If not found, create new mask node&quot;&quot;&quot;</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">view_layers</span><span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">view_layer</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">use_pass_object_index</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Make sure object index is enabled</span>
 
-		<span class="k">if</span> <span class="n">index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_rgb</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">ip_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="n">input_rgb</span><span class="p">)</span>
 
-			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_rgb</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-				<span class="n">ip_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="n">input_rgb</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_rgb</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">):</span>
+                <span class="n">ip_node</span> <span class="o">=</span> <span class="n">input_rgb</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Image&quot;</span><span class="p">]</span>
 
-			<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_rgb</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">):</span>
-				<span class="n">ip_node</span> <span class="o">=</span> <span class="n">input_rgb</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;input_rgb must be str or CompositorNodeGroup, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">input_rgb</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
 
-			<span class="k">else</span><span class="p">:</span>
-				<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;input_rgb must be str or CompositorNodeGroup, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">input_rgb</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;Float&quot;</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ip_node</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocketFloat</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;Color&quot;</span>
+            <span class="p">)</span>
 
-			<span class="n">dtype</span> <span class="o">=</span> <span class="s1">&#39;Float&#39;</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ip_node</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocketFloat</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;Color&#39;</span>
+            <span class="n">cng</span> <span class="o">=</span> <span class="n">MaskOverlay</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Mask - ID: </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> - Input </span><span class="si">{</span><span class="n">input_rgb</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+                <span class="n">use_antialiasing</span><span class="o">=</span><span class="n">anti_aliasing</span><span class="p">,</span>
+            <span class="p">)</span>
 
-			<span class="n">cng</span> <span class="o">=</span> <span class="n">MaskOverlay</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mask - ID: </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> - Input </span><span class="si">{</span><span class="n">input_rgb</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-							  <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
-							  <span class="n">use_antialiasing</span><span class="o">=</span><span class="n">anti_aliasing</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">ip_node</span><span class="p">,</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s2">&quot;Image&quot;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s2">&quot;IndexOB&quot;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s2">&quot;IndexOB&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mask_nodes</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">cng</span>
 
-			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">ip_node</span><span class="p">,</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s1">&#39;IndexOB&#39;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;IndexOB&#39;</span><span class="p">))</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">mask_nodes</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">cng</span>
-
-		<span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_nodes</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_nodes</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="Compositor.get_bounding_box_visual">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_bounding_box_visual">[docs]</a>
-	<span class="k">def</span> <span class="nf">get_bounding_box_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">255.</span><span class="p">,</span> <span class="mf">255.</span><span class="p">),</span> <span class="n">thickness</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoundingBoxOverlay</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Return a bounding box visual overlay.</span>
+    <span class="k">def</span> <span class="nf">get_bounding_box_visual</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">255.0</span><span class="p">,</span> <span class="mf">255.0</span><span class="p">),</span> <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoundingBoxOverlay</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a bounding box visual overlay.</span>
 
-<span class="sd">		:param col: (3,) or (N, 3) Color(s) of bounding box(es) [in BGR]</span>
-<span class="sd">		:param thickness: (,) or (N,) Thickness(es) of bounding box(es)</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param col: (3,) or (N, 3) Color(s) of bounding box(es) [in BGR]</span>
+<span class="sd">        :param thickness: (,) or (N,) Thickness(es) of bounding box(es)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="n">cng</span> <span class="o">=</span> <span class="n">BoundingBoxOverlay</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bounding Box Visual&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
+        <span class="n">cng</span> <span class="o">=</span> <span class="n">BoundingBoxOverlay</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Bounding Box Visual&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s2">&quot;Image&quot;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s2">&quot;Image&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
 
-		<span class="k">if</span> <span class="s1">&#39;bbox&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only allowed one BBox overlay (it can contain multiple objects).&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;bbox&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Only allowed one BBox overlay (it can contain multiple objects).&quot;</span>
+            <span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">[</span><span class="s1">&#39;bbox&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cng</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">[</span><span class="s2">&quot;bbox&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cng</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
-		<span class="k">return</span> <span class="n">cng</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">cng</span></div>
 
 
 <div class="viewcode-block" id="Compositor.get_keypoints_visual">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_keypoints_visual">[docs]</a>
-	<span class="k">def</span> <span class="nf">get_keypoints_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">marker</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
-							 <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KeypointsOverlay</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Return a keypoints visual overlay.</span>
+    <span class="k">def</span> <span class="nf">get_keypoints_visual</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">marker</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+        <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KeypointsOverlay</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a keypoints visual overlay.</span>
 
-<span class="sd">		:param marker: Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default &#39;x&#39;</span>
-<span class="sd">		:param size: Size of marker. Default 5</span>
-<span class="sd">		:param color: Color of marker, RGB or RGBA, default (0, 0, 255) (red)</span>
-<span class="sd">		:param thickness: Thickness of marker. Default 2</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param marker: Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default &#39;x&#39;</span>
+<span class="sd">        :param size: Size of marker. Default 5</span>
+<span class="sd">        :param color: Color of marker, RGB or RGBA, default (0, 0, 255) (red)</span>
+<span class="sd">        :param thickness: Thickness of marker. Default 2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="n">cng</span> <span class="o">=</span> <span class="n">KeypointsOverlay</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Keypoints Visual&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
-							   <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
+        <span class="n">cng</span> <span class="o">=</span> <span class="n">KeypointsOverlay</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Keypoints Visual&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+            <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s2">&quot;Image&quot;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s2">&quot;Image&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
 
-		<span class="k">if</span> <span class="s1">&#39;keypoints&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only allowed one Keypoints overlay.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;keypoints&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only allowed one Keypoints overlay.&quot;</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">[</span><span class="s1">&#39;keypoints&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cng</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">[</span><span class="s2">&quot;keypoints&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cng</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
-		<span class="k">return</span> <span class="n">cng</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">cng</span></div>
 
 
 <div class="viewcode-block" id="Compositor.get_axes_visual">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_axes_visual">[docs]</a>
-	<span class="k">def</span> <span class="nf">get_axes_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AxesOverlay</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Return an axes visual overlay.</span>
+    <span class="k">def</span> <span class="nf">get_axes_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AxesOverlay</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an axes visual overlay.</span>
 
-<span class="sd">		:param size: Size of axes. Default 100</span>
-<span class="sd">		:param thickness: Thickness of axes. Default 2</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param size: Size of axes. Default 100</span>
+<span class="sd">        :param thickness: Thickness of axes. Default 2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="n">cng</span> <span class="o">=</span> <span class="n">AxesOverlay</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Axes Visual&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span>
-						  <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
+        <span class="n">cng</span> <span class="o">=</span> <span class="n">AxesOverlay</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Axes Visual&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s2">&quot;Image&quot;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s2">&quot;Image&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
 
-		<span class="k">if</span> <span class="s1">&#39;axes&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only allowed one Axes overlay.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;axes&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only allowed one Axes overlay.&quot;</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">[</span><span class="s1">&#39;axes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cng</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
-		<span class="k">return</span> <span class="n">cng</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="p">[</span><span class="s2">&quot;axes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cng</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">cng</span></div>
 
 
 <div class="viewcode-block" id="Compositor.stack_visuals">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.stack_visuals">[docs]</a>
-	<span class="k">def</span> <span class="nf">stack_visuals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">visuals</span><span class="p">:</span> <span class="n">AlphaImageOverlay</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AlphaImageOverlay</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Given a series of image overlays, stack them and return to be used as a single output node.</span>
+    <span class="k">def</span> <span class="nf">stack_visuals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">visuals</span><span class="p">:</span> <span class="n">AlphaImageOverlay</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AlphaImageOverlay</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a series of image overlays, stack them and return to be used as a single output node.</span>
 
-<span class="sd">		:param *visuals: Stack of overlays to add.&quot;&quot;&quot;</span>
+<span class="sd">        :param *visuals: Stack of overlays to add.&quot;&quot;&quot;</span>
 
-		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">visuals</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Requires at least 2 visuals to stack&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">visuals</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Requires at least 2 visuals to stack&quot;</span><span class="p">)</span>
 
-		<span class="c1"># No need to store these overlays separately in self.overlays, but need to check they&#39;re all present</span>
-		<span class="k">for</span> <span class="n">overlay</span> <span class="ow">in</span> <span class="n">visuals</span><span class="p">:</span>
-			<span class="k">if</span> <span class="n">overlay</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-					<span class="sa">f</span><span class="s2">&quot;Visual </span><span class="si">{</span><span class="n">overlay</span><span class="si">}</span><span class="s2"> not found in Compositor. Make sure it was obtained via the Compositor.&quot;</span><span class="p">)</span>
+        <span class="c1"># No need to store these overlays separately in self.overlays, but need to check they&#39;re all present</span>
+        <span class="k">for</span> <span class="n">overlay</span> <span class="ow">in</span> <span class="n">visuals</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">overlay</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Visual </span><span class="si">{</span><span class="n">overlay</span><span class="si">}</span><span class="s2"> not found in Compositor. Make sure it was obtained via the Compositor.&quot;</span>
+                <span class="p">)</span>
 
-		<span class="c1"># Stack the output of the previous to the input of the next</span>
-		<span class="k">for</span> <span class="n">va</span><span class="p">,</span> <span class="n">vb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">visuals</span><span class="p">,</span> <span class="n">visuals</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">va</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">),</span> <span class="n">vb</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">))</span>
+        <span class="c1"># Stack the output of the previous to the input of the next</span>
+        <span class="k">for</span> <span class="n">va</span><span class="p">,</span> <span class="n">vb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">visuals</span><span class="p">,</span> <span class="n">visuals</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">va</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s2">&quot;Image&quot;</span><span class="p">),</span> <span class="n">vb</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s2">&quot;Image&quot;</span><span class="p">))</span>
 
-		<span class="k">return</span> <span class="n">visuals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">visuals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="Compositor.get_depth_visual">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_depth_visual">[docs]</a>
-	<span class="k">def</span> <span class="nf">get_depth_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">CompositorNodeGroup</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Get depth visual, which normalizes depth values so max_depth = col,</span>
-<span class="sd">		and any values below that are depth/max_depth * col.</span>
+    <span class="k">def</span> <span class="nf">get_depth_visual</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompositorNodeGroup</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get depth visual, which normalizes depth values so max_depth = col,</span>
+<span class="sd">        and any values below that are depth/max_depth * col.</span>
 
-<span class="sd">		:param max_depth: Maximum depth value to normalize to</span>
-<span class="sd">		:param col: Color of maximum depth value. 0-255 RGB or RGBA.&quot;&quot;&quot;</span>
+<span class="sd">        :param max_depth: Maximum depth value to normalize to</span>
+<span class="sd">        :param col: Color of maximum depth value. 0-255 RGB or RGBA.&quot;&quot;&quot;</span>
 
-		<span class="k">if</span> <span class="s1">&#39;Depth&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
-			<span class="n">render_depth</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;Depth&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_layers_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+            <span class="n">render_depth</span><span class="p">()</span>
 
-		<span class="c1"># convert col to 0-1, RGBA</span>
-		<span class="n">col</span> <span class="o">=</span> <span class="p">([</span><span class="n">i</span> <span class="o">/</span> <span class="mi">255</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">])[:</span><span class="mi">4</span><span class="p">]</span>
+        <span class="c1"># convert col to 0-1, RGBA</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="p">([</span><span class="n">i</span> <span class="o">/</span> <span class="mi">255</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">])[:</span><span class="mi">4</span><span class="p">]</span>
 
-		<span class="n">cng</span> <span class="o">=</span> <span class="n">DepthVis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s1">&#39;Depth&#39;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;Depth&#39;</span><span class="p">))</span>
+        <span class="n">cng</span> <span class="o">=</span> <span class="n">DepthVis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s2">&quot;Depth&quot;</span><span class="p">),</span> <span class="n">cng</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s2">&quot;Depth&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
-		<span class="k">return</span> <span class="n">cng</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">cng</span></div>
 
 
 <div class="viewcode-block" id="Compositor.define_output">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.define_output">[docs]</a>
-	<span class="k">def</span> <span class="nf">define_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">,</span> <span class="n">AOV</span><span class="p">],</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span>
-					  <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-					  <span class="n">file_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;PNG&#39;</span><span class="p">,</span> <span class="n">color_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;RGBA&#39;</span><span class="p">,</span> <span class="n">jpeg_quality</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">90</span><span class="p">,</span>
-					  <span class="n">png_compression</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="n">color_depth</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span> <span class="n">EXR_color_depth</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;32&#39;</span><span class="p">,</span>
-					  <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Add a connection between a valid render output, and a file output node.</span>
+    <span class="k">def</span> <span class="nf">define_output</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">,</span> <span class="n">AOV</span><span class="p">],</span>
+        <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+        <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">file_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;PNG&quot;</span><span class="p">,</span>
+        <span class="n">color_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RGBA&quot;</span><span class="p">,</span>
+        <span class="n">jpeg_quality</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">90</span><span class="p">,</span>
+        <span class="n">png_compression</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
+        <span class="n">color_depth</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;8&quot;</span><span class="p">,</span>
+        <span class="n">EXR_color_depth</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;32&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a connection between a valid render output, and a file output node.</span>
 
-<span class="sd">		This should only be called once per output (NOT inside a loop).</span>
-<span class="sd">		Inside the loop, only call :attr:`~update_filename`, :attr:`update_all_filenames` :attr:`~update_directory`</span>
+<span class="sd">        This should only be called once per output (NOT inside a loop).</span>
+<span class="sd">        Inside the loop, only call :attr:`~update_filename`, :attr:`update_all_filenames` :attr:`~update_directory`</span>
 
-<span class="sd">		All outputs will be defined in raw color space (no color correction), except for the RGB output,</span>
-<span class="sd">		and any overlays on this output (e.g. Bounding Box Visualization)</span>
+<span class="sd">        All outputs will be defined in raw color space (no color correction), except for the RGB output,</span>
+<span class="sd">        and any overlays on this output (e.g. Bounding Box Visualization)</span>
 
-<span class="sd">		:param input_data: If :class:`str`,  will get the input_data from that key in the render_layers_node. If :class:`~CompositorNodeGroup`, use that node as input. If :class:`AOV`, use that AOV as input (storing AOV).</span>
-<span class="sd">		:param directory: Directory to save output to</span>
-<span class="sd">		:param file_name: Name of file to save output to. If None, will use `name` (or `input_data` if `name` is None)</span>
-<span class="sd">		:param file_format: File format to save output as. Must be in :class:`AVAILABLE_FORMATS`</span>
-<span class="sd">		:param color_mode: Color mode to save output as.</span>
-<span class="sd">		:param jpeg_quality: Quality of JPEG output.</span>
-<span class="sd">		:param png_compression: Compression of PNG output.</span>
-<span class="sd">		:param color_depth: Color depth of output.</span>
-<span class="sd">		:param EXR_color_depth: Color depth of EXR output.</span>
-<span class="sd">		:param name: Name of output. If not given, will take the str representation of input_data</span>
+<span class="sd">        :param input_data: If :class:`str`,  will get the input_data from that key in the render_layers_node. If :class:`~CompositorNodeGroup`, use that node as input. If :class:`AOV`, use that AOV as input (storing AOV).</span>
+<span class="sd">        :param directory: Directory to save output to</span>
+<span class="sd">        :param file_name: Name of file to save output to. If None, will use `name` (or `input_data` if `name` is None)</span>
+<span class="sd">        :param file_format: File format to save output as. Must be in :class:`AVAILABLE_FORMATS`</span>
+<span class="sd">        :param color_mode: Color mode to save output as.</span>
+<span class="sd">        :param jpeg_quality: Quality of JPEG output.</span>
+<span class="sd">        :param png_compression: Compression of PNG output.</span>
+<span class="sd">        :param color_depth: Color depth of output.</span>
+<span class="sd">        :param EXR_color_depth: Color depth of EXR output.</span>
+<span class="sd">        :param name: Name of output. If not given, will take the str representation of input_data</span>
 
-<span class="sd">		:returns: Name of output, which can be used to update filename or directory</span>
+<span class="sd">        :returns: Name of output, which can be used to update filename or directory</span>
 
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">AOV</span><span class="p">):</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">aovs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
-			<span class="n">input_data</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># name is sufficient to pull from render_layers_node</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">AOV</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aovs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+            <span class="n">input_data</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">input_data</span><span class="o">.</span><span class="n">name</span>
+            <span class="p">)</span>  <span class="c1"># name is sufficient to pull from render_layers_node</span>
 
-		<span class="k">assert</span> <span class="n">file_format</span> <span class="ow">in</span> <span class="n">format_to_extension</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;File format `</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s2">` not supported. Options are: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">format_to_extension</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">file_format</span> <span class="ow">in</span> <span class="n">format_to_extension</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;File format `</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s2">` not supported. Options are: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">format_to_extension</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
 
-		<span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
-		<span class="n">node_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;File Output </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">node_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;File Output </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
 
-		<span class="c1"># check node doesn&#39;t exist</span>
-		<span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File output `</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">` already exists. Only call define_output once per output type.&quot;</span><span class="p">)</span>
+        <span class="c1"># check node doesn&#39;t exist</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;File output `</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">` already exists. Only call define_output once per output type.&quot;</span>
+            <span class="p">)</span>
 
-		<span class="k">if</span> <span class="n">file_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># if fname is not given, use input_name</span>
-			<span class="n">file_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">if</span> <span class="n">file_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># if fname is not given, use input_name</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="n">name</span>
 
-		<span class="n">file_name</span> <span class="o">=</span> <span class="n">remove_ext</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
-		<span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>  <span class="c1"># make sure directory is absolute</span>
-		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">remove_ext</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>  <span class="c1"># make sure directory is absolute</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-		<span class="c1"># Create new &#39;File Output&#39; node in compositor</span>
-		<span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeOutputFile&#39;</span><span class="p">)</span>
-		<span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">node_name</span>
+        <span class="c1"># Create new &#39;File Output&#39; node in compositor</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeOutputFile&quot;</span><span class="p">)</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">node_name</span>
 
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="n">input_data</span><span class="p">),</span> <span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="n">input_data</span><span class="p">),</span> <span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Image&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
 
-		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">):</span>  <span class="c1"># add overlay in between</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">):</span>  <span class="c1"># add overlay in between</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Image&quot;</span><span class="p">])</span>
 
-		<span class="k">else</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-				<span class="sa">f</span><span class="s2">&quot;input_data must be either str or CompositorNodeGroup, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;input_data must be either str or CompositorNodeGroup, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
 
-		<span class="c1"># Set file output node properties</span>
-		<span class="n">node</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">node_name</span>
-		<span class="n">node</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">directory</span>
-		<span class="n">node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">file_name</span>
+        <span class="c1"># Set file output node properties</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">node_name</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">directory</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">file_name</span>
 
-		<span class="c1"># File format kwargs</span>
-		<span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">file_format</span> <span class="o">=</span> <span class="n">file_format</span>
-		<span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">color_mode</span> <span class="o">=</span> <span class="n">color_mode</span>
-		<span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">quality</span> <span class="o">=</span> <span class="n">jpeg_quality</span>
-		<span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">compression</span> <span class="o">=</span> <span class="n">png_compression</span>
-		<span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">color_depth</span> <span class="o">=</span> <span class="n">color_depth</span> <span class="k">if</span> <span class="n">file_format</span> <span class="o">!=</span> <span class="s1">&#39;OPEN_EXR&#39;</span> <span class="k">else</span> <span class="n">EXR_color_depth</span>
+        <span class="c1"># File format kwargs</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">file_format</span> <span class="o">=</span> <span class="n">file_format</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">color_mode</span> <span class="o">=</span> <span class="n">color_mode</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">quality</span> <span class="o">=</span> <span class="n">jpeg_quality</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">compression</span> <span class="o">=</span> <span class="n">png_compression</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">color_depth</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">color_depth</span> <span class="k">if</span> <span class="n">file_format</span> <span class="o">!=</span> <span class="s2">&quot;OPEN_EXR&quot;</span> <span class="k">else</span> <span class="n">EXR_color_depth</span>
+        <span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
-		<span class="k">return</span> <span class="n">name</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">name</span></div>
 
 
 <div class="viewcode-block" id="Compositor.update_filename">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.update_filename">[docs]</a>
-	<span class="k">def</span> <span class="nf">update_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Reassign the filename (not directory) for a given file output node.</span>
+    <span class="k">def</span> <span class="nf">update_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reassign the filename (not directory) for a given file output node.</span>
 
-<span class="sd">		:param key: key of output, as given in `define_output`</span>
-<span class="sd">		:param fname: new filename, without extension&quot;&quot;&quot;</span>
-		<span class="n">fname</span> <span class="o">=</span> <span class="n">remove_ext</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-		<span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
-		<span class="n">node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">fname</span></div>
+<span class="sd">        :param key: key of output, as given in `define_output`</span>
+<span class="sd">        :param fname: new filename, without extension&quot;&quot;&quot;</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">remove_ext</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">fname</span></div>
 
 
 <div class="viewcode-block" id="Compositor.update_all_filenames">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.update_all_filenames">[docs]</a>
-	<span class="k">def</span> <span class="nf">update_all_filenames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Reassign all filenames (not directories) for all file output nodes.</span>
+    <span class="k">def</span> <span class="nf">update_all_filenames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reassign all filenames (not directories) for all file output nodes.</span>
 
-<span class="sd">		:param fname: new filename, without extension&quot;&quot;&quot;</span>
-		<span class="n">fname</span> <span class="o">=</span> <span class="n">remove_ext</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-		<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-			<span class="n">node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">fname</span></div>
+<span class="sd">        :param fname: new filename, without extension&quot;&quot;&quot;</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">remove_ext</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">fname</span></div>
 
 
 <div class="viewcode-block" id="Compositor.update_directory">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.update_directory">[docs]</a>
-	<span class="k">def</span> <span class="nf">update_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Reassign the directory for a given file output node</span>
+    <span class="k">def</span> <span class="nf">update_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reassign the directory for a given file output node</span>
 
-<span class="sd">		:param key: key of output, as given in `define_output`</span>
-<span class="sd">		:param directory: new directory</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
-		<span class="n">node</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">directory</span></div>
+<span class="sd">        :param key: key of output, as given in `define_output`</span>
+<span class="sd">        :param directory: new directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">directory</span></div>
 
 
-	<span class="k">def</span> <span class="nf">_fix_namings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;After rendering,</span>
-<span class="sd">		File Output node has property that frame number gets added to filename.</span>
-<span class="sd">		Fix that here&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_fix_namings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;After rendering,</span>
+<span class="sd">        File Output node has property that frame number gets added to filename.</span>
+<span class="sd">        Fix that here&quot;&quot;&quot;</span>
 
-		<span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span>
 
-		<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-			<span class="c1"># get expected file name and extension</span>
-			<span class="n">ext</span> <span class="o">=</span> <span class="n">format_to_extension</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">file_format</span><span class="p">]</span>
-			<span class="n">bad_file_name</span> <span class="o">=</span> <span class="n">_get_badfname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">base_path</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="n">ext</span><span class="p">))</span>
-			<span class="n">target_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">base_path</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="n">ext</span><span class="p">)</span>
-			<span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
-				<span class="n">bad_file_name</span><span class="p">,</span>
-				<span class="n">target_file_name</span>
-			<span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="c1"># get expected file name and extension</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="n">format_to_extension</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">file_format</span><span class="p">]</span>
+            <span class="n">bad_file_name</span> <span class="o">=</span> <span class="n">_get_badfname</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">base_path</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="n">ext</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">target_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">base_path</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="n">ext</span>
+            <span class="p">)</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">bad_file_name</span><span class="p">,</span> <span class="n">target_file_name</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">_update_aovs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Update any AOVs that are connected to the render layers node&quot;&quot;&quot;</span>
-		<span class="k">for</span> <span class="n">aov</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aovs</span><span class="p">:</span>
-			<span class="n">aov</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">_update_aovs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update any AOVs that are connected to the render layers node&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">aov</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aovs</span><span class="p">:</span>
+            <span class="n">aov</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Compositor.render">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.render">[docs]</a>
-	<span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Camera</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Camera</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-			   <span class="n">annotations</span><span class="p">:</span> <span class="n">AnnotationHandler</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-			   <span class="n">animation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">frame_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">frame_end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Render the scene.</span>
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">camera</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Camera</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Camera</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">scene</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">annotations</span><span class="p">:</span> <span class="n">AnnotationHandler</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">animation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">frame_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">frame_end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render the scene.</span>
 
-<span class="sd">		:param camera: Camera(s) to render from. If None, will use `scene.camera`. If multiple, will render each camera separately, appending the camera&#39;s names as the output file names.</span>
-<span class="sd">		:param scene: Scene to render. If None, will use `bpy.context.scene`.</span>
-<span class="sd">		:param annotations: Object containing annotation information for each camera view to be used for overlays</span>
-<span class="sd">		:param animation: If True, will render an animation, using `frame_start` and `frame_end` as the start and end frames.</span>
-<span class="sd">		:param frame_start: Start frame for animation.</span>
-<span class="sd">		:param frame_end: End frame for animation.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param camera: Camera(s) to render from. If None, will use `scene.camera`. If multiple, will render each camera separately, appending the camera&#39;s names as the output file names.</span>
+<span class="sd">        :param scene: Scene to render. If None, will use `bpy.context.scene`.</span>
+<span class="sd">        :param annotations: Object containing annotation information for each camera view to be used for overlays</span>
+<span class="sd">        :param animation: If True, will render an animation, using `frame_start` and `frame_end` as the start and end frames.</span>
+<span class="sd">        :param frame_start: Start frame for animation.</span>
+<span class="sd">        :param frame_end: End frame for animation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="k">if</span> <span class="n">scene</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">scene</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span>
+        <span class="k">if</span> <span class="n">scene</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">scene</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span>
 
-		<span class="n">_original_active_camera</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">camera</span>
-		<span class="k">if</span> <span class="n">camera</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">camera</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
+        <span class="n">_original_active_camera</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">camera</span>
+        <span class="k">if</span> <span class="n">camera</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">camera</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
 
-		<span class="k">if</span> <span class="n">animation</span><span class="p">:</span>
-			<span class="n">scene</span><span class="o">.</span><span class="n">frame_start</span> <span class="o">=</span> <span class="n">frame_start</span>
-			<span class="n">scene</span><span class="o">.</span><span class="n">frame_end</span> <span class="o">=</span> <span class="n">frame_end</span>
+        <span class="k">if</span> <span class="n">animation</span><span class="p">:</span>
+            <span class="n">scene</span><span class="o">.</span><span class="n">frame_start</span> <span class="o">=</span> <span class="n">frame_start</span>
+            <span class="n">scene</span><span class="o">.</span><span class="n">frame_end</span> <span class="o">=</span> <span class="n">frame_end</span>
 
-		<span class="n">multi_camera</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">camera</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="n">multi_camera</span><span class="p">:</span>
-			<span class="n">camera</span> <span class="o">=</span> <span class="p">[</span><span class="n">camera</span><span class="p">]</span>
+        <span class="n">multi_camera</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">camera</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">multi_camera</span><span class="p">:</span>
+            <span class="n">camera</span> <span class="o">=</span> <span class="p">[</span><span class="n">camera</span><span class="p">]</span>
 
-		<span class="k">for</span> <span class="n">cam</span> <span class="ow">in</span> <span class="n">camera</span><span class="p">:</span>
-			<span class="k">if</span> <span class="n">annotations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-				<span class="n">annotation</span> <span class="o">=</span> <span class="n">annotations</span><span class="o">.</span><span class="n">get_annotation_by_camera</span><span class="p">(</span><span class="n">cam</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cam</span> <span class="ow">in</span> <span class="n">camera</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">annotations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">annotation</span> <span class="o">=</span> <span class="n">annotations</span><span class="o">.</span><span class="n">get_annotation_by_camera</span><span class="p">(</span><span class="n">cam</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-				<span class="c1"># apply overlays PER CAMERA</span>
-				<span class="k">for</span> <span class="n">oname</span><span class="p">,</span> <span class="n">overlay</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-					<span class="n">overlay</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">oname</span><span class="p">),</span> <span class="n">camera</span><span class="o">=</span><span class="n">cam</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="n">scene</span><span class="p">)</span>  <span class="c1"># multi kwargs</span>
+                <span class="c1"># apply overlays PER CAMERA</span>
+                <span class="k">for</span> <span class="n">oname</span><span class="p">,</span> <span class="n">overlay</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">overlay</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                        <span class="nb">getattr</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">oname</span><span class="p">),</span> <span class="n">camera</span><span class="o">=</span><span class="n">cam</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="n">scene</span>
+                    <span class="p">)</span>  <span class="c1"># multi kwargs</span>
 
-			<span class="bp">self</span><span class="o">.</span><span class="n">_update_aovs</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_aovs</span><span class="p">()</span>
 
-			<span class="n">scene</span><span class="o">.</span><span class="n">camera</span> <span class="o">=</span> <span class="n">cam</span><span class="o">.</span><span class="n">obj</span>
-			<span class="n">render</span><span class="p">(</span><span class="n">animation</span><span class="o">=</span><span class="n">animation</span><span class="p">)</span>
+            <span class="n">scene</span><span class="o">.</span><span class="n">camera</span> <span class="o">=</span> <span class="n">cam</span><span class="o">.</span><span class="n">obj</span>
+            <span class="n">render</span><span class="p">(</span><span class="n">animation</span><span class="o">=</span><span class="n">animation</span><span class="p">)</span>
 
-			<span class="k">if</span> <span class="ow">not</span> <span class="n">animation</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">_fix_namings</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">cam</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">multi_camera</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">animation</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fix_namings</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">cam</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">multi_camera</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
-		<span class="c1"># reset active camera</span>
-		<span class="n">scene</span><span class="o">.</span><span class="n">camera</span> <span class="o">=</span> <span class="n">_original_active_camera</span></div>
+        <span class="c1"># reset active camera</span>
+        <span class="n">scene</span><span class="o">.</span><span class="n">camera</span> <span class="o">=</span> <span class="n">_original_active_camera</span></div>
 
 
-	<span class="k">def</span> <span class="nf">_set_rgb_color_space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_space</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Filmic sRGB&#39;</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Color spaces are all handled manually within compositor (so that we keep</span>
-<span class="sd">		AOVs in raw space). So set the color space for RGB socket here.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_set_rgb_color_space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_space</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Filmic sRGB&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Color spaces are all handled manually within compositor (so that we keep</span>
+<span class="sd">        AOVs in raw space). So set the color space for RGB socket here.&quot;&quot;&quot;</span>
 
-		<span class="n">color_space_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeConvertColorSpace&#39;</span><span class="p">)</span>
-		<span class="n">color_space_node</span><span class="o">.</span><span class="n">from_color_space</span> <span class="o">=</span> <span class="s1">&#39;Linear&#39;</span>
-		<span class="n">color_space_node</span><span class="o">.</span><span class="n">to_color_space</span> <span class="o">=</span> <span class="n">color_space</span>
+        <span class="n">color_space_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeConvertColorSpace&quot;</span><span class="p">)</span>
+        <span class="n">color_space_node</span><span class="o">.</span><span class="n">from_color_space</span> <span class="o">=</span> <span class="s2">&quot;Linear&quot;</span>
+        <span class="n">color_space_node</span><span class="o">.</span><span class="n">to_color_space</span> <span class="o">=</span> <span class="n">color_space</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span><span class="p">,</span> <span class="n">color_space_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">color_space_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span><span class="p">,</span> <span class="n">color_space_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">color_space_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-	<span class="k">def</span> <span class="nf">_set_background_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set a solid background color, instead of transparent.</span>
-<span class="sd">		Will remove the visuals of existing world background (but not the lighting effects).</span>
+    <span class="k">def</span> <span class="nf">_set_background_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a solid background color, instead of transparent.</span>
+<span class="sd">        Will remove the visuals of existing world background (but not the lighting effects).</span>
 
-<span class="sd">		:param color: RGBA color, in range [0, 1]</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param color: RGBA color, in range [0, 1]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="n">world</span><span class="o">.</span><span class="n">set_transparent</span><span class="p">()</span>
+        <span class="n">world</span><span class="o">.</span><span class="n">set_transparent</span><span class="p">()</span>
 
-		<span class="n">rgba</span> <span class="o">=</span> <span class="n">color</span>
-		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-			<span class="n">rgba</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">rgba</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">rgba</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">rgba</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">rgba</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-		<span class="n">rgb_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeRGB&#39;</span><span class="p">)</span>
-		<span class="n">rgb_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">rgba</span>
+        <span class="n">rgb_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeRGB&quot;</span><span class="p">)</span>
+        <span class="n">rgb_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">rgba</span>
 
-		<span class="n">mix_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeMixRGB&#39;</span><span class="p">)</span>
+        <span class="n">mix_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeMixRGB&quot;</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span><span class="p">,</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">rgb_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span><span class="p">,</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">rgb_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s1">&#39;Alpha&#39;</span><span class="p">),</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Fac&#39;</span><span class="p">])</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">),</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Fac&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Image&quot;</span><span class="p">]</span></div>
 
 </pre></div>
 

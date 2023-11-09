@@ -108,163 +108,186 @@
 
 
 <span class="k">def</span> <span class="nf">_new_shader_node</span><span class="p">(</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">node_type</span><span class="p">):</span>
-	<span class="n">shader_node</span> <span class="o">=</span> <span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">node_type</span><span class="p">)</span>
-	<span class="k">if</span> <span class="n">node_type</span> <span class="o">==</span> <span class="s1">&#39;ShaderNodeBsdfPrincipled&#39;</span><span class="p">:</span>
-		<span class="n">shader_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Specular&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">shader_node</span> <span class="o">=</span> <span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">node_type</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">node_type</span> <span class="o">==</span> <span class="s2">&quot;ShaderNodeBsdfPrincipled&quot;</span><span class="p">:</span>
+        <span class="n">shader_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Specular&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="mi">0</span>
 
-	<span class="k">return</span> <span class="n">shader_node</span>
+    <span class="k">return</span> <span class="n">shader_node</span>
 
 
 <div class="viewcode-block" id="Material">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.material.html#blendersynth.blender.material.Material">[docs]</a>
 <span class="k">class</span> <span class="nc">Material</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;BlenderSynth Material class. Will always be a node material.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;BlenderSynth Material class. Will always be a node material.&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">shader_type</span><span class="o">=</span><span class="s1">&#39;ShaderNodeBsdfPrincipled&#39;</span><span class="p">,</span> <span class="n">mat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-		<span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">mat</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-			<span class="n">mat</span><span class="o">.</span><span class="n">use_nodes</span> <span class="o">=</span> <span class="kc">True</span>
-			<span class="n">mat</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">shader</span> <span class="o">=</span> <span class="n">_new_shader_node</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">shader_type</span><span class="p">)</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;ShaderNodeOutputMaterial&quot;</span><span class="p">)</span>
-			<span class="n">mat</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shader</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Surface&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">shader_type</span><span class="o">=</span><span class="s2">&quot;ShaderNodeBsdfPrincipled&quot;</span><span class="p">,</span> <span class="n">mat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">mat</span><span class="o">.</span><span class="n">use_nodes</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">mat</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shader</span> <span class="o">=</span> <span class="n">_new_shader_node</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">shader_type</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;ShaderNodeOutputMaterial&quot;</span><span class="p">)</span>
+            <span class="n">mat</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">shader</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Surface&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
 
-		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">shader</span> <span class="o">=</span> <span class="kc">None</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;Material Output&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shader</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;Material Output&quot;</span><span class="p">]</span>
 
-		<span class="n">mat</span><span class="o">.</span><span class="n">use_nodes</span> <span class="o">=</span> <span class="kc">True</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">mat</span>
+        <span class="n">mat</span><span class="o">.</span><span class="n">use_nodes</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">mat</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">node_tree</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">node_tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">_image_nodes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># dict of shader input socket : image node</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image_nodes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># dict of shader input socket : image node</span>
 
-		<span class="c1"># set-up scaling</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_add_scaling_node</span><span class="p">()</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># set-up scaling</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_scaling_node</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="mi">1</span>
 
-		<span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span>
-
+        <span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Material.from_image">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.material.html#blendersynth.blender.material.Material.from_image">[docs]</a>
-	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">from_image</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">image_loc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ImageMaterials&quot;</span><span class="p">,</span> <span class="n">shader_type</span><span class="o">=</span><span class="s1">&#39;ShaderNodeBsdfPrincipled&#39;</span><span class="p">,</span>
-				   <span class="n">use_global_scale</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Material&#39;</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Create a new material from an image texture.</span>
-<span class="sd">		:param image_loc: Location of the image</span>
-<span class="sd">		:param name: Name of the material</span>
-<span class="sd">		:param shader_type: Shader type</span>
-<span class="sd">		:param use_global_scale: Flag to scale the image texture node by the global scale</span>
-<span class="sd">		:return: New Material instance</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">mat</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">shader_type</span><span class="o">=</span><span class="n">shader_type</span><span class="p">)</span>  <span class="c1"># new instance</span>
-		<span class="n">mat</span><span class="o">.</span><span class="n">add_source</span><span class="p">(</span><span class="n">image_loc</span><span class="p">,</span> <span class="n">input_name</span><span class="o">=</span><span class="s1">&#39;Base Color&#39;</span><span class="p">,</span> <span class="n">use_global_scale</span><span class="o">=</span><span class="n">use_global_scale</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_image</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">image_loc</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ImageMaterials&quot;</span><span class="p">,</span>
+        <span class="n">shader_type</span><span class="o">=</span><span class="s2">&quot;ShaderNodeBsdfPrincipled&quot;</span><span class="p">,</span>
+        <span class="n">use_global_scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Material&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new material from an image texture.</span>
+<span class="sd">        :param image_loc: Location of the image</span>
+<span class="sd">        :param name: Name of the material</span>
+<span class="sd">        :param shader_type: Shader type</span>
+<span class="sd">        :param use_global_scale: Flag to scale the image texture node by the global scale</span>
+<span class="sd">        :return: New Material instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">shader_type</span><span class="o">=</span><span class="n">shader_type</span><span class="p">)</span>  <span class="c1"># new instance</span>
+        <span class="n">mat</span><span class="o">.</span><span class="n">add_source</span><span class="p">(</span>
+            <span class="n">image_loc</span><span class="p">,</span> <span class="n">input_name</span><span class="o">=</span><span class="s2">&quot;Base Color&quot;</span><span class="p">,</span> <span class="n">use_global_scale</span><span class="o">=</span><span class="n">use_global_scale</span>
+        <span class="p">)</span>
 
-		<span class="k">return</span> <span class="n">mat</span></div>
+        <span class="k">return</span> <span class="n">mat</span></div>
 
 
 <div class="viewcode-block" id="Material.add_source">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.material.html#blendersynth.blender.material.Material.add_source">[docs]</a>
-	<span class="k">def</span> <span class="nf">add_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_loc</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">input_name</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;Base Color&#39;</span><span class="p">,</span> <span class="n">use_global_scale</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-				   <span class="n">allow_duplicate</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Add an image texture node to the material node tree, and connect it to the specified input of the Shader.</span>
-<span class="sd">		:param image_loc: Image location</span>
-<span class="sd">		:param input_name: Input socket name of the Shader to connect the image texture node to</span>
-<span class="sd">		:param use_global_scale: Flag to scale the image texture node by the global scale</span>
-<span class="sd">		:param allow_duplicate: Flag to allow duplicate image texture nodes (by default, a node to the same input will overwrite any previous)</span>
-<span class="sd">		:return:</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="c1"># Get the nodes in the material node tree</span>
-		<span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span>
-		<span class="n">links</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span>
+    <span class="k">def</span> <span class="nf">add_source</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">image_loc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">input_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Base Color&quot;</span><span class="p">,</span>
+        <span class="n">use_global_scale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">allow_duplicate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add an image texture node to the material node tree, and connect it to the specified input of the Shader.</span>
+<span class="sd">        :param image_loc: Image location</span>
+<span class="sd">        :param input_name: Input socket name of the Shader to connect the image texture node to</span>
+<span class="sd">        :param use_global_scale: Flag to scale the image texture node by the global scale</span>
+<span class="sd">        :param allow_duplicate: Flag to allow duplicate image texture nodes (by default, a node to the same input will overwrite any previous)</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get the nodes in the material node tree</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span>
 
-		<span class="c1"># Find the Principled BSDF</span>
-		<span class="n">principled</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;BSDF_PRINCIPLED&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="n">principled</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;add_source requires a Principled BSDF node in the material node tree&quot;</span><span class="p">)</span>
+        <span class="c1"># Find the Principled BSDF</span>
+        <span class="n">principled</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;BSDF_PRINCIPLED&quot;</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">principled</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;add_source requires a Principled BSDF node in the material node tree&quot;</span>
+            <span class="p">)</span>
 
-		<span class="k">if</span> <span class="n">input_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_nodes</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allow_duplicate</span><span class="p">:</span>
-			<span class="n">tex_image_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_nodes</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="n">tex_image_node</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ShaderNodeTexImage&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">input_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_nodes</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allow_duplicate</span><span class="p">:</span>
+            <span class="n">tex_image_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_nodes</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tex_image_node</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;ShaderNodeTexImage&quot;</span><span class="p">)</span>
 
-		<span class="n">tex_image_node</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">image_loc</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_image_nodes</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">tex_image_node</span>
+        <span class="n">tex_image_node</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">image_loc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image_nodes</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">tex_image_node</span>
 
-		<span class="k">if</span> <span class="n">input_name</span> <span class="o">==</span> <span class="s1">&#39;Displacement&#39;</span><span class="p">:</span>
-			<span class="c1"># Connect to the &#39;Displacement&#39; socket of the output node</span>
-			<span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">tex_image_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Color&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Displacement&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">input_name</span> <span class="o">==</span> <span class="s2">&quot;Displacement&quot;</span><span class="p">:</span>
+            <span class="c1"># Connect to the &#39;Displacement&#39; socket of the output node</span>
+            <span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+                <span class="n">tex_image_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Color&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Displacement&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
 
-		<span class="k">else</span><span class="p">:</span>
-			<span class="c1"># Connect the image texture node to the specified input of the Principled BSDF</span>
-			<span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">tex_image_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Color&#39;</span><span class="p">],</span> <span class="n">principled</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">input_name</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Connect the image texture node to the specified input of the Principled BSDF</span>
+            <span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">tex_image_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Color&quot;</span><span class="p">],</span> <span class="n">principled</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">input_name</span><span class="p">])</span>
 
-		<span class="k">if</span> <span class="n">use_global_scale</span><span class="p">:</span>
-			<span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_texture_scaling_socket</span><span class="p">,</span> <span class="n">tex_image_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">use_global_scale</span><span class="p">:</span>
+            <span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_texture_scaling_socket</span><span class="p">,</span> <span class="n">tex_image_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Vector&quot;</span><span class="p">])</span>
 
-		<span class="k">if</span> <span class="s1">&#39;color&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">input_name</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-			<span class="n">tex_image_node</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">colorspace_settings</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Non-Color&#39;</span>
+        <span class="k">if</span> <span class="s2">&quot;color&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">input_name</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="n">tex_image_node</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">colorspace_settings</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Non-Color&quot;</span>
 
-		<span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span></div>
+        <span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span></div>
 
 
-	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">from_blender_material</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">blender_mat</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Material</span><span class="p">):</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">blender_mat</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Material</span><span class="p">):</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid Blender material&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_blender_material</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">blender_mat</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Material</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">blender_mat</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Material</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid Blender material&quot;</span><span class="p">)</span>
 
-		<span class="c1"># Create a new Material instance</span>
-		<span class="n">mat</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">blender_mat</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mat</span><span class="o">=</span><span class="n">blender_mat</span><span class="p">)</span>
+        <span class="c1"># Create a new Material instance</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">blender_mat</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mat</span><span class="o">=</span><span class="n">blender_mat</span><span class="p">)</span>
 
-		<span class="c1"># Find the shader and output nodes in the copied node tree</span>
-		<span class="n">mat</span><span class="o">.</span><span class="n">shader</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">mat</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;BSDF_PRINCIPLED&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
-		<span class="n">mat</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">mat</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;OUTPUT_MATERIAL&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># Find the shader and output nodes in the copied node tree</span>
+        <span class="n">mat</span><span class="o">.</span><span class="n">shader</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">mat</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;BSDF_PRINCIPLED&quot;</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">mat</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">mat</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;OUTPUT_MATERIAL&quot;</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="p">)</span>
 
-		<span class="k">return</span> <span class="n">mat</span>
+        <span class="k">return</span> <span class="n">mat</span>
 
-	<span class="k">def</span> <span class="nf">_add_scaling_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Add scaling node to the material node tree&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_add_scaling_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add scaling node to the material node tree&quot;&quot;&quot;</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">scale_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ShaderNodeValue&#39;</span><span class="p">)</span>
-		<span class="n">tex_coord_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ShaderNodeTexCoord&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;ShaderNodeValue&quot;</span><span class="p">)</span>
+        <span class="n">tex_coord_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;ShaderNodeTexCoord&quot;</span><span class="p">)</span>
 
-		<span class="n">mapping_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ShaderNodeMapping&#39;</span><span class="p">)</span>
+        <span class="n">mapping_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;ShaderNodeMapping&quot;</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mapping_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Scale&#39;</span><span class="p">])</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">tex_coord_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;UV&#39;</span><span class="p">],</span> <span class="n">mapping_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">])</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_texture_scaling_socket</span> <span class="o">=</span> <span class="n">mapping_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mapping_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Scale&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">tex_coord_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;UV&quot;</span><span class="p">],</span> <span class="n">mapping_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Vector&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_texture_scaling_socket</span> <span class="o">=</span> <span class="n">mapping_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Vector&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Material.set_bdsf_property">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.material.html#blendersynth.blender.material.Material.set_bdsf_property">[docs]</a>
-	<span class="k">def</span> <span class="nf">set_bdsf_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set the property of the BSDF node&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shader</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s1">&#39;BSDF_PRINCIPLED&#39;</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Shader is not a Principled BSDF&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">set_bdsf_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the property of the BSDF node&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shader</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;BSDF_PRINCIPLED&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Shader is not a Principled BSDF&quot;</span><span class="p">)</span>
 
-		<span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shader</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid BDSF shader property `</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shader</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid BDSF shader property `</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">shader</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">value</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shader</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">value</span></div>
 
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span>
 
-	<span class="nd">@scale</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">value</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">scale_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="nd">@scale</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">value</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span></div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span></div>
 
 </pre></div>
 

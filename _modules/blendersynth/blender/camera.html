@@ -113,170 +113,185 @@
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">types</span>
 
 
-<span class="k">def</span> <span class="nf">_look_at_rotation</span><span class="p">(</span><span class="n">obj_camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">,</span>
-					  <span class="n">at</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
-					  <span class="n">up</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;	Rotate camera to look at &#39;at&#39;, with &#39;up&#39; maintained.</span>
+<span class="k">def</span> <span class="nf">_look_at_rotation</span><span class="p">(</span>
+    <span class="n">obj_camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">,</span>
+    <span class="n">at</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+    <span class="n">up</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotate camera to look at &#39;at&#39;, with &#39;up&#39; maintained.</span>
 
-<span class="sd">	:param obj_camera: Camera object</span>
-<span class="sd">	:param at: Point to look at</span>
-<span class="sd">	:param up: Up vector&quot;&quot;&quot;</span>
+<span class="sd">    :param obj_camera: Camera object</span>
+<span class="sd">    :param at: Point to look at</span>
+<span class="sd">    :param up: Up vector&quot;&quot;&quot;</span>
 
-	<span class="n">camera_position</span> <span class="o">=</span> <span class="n">obj_camera</span><span class="o">.</span><span class="n">location</span>
+    <span class="n">camera_position</span> <span class="o">=</span> <span class="n">obj_camera</span><span class="o">.</span><span class="n">location</span>
 
-	<span class="n">z_axis</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span><span class="n">at</span> <span class="o">-</span> <span class="n">camera_position</span><span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>  <span class="c1"># Blender forwards is &#39;-z&#39;, so use -ve here</span>
-	<span class="n">x_axis</span> <span class="o">=</span> <span class="n">up</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">z_axis</span><span class="p">)</span>
-	<span class="n">y_axis</span> <span class="o">=</span> <span class="n">z_axis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">x_axis</span><span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>
-	<span class="n">is_close</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">5e-3</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x_axis</span><span class="p">)</span>
+    <span class="n">z_axis</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span>
+        <span class="n">at</span> <span class="o">-</span> <span class="n">camera_position</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>  <span class="c1"># Blender forwards is &#39;-z&#39;, so use -ve here</span>
+    <span class="n">x_axis</span> <span class="o">=</span> <span class="n">up</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">z_axis</span><span class="p">)</span>
+    <span class="n">y_axis</span> <span class="o">=</span> <span class="n">z_axis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">x_axis</span><span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>
+    <span class="n">is_close</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">5e-3</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x_axis</span><span class="p">)</span>
 
-	<span class="k">if</span> <span class="n">is_close</span><span class="p">:</span>
-		<span class="n">replacement</span> <span class="o">=</span> <span class="n">y_axis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">z_axis</span><span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>
-		<span class="n">x_axis</span> <span class="o">=</span> <span class="n">replacement</span>
+    <span class="k">if</span> <span class="n">is_close</span><span class="p">:</span>
+        <span class="n">replacement</span> <span class="o">=</span> <span class="n">y_axis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">z_axis</span><span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>
+        <span class="n">x_axis</span> <span class="o">=</span> <span class="n">replacement</span>
 
-	<span class="n">R</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">y_axis</span><span class="p">,</span> <span class="n">z_axis</span><span class="p">])</span><span class="o">.</span><span class="n">transposed</span><span class="p">()</span>
-	<span class="n">euler</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
-	<span class="k">return</span> <span class="n">euler</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">y_axis</span><span class="p">,</span> <span class="n">z_axis</span><span class="p">])</span><span class="o">.</span><span class="n">transposed</span><span class="p">()</span>
+    <span class="n">euler</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">euler</span>
 
 
 <div class="viewcode-block" id="Camera">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera">[docs]</a>
 <span class="k">class</span> <span class="nc">Camera</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Camera object, to handle movement, tracking, etc.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Camera object, to handle movement, tracking, etc.&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-		<span class="k">if</span> <span class="n">camera</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">camera</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">camera</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">camera</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">camera</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">camera</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">camera</span> <span class="o">=</span> <span class="n">camera</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">camera</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">camera</span> <span class="o">=</span> <span class="n">camera</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">camera</span>
 
 <div class="viewcode-block" id="Camera.create">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.create">[docs]</a>
-	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Camera&#39;</span><span class="p">,</span>
-			   <span class="n">location</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-			   <span class="n">rotation</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Camera&#39;</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Create a new camera object.</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Camera&quot;</span><span class="p">,</span>
+        <span class="n">location</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">rotation</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Camera&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new camera object.</span>
 
-<span class="sd">		:param name: Name of camera</span>
-<span class="sd">		:param location: Location of camera</span>
-<span class="sd">		:param rotation_euler: Rotation of camera in euler angles&quot;&quot;&quot;</span>
+<span class="sd">        :param name: Name of camera</span>
+<span class="sd">        :param location: Location of camera</span>
+<span class="sd">        :param rotation_euler: Rotation of camera in euler angles&quot;&quot;&quot;</span>
 
-		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">():</span>  <span class="c1"># revert selection after creating camera</span>
-			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">camera_add</span><span class="p">(</span><span class="n">enter_editmode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;VIEW&#39;</span><span class="p">)</span>
-			<span class="n">camera</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span>
-			<span class="n">camera</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">with</span> <span class="n">SelectObjects</span><span class="p">():</span>  <span class="c1"># revert selection after creating camera</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">camera_add</span><span class="p">(</span><span class="n">enter_editmode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;VIEW&quot;</span><span class="p">)</span>
+            <span class="n">camera</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span>
+            <span class="n">camera</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
-		<span class="n">cam</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">camera</span><span class="p">)</span>
+        <span class="n">cam</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">camera</span><span class="p">)</span>
 
-		<span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">cam</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cam</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
 
-		<span class="k">if</span> <span class="n">rotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">cam</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cam</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span>
 
-		<span class="k">return</span> <span class="n">cam</span></div>
+        <span class="k">return</span> <span class="n">cam</span></div>
 
 
 <div class="viewcode-block" id="Camera.from_scene">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.from_scene">[docs]</a>
-	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">from_scene</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Camera&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Camera&#39;</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Create from a named camera in scene</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_scene</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Camera&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Camera&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create from a named camera in scene</span>
 
-<span class="sd">		:param name: Name of camera&quot;&quot;&quot;</span>
-		<span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Camera </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> does not exist&#39;</span>
-		<span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">])</span></div>
+<span class="sd">        :param name: Name of camera&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Camera </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not exist&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="Camera.update">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.update">[docs]</a>
-	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Update view layer and depsgraph&quot;&quot;&quot;</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">evaluated_depsgraph_get</span><span class="p">()</span></div>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update view layer and depsgraph&quot;&quot;&quot;</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">evaluated_depsgraph_get</span><span class="p">()</span></div>
 
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">fov</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Field of view in degrees&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">angle</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fov</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Field of view in degrees&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">angle</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 
-	<span class="nd">@fov</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">fov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fov</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_fov</span><span class="p">(</span><span class="n">fov</span><span class="p">)</span>
+    <span class="nd">@fov</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">fov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fov</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_fov</span><span class="p">(</span><span class="n">fov</span><span class="p">)</span>
 
-	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;lens&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>  <span class="c1"># FOV is not animatable, so keyframe focal length instead</span>
-	<span class="k">def</span> <span class="nf">set_fov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fov</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">fov</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+    <span class="nd">@animatable_property</span><span class="p">(</span>
+        <span class="s2">&quot;lens&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span>
+    <span class="p">)</span>  <span class="c1"># FOV is not animatable, so keyframe focal length instead</span>
+    <span class="k">def</span> <span class="nf">set_fov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fov</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">fov</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">clip_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clip_start</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">clip_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clip_start</span>
 
-	<span class="nd">@clip_start</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">clip_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_start</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_clip_start</span><span class="p">(</span><span class="n">clip_start</span><span class="p">)</span>
+    <span class="nd">@clip_start</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">clip_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_start</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_clip_start</span><span class="p">(</span><span class="n">clip_start</span><span class="p">)</span>
 
-	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;clip_start&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_clip_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_start</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clip_start</span> <span class="o">=</span> <span class="n">clip_start</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+    <span class="nd">@animatable_property</span><span class="p">(</span><span class="s2">&quot;clip_start&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">set_clip_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_start</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clip_start</span> <span class="o">=</span> <span class="n">clip_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">clip_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clip_end</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">clip_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clip_end</span>
 
-	<span class="nd">@clip_end</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">clip_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_end</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_clip_end</span><span class="p">(</span><span class="n">clip_end</span><span class="p">)</span>
+    <span class="nd">@clip_end</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">clip_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_end</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_clip_end</span><span class="p">(</span><span class="n">clip_end</span><span class="p">)</span>
 
-	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;clip_end&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_clip_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_end</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clip_end</span> <span class="o">=</span> <span class="n">clip_end</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+    <span class="nd">@animatable_property</span><span class="p">(</span><span class="s2">&quot;clip_end&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">set_clip_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_end</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clip_end</span> <span class="o">=</span> <span class="n">clip_end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Camera.look_at">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.look_at">[docs]</a>
-	<span class="k">def</span> <span class="nf">look_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
-				<span class="n">up</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Look at a point in space, with up vector.</span>
+    <span class="k">def</span> <span class="nf">look_at</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">at</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+        <span class="n">up</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Look at a point in space, with up vector.</span>
 
-<span class="sd">		:param at: Point to look at</span>
-<span class="sd">		:param up: Up vector&quot;&quot;&quot;</span>
-		<span class="n">at</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">at</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-		<span class="n">up</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">up</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="sd">        :param at: Point to look at</span>
+<span class="sd">        :param up: Up vector&quot;&quot;&quot;</span>
+        <span class="n">at</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">at</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">up</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">up</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">_look_at_rotation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">_look_at_rotation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Camera.look_at_object">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.camera.html#blendersynth.blender.camera.Camera.look_at_object">[docs]</a>
-	<span class="k">def</span> <span class="nf">look_at_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">],</span>
-					   <span class="n">up</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Look at an object, with up vector.</span>
+    <span class="k">def</span> <span class="nf">look_at_object</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">],</span>
+        <span class="n">up</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Look at an object, with up vector.</span>
 
-<span class="sd">		:param obj: Object to look at</span>
-<span class="sd">		:param up: Up vector&quot;&quot;&quot;</span>
+<span class="sd">        :param obj: Object to look at</span>
+<span class="sd">        :param up: Up vector&quot;&quot;&quot;</span>
 
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
-			<span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">obj</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">obj</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">look_at</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">look_at</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span></div>
 
 
-	<span class="k">def</span> <span class="nf">place_and_rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">euler</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">pos</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">euler</span> <span class="o">=</span> <span class="n">euler</span>
+    <span class="k">def</span> <span class="nf">place_and_rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">euler</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">pos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">euler</span> <span class="o">=</span> <span class="n">euler</span>
 
-	<span class="k">def</span> <span class="nf">place_and_look_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">up</span><span class="o">=</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))):</span>
-		<span class="n">pos</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
-		<span class="n">at</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">at</span><span class="p">)</span>
-		<span class="n">up</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">up</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">place_and_look_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">up</span><span class="o">=</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))):</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="n">at</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">at</span><span class="p">)</span>
+        <span class="n">up</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">up</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">pos</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">look_at</span><span class="p">(</span><span class="n">at</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">pos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">look_at</span><span class="p">(</span><span class="n">at</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span></div>
 
 </pre></div>
 

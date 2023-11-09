@@ -110,206 +110,285 @@
 <span class="kn">from</span> <span class="nn">...file.tempfiles</span> <span class="kn">import</span> <span class="n">create_temp_file</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
+
 <div class="viewcode-block" id="AlphaImageOverlay">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AlphaImageOverlay">[docs]</a>
 <span class="k">class</span> <span class="nc">AlphaImageOverlay</span><span class="p">(</span><span class="n">CompositorNodeGroup</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Overlay an image on top of the render, using the alpha channel of the image as a mask&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;AlphaImageOverlay&#39;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Create a mix node which overlays an image on top of the input image.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overlay an image on top of the render, using the alpha channel of the image as a mask&quot;&quot;&quot;</span>
 
-		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;AlphaImageOverlay&quot;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a mix node which overlays an image on top of the input image.&quot;&quot;&quot;</span>
 
-		<span class="c1"># Set default width and height</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">1000</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">1000</span>
-		<span class="k">if</span> <span class="n">scene</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
 
-		<span class="c1"># define I/O</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;NodeSocketColor&#39;</span><span class="p">,</span> <span class="s1">&#39;Image&#39;</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;NodeSocketColor&#39;</span><span class="p">,</span> <span class="s1">&#39;Image&#39;</span><span class="p">)</span>
+        <span class="c1"># Set default width and height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">1000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">1000</span>
+        <span class="k">if</span> <span class="n">scene</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
 
-		<span class="c1"># create nodes</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeImage&#39;</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeMixRGB&#39;</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">sep_color_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;CompositorNodeSepRGBA&#39;</span><span class="p">)</span>
+        <span class="c1"># define I/O</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeSocketColor&quot;</span><span class="p">,</span> <span class="s2">&quot;Image&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeSocketColor&quot;</span><span class="p">,</span> <span class="s2">&quot;Image&quot;</span><span class="p">)</span>
 
-		<span class="c1"># link up internal nodes</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sep_color_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">])</span>
+        <span class="c1"># create nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeImage&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeMixRGB&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sep_color_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeSepRGBA&quot;</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sep_color_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Fac&#39;</span><span class="p">])</span> <span class="c1"># alpha</span>
+        <span class="c1"># link up internal nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Image&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sep_color_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Image&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Image&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Image&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Image&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sep_color_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Fac&quot;</span><span class="p">]</span>
+        <span class="p">)</span>  <span class="c1"># alpha</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">create_img</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mix_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Image&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Image&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">tidy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_img</span><span class="p">()</span>
 
-	<span class="k">def</span> <span class="nf">create_img</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tidy</span><span class="p">()</span>
 
-		<span class="c1"># create temp image to draw keypoints on, with 8 random alphanumeric characters</span>
-		<span class="c1"># 8 random alphanum chars</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span> <span class="o">=</span> <span class="n">create_temp_file</span><span class="p">(</span><span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">create_img</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># create temp image to draw keypoints on, with 8 random alphanumeric characters</span>
+        <span class="c1"># 8 random alphanum chars</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span> <span class="o">=</span> <span class="n">create_temp_file</span><span class="p">(</span><span class="s2">&quot;.png&quot;</span><span class="p">)</span>
 
-		<span class="c1"># initialize as white</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
-		<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span>
+        <span class="c1"># initialize as white</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span>
 
-		<span class="c1"># connect this image to the overlay node</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">)</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span></div>
+        <span class="c1"># connect this image to the overlay node</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span></div>
 
 
 
 <div class="viewcode-block" id="KeypointsOverlay">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay">[docs]</a>
 <span class="k">class</span> <span class="nc">KeypointsOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Overlay which draws keypoints on top of the render.&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;KeypointsOverlay&#39;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-				 <span class="n">marker</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
-				 <span class="n">color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-				 <span class="n">thickness</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overlay which draws keypoints on top of the render.&quot;&quot;&quot;</span>
 
-<span class="sd">		:param name:</span>
-<span class="sd">		:param node_tree:</span>
-<span class="sd">		:param scene:</span>
-<span class="sd">		:param camera:</span>
-<span class="sd">		:param marker: Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default &#39;x&#39;</span>
-<span class="sd">		:param size: Size of marker. Default 5</span>
-<span class="sd">		:param color: Color of marker, RGB or RGBA, default (0, 0, 255) (red)</span>
-<span class="sd">		:param thickness: Thickness of marker. Default 2</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;KeypointsOverlay&quot;</span><span class="p">,</span>
+        <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">marker</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span>
+        <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+        <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">marker</span> <span class="o">=</span> <span class="n">marker</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="n">thickness</span>
+<span class="sd">        :param name:</span>
+<span class="sd">        :param node_tree:</span>
+<span class="sd">        :param scene:</span>
+<span class="sd">        :param camera:</span>
+<span class="sd">        :param marker: Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default &#39;x&#39;</span>
+<span class="sd">        :param size: Size of marker. Default 5</span>
+<span class="sd">        :param color: Color of marker, RGB or RGBA, default (0, 0, 255) (red)</span>
+<span class="sd">        :param thickness: Thickness of marker. Default 2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">marker</span> <span class="o">=</span> <span class="n">marker</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="n">thickness</span>
 
 <div class="viewcode-block" id="KeypointsOverlay.update">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay.update">[docs]</a>
-	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-			   <span class="n">camera</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Given [N x 3] keypoints, draw them onto a new temp image.</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">keypoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">scene</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given [N x 3] keypoints, draw them onto a new temp image.</span>
 
-<span class="sd">		:param keypoints: N x 3 keypoints</span>
-<span class="sd">		:param scene: Scene to draw from</span>
-<span class="sd">		:param camera: Camera</span>
+<span class="sd">        :param keypoints: N x 3 keypoints</span>
+<span class="sd">        :param scene: Scene to draw from</span>
+<span class="sd">        :param camera: Camera</span>
 
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
 
-		<span class="c1"># reset image to black, with alpha = 0</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="c1"># reset image to black, with alpha = 0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 
-		<span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span>
-		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-			<span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">color</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span> <span class="c1"># add alpha</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">color</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>  <span class="c1"># add alpha</span>
 
-		<span class="c1"># draw keypoints on image</span>
-		<span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
-		<span class="k">for</span> <span class="n">kp</span> <span class="ow">in</span> <span class="n">keypoints</span><span class="p">:</span>
-			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">marker</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;circle&#39;</span><span class="p">]:</span>
-				<span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">)</span>
-			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">marker</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;square&#39;</span><span class="p">]:</span>
-				<span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">size</span><span class="p">),</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">size</span><span class="p">),</span>
-							  <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">)</span>
-			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">marker</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;triangle&#39;</span><span class="p">]:</span>
-				<span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">size</span><span class="p">],</span> <span class="p">[</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">size</span><span class="p">,</span> <span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">],</span> <span class="p">[</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">,</span> <span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">]],</span>
-								  <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
-				<span class="n">cv2</span><span class="o">.</span><span class="n">polylines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">[</span><span class="n">points</span><span class="p">],</span> <span class="n">isClosed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">)</span>
-				<span class="n">cv2</span><span class="o">.</span><span class="n">fillPoly</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">[</span><span class="n">points</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
-			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">marker</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span>
-				<span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">size</span><span class="p">),</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">size</span><span class="p">),</span>
-						 <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">)</span>
-				<span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">size</span><span class="p">),</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">size</span><span class="p">),</span>
-						 <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">)</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid marker: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">marker</span><span class="p">))</span>
+        <span class="c1"># draw keypoints on image</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">for</span> <span class="n">kp</span> <span class="ow">in</span> <span class="n">keypoints</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">marker</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;circle&quot;</span><span class="p">]:</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">marker</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;square&quot;</span><span class="p">]:</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span>
+                    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">size</span><span class="p">),</span>
+                    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">size</span><span class="p">),</span>
+                    <span class="n">color</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">marker</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="s2">&quot;triangle&quot;</span><span class="p">]:</span>
+                <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="p">[</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">size</span><span class="p">],</span>
+                        <span class="p">[</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">size</span><span class="p">,</span> <span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">],</span>
+                        <span class="p">[</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">,</span> <span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">],</span>
+                    <span class="p">],</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">polylines</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span>
+                    <span class="p">[</span><span class="n">points</span><span class="p">],</span>
+                    <span class="n">isClosed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                    <span class="n">thickness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">fillPoly</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">[</span><span class="n">points</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">marker</span> <span class="o">==</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span>
+                    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">size</span><span class="p">),</span>
+                    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">size</span><span class="p">),</span>
+                    <span class="n">color</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span>
+                    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">size</span><span class="p">),</span>
+                    <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">size</span><span class="p">),</span>
+                    <span class="n">color</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid marker: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">marker</span><span class="p">))</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">save_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div>
 </div>
+
 
 
 <div class="viewcode-block" id="BoundingBoxOverlay">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay">[docs]</a>
 <span class="k">class</span> <span class="nc">BoundingBoxOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Overlay which draws bounding boxes on top of the render.&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;BoundingBoxOverlay&#39;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-				 <span class="n">col</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">thickness</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">col</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">thickness</span><span class="p">)</span>  <span class="c1"># cv2 requires int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overlay which draws bounding boxes on top of the render.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;BoundingBoxOverlay&quot;</span><span class="p">,</span>
+        <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">col</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+        <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">thickness</span><span class="p">)</span>  <span class="c1"># cv2 requires int</span>
 
 <div class="viewcode-block" id="BoundingBoxOverlay.update">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay.update">[docs]</a>
-	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bboxes</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Given [N x 4] bounding boxes, draw them onto a new temp image.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bboxes</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given [N x 4] bounding boxes, draw them onto a new temp image.&quot;&quot;&quot;</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
 
-		<span class="c1"># reset image to black, with alpha = 0</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="c1"># reset image to black, with alpha = 0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 
-		<span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span>
-		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-			<span class="n">col</span> <span class="o">=</span> <span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">col</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">col</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">255</span><span class="p">)</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">col</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">col</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">255</span><span class="p">)</span>
 
-		<span class="c1"># draw bounding boxes on image</span>
-		<span class="k">for</span> <span class="n">bbox</span> <span class="ow">in</span> <span class="n">bboxes</span><span class="p">:</span>
-			<span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">])),</span>
-						  <span class="n">col</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">)</span>
+        <span class="c1"># draw bounding boxes on image</span>
+        <span class="k">for</span> <span class="n">bbox</span> <span class="ow">in</span> <span class="n">bboxes</span><span class="p">:</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span>
+                <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span>
+                <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">])),</span>
+                <span class="n">col</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">,</span>
+            <span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">save_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div>
 </div>
+
 
 
 <div class="viewcode-block" id="AxesOverlay">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay">[docs]</a>
 <span class="k">class</span> <span class="nc">AxesOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Overlay which draws axes on top of an existing render&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overlay which draws axes on top of an existing render&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;BoundingBoxOverlay&#39;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-				 <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">):</span>
-		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;BoundingBoxOverlay&quot;</span><span class="p">,</span>
+        <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="n">thickness</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="n">thickness</span>
 
 <div class="viewcode-block" id="AxesOverlay.update">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay.update">[docs]</a>
-	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-			   <span class="n">camera</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Plot axes onto the image.</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+        <span class="n">scene</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot axes onto the image.</span>
 
-<span class="sd">		:param points: list of N x 4 2D points of centre + XYZ unit axes</span>
-<span class="sd">		:param scene: Scene</span>
-<span class="sd">		:param camera: Camera&quot;&quot;&quot;</span>
+<span class="sd">        :param points: list of N x 4 2D points of centre + XYZ unit axes</span>
+<span class="sd">        :param scene: Scene</span>
+<span class="sd">        :param camera: Camera&quot;&quot;&quot;</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 
-		<span class="k">for</span> <span class="n">P</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
-			<span class="n">centre</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-			<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">P</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
-				<span class="n">offset</span> <span class="o">=</span> <span class="n">point</span> <span class="o">-</span> <span class="n">centre</span>
-				<span class="n">point2</span> <span class="o">=</span> <span class="n">centre</span> <span class="o">+</span> <span class="n">offset</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
-				<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">centre</span><span class="p">)</span>
-				<span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">point2</span><span class="p">)</span>
-				<span class="c1"># note BGR color order</span>
-				<span class="c1"># and -y because image y-axis is flipped</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">),</span>
-							   <span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">255</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">255</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">255</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">P</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+            <span class="n">centre</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">P</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+                <span class="n">offset</span> <span class="o">=</span> <span class="n">point</span> <span class="o">-</span> <span class="n">centre</span>
+                <span class="n">point2</span> <span class="o">=</span> <span class="n">centre</span> <span class="o">+</span> <span class="n">offset</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">centre</span><span class="p">)</span>
+                <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">point2</span><span class="p">)</span>
+                <span class="c1"># note BGR color order</span>
+                <span class="c1"># and -y because image y-axis is flipped</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">),</span>
+                    <span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">255</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">255</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">255</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">,</span>
+                <span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">save_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

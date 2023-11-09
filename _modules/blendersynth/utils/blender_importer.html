@@ -107,25 +107,28 @@
 <span class="kn">from</span> <span class="nn">.blender_setup.check_blender_install</span> <span class="kn">import</span> <span class="n">_install_module</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
+
 <div class="viewcode-block" id="import_module">
 <a class="viewcode-back" href="../../../api/blendersynth.utils.blender_importer.html#blendersynth.utils.blender_importer.import_module">[docs]</a>
-<span class="k">def</span> <span class="nf">import_module</span><span class="p">(</span><span class="n">named_module</span><span class="p">,</span> <span class="n">pip_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Import python module - if not installed, install it.</span>
+<span class="k">def</span> <span class="nf">import_module</span><span class="p">(</span><span class="n">named_module</span><span class="p">,</span> <span class="n">pip_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Import python module - if not installed, install it.</span>
 
-<span class="sd">	:param named_module: name of module to import (python name)</span>
-<span class="sd">	:param pip_name: name of module to install (pip name). If None, will use named_module</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">    :param named_module: name of module to import (python name)</span>
+<span class="sd">    :param pip_name: name of module to install (pip name). If None, will use named_module</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-	<span class="k">if</span> <span class="n">pip_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="n">pip_name</span> <span class="o">=</span> <span class="n">named_module</span>
+    <span class="k">if</span> <span class="n">pip_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pip_name</span> <span class="o">=</span> <span class="n">named_module</span>
 
-	<span class="k">try</span><span class="p">:</span>
-		<span class="k">return</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">named_module</span><span class="p">)</span>
-	<span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
-		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Blender executable does not have module `</span><span class="si">{</span><span class="n">named_module</span><span class="si">}</span><span class="s2">` installed. Installing...&quot;</span><span class="p">)</span>
-		<span class="n">python_exec</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">executable</span>
-		<span class="n">_install_module</span><span class="p">(</span><span class="n">python_exec</span><span class="p">,</span> <span class="n">pip_name</span><span class="p">)</span>
-		<span class="k">return</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">named_module</span><span class="p">)</span></div>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">named_module</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Blender executable does not have module `</span><span class="si">{</span><span class="n">named_module</span><span class="si">}</span><span class="s2">` installed. Installing...&quot;</span>
+        <span class="p">)</span>
+        <span class="n">python_exec</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">executable</span>
+        <span class="n">_install_module</span><span class="p">(</span><span class="n">python_exec</span><span class="p">,</span> <span class="n">pip_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">named_module</span><span class="p">)</span></div>
 
 </pre></div>
 

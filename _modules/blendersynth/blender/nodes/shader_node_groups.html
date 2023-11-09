@@ -113,58 +113,74 @@
 <span class="c1"># docs-special-members: __init__</span>
 <span class="c1"># no-inherited-members</span>
 
+
 <div class="viewcode-block" id="DeformedGeneratedTextureCoordinates">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.shader_node_groups.html#blendersynth.blender.nodes.shader_node_groups.DeformedGeneratedTextureCoordinates">[docs]</a>
 <span class="k">class</span> <span class="nc">DeformedGeneratedTextureCoordinates</span><span class="p">(</span><span class="n">ShaderNodeGroup</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	A :class:`ShaderNodeGroup` that outputs generated texture coordinates, but in the deformed space.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A :class:`ShaderNodeGroup` that outputs generated texture coordinates, but in the deformed space.</span>
 
-<span class="sd">	For example use, see :class:`DisplacementGeneratedAOV &lt;blendersynth.blender.aov.DisplacementGeneratedAOV&gt;`.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">    For example use, see :class:`DisplacementGeneratedAOV &lt;blendersynth.blender.aov.DisplacementGeneratedAOV&gt;`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="DeformedGeneratedTextureCoordinates.__init__">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.shader_node_groups.html#blendersynth.blender.nodes.shader_node_groups.DeformedGeneratedTextureCoordinates.__init__">[docs]</a>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_tree</span> <span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeTree</span><span class="p">,</span>
-		<span class="n">mesh</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">bbox_min</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">,</span> <span class="n">bbox_max</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;To calculate the generated space, either needs mesh or bbox_min, bbox_max.</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">node_tree</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeTree</span><span class="p">,</span>
+        <span class="n">mesh</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span>
+        <span class="n">bbox_min</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">,</span>
+        <span class="n">bbox_max</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;To calculate the generated space, either needs mesh or bbox_min, bbox_max.</span>
 
-<span class="sd">		:param node_tree: NodeTree to add group to</span>
-<span class="sd">		:param mesh: If given, `bbox_min` and `bbox_max` are calculated using this</span>
-<span class="sd">		:param bbox_min: If given, `bbox_max` must also be given. The minimum of the bounding box of the mesh</span>
-<span class="sd">		:param bbox_max: If given, `bbox_min` must also be given. The maximum of the bounding box of the mesh</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param node_tree: NodeTree to add group to</span>
+<span class="sd">        :param mesh: If given, `bbox_min` and `bbox_max` are calculated using this</span>
+<span class="sd">        :param bbox_min: If given, `bbox_max` must also be given. The minimum of the bounding box of the mesh</span>
+<span class="sd">        :param bbox_max: If given, `bbox_min` must also be given. The maximum of the bounding box of the mesh</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;DeformedGeneratedTextureCoordinates&quot;</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;DeformedGeneratedTextureCoordinates&quot;</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;NodeSocketVector&#39;</span><span class="p">,</span> <span class="s1">&#39;Vector&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeSocketVector&quot;</span><span class="p">,</span> <span class="s2">&quot;Vector&quot;</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">geometry_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;ShaderNodeNewGeometry&#39;</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;ShaderNodeVectorTransform&#39;</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;ShaderNodeMapRange&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;ShaderNodeNewGeometry&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;ShaderNodeVectorTransform&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;ShaderNodeMapRange&quot;</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span><span class="o">.</span><span class="n">vector_type</span> <span class="o">=</span> <span class="s1">&#39;POINT&#39;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span><span class="o">.</span><span class="n">convert_from</span> <span class="o">=</span> <span class="s1">&#39;WORLD&#39;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span><span class="o">.</span><span class="n">convert_to</span> <span class="o">=</span> <span class="s1">&#39;OBJECT&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span><span class="o">.</span><span class="n">vector_type</span> <span class="o">=</span> <span class="s2">&quot;POINT&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span><span class="o">.</span><span class="n">convert_from</span> <span class="o">=</span> <span class="s2">&quot;WORLD&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span><span class="o">.</span><span class="n">convert_to</span> <span class="o">=</span> <span class="s2">&quot;OBJECT&quot;</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">clamp</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># avoid clamping to 0-1</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="s1">&#39;FLOAT_VECTOR&#39;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">register_bounds</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">bbox_min</span><span class="p">,</span> <span class="n">bbox_max</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">clamp</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># avoid clamping to 0-1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;FLOAT_VECTOR&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_bounds</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">bbox_min</span><span class="p">,</span> <span class="n">bbox_max</span><span class="p">)</span>
 
-		<span class="c1"># link everything up</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Position&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">])</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">])</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;Vector&#39;</span><span class="p">])</span>
+        <span class="c1"># link everything up</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">geometry_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Position&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Vector&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vec_transform_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Vector&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Vector&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Vector&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Vector&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">tidy</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tidy</span><span class="p">()</span></div>
 
 
-	<span class="k">def</span> <span class="nf">register_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">bbox_min</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">,</span> <span class="n">bbox_max</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
-		<span class="c1"># calculate bbox_min, bbox_max if not given</span>
-		<span class="k">if</span> <span class="n">mesh</span><span class="p">:</span>
-			<span class="n">bbox_min</span><span class="p">,</span> <span class="n">bbox_max</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_raw_bounds</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">register_bounds</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">bbox_min</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">,</span> <span class="n">bbox_max</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span>
+    <span class="p">):</span>
+        <span class="c1"># calculate bbox_min, bbox_max if not given</span>
+        <span class="k">if</span> <span class="n">mesh</span><span class="p">:</span>
+            <span class="n">bbox_min</span><span class="p">,</span> <span class="n">bbox_max</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_raw_bounds</span><span class="p">()</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">bbox_min</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">bbox_max</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">bbox_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_range_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">bbox_max</span></div>
 
 </pre></div>
 

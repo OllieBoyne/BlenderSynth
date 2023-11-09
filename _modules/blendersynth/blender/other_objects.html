@@ -107,41 +107,61 @@
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">types</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">GetNewObject</span>
 
+
 <div class="viewcode-block" id="Empty">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.other_objects.html#blendersynth.blender.other_objects.Empty">[docs]</a>
 <span class="k">class</span> <span class="nc">Empty</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_empty_in_blender</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">obj</span>
 
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-		<span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_empty_in_blender</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">obj</span>
-
-		<span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
 <div class="viewcode-block" id="Empty.create">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.other_objects.html#blendersynth.blender.other_objects.Empty.create">[docs]</a>
-	<span class="nd">@classmethod</span>
-	<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-			   <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Create and return a new Empty instance.&quot;&quot;&quot;</span>
-		<span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_create_empty_in_blender</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">rotation</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-		<span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create and return a new Empty instance.&quot;&quot;&quot;</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_create_empty_in_blender</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">rotation</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
 
-	<span class="nd">@staticmethod</span>
-	<span class="k">def</span> <span class="nf">_create_empty_in_blender</span><span class="p">(</span><span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-								 <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Private method to create and return a new Empty object in Blender.&quot;&quot;&quot;</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_create_empty_in_blender</span><span class="p">(</span>
+        <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Private method to create and return a new Empty object in Blender.&quot;&quot;&quot;</span>
 
-		<span class="n">importer</span> <span class="o">=</span> <span class="n">GetNewObject</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="p">)</span>
-		<span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="s1">&#39;rotation&#39;</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="s1">&#39;radius&#39;</span><span class="p">],</span>
-													<span class="p">[</span><span class="n">location</span><span class="p">,</span> <span class="n">rotation</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">radius</span><span class="p">])}}</span>
-		<span class="n">kwargs</span> <span class="o">=</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
-		<span class="k">with</span> <span class="n">importer</span><span class="p">:</span>
-			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">empty_add</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">importer</span> <span class="o">=</span> <span class="n">GetNewObject</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="o">**</span><span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                    <span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="s2">&quot;rotation&quot;</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">,</span> <span class="s2">&quot;radius&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">location</span><span class="p">,</span> <span class="n">rotation</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">radius</span><span class="p">],</span>
+                <span class="p">)</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+        <span class="k">with</span> <span class="n">importer</span><span class="p">:</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">empty_add</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-		<span class="k">return</span> <span class="n">importer</span><span class="o">.</span><span class="n">imported_obj</span></div>
+        <span class="k">return</span> <span class="n">importer</span><span class="o">.</span><span class="n">imported_obj</span></div>
 
 </pre></div>
 

@@ -116,107 +116,113 @@
 <div class="viewcode-block" id="NodeGroup">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.NodeGroup">[docs]</a>
 <span class="k">class</span> <span class="nc">NodeGroup</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Generic Node Group&quot;&quot;&quot;</span>
-	<span class="n">TYPE</span> <span class="o">=</span> <span class="s1">&#39;Compositor&#39;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic Node Group&quot;&quot;&quot;</span>
+
+    <span class="n">TYPE</span> <span class="o">=</span> <span class="s2">&quot;Compositor&quot;</span>
 
 <div class="viewcode-block" id="NodeGroup.__init__">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.NodeGroup.__init__">[docs]</a>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeTree</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		A generic NodeGroup class</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeTree</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A generic NodeGroup class</span>
 
-<span class="sd">		:param name: Name of node group</span>
-<span class="sd">		:param node_tree: NodeTree to add group to</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span> <span class="o">=</span> <span class="n">node_tree</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">node_groups</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">TYPE</span><span class="si">}</span><span class="s1">NodeTree&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+<span class="sd">        :param name: Name of node group</span>
+<span class="sd">        :param node_tree: NodeTree to add group to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span> <span class="o">=</span> <span class="n">node_tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">node_groups</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">TYPE</span><span class="si">}</span><span class="s2">NodeTree&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">gn</span> <span class="o">=</span> <span class="n">group_node</span> <span class="o">=</span> <span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">TYPE</span><span class="si">}</span><span class="s2">NodeGroup&quot;</span><span class="p">)</span>
-		<span class="n">group_node</span><span class="o">.</span><span class="n">node_tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gn</span> <span class="o">=</span> <span class="n">group_node</span> <span class="o">=</span> <span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">TYPE</span><span class="si">}</span><span class="s2">NodeGroup&quot;</span><span class="p">)</span>
+        <span class="n">group_node</span><span class="o">.</span><span class="n">node_tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">input_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeGroupInput&quot;</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">output_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeGroupOutput&quot;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeGroupInput&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeGroupOutput&quot;</span><span class="p">)</span></div>
 
 
-	<span class="k">def</span> <span class="nf">tidy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">tidy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">)</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Input sockets&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gn</span><span class="o">.</span><span class="n">inputs</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Input sockets&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gn</span><span class="o">.</span><span class="n">inputs</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Output sockets&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gn</span><span class="o">.</span><span class="n">outputs</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Output sockets&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gn</span><span class="o">.</span><span class="n">outputs</span>
 
 <div class="viewcode-block" id="NodeGroup.input">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.NodeGroup.input">[docs]</a>
-	<span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocket</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Get input socket by name&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+    <span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocket</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get input socket by name&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="NodeGroup.output">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.NodeGroup.output">[docs]</a>
-	<span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocket</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Get output socket by name&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocket</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get output socket by name&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="NodeGroup.add_node">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.NodeGroup.add_node">[docs]</a>
-	<span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Node</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Create a new node in the group by name&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Node</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new node in the group by name&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="NodeGroup.link">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.NodeGroup.link">[docs]</a>
-	<span class="k">def</span> <span class="nf">link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_socket</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocket</span><span class="p">,</span> <span class="n">to_socket</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocket</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeLink</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Link two sockets in the group</span>
+    <span class="k">def</span> <span class="nf">link</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">from_socket</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocket</span><span class="p">,</span> <span class="n">to_socket</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeSocket</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeLink</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Link two sockets in the group</span>
 
-<span class="sd">		:param from_socket: Socket to link from</span>
-<span class="sd">		:param to_socket: Socket to link to</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">from_socket</span><span class="p">,</span> <span class="n">to_socket</span><span class="p">)</span></div>
+<span class="sd">        :param from_socket: Socket to link from</span>
+<span class="sd">        :param to_socket: Socket to link to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">from_socket</span><span class="p">,</span> <span class="n">to_socket</span><span class="p">)</span></div>
 
 
-	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">TYPE</span><span class="si">}</span><span class="s2">NodeGroup(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">TYPE</span><span class="si">}</span><span class="s2">NodeGroup(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span>
 
-	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-		<span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">pass</span>
 
 <div class="viewcode-block" id="NodeGroup.save_image">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.NodeGroup.save_image">[docs]</a>
-	<span class="k">def</span> <span class="nf">save_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">image_data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Save an image to a location. Will also reload any node reference to the image.</span>
+    <span class="k">def</span> <span class="nf">save_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">image_data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save an image to a location. Will also reload any node reference to the image.</span>
 
-<span class="sd">		:param loc: Location to save image to&quot;&quot;&quot;</span>
-		<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">image_data</span><span class="p">)</span>
-		<span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
-			<span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">fname</span><span class="p">]</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span></div>
+<span class="sd">        :param loc: Location to save image to&quot;&quot;&quot;</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">image_data</span><span class="p">)</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">fname</span><span class="p">]</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span></div>
 </div>
+
 
 
 <div class="viewcode-block" id="CompositorNodeGroup">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup">[docs]</a>
 <span class="k">class</span> <span class="nc">CompositorNodeGroup</span><span class="p">(</span><span class="n">NodeGroup</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Node Group for use in the compositor&quot;&quot;&quot;</span>
-	<span class="n">TYPE</span> <span class="o">=</span> <span class="s1">&#39;Compositor&#39;</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Node Group for use in the compositor&quot;&quot;&quot;</span>
+
+    <span class="n">TYPE</span> <span class="o">=</span> <span class="s2">&quot;Compositor&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="ShaderNodeGroup">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.ShaderNodeGroup">[docs]</a>
 <span class="k">class</span> <span class="nc">ShaderNodeGroup</span><span class="p">(</span><span class="n">NodeGroup</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Node Group for use in the shader editor&quot;&quot;&quot;</span>
-	<span class="n">TYPE</span> <span class="o">=</span> <span class="s1">&#39;Shader&#39;</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Node Group for use in the shader editor&quot;&quot;&quot;</span>
+
+    <span class="n">TYPE</span> <span class="o">=</span> <span class="s2">&quot;Shader&quot;</span></div>
 
 </pre></div>
 

@@ -111,92 +111,102 @@
 
 <span class="c1"># no-inherited-members</span>
 
+
 <span class="k">def</span> <span class="nf">_isgpu</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
-	<span class="k">return</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;CUDA&#39;</span><span class="p">,</span> <span class="s1">&#39;OPENCL&#39;</span><span class="p">,</span> <span class="s1">&#39;METAL&#39;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;CUDA&quot;</span><span class="p">,</span> <span class="s2">&quot;OPENCL&quot;</span><span class="p">,</span> <span class="s2">&quot;METAL&quot;</span><span class="p">}</span>
 
 
 <div class="viewcode-block" id="DeviceList">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.devices.html#blendersynth.blender.devices.DeviceList">[docs]</a>
 <span class="k">class</span> <span class="nc">DeviceList</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return the names of all devices.&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="p">[</span><span class="n">device</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span></div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the names of all devices.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">device</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span></div>
 
 
 
 <div class="viewcode-block" id="Devices">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.devices.html#blendersynth.blender.devices.Devices">[docs]</a>
 <span class="k">class</span> <span class="nc">Devices</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;A manager for Blender rendering devices (CPU &amp; GPU).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A manager for Blender rendering devices (CPU &amp; GPU).&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">device_list</span> <span class="o">=</span> <span class="n">DeviceList</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">addons</span><span class="p">[</span><span class="s1">&#39;cycles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">devices</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span> <span class="o">=</span> <span class="n">DeviceList</span><span class="p">(</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">addons</span><span class="p">[</span><span class="s2">&quot;cycles&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">devices</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="Devices.set_device_usage">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.devices.html#blendersynth.blender.devices.Devices.set_device_usage">[docs]</a>
-	<span class="k">def</span> <span class="nf">set_device_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">cuda</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-						 <span class="n">opencl</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">metal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set/unset all devices of certain types to enabled.</span>
+    <span class="k">def</span> <span class="nf">set_device_usage</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">cpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">cuda</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">opencl</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">metal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set/unset all devices of certain types to enabled.</span>
 
-<span class="sd">		:param cpu: Enable/disable CPU devices</span>
-<span class="sd">		:param cuda: Enable/disable CUDA devices</span>
-<span class="sd">		:param opencl: Enable/disable OpenCL devices</span>
-<span class="sd">		:param metal: Enable/disable Metal devices</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param cpu: Enable/disable CPU devices</span>
+<span class="sd">        :param cuda: Enable/disable CUDA devices</span>
+<span class="sd">        :param opencl: Enable/disable OpenCL devices</span>
+<span class="sd">        :param metal: Enable/disable Metal devices</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span><span class="p">:</span>
-			<span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;CPU&#39;</span><span class="p">:</span>
-				<span class="n">device</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="n">cpu</span>
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;CPU&quot;</span><span class="p">:</span>
+                <span class="n">device</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="n">cpu</span>
 
-			<span class="k">elif</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;CUDA&#39;</span><span class="p">:</span>
-				<span class="n">device</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="n">cuda</span>
+            <span class="k">elif</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;CUDA&quot;</span><span class="p">:</span>
+                <span class="n">device</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="n">cuda</span>
 
-			<span class="k">elif</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;OPENCL&#39;</span><span class="p">:</span>
-				<span class="n">device</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="n">opencl</span>
+            <span class="k">elif</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;OPENCL&quot;</span><span class="p">:</span>
+                <span class="n">device</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="n">opencl</span>
 
-			<span class="k">elif</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;METAL&#39;</span><span class="p">:</span>
-				<span class="n">device</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="n">metal</span>
+            <span class="k">elif</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;METAL&quot;</span><span class="p">:</span>
+                <span class="n">device</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="n">metal</span>
 
-			<span class="k">else</span><span class="p">:</span>
-				<span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown device type </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown device type </span><span class="si">{</span><span class="n">device</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">available_gpus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceList</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return list of all GPU devices.&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="n">DeviceList</span><span class="p">(</span><span class="n">device</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span> <span class="k">if</span> <span class="n">_isgpu</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">available_gpus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceList</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of all GPU devices.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">DeviceList</span><span class="p">(</span><span class="n">device</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span> <span class="k">if</span> <span class="n">_isgpu</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">enabled_gpus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceList</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return list of available GPU devices.&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="n">DeviceList</span><span class="p">(</span><span class="n">device</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gpus</span> <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">use</span><span class="p">)</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">enabled_gpus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceList</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of available GPU devices.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">DeviceList</span><span class="p">(</span><span class="n">device</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gpus</span> <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">use</span><span class="p">)</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">device_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return a list of all device names.&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span><span class="o">.</span><span class="n">names</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">device_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of all device names.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span><span class="o">.</span><span class="n">names</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">enabled_device_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return a list of named devices that are enabled.&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="p">[</span><span class="n">device</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span> <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">use</span><span class="p">]</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">enabled_device_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of named devices that are enabled.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">device</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span> <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">use</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Devices.set_by_name">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.devices.html#blendersynth.blender.devices.Devices.set_by_name">[docs]</a>
-	<span class="k">def</span> <span class="nf">set_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set use/not use based on a device name.</span>
+    <span class="k">def</span> <span class="nf">set_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set use/not use based on a device name.</span>
 
-<span class="sd">		:param name: Device name</span>
-<span class="sd">		:param use: Whether to use the device or not</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param name: Device name</span>
+<span class="sd">        :param use: Whether to use the device or not</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span><span class="p">:</span>
-			<span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
-				<span class="n">device</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="n">use</span>
-				<span class="k">return</span>
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="n">device</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="n">use</span>
+                <span class="k">return</span>
 
-		<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No device named </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">. Available devices: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">device_names</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;No device named </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">. Available devices: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">device_names</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
 </div>
 
 </pre></div>

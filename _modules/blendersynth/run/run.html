@@ -112,126 +112,160 @@
 <span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">platform</span>
 
 <span class="k">if</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux&quot;</span> <span class="ow">or</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux2&quot;</span> <span class="ow">or</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;darwin&quot;</span><span class="p">:</span>
-	<span class="n">nul_text</span> <span class="o">=</span> <span class="s1">&#39;/dev/null&#39;</span>
+    <span class="n">nul_text</span> <span class="o">=</span> <span class="s2">&quot;/dev/null&quot;</span>
 <span class="k">elif</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
-	<span class="n">nul_text</span> <span class="o">=</span> <span class="s1">&#39;nul&#39;</span>
+    <span class="n">nul_text</span> <span class="o">=</span> <span class="s2">&quot;nul&quot;</span>
 
 
 <div class="viewcode-block" id="BlenderCommand">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand">[docs]</a>
 <span class="k">class</span> <span class="nc">BlenderCommand</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Construct command for running blender script&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct command for running blender script&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blender_loc</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">blender_loc</span> <span class="o">=</span> <span class="n">blender_loc</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">background</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="p">[</span><span class="n">blender_loc</span><span class="p">,</span> <span class="s2">&quot;--background&quot;</span> <span class="k">if</span> <span class="n">background</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blender_loc</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blender_loc</span> <span class="o">=</span> <span class="n">blender_loc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">background</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="p">[</span><span class="n">blender_loc</span><span class="p">,</span> <span class="s2">&quot;--background&quot;</span> <span class="k">if</span> <span class="n">background</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
 
-	<span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-		<span class="n">command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;--python&quot;</span><span class="p">,</span> <span class="n">script</span><span class="p">]</span>
-		<span class="n">command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--&quot;</span><span class="p">]</span>
-		<span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-			<span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;--python&quot;</span><span class="p">,</span> <span class="n">script</span><span class="p">]</span>
+        <span class="n">command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-		<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-			<span class="n">command</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;--</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">command</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;--</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="n">command</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="n">command</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span>
 
 <div class="viewcode-block" id="BlenderCommand.copy">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand.copy">[docs]</a>
-	<span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return a copy of the command&quot;&quot;&quot;</span>
-		<span class="n">cmd</span> <span class="o">=</span> <span class="n">BlenderCommand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blender_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="p">)</span>
-		<span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">]</span>
-		<span class="k">return</span> <span class="n">cmd</span></div>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a copy of the command&quot;&quot;&quot;</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">BlenderCommand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blender_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="p">)</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">cmd</span></div>
 
 
 <div class="viewcode-block" id="BlenderCommand.set_job">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand.set_job">[docs]</a>
-	<span class="k">def</span> <span class="nf">set_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_list</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Receives list of json files, adds as , separated string to command&quot;&quot;&quot;</span>
-		<span class="n">cmd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-		<span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--jobs&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">job_list</span><span class="p">)]</span>
-		<span class="k">return</span> <span class="n">cmd</span></div>
+    <span class="k">def</span> <span class="nf">set_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_list</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Receives list of json files, adds as , separated string to command&quot;&quot;&quot;</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--jobs&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">job_list</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">cmd</span></div>
 
 
 <div class="viewcode-block" id="BlenderCommand.set_logger">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand.set_logger">[docs]</a>
-	<span class="k">def</span> <span class="nf">set_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set file for logging&quot;&quot;&quot;</span>
-		<span class="n">cmd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-		<span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--log&quot;</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">]</span>
-		<span class="k">return</span> <span class="n">cmd</span></div>
+    <span class="k">def</span> <span class="nf">set_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set file for logging&quot;&quot;&quot;</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--log&quot;</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">cmd</span></div>
 </div>
 
 
 
 <span class="k">class</span> <span class="nc">Runner</span><span class="p">:</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="n">jsons</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-				 <span class="n">print_to_stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distributed</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-				 <span class="o">**</span><span class="n">script_kwargs</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		:param jsons: N sized list of .json files, each with info about the given job</span>
-<span class="sd">		:param num_threads: threads to run in parallel (default = 1)</span>
-<span class="sd">		:param distributed: tuple of (machine index, total machines) for distributed rendering</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">script</span><span class="p">,</span>
+        <span class="n">jsons</span><span class="p">,</span>
+        <span class="n">output_directory</span><span class="p">,</span>
+        <span class="n">num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">print_to_stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">distributed</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">script_kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param jsons: N sized list of .json files, each with info about the given job</span>
+<span class="sd">        :param num_threads: threads to run in parallel (default = 1)</span>
+<span class="sd">        :param distributed: tuple of (machine index, total machines) for distributed rendering</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="c1"># if distributed, split jsons into chunks</span>
-		<span class="k">if</span> <span class="n">distributed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">machine_index</span><span class="p">,</span> <span class="n">total_machines</span> <span class="o">=</span> <span class="n">distributed</span>
-			<span class="k">assert</span> <span class="n">machine_index</span> <span class="o">&lt;</span> <span class="n">total_machines</span><span class="p">,</span> <span class="s2">&quot;machine_index must be less than total_machines&quot;</span>
-			<span class="n">jsons</span> <span class="o">=</span> <span class="n">_list_split</span><span class="p">(</span><span class="n">jsons</span><span class="p">,</span> <span class="n">total_machines</span><span class="p">)[</span><span class="n">machine_index</span><span class="p">]</span>
+        <span class="c1"># if distributed, split jsons into chunks</span>
+        <span class="k">if</span> <span class="n">distributed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">machine_index</span><span class="p">,</span> <span class="n">total_machines</span> <span class="o">=</span> <span class="n">distributed</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">machine_index</span> <span class="o">&lt;</span> <span class="n">total_machines</span>
+            <span class="p">),</span> <span class="s2">&quot;machine_index must be less than total_machines&quot;</span>
+            <span class="n">jsons</span> <span class="o">=</span> <span class="n">_list_split</span><span class="p">(</span><span class="n">jsons</span><span class="p">,</span> <span class="n">total_machines</span><span class="p">)[</span><span class="n">machine_index</span><span class="p">]</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">jsons</span> <span class="o">=</span> <span class="n">jsons</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span> <span class="o">=</span> <span class="n">num_threads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jsons</span> <span class="o">=</span> <span class="n">jsons</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span> <span class="o">=</span> <span class="n">num_threads</span>
 
-		<span class="c1"># Split the jsons into num_threads chunks</span>
-		<span class="n">json_chunks</span> <span class="o">=</span> <span class="n">_list_split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jsons</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">)</span>
+        <span class="c1"># Split the jsons into num_threads chunks</span>
+        <span class="n">json_chunks</span> <span class="o">=</span> <span class="n">_list_split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jsons</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">)</span>
 
-		<span class="n">blender_loc</span> <span class="o">=</span> <span class="n">get_blender_path</span><span class="p">()</span>
-		<span class="n">command</span> <span class="o">=</span> <span class="n">BlenderCommand</span><span class="p">(</span><span class="n">blender_loc</span><span class="o">=</span><span class="n">blender_loc</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-		<span class="n">command</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">script</span><span class="o">=</span><span class="n">script</span><span class="p">,</span> <span class="o">**</span><span class="n">script_kwargs</span><span class="p">)</span>
+        <span class="n">blender_loc</span> <span class="o">=</span> <span class="n">get_blender_path</span><span class="p">()</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="n">BlenderCommand</span><span class="p">(</span><span class="n">blender_loc</span><span class="o">=</span><span class="n">blender_loc</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">command</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">script</span><span class="o">=</span><span class="n">script</span><span class="p">,</span> <span class="o">**</span><span class="n">script_kwargs</span><span class="p">)</span>
 
-		<span class="n">thread_manager</span> <span class="o">=</span> <span class="n">BlenderThreadManager</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">json_chunks</span><span class="p">,</span> <span class="n">print_to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
-											  <span class="n">output_directory</span><span class="o">=</span><span class="n">output_directory</span><span class="p">,</span>
-											  <span class="n">script_directory</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">script</span><span class="p">))</span>
+        <span class="n">thread_manager</span> <span class="o">=</span> <span class="n">BlenderThreadManager</span><span class="p">(</span>
+            <span class="n">command</span><span class="p">,</span>
+            <span class="n">json_chunks</span><span class="p">,</span>
+            <span class="n">print_to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
+            <span class="n">output_directory</span><span class="o">=</span><span class="n">output_directory</span><span class="p">,</span>
+            <span class="n">script_directory</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">script</span><span class="p">),</span>
+        <span class="p">)</span>
 
-		<span class="n">thread_manager</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">thread_manager</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="execute_jobs">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.execute_jobs">[docs]</a>
-<span class="k">def</span> <span class="nf">execute_jobs</span><span class="p">(</span><span class="n">script</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">json_src</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">num_threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-				 <span class="n">print_to_stdout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">distributed</span><span class="p">:</span><span class="nb">tuple</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">script_kwargs</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Execute a script, given a list of jobs to execute.</span>
+<span class="k">def</span> <span class="nf">execute_jobs</span><span class="p">(</span>
+    <span class="n">script</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">json_src</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">num_threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">print_to_stdout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">distributed</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">script_kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Execute a script, given a list of jobs to execute.</span>
 
-<span class="sd">	:param script: path to script to execute</span>
-<span class="sd">	:param json_src: N sized list of .json files, each with info about the given job. OR a directory containing .json files,</span>
-<span class="sd">		which will be used as the jsons</span>
-<span class="sd">	:param output_directory: directory to save output files</span>
-<span class="sd">	:param num_threads: threads to run in parallel (default = 1)</span>
-<span class="sd">	:param print_to_stdout: If True, print to stdout instead of saving to file</span>
-<span class="sd">	:param distributed: tuple of (machine index, total machines) for distributed rendering</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">    :param script: path to script to execute</span>
+<span class="sd">    :param json_src: N sized list of .json files, each with info about the given job. OR a directory containing .json files,</span>
+<span class="sd">            which will be used as the jsons</span>
+<span class="sd">    :param output_directory: directory to save output files</span>
+<span class="sd">    :param num_threads: threads to run in parallel (default = 1)</span>
+<span class="sd">    :param print_to_stdout: If True, print to stdout instead of saving to file</span>
+<span class="sd">    :param distributed: tuple of (machine index, total machines) for distributed rendering</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-	<span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span><span class="n">num_threads</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">print_to_stdout</span><span class="p">),</span> <span class="s2">&quot;Cannot print to stdout with multiple threads&quot;</span>
-	<span class="k">if</span> <span class="n">print_to_stdout</span><span class="p">:</span>
-		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Print to stdout not supported yet.&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span>
+        <span class="n">num_threads</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">print_to_stdout</span>
+    <span class="p">),</span> <span class="s2">&quot;Cannot print to stdout with multiple threads&quot;</span>
+    <span class="k">if</span> <span class="n">print_to_stdout</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Print to stdout not supported yet.&quot;</span><span class="p">)</span>
 
-	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">json_src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-		<span class="n">json_src</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">json_src</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">json_src</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">)])</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">json_src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">json_src</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">json_src</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">json_src</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
-	<span class="n">Runner</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="n">json_src</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">num_threads</span><span class="p">,</span> <span class="n">print_to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
-			<span class="n">distributed</span><span class="o">=</span><span class="n">distributed</span><span class="p">,</span>
-		   <span class="o">**</span><span class="n">script_kwargs</span><span class="p">)</span>
+    <span class="n">Runner</span><span class="p">(</span>
+        <span class="n">script</span><span class="p">,</span>
+        <span class="n">json_src</span><span class="p">,</span>
+        <span class="n">output_directory</span><span class="p">,</span>
+        <span class="n">num_threads</span><span class="p">,</span>
+        <span class="n">print_to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
+        <span class="n">distributed</span><span class="o">=</span><span class="n">distributed</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">script_kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
 
-	<span class="n">cleanup</span><span class="p">()</span></div>
+    <span class="n">cleanup</span><span class="p">()</span></div>
 
 </pre></div>
 

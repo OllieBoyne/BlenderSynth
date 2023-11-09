@@ -110,45 +110,58 @@
 
 <div class="viewcode-block" id="project_point_to_image">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.utils.html#blendersynth.annotations.utils.project_point_to_image">[docs]</a>
-<span class="k">def</span> <span class="nf">project_point_to_image</span><span class="p">(</span><span class="n">P</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">,</span> <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="p">,</span>
-						   <span class="n">camera</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span><span class="p">,</span> <span class="n">invert_y</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Return 2D (x, y) image coordinates of a 3D point P.</span>
+<span class="k">def</span> <span class="nf">project_point_to_image</span><span class="p">(</span>
+    <span class="n">P</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">,</span>
+    <span class="n">scene</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="p">,</span>
+    <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span><span class="p">,</span>
+    <span class="n">invert_y</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return 2D (x, y) image coordinates of a 3D point P.</span>
 
-<span class="sd">	:param P: 3D point</span>
-<span class="sd">	:param scene: Blender scene</span>
-<span class="sd">	:param camera: Camera to project through</span>
-<span class="sd">	:param invert_y: if True, y is measured from the top of the image, otherwise from the bottom (Blender measures from bottom)&quot;&quot;&quot;</span>
+<span class="sd">    :param P: 3D point</span>
+<span class="sd">    :param scene: Blender scene</span>
+<span class="sd">    :param camera: Camera to project through</span>
+<span class="sd">    :param invert_y: if True, y is measured from the top of the image, otherwise from the bottom (Blender measures from bottom)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-	<span class="n">ndc_x</span><span class="p">,</span> <span class="n">ndc_y</span><span class="p">,</span> <span class="n">ndc_depth</span> <span class="o">=</span> <span class="n">world_to_camera_view</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>  <span class="c1"># normalized device coords</span>
-	<span class="n">imgx</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span> <span class="o">*</span> <span class="n">ndc_x</span>
+    <span class="n">ndc_x</span><span class="p">,</span> <span class="n">ndc_y</span><span class="p">,</span> <span class="n">ndc_depth</span> <span class="o">=</span> <span class="n">world_to_camera_view</span><span class="p">(</span>
+        <span class="n">scene</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">P</span>
+    <span class="p">)</span>  <span class="c1"># normalized device coords</span>
+    <span class="n">imgx</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span> <span class="o">*</span> <span class="n">ndc_x</span>
 
-	<span class="k">if</span> <span class="n">invert_y</span><span class="p">:</span>
-		<span class="n">imgy</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ndc_y</span><span class="p">)</span>  <span class="c1"># ndc_y measured from bottom</span>
-	<span class="k">else</span><span class="p">:</span>
-		<span class="n">imgy</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span> <span class="o">*</span> <span class="n">ndc_y</span>
+    <span class="k">if</span> <span class="n">invert_y</span><span class="p">:</span>
+        <span class="n">imgy</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ndc_y</span><span class="p">)</span>  <span class="c1"># ndc_y measured from bottom</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">imgy</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span> <span class="o">*</span> <span class="n">ndc_y</span>
 
-
-	<span class="k">return</span> <span class="n">imgx</span><span class="p">,</span> <span class="n">imgy</span></div>
+    <span class="k">return</span> <span class="n">imgx</span><span class="p">,</span> <span class="n">imgy</span></div>
 
 
 
 <div class="viewcode-block" id="project_points">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.utils.html#blendersynth.annotations.utils.project_points">[docs]</a>
-<span class="k">def</span> <span class="nf">project_points</span><span class="p">(</span><span class="n">points</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scene</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="p">,</span> <span class="n">camera</span><span class="p">:</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span><span class="p">,</span> <span class="n">invert_y</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Project points to image plane.</span>
+<span class="k">def</span> <span class="nf">project_points</span><span class="p">(</span>
+    <span class="n">points</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">scene</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span><span class="p">,</span>
+    <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span><span class="p">,</span>
+    <span class="n">invert_y</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Project points to image plane.</span>
 
-<span class="sd">	:param points: Nx3 matrix of points</span>
-<span class="sd">	:param scene: Blender scene</span>
-<span class="sd">	:param camera: Camera to project through</span>
-<span class="sd">	:param invert_y: if True, y is measured from the top of the image, otherwise from the bottom</span>
+<span class="sd">    :param points: Nx3 matrix of points</span>
+<span class="sd">    :param scene: Blender scene</span>
+<span class="sd">    :param camera: Camera to project through</span>
+<span class="sd">    :param invert_y: if True, y is measured from the top of the image, otherwise from the bottom</span>
 
-<span class="sd">	:return: Nx2 matrix of 2D image coordinates&quot;&quot;&quot;</span>
-	<span class="n">coords_2d</span> <span class="o">=</span> <span class="p">[]</span>
-	<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
-		<span class="n">p_vec</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="p">,))</span>
-		<span class="n">coords_2d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project_point_to_image</span><span class="p">(</span><span class="n">p_vec</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">invert_y</span><span class="o">=</span><span class="n">invert_y</span><span class="p">))</span>
+<span class="sd">    :return: Nx2 matrix of 2D image coordinates&quot;&quot;&quot;</span>
+    <span class="n">coords_2d</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+        <span class="n">p_vec</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="p">,))</span>
+        <span class="n">coords_2d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">project_point_to_image</span><span class="p">(</span><span class="n">p_vec</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">invert_y</span><span class="o">=</span><span class="n">invert_y</span><span class="p">)</span>
+        <span class="p">)</span>
 
-	<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coords_2d</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coords_2d</span><span class="p">)</span></div>
 
 </pre></div>
 

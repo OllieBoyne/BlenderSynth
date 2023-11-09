@@ -103,7 +103,13 @@
              
   <h1>Source code for blendersynth.blender.bsyn_object</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Base class for all BlenderSynth objects.&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">handle_vec</span><span class="p">,</span> <span class="n">SelectObjects</span><span class="p">,</span> <span class="n">_euler_add</span><span class="p">,</span> <span class="n">animatable_property</span><span class="p">,</span> <span class="n">_euler_invert</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">handle_vec</span><span class="p">,</span>
+    <span class="n">SelectObjects</span><span class="p">,</span>
+    <span class="n">_euler_add</span><span class="p">,</span>
+    <span class="n">animatable_property</span><span class="p">,</span>
+    <span class="n">_euler_invert</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">mathutils</span> <span class="kn">import</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">Euler</span><span class="p">,</span> <span class="n">Matrix</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">bpy</span>
@@ -114,266 +120,288 @@
 
 <span class="c1"># for documentation, import these types</span>
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-	<span class="kn">from</span> <span class="nn">.curve</span> <span class="kn">import</span> <span class="n">Curve</span>
-
+    <span class="kn">from</span> <span class="nn">.curve</span> <span class="kn">import</span> <span class="n">Curve</span>
 
 
 <div class="viewcode-block" id="BsynObject">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject">[docs]</a>
 <span class="k">class</span> <span class="nc">BsynObject</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Generic class for BlenderSynth objects.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic class for BlenderSynth objects.</span>
 
-<span class="sd">	Assigned an .obj (eg bpy.types.Mesh for a Mesh) which is the main Blender object it represents.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="n">_object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># corresponding blender object</span>
+<span class="sd">    Assigned an .obj (eg bpy.types.Mesh for a Mesh) which is the main Blender object it represents.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">obj</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;self._object not set. Ensure it is set in the Object&#39;s __init__ function.&quot;</span><span class="p">)</span>
+    <span class="n">_object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># corresponding blender object</span>
 
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">obj</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;self._object not set. Ensure it is set in the Object&#39;s __init__ function.&quot;</span>
+            <span class="p">)</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">ID</span><span class="p">:</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">data</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">ID</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">data</span>
 
 <div class="viewcode-block" id="BsynObject.remove">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.remove">[docs]</a>
-	<span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Delete .obj from bpy.data if it exists&quot;&quot;&quot;</span>
-		<span class="k">try</span><span class="p">:</span>
-			<span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
-		<span class="k">except</span> <span class="ne">ReferenceError</span><span class="p">:</span>
-			<span class="k">pass</span></div>
+    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete .obj from bpy.data if it exists&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ReferenceError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
 
 
-	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="c1">#   ---&gt; not currently needed, may be needed in the future</span>
-		<span class="c1"># 	&quot;&quot;&quot;On any update, run this. For most objects, this is a no-op, but for some objects,</span>
-		<span class="c1"># 	this is necessary to update the object&#39;s state. e.g. Camera&quot;&quot;&quot;</span>
-		<span class="k">return</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#   ---&gt; not currently needed, may be needed in the future</span>
+        <span class="c1"># 	&quot;&quot;&quot;On any update, run this. For most objects, this is a no-op, but for some objects,</span>
+        <span class="c1"># 	this is necessary to update the object&#39;s state. e.g. Camera&quot;&quot;&quot;</span>
+        <span class="k">return</span>
 
-	<span class="k">def</span> <span class="nf">_keyframe_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span><span class="o">.</span><span class="n">keyframe_delete</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_keyframe_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object</span><span class="o">.</span><span class="n">keyframe_delete</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">_keyframe_insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_keyframe_insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">_all_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;List of all objects associated with this object.&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">]</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_all_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List of all objects associated with this object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">]</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">origin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">origin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Location of object&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">location</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Location of object&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">location</span>
 
-	<span class="nd">@location</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="nd">@location</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Euler</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Rotation in euler XYZ angles&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Euler</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotation in euler XYZ angles&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span>
 
-	<span class="nd">@rotation_euler</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="nd">@rotation_euler</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">scale</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">scale</span>
 
-	<span class="nd">@scale</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+    <span class="nd">@scale</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
 
-	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set location of object.</span>
+    <span class="nd">@animatable_property</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set location of object.</span>
 
-<span class="sd">		:param location: Location vector to set&quot;&quot;&quot;</span>
-		<span class="n">location</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="sd">        :param location: Location vector to set&quot;&quot;&quot;</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
-		<span class="n">translation</span> <span class="o">=</span> <span class="n">location</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
-		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
-			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">translation</span><span class="p">)</span>
+        <span class="n">translation</span> <span class="o">=</span> <span class="n">location</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+        <span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">translation</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">_apply_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rot</span><span class="p">):</span>
-		<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="s1">&#39;XYZ&#39;</span><span class="p">,</span> <span class="n">rot</span><span class="p">):</span>
-			<span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-				<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">orient_axis</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">orient_type</span><span class="o">=</span><span class="s1">&#39;GLOBAL&#39;</span><span class="p">,</span>
-										 <span class="n">constraint_axis</span><span class="o">=</span><span class="p">[</span><span class="n">ax</span> <span class="o">==</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">==</span> <span class="s1">&#39;Z&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">_apply_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rot</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">,</span> <span class="n">rot</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">val</span><span class="p">,</span>
+                    <span class="n">orient_axis</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                    <span class="n">orient_type</span><span class="o">=</span><span class="s2">&quot;GLOBAL&quot;</span><span class="p">,</span>
+                    <span class="n">constraint_axis</span><span class="o">=</span><span class="p">[</span><span class="n">ax</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">==</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span><span class="p">],</span>
+                <span class="p">)</span>
 
-	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;rotation_euler&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set euler rotation of object.</span>
+    <span class="nd">@animatable_property</span><span class="p">(</span><span class="s2">&quot;rotation_euler&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">set_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set euler rotation of object.</span>
 
-<span class="sd">		:param rotation: Rotation vector&quot;&quot;&quot;</span>
+<span class="sd">        :param rotation: Rotation vector&quot;&quot;&quot;</span>
 
-		<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Rotation must be a tuple of length 3, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-		<span class="n">rotation</span> <span class="o">=</span> <span class="n">Euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="s1">&#39;XYZ&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Rotation must be a tuple of length 3, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">rotation</span> <span class="o">=</span> <span class="n">Euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="s2">&quot;XYZ&quot;</span><span class="p">)</span>
 
-		<span class="c1"># to avoid dealing with rotation calculations, we first rotate to the origin, then rotate to the new rotation</span>
-		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">_apply_rotation</span><span class="p">(</span><span class="n">_euler_invert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span><span class="p">))</span>  <span class="c1"># invert current rotation</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">_apply_rotation</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span>  <span class="c1"># apply new rotation</span>
+        <span class="c1"># to avoid dealing with rotation calculations, we first rotate to the origin, then rotate to the new rotation</span>
+        <span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_apply_rotation</span><span class="p">(</span>
+                <span class="n">_euler_invert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span><span class="p">)</span>
+            <span class="p">)</span>  <span class="c1"># invert current rotation</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_apply_rotation</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span>  <span class="c1"># apply new rotation</span>
 
-	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeOrScalar</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set scale of object.</span>
+    <span class="nd">@animatable_property</span><span class="p">(</span><span class="s2">&quot;scale&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeOrScalar</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set scale of object.</span>
 
-<span class="sd">		:param scale: Scale to set. Either single value or 3 long vector&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-			<span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+<span class="sd">        :param scale: Scale to set. Either single value or 3 long vector&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 
-		<span class="n">resize_fac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+        <span class="n">resize_fac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
 
-		<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
-			<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">resize_fac</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">resize_fac</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BsynObject.translate">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.translate">[docs]</a>
-	<span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">translation</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Translate object&quot;&quot;&quot;</span>
-		<span class="n">translation</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">translation</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">+</span> <span class="n">translation</span></div>
+    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">translation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Translate object&quot;&quot;&quot;</span>
+        <span class="n">translation</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">translation</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">+</span> <span class="n">translation</span></div>
 
 
 <div class="viewcode-block" id="BsynObject.rotate_by">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.rotate_by">[docs]</a>
-	<span class="k">def</span> <span class="nf">rotate_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Add a rotation to the object. Must be in XYZ order, euler angles, radians.&quot;&quot;&quot;</span>
-		<span class="n">rotation</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-		<span class="n">new_rotation</span> <span class="o">=</span> <span class="n">_euler_add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span><span class="p">,</span> <span class="n">Euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="s1">&#39;XYZ&#39;</span><span class="p">))</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">new_rotation</span></div>
+    <span class="k">def</span> <span class="nf">rotate_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a rotation to the object. Must be in XYZ order, euler angles, radians.&quot;&quot;&quot;</span>
+        <span class="n">rotation</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">new_rotation</span> <span class="o">=</span> <span class="n">_euler_add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span><span class="p">,</span> <span class="n">Euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="s2">&quot;XYZ&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">new_rotation</span></div>
 
 
 <div class="viewcode-block" id="BsynObject.scale_by">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.scale_by">[docs]</a>
-	<span class="k">def</span> <span class="nf">scale_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Scale object&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-			<span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">scale_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Scale object&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 
-		<span class="n">scale</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">*=</span> <span class="n">scale</span></div>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">handle_vec</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">*=</span> <span class="n">scale</span></div>
 
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">matrix_world</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return world matrix of object(s).&quot;&quot;&quot;</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">evaluated_depsgraph_get</span><span class="p">()</span>  <span class="c1"># required to update object matrix</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">matrix_world</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">matrix_world</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return world matrix of object(s).&quot;&quot;&quot;</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">evaluated_depsgraph_get</span><span class="p">()</span>  <span class="c1"># required to update object matrix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">matrix_world</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">axes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return 3x3 rotation matrix (normalized) to represent axes&quot;&quot;&quot;</span>
-		<span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="p">)[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
-		<span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-		<span class="k">return</span> <span class="n">mat</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">axes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return 3x3 rotation matrix (normalized) to represent axes&quot;&quot;&quot;</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="p">)[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mat</span>
 
 <div class="viewcode-block" id="BsynObject.track_to">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.track_to">[docs]</a>
-	<span class="k">def</span> <span class="nf">track_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;BsynObject&#39;</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Track to object.</span>
+    <span class="k">def</span> <span class="nf">track_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;BsynObject&quot;</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Track to object.</span>
 
-<span class="sd">		:param obj: BsynObject or Blender Object to track to</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param obj: BsynObject or Blender Object to track to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">BsynObject</span><span class="p">):</span>
-			<span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">obj</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">BsynObject</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">obj</span>
 
-		<span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;TRACK_TO&#39;</span><span class="p">)</span>
-		<span class="n">constraint</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">obj</span>
-		<span class="n">constraint</span><span class="o">.</span><span class="n">track_axis</span> <span class="o">=</span> <span class="s1">&#39;TRACK_NEGATIVE_Z&#39;</span>
-		<span class="n">constraint</span><span class="o">.</span><span class="n">up_axis</span> <span class="o">=</span> <span class="s1">&#39;UP_Y&#39;</span></div>
+        <span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;TRACK_TO&quot;</span><span class="p">)</span>
+        <span class="n">constraint</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="n">constraint</span><span class="o">.</span><span class="n">track_axis</span> <span class="o">=</span> <span class="s2">&quot;TRACK_NEGATIVE_Z&quot;</span>
+        <span class="n">constraint</span><span class="o">.</span><span class="n">up_axis</span> <span class="o">=</span> <span class="s2">&quot;UP_Y&quot;</span></div>
 
 
 <div class="viewcode-block" id="BsynObject.untrack">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.untrack">[docs]</a>
-	<span class="k">def</span> <span class="nf">untrack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Remove track to constraint from object&quot;&quot;&quot;</span>
-		<span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Track To&#39;</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="nf">untrack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove track to constraint from object&quot;&quot;&quot;</span>
+        <span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Track To&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BsynObject.follow_path">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.follow_path">[docs]</a>
-	<span class="k">def</span> <span class="nf">follow_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="s1">&#39;Curve&#39;</span><span class="p">,</span> <span class="n">zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-					<span class="n">animate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="n">fracs</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Follow path, with optional animation setting.</span>
+    <span class="k">def</span> <span class="nf">follow_path</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="s2">&quot;Curve&quot;</span><span class="p">,</span>
+        <span class="n">zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">animate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">frames</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span>
+        <span class="n">fracs</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Follow path, with optional animation setting.</span>
 
-<span class="sd">		:param path: Curve object</span>
-<span class="sd">		:param zero: If True, set camera location to (0, 0, 0) [aligns camera with path]</span>
-<span class="sd">		:param animate: If True, animate camera along path</span>
-<span class="sd">		:param frames: tuple of keyframes to animate at - length N</span>
-<span class="sd">		:param fracs: tuple of fractions along path to animate at - length N</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param path: Curve object</span>
+<span class="sd">        :param zero: If True, set camera location to (0, 0, 0) [aligns camera with path]</span>
+<span class="sd">        :param animate: If True, animate camera along path</span>
+<span class="sd">        :param frames: tuple of keyframes to animate at - length N</span>
+<span class="sd">        :param fracs: tuple of fractions along path to animate at - length N</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;FOLLOW_PATH&#39;</span><span class="p">)</span>
-		<span class="n">constraint</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">path</span>
-		<span class="n">constraint</span><span class="o">.</span><span class="n">forward_axis</span> <span class="o">=</span> <span class="s1">&#39;TRACK_NEGATIVE_Z&#39;</span>
-		<span class="n">constraint</span><span class="o">.</span><span class="n">up_axis</span> <span class="o">=</span> <span class="s1">&#39;UP_Y&#39;</span>
-		<span class="n">constraint</span><span class="o">.</span><span class="n">use_fixed_location</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># ensures that offset factor is in 0-1 range</span>
+        <span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;FOLLOW_PATH&quot;</span><span class="p">)</span>
+        <span class="n">constraint</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">constraint</span><span class="o">.</span><span class="n">forward_axis</span> <span class="o">=</span> <span class="s2">&quot;TRACK_NEGATIVE_Z&quot;</span>
+        <span class="n">constraint</span><span class="o">.</span><span class="n">up_axis</span> <span class="o">=</span> <span class="s2">&quot;UP_Y&quot;</span>
+        <span class="n">constraint</span><span class="o">.</span><span class="n">use_fixed_location</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">True</span>  <span class="c1"># ensures that offset factor is in 0-1 range</span>
+        <span class="p">)</span>
 
-		<span class="k">if</span> <span class="n">zero</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">zero</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-		<span class="k">if</span> <span class="n">animate</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">animate_path</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">fracs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">animate</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">animate_path</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">fracs</span><span class="p">)</span>
 
-		<span class="c1"># if there are any track constraints, place this constraint first</span>
-		<span class="c1"># so that the object is not rotated by the track constraint</span>
-		<span class="n">track_constraint_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Track To&#39;</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">track_constraint_idx</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">track_constraint_idx</span><span class="p">,</span> <span class="n">track_constraint_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
+        <span class="c1"># if there are any track constraints, place this constraint first</span>
+        <span class="c1"># so that the object is not rotated by the track constraint</span>
+        <span class="n">track_constraint_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Track To&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">track_constraint_idx</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">track_constraint_idx</span><span class="p">,</span> <span class="n">track_constraint_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BsynObject.animate_path">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.animate_path">[docs]</a>
-	<span class="k">def</span> <span class="nf">animate_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="n">fracs</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Animate object along path.</span>
+    <span class="k">def</span> <span class="nf">animate_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="n">fracs</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Animate object along path.</span>
 
-<span class="sd">		:param frames: tuple of keyframes to animate at - length N</span>
-<span class="sd">		:param fracs: tuple of fractions along path to animate at - length N</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param frames: tuple of keyframes to animate at - length N</span>
+<span class="sd">        :param fracs: tuple of fractions along path to animate at - length N</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">fracs</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;frames and fracs must be same length - got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fracs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="n">fracs</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;frames and fracs must be same length - got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fracs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
-		<span class="k">for</span> <span class="n">frame</span><span class="p">,</span> <span class="n">frac</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">fracs</span><span class="p">):</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">path_keyframe</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">frac</span><span class="p">)</span></div>
+        <span class="k">for</span> <span class="n">frame</span><span class="p">,</span> <span class="n">frac</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">fracs</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path_keyframe</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">frac</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BsynObject.path_keyframe">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject.path_keyframe">[docs]</a>
-	<span class="k">def</span> <span class="nf">path_keyframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set keyframe for camera path offset</span>
+    <span class="k">def</span> <span class="nf">path_keyframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set keyframe for camera path offset</span>
 
-<span class="sd">		:param frame: Frame number</span>
-<span class="sd">		:param offset: Offset fraction (0-1)</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Follow Path&#39;</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">constraint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Object `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="si">}</span><span class="s2">` does not have a &#39;Follow Path&#39; constraint&quot;</span><span class="p">)</span>
+<span class="sd">        :param frame: Frame number</span>
+<span class="sd">        :param offset: Offset fraction (0-1)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Follow Path&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">constraint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Object `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="si">}</span><span class="s2">` does not have a &#39;Follow Path&#39; constraint&quot;</span>
+            <span class="p">)</span>
 
-		<span class="n">constraint</span><span class="o">.</span><span class="n">offset_factor</span> <span class="o">=</span> <span class="n">offset</span>
-		<span class="n">constraint</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;offset_factor&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
+        <span class="n">constraint</span><span class="o">.</span><span class="n">offset_factor</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="n">constraint</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s2">&quot;offset_factor&quot;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

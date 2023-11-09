@@ -114,148 +114,167 @@
 
 
 <span class="k">def</span> <span class="nf">_list_split</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">chunks</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Split a list into chunks&quot;&quot;&quot;</span>
-	<span class="k">return</span> <span class="p">[[</span><span class="o">*</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split a list into chunks&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="o">*</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)]</span>
 
 
 <div class="viewcode-block" id="BlenderThread">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread">[docs]</a>
-<span class="k">class</span> <span class="nc">BlenderThread</span><span class="p">():</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Manages a list of jobs, which it feeds into sequential Blender instances in a single thread.&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">jobs</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">,</span> <span class="n">progress_loc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">to_stdout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-				 <span class="n">MAX_PER_JOB</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">script_directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		:param progress_loc: .log file to write progress to</span>
-<span class="sd">		:param timeout: longest time in (s) without render after which process is finished/failed.</span>
-<span class="sd">		:param to_stdout: If True, print to stdout instead of to a log file.</span>
-<span class="sd">		:param MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.</span>
-<span class="sd">		:param script_directory: If given, add this to `sys.path` before running the script.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">BlenderThread</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Manages a list of jobs, which it feeds into sequential Blender instances in a single thread.&quot;&quot;&quot;</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">jobs</span> <span class="o">=</span> <span class="n">_list_split</span><span class="p">(</span><span class="n">jobs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span> <span class="o">/</span> <span class="n">MAX_PER_JOB</span><span class="p">))</span>  <span class="c1"># split jobs into chunks of MAX_PER_JOB</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">njobs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">command</span><span class="p">,</span>
+        <span class="n">jobs</span><span class="p">,</span>
+        <span class="n">log_loc</span><span class="p">,</span>
+        <span class="n">progress_loc</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">to_stdout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">MAX_PER_JOB</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">script_directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param progress_loc: .log file to write progress to</span>
+<span class="sd">        :param timeout: longest time in (s) without render after which process is finished/failed.</span>
+<span class="sd">        :param to_stdout: If True, print to stdout instead of to a log file.</span>
+<span class="sd">        :param MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.</span>
+<span class="sd">        :param script_directory: If given, add this to `sys.path` before running the script.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">script_directory</span> <span class="o">=</span> <span class="n">script_directory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span> <span class="o">=</span> <span class="n">_list_split</span><span class="p">(</span>
+            <span class="n">jobs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span> <span class="o">/</span> <span class="n">MAX_PER_JOB</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># split jobs into chunks of MAX_PER_JOB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">njobs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">prev_n</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># store how many rendered to check for updates for timeout purposes</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">script_directory</span> <span class="o">=</span> <span class="n">script_directory</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="o">=</span> <span class="n">to_stdout</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="ow">and</span> <span class="n">log_loc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">log_loc</span> <span class="o">=</span> <span class="n">log_loc</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">logfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_loc</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">log_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev_n</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># store how many rendered to check for updates for timeout purposes</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span> <span class="o">=</span> <span class="n">progress_loc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="o">=</span> <span class="n">to_stdout</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="ow">and</span> <span class="n">log_loc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_loc</span> <span class="o">=</span> <span class="n">log_loc</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_loc</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="kc">None</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">job</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">finished</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span> <span class="o">=</span> <span class="n">progress_loc</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;STARTED THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">finished</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;STARTED THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="BlenderThread.check_in">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.check_in">[docs]</a>
-	<span class="k">def</span> <span class="nf">check_in</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Checks if current job still running, if not move to next job.</span>
-<span class="sd">		If all jobs complete, set self.finished = True&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
-			<span class="k">return</span>
+    <span class="k">def</span> <span class="nf">check_in</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if current job still running, if not move to next job.</span>
+<span class="sd">        If all jobs complete, set self.finished = True&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
+            <span class="k">return</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">job</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job</span> <span class="o">+=</span> <span class="mi">1</span>
 
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">njobs</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">finished</span> <span class="o">=</span> <span class="kc">True</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;✓ THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> COMPLETED.&#39;</span>
-			<span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">njobs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">finished</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;✓ THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> COMPLETED.&quot;</span>
+            <span class="k">return</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> RUNNING JOB </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">njobs</span><span class="si">}</span><span class="s2">...&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">start_job</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> RUNNING JOB </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">njobs</span><span class="si">}</span><span class="s2">...&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_job</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BlenderThread.start_job">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.start_job">[docs]</a>
-	<span class="k">def</span> <span class="nf">start_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		:param job: Index of job to start</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">job_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">[</span><span class="n">job</span><span class="p">]</span>
-		<span class="n">command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">set_job</span><span class="p">(</span><span class="n">job_list</span><span class="p">)</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span><span class="p">)</span><span class="o">.</span><span class="n">command</span>
+    <span class="k">def</span> <span class="nf">start_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param job: Index of job to start</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">job_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">[</span><span class="n">job</span><span class="p">]</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">set_job</span><span class="p">(</span><span class="n">job_list</span><span class="p">)</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span><span class="p">)</span><span class="o">.</span><span class="n">command</span>
 
-		<span class="n">stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span>
-		<span class="n">stderr</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span>
+        <span class="n">stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span>
+        <span class="n">stderr</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span>
 
-		<span class="n">env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">env</span><span class="p">[</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_directory</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">pathsep</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">env</span><span class="p">[</span><span class="s2">&quot;PYTHONPATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">script_directory</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">pathsep</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PYTHONPATH&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">stderr</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span>
+            <span class="n">command</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">stderr</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BlenderThread.terminate">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.terminate">[docs]</a>
-	<span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;End process&quot;&quot;&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span></div>
+    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;End process&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span></div>
 
 
-	<span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">:</span>
-			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span>
-		<span class="k">return</span> <span class="kc">False</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
-			<span class="k">return</span> <span class="kc">True</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
 
-	<span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">num_rendered</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Read through Log file to find how many renders have been completed&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span><span class="p">):</span>
-			<span class="k">return</span> <span class="mi">0</span>  <span class="c1"># process not started yet</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_rendered</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read through Log file to find how many renders have been completed&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>  <span class="c1"># process not started yet</span>
 
-		<span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
-		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-			<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
-				<span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># currently only 1 type of message to logger - render complete</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># currently only 1 type of message to logger - render complete</span>
 
-		<span class="k">return</span> <span class="n">x</span>
+        <span class="k">return</span> <span class="n">x</span>
 
-	<span class="k">def</span> <span class="nf">remaining_idxs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">remaining_idxs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">success</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">success</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
 
 <div class="viewcode-block" id="BlenderThread.check_status">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.check_status">[docs]</a>
-	<span class="k">def</span> <span class="nf">check_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;True if still running successfully, False if exceeded timeout&quot;&quot;&quot;</span>
-		<span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span>
-		<span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_n</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">prev_n</span> <span class="o">=</span> <span class="n">n</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">check_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;True if still running successfully, False if exceeded timeout&quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_n</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prev_n</span> <span class="o">=</span> <span class="n">n</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
 
-		<span class="k">elif</span> <span class="p">(</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;✖ THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> FAILED [TIMEOUT].&#39;</span>
-			<span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;✖ THREAD </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> FAILED [TIMEOUT].&quot;</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
-		<span class="k">return</span> <span class="kc">True</span></div>
+        <span class="k">return</span> <span class="kc">True</span></div>
 </div>
 
 
@@ -263,163 +282,185 @@
 <div class="viewcode-block" id="BlenderThreadManager">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThreadManager">[docs]</a>
 <span class="k">class</span> <span class="nc">BlenderThreadManager</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Manager of multiple :class:`~blendersynth.run.blender_threading.BlenderThread` instances&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Manager of multiple :class:`~blendersynth.run.blender_threading.BlenderThread` instances&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">jsons</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">print_to_stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-				 <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">script_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		:param commands: Base Blender command to run</span>
-<span class="sd">		:param jsons: A list of num_threads size, each element is a list of jsons to render from</span>
-<span class="sd">		:param log_locs:</span>
-<span class="sd">		:param MAX_PER_JOB: To prevent memory issues, split up jobs into chunks of MAX_PER_JOB</span>
-<span class="sd">		:param script_directory: If given, add this to `sys.path` before running the script.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jsons</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">command</span><span class="p">,</span>
+        <span class="n">jsons</span><span class="p">,</span>
+        <span class="n">output_directory</span><span class="p">,</span>
+        <span class="n">print_to_stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">script_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param commands: Base Blender command to run</span>
+<span class="sd">        :param jsons: A list of num_threads size, each element is a list of jsons to render from</span>
+<span class="sd">        :param log_locs:</span>
+<span class="sd">        :param MAX_PER_JOB: To prevent memory issues, split up jobs into chunks of MAX_PER_JOB</span>
+<span class="sd">        :param script_directory: If given, add this to `sys.path` before running the script.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jsons</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>
 
-		<span class="c1"># create logs</span>
-		<span class="n">session_name</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">-%H%M%S&quot;</span><span class="p">)</span>
-		<span class="n">log_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_directory</span><span class="p">,</span> <span class="s1">&#39;logs&#39;</span><span class="p">,</span> <span class="n">session_name</span><span class="p">)</span>
-		<span class="n">progress_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="s1">&#39;_progress&#39;</span><span class="p">)</span>  <span class="c1"># for storing progress</span>
+        <span class="c1"># create logs</span>
+        <span class="n">session_name</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">-%H%M%S&quot;</span><span class="p">)</span>
+        <span class="n">log_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_directory</span><span class="p">,</span> <span class="s2">&quot;logs&quot;</span><span class="p">,</span> <span class="n">session_name</span><span class="p">)</span>
+        <span class="n">progress_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="s2">&quot;_progress&quot;</span><span class="p">)</span>  <span class="c1"># for storing progress</span>
 
-		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">progress_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">progress_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-		<span class="n">logs</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;log_</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">02d</span><span class="si">}</span><span class="s1">.txt&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">)]</span>
-		<span class="n">progresses</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">progress_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;progress_</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">02d</span><span class="si">}</span><span class="s1">.log&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">)]</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">log_locs</span> <span class="o">=</span> <span class="n">logs</span>
+        <span class="n">logs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;log_</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">.txt&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">progresses</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">progress_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;progress_</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_locs</span> <span class="o">=</span> <span class="n">logs</span>
 
-		<span class="c1"># Set report name as report_xx, incrementing by 1 each report</span>
-		<span class="n">report_fname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;report_</span><span class="si">{</span><span class="nb">len</span><span class="p">([</span><span class="n">f</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">output_directory</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="s1">&#39;report&#39;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">f</span><span class="p">])</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">.txt&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">report_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">report_fname</span><span class="p">)</span>
+        <span class="c1"># Set report name as report_xx, incrementing by 1 each report</span>
+        <span class="n">report_fname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;report_</span><span class="si">{</span><span class="nb">len</span><span class="p">([</span><span class="n">f</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">output_directory</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="s1">&#39;report&#39;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">f</span><span class="p">])</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">.txt&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">report_fname</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="mi">0</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">session_start</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_start</span> <span class="o">=</span> <span class="kc">None</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">threads</span> <span class="o">=</span> <span class="p">[]</span>
-		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">):</span>
-			<span class="n">thread</span> <span class="o">=</span> <span class="n">BlenderThread</span><span class="p">(</span><span class="n">command</span><span class="p">,</span>
-								   <span class="n">jobs</span><span class="o">=</span><span class="n">jsons</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-								   <span class="n">log_loc</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">logs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">logs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-								   <span class="n">progress_loc</span><span class="o">=</span><span class="n">progresses</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-								   <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
-								   <span class="n">to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
-								   <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="n">MAX_PER_JOB</span><span class="p">,</span>
-								   <span class="n">script_directory</span><span class="o">=</span><span class="n">script_directory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threads</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">):</span>
+            <span class="n">thread</span> <span class="o">=</span> <span class="n">BlenderThread</span><span class="p">(</span>
+                <span class="n">command</span><span class="p">,</span>
+                <span class="n">jobs</span><span class="o">=</span><span class="n">jsons</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">log_loc</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">logs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">logs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">progress_loc</span><span class="o">=</span><span class="n">progresses</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
+                <span class="n">to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
+                <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="n">MAX_PER_JOB</span><span class="p">,</span>
+                <span class="n">script_directory</span><span class="o">=</span><span class="n">script_directory</span><span class="p">,</span>
+            <span class="p">)</span>
 
-			<span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thread</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thread</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">))</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">))</span>
 
 <div class="viewcode-block" id="BlenderThreadManager.start">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThreadManager.start">[docs]</a>
-	<span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_bars</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-			  <span class="n">tick</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">report_every</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">15.0</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Start all threads and job progress</span>
-<span class="sd">		:param progress_bars: Show progress bars for each thread and overall progress</span>
-<span class="sd">		:param tick: How often to update progress bars</span>
-<span class="sd">		:param report_every: How often to print status updates to log</span>
-<span class="sd">		:param offset: How long to wait before starting each thread (to avoid memory issues)</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>  <span class="c1"># log start time</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">session_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">progress_bars</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">tick</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">report_every</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">15.0</span><span class="p">,</span>
+        <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start all threads and job progress</span>
+<span class="sd">        :param progress_bars: Show progress bars for each thread and overall progress</span>
+<span class="sd">        :param tick: How often to update progress bars</span>
+<span class="sd">        :param report_every: How often to print status updates to log</span>
+<span class="sd">        :param offset: How long to wait before starting each thread (to avoid memory issues)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>  <span class="c1"># log start time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 
-		<span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">:</span>
-			<span class="n">thread</span><span class="o">.</span><span class="n">check_in</span><span class="p">()</span>
-			<span class="n">sleep</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">:</span>
+            <span class="n">thread</span><span class="o">.</span><span class="n">check_in</span><span class="p">()</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
 
-		<span class="c1"># register atexit handler</span>
-		<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">terminate</span><span class="p">)</span>
+        <span class="c1"># register atexit handler</span>
+        <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">terminate</span><span class="p">)</span>
 
-		<span class="n">last_report_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">last_report_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
 
-		<span class="k">if</span> <span class="n">progress_bars</span><span class="p">:</span>
-			<span class="n">pbars</span> <span class="o">=</span> <span class="p">[]</span>
-			<span class="n">bar_format</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{l_bar}{bar:10}{r_bar}{bar:-10b}</span><span class="s1">&#39;</span>
-			<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">thread</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">):</span>
-				<span class="n">p</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">thread</span><span class="p">),</span> <span class="n">initial</span><span class="o">=</span><span class="n">thread</span><span class="o">.</span><span class="n">num_rendered</span><span class="p">,</span> <span class="n">bar_format</span><span class="o">=</span><span class="n">bar_format</span><span class="p">,</span>
-						 <span class="n">position</span><span class="o">=</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-				<span class="n">pbars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">progress_bars</span><span class="p">:</span>
+            <span class="n">pbars</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">bar_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{l_bar}{bar:10}{r_bar}{bar:-10b}</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">thread</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">):</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span>
+                    <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">thread</span><span class="p">),</span>
+                    <span class="n">initial</span><span class="o">=</span><span class="n">thread</span><span class="o">.</span><span class="n">num_rendered</span><span class="p">,</span>
+                    <span class="n">bar_format</span><span class="o">=</span><span class="n">bar_format</span><span class="p">,</span>
+                    <span class="n">position</span><span class="o">=</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">pbars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 
-			<span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">bar_format</span><span class="o">=</span><span class="n">bar_format</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
-				<span class="k">while</span> <span class="nb">any</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">is_running</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">):</span>
-					<span class="n">sleep</span><span class="p">(</span><span class="n">tick</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">bar_format</span><span class="o">=</span><span class="n">bar_format</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
+                <span class="k">while</span> <span class="nb">any</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">is_running</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">):</span>
+                    <span class="n">sleep</span><span class="p">(</span><span class="n">tick</span><span class="p">)</span>
 
-					<span class="c1"># Update progress bar</span>
-					<span class="n">rendered_images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span>
+                    <span class="c1"># Update progress bar</span>
+                    <span class="n">rendered_images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span>
 
-					<span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;Session rendering...&#39;</span>
-					<span class="n">desc</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39; [Dataset: </span><span class="si">{</span><span class="n">rendered_images</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s1">]&#39;</span>
-					<span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
+                    <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;Session rendering...&quot;</span>
+                    <span class="n">desc</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; [Dataset: </span><span class="si">{</span><span class="n">rendered_images</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">]&quot;</span>
+                    <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
 
-					<span class="n">pbar</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span>
-					<span class="n">pbar</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+                    <span class="n">pbar</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span>
+                    <span class="n">pbar</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
 
-					<span class="k">if</span> <span class="p">(</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">last_report_time</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">report_every</span><span class="p">:</span>
-						<span class="bp">self</span><span class="o">.</span><span class="n">update_report</span><span class="p">()</span>
-						<span class="n">last_report_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">last_report_time</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">report_every</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">update_report</span><span class="p">()</span>
+                        <span class="n">last_report_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
 
-					<span class="c1"># Update sub-progress bars, restart threads if needed</span>
-					<span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">thread</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">):</span>
+                    <span class="c1"># Update sub-progress bars, restart threads if needed</span>
+                    <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">thread</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">thread</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+                            <span class="k">continue</span>
 
-						<span class="k">if</span> <span class="n">thread</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
-							<span class="k">continue</span>
+                        <span class="n">thread</span><span class="o">.</span><span class="n">check_in</span><span class="p">()</span>
 
-						<span class="n">thread</span><span class="o">.</span><span class="n">check_in</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">thread</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
+                            <span class="n">pbars</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">thread</span><span class="o">.</span><span class="n">num_rendered</span>
 
-						<span class="k">if</span> <span class="n">thread</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
-							<span class="n">pbars</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">thread</span><span class="o">.</span><span class="n">num_rendered</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">thread_running</span> <span class="o">=</span> <span class="n">thread</span><span class="o">.</span><span class="n">check_status</span><span class="p">()</span>
 
-						<span class="k">else</span><span class="p">:</span>
-							<span class="n">thread_running</span> <span class="o">=</span> <span class="n">thread</span><span class="o">.</span><span class="n">check_status</span><span class="p">()</span>
+                            <span class="k">if</span> <span class="n">thread_running</span><span class="p">:</span>
+                                <span class="n">pbars</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">thread</span><span class="o">.</span><span class="n">num_rendered</span>
 
-							<span class="k">if</span> <span class="n">thread_running</span><span class="p">:</span>
-								<span class="n">pbars</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">thread</span><span class="o">.</span><span class="n">num_rendered</span>
+                            <span class="k">else</span><span class="p">:</span>  <span class="c1"># Thread failed, currently will only notify the user</span>
+                                <span class="k">pass</span>
 
-							<span class="k">else</span><span class="p">:</span>  <span class="c1"># Thread failed, currently will only notify the user</span>
-								<span class="k">pass</span>
+                        <span class="n">pbars</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="n">thread</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
 
-						<span class="n">pbars</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="n">thread</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
-
-			<span class="bp">self</span><span class="o">.</span><span class="n">update_report</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_report</span><span class="p">()</span></div>
 
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">num_rendered</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">num_rendered</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">)</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_rendered</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">num_rendered</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">update_report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>
 
-		<span class="n">t1</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
-		<span class="n">elapsed</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># calculate number of seconds remaining</span>
+            <span class="n">s_remaining</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="n">elapsed</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span>
+            <span class="p">)</span>
+            <span class="n">eta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">s_remaining</span><span class="p">)</span>
 
-		<span class="n">report</span> <span class="o">=</span> <span class="p">[]</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-			<span class="c1"># calculate number of seconds remaining</span>
-			<span class="n">s_remaining</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">elapsed</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span><span class="p">)</span>
-			<span class="n">eta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">s_remaining</span><span class="p">)</span>
+            <span class="n">report</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="sa">f</span><span class="s2">&quot;Number of images rendered: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Total session quota: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Time elapsed: </span><span class="si">{</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">elapsed</span><span class="p">))</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Time per render (s): </span><span class="si">{</span><span class="n">elapsed</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Session start: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">session_start</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%I:%M %p </span><span class="si">%d</span><span class="s1">/%m/%y&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Estimated End: </span><span class="si">{</span><span class="n">eta</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%I:%M %p </span><span class="si">%d</span><span class="s1">/%m/%y&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
 
-			<span class="n">report</span> <span class="o">+=</span> <span class="p">[</span>
-				<span class="sa">f</span><span class="s2">&quot;Number of images rendered: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-				<span class="sa">f</span><span class="s2">&quot;Total session quota: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-				<span class="sa">f</span><span class="s2">&quot;Time elapsed: </span><span class="si">{</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">elapsed</span><span class="p">))</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-				<span class="sa">f</span><span class="s2">&quot;Time per render (s): </span><span class="si">{</span><span class="n">elapsed</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">,</span>
-
-				<span class="sa">f</span><span class="s2">&quot;Session start: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">session_start</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%I:%M %p </span><span class="si">%d</span><span class="s1">/%m/%y&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-				<span class="sa">f</span><span class="s2">&quot;Estimated End: </span><span class="si">{</span><span class="n">eta</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%I:%M %p </span><span class="si">%d</span><span class="s1">/%m/%y&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-			<span class="p">]</span>
-
-		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_loc</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
-			<span class="n">outfile</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_loc</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BlenderThreadManager.terminate">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThreadManager.terminate">[docs]</a>
-	<span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;End all threads&quot;&quot;&quot;</span>
-		<span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">:</span>
-			<span class="n">thread</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span></div>
+    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;End all threads&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">:</span>
+            <span class="n">thread</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span></div>
 </div>
 
 </pre></div>

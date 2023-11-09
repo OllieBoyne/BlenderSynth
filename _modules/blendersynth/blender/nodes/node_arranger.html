@@ -111,134 +111,136 @@
 
 
 <span class="k">def</span> <span class="nf">get_source_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
-		<span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
-			<span class="k">yield</span> <span class="n">link</span><span class="o">.</span><span class="n">from_node</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">link</span><span class="o">.</span><span class="n">from_node</span>
 
 
 <span class="k">def</span> <span class="nf">get_sink_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-	<span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
-		<span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">o</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
-			<span class="k">yield</span> <span class="n">link</span><span class="o">.</span><span class="n">to_node</span>
+    <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">o</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">link</span><span class="o">.</span><span class="n">to_node</span>
 
 
 <div class="viewcode-block" id="split_to_islands">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_arranger.html#blendersynth.blender.nodes.node_arranger.split_to_islands">[docs]</a>
 <span class="k">def</span> <span class="nf">split_to_islands</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Given a node list, return a list of sets, each one being a fully disconnected island&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a node list, return a list of sets, each one being a fully disconnected island&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="nf">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">island</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Depth-first search from node.&quot;&quot;&quot;</span>
-		<span class="n">node</span><span class="p">[</span><span class="s1">&#39;visited&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-		<span class="n">islands</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">island</span>
-		<span class="k">for</span> <span class="n">linked_node</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="n">get_source_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="o">*</span><span class="n">get_sink_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">)]:</span>
-			<span class="k">if</span> <span class="ow">not</span> <span class="n">linked_node</span><span class="p">[</span><span class="s1">&#39;visited&#39;</span><span class="p">]:</span>
-				<span class="n">dfs</span><span class="p">(</span><span class="n">linked_node</span><span class="p">,</span> <span class="n">island</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">island</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Depth-first search from node.&quot;&quot;&quot;</span>
+        <span class="n">node</span><span class="p">[</span><span class="s2">&quot;visited&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">islands</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">island</span>
+        <span class="k">for</span> <span class="n">linked_node</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="n">get_source_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="o">*</span><span class="n">get_sink_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">)]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">linked_node</span><span class="p">[</span><span class="s2">&quot;visited&quot;</span><span class="p">]:</span>
+                <span class="n">dfs</span><span class="p">(</span><span class="n">linked_node</span><span class="p">,</span> <span class="n">island</span><span class="p">)</span>
 
-	<span class="n">islands</span> <span class="o">=</span> <span class="p">{}</span>
-	<span class="n">island_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">islands</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">island_counter</span> <span class="o">=</span> <span class="mi">0</span>
 
-	<span class="c1"># Set all nodes to unvisited</span>
-	<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
-		<span class="n">node</span><span class="p">[</span><span class="s1">&#39;visited&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># Set all nodes to unvisited</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="n">node</span><span class="p">[</span><span class="s2">&quot;visited&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
-	<span class="c1"># Start a DFS from each unvisited node</span>
-	<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">[</span><span class="s1">&#39;visited&#39;</span><span class="p">]:</span>
-			<span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">island_counter</span><span class="p">)</span>
-			<span class="n">island_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="c1"># Start a DFS from each unvisited node</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;visited&quot;</span><span class="p">]:</span>
+            <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">island_counter</span><span class="p">)</span>
+            <span class="n">island_counter</span> <span class="o">+=</span> <span class="mi">1</span>
 
-	<span class="c1"># Group nodes by island</span>
-	<span class="n">grouped_islands</span> <span class="o">=</span> <span class="p">[]</span>
-	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">island_counter</span><span class="p">):</span>
-		<span class="n">grouped_islands</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">islands</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">i</span><span class="p">})</span>
+    <span class="c1"># Group nodes by island</span>
+    <span class="n">grouped_islands</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">island_counter</span><span class="p">):</span>
+        <span class="n">grouped_islands</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">islands</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">i</span><span class="p">})</span>
 
-	<span class="k">return</span> <span class="n">grouped_islands</span></div>
+    <span class="k">return</span> <span class="n">grouped_islands</span></div>
 
 
 
 <div class="viewcode-block" id="calc_depth">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_arranger.html#blendersynth.blender.nodes.node_arranger.calc_depth">[docs]</a>
 <span class="k">def</span> <span class="nf">calc_depth</span><span class="p">(</span><span class="n">node_island</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Given a node island (i.e. all nodes in the same fully connected component),</span>
-<span class="sd">	set the depth of each node to be the maximum depth of all its input nodes + 1.</span>
-<span class="sd">	Once complete, normalize these depths so the first item is 0&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a node island (i.e. all nodes in the same fully connected component),</span>
+<span class="sd">    set the depth of each node to be the maximum depth of all its input nodes + 1.</span>
+<span class="sd">    Once complete, normalize these depths so the first item is 0&quot;&quot;&quot;</span>
 
-	<span class="k">for</span> <span class="n">nodes</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">:</span>
-		<span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">nodes</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">:</span>
+        <span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-	<span class="n">node_island_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">node_island</span><span class="p">)</span>
-	<span class="n">start_node</span> <span class="o">=</span> <span class="n">node_island_copy</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-	<span class="n">start_node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-	<span class="n">nodes_to_use</span> <span class="o">=</span> <span class="p">{</span><span class="n">start_node</span><span class="p">}</span>
+    <span class="n">node_island_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">node_island</span><span class="p">)</span>
+    <span class="n">start_node</span> <span class="o">=</span> <span class="n">node_island_copy</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="n">start_node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">nodes_to_use</span> <span class="o">=</span> <span class="p">{</span><span class="n">start_node</span><span class="p">}</span>
 
-	<span class="c1"># First Pass - assign a depth to each node by traversing the graph from the start node</span>
-	<span class="k">while</span> <span class="nb">any</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">):</span>
-		<span class="n">node</span> <span class="o">=</span> <span class="n">nodes_to_use</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-		<span class="k">for</span> <span class="n">sink_node</span> <span class="ow">in</span> <span class="n">get_sink_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-			<span class="k">if</span> <span class="n">sink_node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">:</span>
-				<span class="k">if</span> <span class="n">sink_node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-					<span class="n">sink_node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
-					<span class="n">nodes_to_use</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sink_node</span><span class="p">)</span>
+    <span class="c1"># First Pass - assign a depth to each node by traversing the graph from the start node</span>
+    <span class="k">while</span> <span class="nb">any</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">nodes_to_use</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">sink_node</span> <span class="ow">in</span> <span class="n">get_sink_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">sink_node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sink_node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">sink_node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="n">nodes_to_use</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sink_node</span><span class="p">)</span>
 
-		<span class="k">for</span> <span class="n">source_node</span> <span class="ow">in</span> <span class="n">get_source_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-			<span class="k">if</span> <span class="n">source_node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">:</span>
-				<span class="k">if</span> <span class="n">source_node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-					<span class="n">source_node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
-					<span class="n">nodes_to_use</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">source_node</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">source_node</span> <span class="ow">in</span> <span class="n">get_source_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">source_node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">source_node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">source_node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="n">nodes_to_use</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">source_node</span><span class="p">)</span>
 
-	<span class="c1"># Second Pass - set each depth to be the maximum depth of all its input nodes + 1</span>
-	<span class="n">depth_changed</span> <span class="o">=</span> <span class="kc">True</span>
-	<span class="k">while</span> <span class="n">depth_changed</span><span class="p">:</span>
-		<span class="n">depth_changed</span> <span class="o">=</span> <span class="kc">False</span>
-		<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">:</span>
-			<span class="n">sources</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">get_source_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">]</span>
-			<span class="k">if</span> <span class="n">sources</span><span class="p">:</span>
-				<span class="n">new_depth</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-				<span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">new_depth</span><span class="p">:</span>
-					<span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_depth</span>
-					<span class="n">depth_changed</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="c1"># Second Pass - set each depth to be the maximum depth of all its input nodes + 1</span>
+    <span class="n">depth_changed</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">while</span> <span class="n">depth_changed</span><span class="p">:</span>
+        <span class="n">depth_changed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">:</span>
+            <span class="n">sources</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">get_source_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">sources</span><span class="p">:</span>
+                <span class="n">new_depth</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">new_depth</span><span class="p">:</span>
+                    <span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_depth</span>
+                    <span class="n">depth_changed</span> <span class="o">=</span> <span class="kc">True</span>
 
-	<span class="c1"># Normalize depths</span>
-	<span class="n">min_depth</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">)</span>
-	<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">:</span>
-		<span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">-=</span> <span class="n">min_depth</span>
+    <span class="c1"># Normalize depths</span>
+    <span class="n">min_depth</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_island</span><span class="p">:</span>
+        <span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">-=</span> <span class="n">min_depth</span>
 
-	<span class="k">return</span> <span class="n">node_island</span></div>
+    <span class="k">return</span> <span class="n">node_island</span></div>
 
 
 
 <div class="viewcode-block" id="tidy_tree">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_arranger.html#blendersynth.blender.nodes.node_arranger.tidy_tree">[docs]</a>
 <span class="k">def</span> <span class="nf">tidy_tree</span><span class="p">(</span><span class="n">node_tree</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeTree</span><span class="p">,</span> <span class="n">dX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">dY</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Search through tree, positioning nodes in a grid based on their depth and connectivity.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search through tree, positioning nodes in a grid based on their depth and connectivity.</span>
 
-<span class="sd">	:param node_tree: node tree to tidy</span>
-<span class="sd">	:param dX: horizontal distance between nodes</span>
-<span class="sd">	:param dY: vertical distance between nodes&quot;&quot;&quot;</span>
+<span class="sd">    :param node_tree: node tree to tidy</span>
+<span class="sd">    :param dX: horizontal distance between nodes</span>
+<span class="sd">    :param dY: vertical distance between nodes&quot;&quot;&quot;</span>
 
-	<span class="n">nodes</span> <span class="o">=</span> <span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span>
-	<span class="n">islands</span> <span class="o">=</span> <span class="n">split_to_islands</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span>
+    <span class="n">islands</span> <span class="o">=</span> <span class="n">split_to_islands</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
 
-	<span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># track running height to manage multiple islands</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># track running height to manage multiple islands</span>
 
-	<span class="n">height</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>  <span class="c1"># track height of each depth level</span>
-	<span class="k">for</span> <span class="n">island</span> <span class="ow">in</span> <span class="n">islands</span><span class="p">:</span>
-		<span class="n">island</span> <span class="o">=</span> <span class="n">calc_depth</span><span class="p">(</span><span class="n">island</span><span class="p">)</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>  <span class="c1"># track height of each depth level</span>
+    <span class="k">for</span> <span class="n">island</span> <span class="ow">in</span> <span class="n">islands</span><span class="p">:</span>
+        <span class="n">island</span> <span class="o">=</span> <span class="n">calc_depth</span><span class="p">(</span><span class="n">island</span><span class="p">)</span>
 
-		<span class="c1"># want to center each depth level, so set heights accordingly</span>
-		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">island</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-			<span class="c1"># Adjusting the initial height calculation to account for node sizes.</span>
-			<span class="n">depth_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">island</span> <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
-			<span class="n">total_height_for_depth</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">dimensions</span><span class="o">.</span><span class="n">y</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">depth_nodes</span><span class="p">)</span>
-			<span class="n">spacing_needed</span> <span class="o">=</span> <span class="n">dY</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">depth_nodes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-			<span class="n">height</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">total_height_for_depth</span> <span class="o">+</span> <span class="n">spacing_needed</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="c1"># want to center each depth level, so set heights accordingly</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">island</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="c1"># Adjusting the initial height calculation to account for node sizes.</span>
+            <span class="n">depth_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">island</span> <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">total_height_for_depth</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">dimensions</span><span class="o">.</span><span class="n">y</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">depth_nodes</span><span class="p">)</span>
+            <span class="n">spacing_needed</span> <span class="o">=</span> <span class="n">dY</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">depth_nodes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">height</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">total_height_for_depth</span> <span class="o">+</span> <span class="n">spacing_needed</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
-		<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">island</span><span class="p">:</span>
-			<span class="n">node</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dX</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">height</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]])</span>
-			<span class="n">height</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">node</span><span class="o">.</span><span class="n">dimensions</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">dY</span>  <span class="c1"># Incrementing by the node&#39;s height</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">island</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dX</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">height</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]])</span>
+            <span class="n">height</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]]</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">dimensions</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">dY</span>
+            <span class="p">)</span>  <span class="c1"># Incrementing by the node&#39;s height</span>
 
-		<span class="n">y</span> <span class="o">+=</span> <span class="nb">max</span><span class="p">(</span><span class="n">height</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="n">dY</span></div>
+        <span class="n">y</span> <span class="o">+=</span> <span class="nb">max</span><span class="p">(</span><span class="n">height</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="n">dY</span></div>
 
 </pre></div>
 

@@ -105,112 +105,119 @@
 <span></span><span class="kn">import</span> <span class="nn">bpy</span>
 <span class="kn">from</span> <span class="nn">.devices</span> <span class="kn">import</span> <span class="n">Devices</span>
 
-<span class="n">ENGINES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BLENDER_EEVEE&#39;</span><span class="p">,</span> <span class="s1">&#39;BLENDER_WORKBENCH&#39;</span><span class="p">,</span> <span class="s1">&#39;CYCLES&#39;</span><span class="p">]</span>
+<span class="n">ENGINES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BLENDER_EEVEE&quot;</span><span class="p">,</span> <span class="s2">&quot;BLENDER_WORKBENCH&quot;</span><span class="p">,</span> <span class="s2">&quot;CYCLES&quot;</span><span class="p">]</span>
 <span class="sd">&quot;&quot;&quot;List of valid render engines&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="render">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.render">[docs]</a>
-<span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">animation</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Render the scene</span>
+<span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">animation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render the scene</span>
 
-<span class="sd">	:param animation: If True, render the animation. Otherwise, render a single frame.&quot;&quot;&quot;</span>
-	<span class="k">if</span> <span class="n">animation</span><span class="p">:</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">animation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-	<span class="k">else</span><span class="p">:</span>
-		<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">write_still</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<span class="sd">    :param animation: If True, render the animation. Otherwise, render a single frame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">animation</span><span class="p">:</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">animation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">write_still</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="render_with_cpu">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.render_with_cpu">[docs]</a>
 <span class="k">def</span> <span class="nf">render_with_cpu</span><span class="p">():</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Render with CPU&quot;&quot;&quot;</span>
-	<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">cycles</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;CPU&#39;</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render with CPU&quot;&quot;&quot;</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">cycles</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;CPU&quot;</span></div>
+
 
 
 <div class="viewcode-block" id="render_with_gpu">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.render_with_gpu">[docs]</a>
 <span class="k">def</span> <span class="nf">render_with_gpu</span><span class="p">(</span><span class="n">force_enable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Render with GPU.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render with GPU.</span>
 
-<span class="sd">	:param force_enable: If True, enable all GPU devices. Otherwise, use the devices that are already enabled. To enable separately, either change your settings in blender, or see :attr:`blendersynth.blender.devices.Devices.set_device_usage`</span>
-<span class="sd">	:param silent: If True, do not print information about device being used.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="sd">    :param force_enable: If True, enable all GPU devices. Otherwise, use the devices that are already enabled. To enable separately, either change your settings in blender, or see :attr:`blendersynth.blender.devices.Devices.set_device_usage`</span>
+<span class="sd">    :param silent: If True, do not print information about device being used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-	<span class="c1"># Needed to update the device list</span>
-	<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">addons</span><span class="p">[</span><span class="s1">&#39;cycles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">get_devices</span><span class="p">()</span>
+    <span class="c1"># Needed to update the device list</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">addons</span><span class="p">[</span><span class="s2">&quot;cycles&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">get_devices</span><span class="p">()</span>
 
-	<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">cycles</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;GPU&#39;</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">cycles</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;GPU&quot;</span>
 
-	<span class="n">devices</span> <span class="o">=</span> <span class="n">Devices</span><span class="p">()</span>
+    <span class="n">devices</span> <span class="o">=</span> <span class="n">Devices</span><span class="p">()</span>
 
-	<span class="k">if</span> <span class="n">force_enable</span><span class="p">:</span>
-		<span class="n">devices</span><span class="o">.</span><span class="n">set_device_usage</span><span class="p">(</span><span class="n">cpu</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">opencl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">metal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">force_enable</span><span class="p">:</span>
+        <span class="n">devices</span><span class="o">.</span><span class="n">set_device_usage</span><span class="p">(</span><span class="n">cpu</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">opencl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">metal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-	<span class="n">enabled_gpus</span> <span class="o">=</span> <span class="n">devices</span><span class="o">.</span><span class="n">enabled_gpus</span>
-	<span class="k">if</span> <span class="n">enabled_gpus</span><span class="p">:</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
-			<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using GPU devices </span><span class="si">{</span><span class="n">enabled_gpus</span><span class="o">.</span><span class="n">names</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">enabled_gpus</span> <span class="o">=</span> <span class="n">devices</span><span class="o">.</span><span class="n">enabled_gpus</span>
+    <span class="k">if</span> <span class="n">enabled_gpus</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using GPU devices </span><span class="si">{</span><span class="n">enabled_gpus</span><span class="o">.</span><span class="n">names</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-	<span class="k">elif</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
-		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No GPU devices available and enabled.</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
-		<span class="sa">f</span><span class="s2">&quot;Available GPUs: </span><span class="si">{</span><span class="n">devices</span><span class="o">.</span><span class="n">available_gpus</span><span class="o">.</span><span class="n">names</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
-		<span class="s2">&quot;Either set force_enable=True or enable a GPU device in Blender.</span><span class="se">\n</span><span class="s2">&quot;</span>
-	    <span class="s2">&quot;Using CPU instead...&quot;</span><span class="p">)</span></div>
-
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;No GPU devices available and enabled.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;Available GPUs: </span><span class="si">{</span><span class="n">devices</span><span class="o">.</span><span class="n">available_gpus</span><span class="o">.</span><span class="n">names</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;Either set force_enable=True or enable a GPU device in Blender.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Using CPU instead...&quot;</span>
+        <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="set_engine">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.set_engine">[docs]</a>
 <span class="k">def</span> <span class="nf">set_engine</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Set the render engine</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the render engine</span>
 
-<span class="sd">	:param engine: The render engine to use. See :data:`~blendersynth.blender.render.ENGINES` for valid options.&quot;&quot;&quot;</span>
-	<span class="k">assert</span> <span class="n">engine</span> <span class="ow">in</span> <span class="n">ENGINES</span><span class="p">,</span> <span class="s2">&quot;Invalid render engine&quot;</span>
-	<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">engine</span></div>
+<span class="sd">    :param engine: The render engine to use. See :data:`~blendersynth.blender.render.ENGINES` for valid options.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">engine</span> <span class="ow">in</span> <span class="n">ENGINES</span><span class="p">,</span> <span class="s2">&quot;Invalid render engine&quot;</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">engine</span></div>
 
 
 
 <div class="viewcode-block" id="set_resolution">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.set_resolution">[docs]</a>
 <span class="k">def</span> <span class="nf">set_resolution</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Set the render resolution</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the render resolution</span>
 
-<span class="sd">	:param x: The width of the image in pixels</span>
-<span class="sd">	:param y: The height of the image in pixels&quot;&quot;&quot;</span>
-	<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span> <span class="o">=</span> <span class="n">x</span>
-	<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span> <span class="o">=</span> <span class="n">y</span></div>
+<span class="sd">    :param x: The width of the image in pixels</span>
+<span class="sd">    :param y: The height of the image in pixels&quot;&quot;&quot;</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span> <span class="o">=</span> <span class="n">y</span></div>
 
 
 
 <div class="viewcode-block" id="set_cycles_samples">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.set_cycles_samples">[docs]</a>
 <span class="k">def</span> <span class="nf">set_cycles_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Set the number of samples for the Cycles renderer&quot;&quot;&quot;</span>
-	<span class="k">assert</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">engine</span> <span class="o">==</span> <span class="s1">&#39;CYCLES&#39;</span><span class="p">,</span> <span class="s2">&quot;Cycles must be the active render engine&quot;</span>
-	<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">cycles</span><span class="o">.</span><span class="n">samples</span> <span class="o">=</span> <span class="n">samples</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the number of samples for the Cycles renderer&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">engine</span> <span class="o">==</span> <span class="s2">&quot;CYCLES&quot;</span>
+    <span class="p">),</span> <span class="s2">&quot;Cycles must be the active render engine&quot;</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">cycles</span><span class="o">.</span><span class="n">samples</span> <span class="o">=</span> <span class="n">samples</span></div>
 
 
 
 <div class="viewcode-block" id="render_depth">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.render_depth">[docs]</a>
 <span class="k">def</span> <span class="nf">render_depth</span><span class="p">():</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Enable the depth pass of the renderer&quot;&quot;&quot;</span>
-	<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">use_pass_z</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># enable depth pass</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enable the depth pass of the renderer&quot;&quot;&quot;</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">use_pass_z</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># enable depth pass</span></div>
 
 
 
 <div class="viewcode-block" id="set_transparent">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.set_transparent">[docs]</a>
 <span class="k">def</span> <span class="nf">set_transparent</span><span class="p">(</span><span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Set the background of the scene to transparent</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the background of the scene to transparent</span>
 
-<span class="sd">	:param scene: The scene to set the background of. If None, use the active scene.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">if</span> <span class="n">scene</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="n">scene</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span>
-	<span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">film_transparent</span> <span class="o">=</span> <span class="kc">True</span></div>
+<span class="sd">    :param scene: The scene to set the background of. If None, use the active scene.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">scene</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">scene</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span>
+    <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">film_transparent</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 </pre></div>
 

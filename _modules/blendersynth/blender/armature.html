@@ -114,277 +114,295 @@
 <span class="kn">import</span> <span class="nn">mathutils</span>
 
 
-
 <div class="viewcode-block" id="PoseBone">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone">[docs]</a>
 <span class="k">class</span> <span class="nc">PoseBone</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="nb">object</span>
-		<span class="nb">object</span><span class="o">.</span><span class="n">rotation_mode</span> <span class="o">=</span> <span class="s1">&#39;XYZ&#39;</span>  <span class="c1"># all rotations done in XYZ Euler mode</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="nb">object</span>
+        <span class="nb">object</span><span class="o">.</span><span class="n">rotation_mode</span> <span class="o">=</span> <span class="s2">&quot;XYZ&quot;</span>  <span class="c1"># all rotations done in XYZ Euler mode</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">constraints</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">constraints</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">armature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">id_data</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">armature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">id_data</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">matrix_world</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">matrix</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">matrix_world</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">matrix</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the world location of the head (start) of the bone.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">head</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Gets the world location of the head (start) of the bone.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">head</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">head_location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the world location of the head (start) of the bone.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">head</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">head_location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Gets the world location of the head (start) of the bone.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">head</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tail_location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the world location of the tail (or end) of the bone.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">tail</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">tail_location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Gets the world location of the tail (or end) of the bone.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">tail</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotation of pose bone in world space&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Rotation of pose bone in world space&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix_world</span><span class="o">.</span><span class="n">to_euler</span><span class="p">()</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">local_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotation of pose bone in local space (ignoring parent transforms)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">local_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Rotation of pose bone in local space (ignoring parent transforms)&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span>
-
-	<span class="nd">@local_rotation_euler</span><span class="o">.</span><span class="n">setter</span>
-	<span class="k">def</span> <span class="nf">local_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="nd">@local_rotation_euler</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">local_rotation_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="PoseBone.apply_global_rotation">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.PoseBone.apply_global_rotation">[docs]</a>
-	<span class="k">def</span> <span class="nf">apply_global_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Equivalent to selecting the bone in Blender, and applying a global rotation about an axis</span>
+    <span class="k">def</span> <span class="nf">apply_global_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Equivalent to selecting the bone in Blender, and applying a global rotation about an axis</span>
 
-<span class="sd">		:param axis: X, Y, or Z</span>
-<span class="sd">		:param val: Rotation amount in radians</span>
-<span class="sd">		:param degrees: If true, rotation is given in degrees&quot;&quot;&quot;</span>
+<span class="sd">        :param axis: X, Y, or Z</span>
+<span class="sd">        :param val: Rotation amount in radians</span>
+<span class="sd">        :param degrees: If true, rotation is given in degrees&quot;&quot;&quot;</span>
 
-		<span class="k">if</span> <span class="n">degrees</span><span class="p">:</span>
-			<span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">degrees</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
-		<span class="k">with</span> <span class="n">SetMode</span><span class="p">(</span><span class="s1">&#39;POSE&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="p">):</span>
-			<span class="k">with</span> <span class="n">SelectObjects</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">]):</span>
-				<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">bones</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">bones</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">with</span> <span class="n">SetMode</span><span class="p">(</span><span class="s2">&quot;POSE&quot;</span><span class="p">,</span> <span class="nb">object</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">SelectObjects</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">]):</span>
+                <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">bones</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">armature</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">bones</span><span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+                <span class="p">]</span>
 
-				<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">orient_axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">orient_type</span> <span class="o">=</span> <span class="s1">&#39;GLOBAL&#39;</span><span class="p">,</span>
-										 <span class="n">constraint_axis</span><span class="o">=</span><span class="p">[</span><span class="n">axis</span><span class="o">==</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">==</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">==</span><span class="s1">&#39;Z&#39;</span><span class="p">])</span></div>
+                <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">val</span><span class="p">,</span>
+                    <span class="n">orient_axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span>
+                    <span class="n">orient_type</span><span class="o">=</span><span class="s2">&quot;GLOBAL&quot;</span><span class="p">,</span>
+                    <span class="n">constraint_axis</span><span class="o">=</span><span class="p">[</span><span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span><span class="p">],</span>
+                <span class="p">)</span></div>
 
 
-	<span class="nd">@animatable_property</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeOrScalar</span><span class="p">,</span> <span class="n">update</span><span class="p">:</span><span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set scale of pose bone.</span>
+    <span class="nd">@animatable_property</span><span class="p">(</span><span class="s2">&quot;scale&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeOrScalar</span><span class="p">,</span> <span class="n">update</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set scale of pose bone.</span>
 
-<span class="sd">		:param scale: Scale to set. Either single value or 3 long vector</span>
-<span class="sd">		:param update: Update the scene after setting</span>
-<span class="sd">		scale. For batch operations, can be faster to set this to False, and call `bsyn.context.view_layer.update()`</span>
-<span class="sd">		after all operations.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param scale: Scale to set. Either single value or 3 long vector</span>
+<span class="sd">        :param update: Update the scene after setting</span>
+<span class="sd">        scale. For batch operations, can be faster to set this to False, and call `bsyn.context.view_layer.update()`</span>
+<span class="sd">        after all operations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-			<span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
 
-		<span class="k">if</span> <span class="n">update</span><span class="p">:</span>
-			<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+        <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="BoneConstraint">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.BoneConstraint">[docs]</a>
 <span class="k">class</span> <span class="nc">BoneConstraint</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Generic pose bone constraint object&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pose_bone</span><span class="p">:</span> <span class="n">PoseBone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Constraint</span><span class="p">,</span> <span class="n">empty</span><span class="p">:</span> <span class="n">Empty</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span> <span class="o">=</span> <span class="n">pose_bone</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">constraint</span> <span class="o">=</span> <span class="n">constraint</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">empty</span> <span class="o">=</span> <span class="n">empty</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">empty</span><span class="o">.</span><span class="n">obj</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic pose bone constraint object&quot;&quot;&quot;</span>
 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">pose_bone</span><span class="p">:</span> <span class="n">PoseBone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Constraint</span><span class="p">,</span> <span class="n">empty</span><span class="p">:</span> <span class="n">Empty</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span> <span class="o">=</span> <span class="n">pose_bone</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraint</span> <span class="o">=</span> <span class="n">constraint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">empty</span> <span class="o">=</span> <span class="n">empty</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="n">empty</span><span class="o">.</span><span class="n">obj</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constraint</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constraint</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">bone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose_bone</span>
 
 <div class="viewcode-block" id="BoneConstraint.remove">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.BoneConstraint.remove">[docs]</a>
-	<span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Remove this constraint.&quot;&quot;&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">bone</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">constraint</span><span class="p">)</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">empty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
+    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove this constraint.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bone</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">constraint</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">empty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
 
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">armature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bone</span><span class="o">.</span><span class="n">id_data</span></div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">armature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bone</span><span class="o">.</span><span class="n">id_data</span></div>
+
 
 
 <div class="viewcode-block" id="Armature">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature">[docs]</a>
 <span class="k">class</span> <span class="nc">Armature</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;This class manages armatures - a collection of posable bones.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class manages armatures - a collection of posable bones.&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Armature</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="nb">object</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># for IK constraints</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># for generic constraints</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">pose_bones</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">PoseBone</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">object</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">bones</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Armature</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="nb">object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># for IK constraints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># for generic constraints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pose_bones</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">PoseBone</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">object</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">bones</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span>
 
-	<span class="nd">@property</span>
-	<span class="k">def</span> <span class="nf">pose</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Pose</span><span class="p">:</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">pose</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pose</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Pose</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">pose</span>
 
 <div class="viewcode-block" id="Armature.get_bone">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.get_bone">[docs]</a>
-	<span class="k">def</span> <span class="nf">get_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">PoseBone</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Get bone from armature.</span>
+    <span class="k">def</span> <span class="nf">get_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">PoseBone</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get bone from armature.</span>
 
-<span class="sd">		:param bone_name: Name of bone to get (or PoseBone object)</span>
-<span class="sd">		:return: PoseBone object</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param bone_name: Name of bone to get (or PoseBone object)</span>
+<span class="sd">        :return: PoseBone object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">):</span>
-			<span class="k">return</span> <span class="n">bone</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">bone</span>
 
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">):</span>
-			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose_bones</span><span class="p">[</span><span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose_bones</span><span class="p">[</span><span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
 
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose_bones</span><span class="p">[</span><span class="n">bone</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose_bones</span><span class="p">[</span><span class="n">bone</span><span class="p">]</span>
 
-		<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected bone to be PoseBone, str, or PoseBone, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Expected bone to be PoseBone, str, or PoseBone, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Armature.pose_bone">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.pose_bone">[docs]</a>
-	<span class="k">def</span> <span class="nf">pose_bone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">],</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-				  <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-				  <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">pose_bone</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">PoseBone</span><span class="p">],</span>
+        <span class="n">rotation</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the pose of a bone by giving a Euler XYZ rotation and/or location.</span>
 
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Set the pose of a bone by giving a Euler XYZ rotation and/or location.</span>
+<span class="sd">        :param bone: Name of bone to pose, or PoseBone object</span>
+<span class="sd">        :param rotation: Euler XYZ rotation in radians</span>
+<span class="sd">        :param location: Location of bone</span>
+<span class="sd">        :param scale: Scale of bone</span>
+<span class="sd">        :param frame: Frame to set pose on. If given, will insert keyframe here.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="sd">		:param bone: Name of bone to pose, or PoseBone object</span>
-<span class="sd">		:param rotation: Euler XYZ rotation in radians</span>
-<span class="sd">		:param location: Location of bone</span>
-<span class="sd">		:param scale: Scale of bone</span>
-<span class="sd">		:param frame: Frame to set pose on. If given, will insert keyframe here.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">SetMode</span><span class="p">(</span><span class="s2">&quot;POSE&quot;</span><span class="p">,</span> <span class="nb">object</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">bone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bone</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span>
 
-		<span class="k">with</span> <span class="n">SetMode</span><span class="p">(</span><span class="s1">&#39;POSE&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
-			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-				<span class="n">bone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bone</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span>
+            <span class="n">bone</span><span class="o">.</span><span class="n">rotation_mode</span> <span class="o">=</span> <span class="s2">&quot;XYZ&quot;</span>
+            <span class="k">if</span> <span class="n">rotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">bone</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
 
-			<span class="n">bone</span><span class="o">.</span><span class="n">rotation_mode</span> <span class="o">=</span> <span class="s1">&#39;XYZ&#39;</span>
-			<span class="k">if</span> <span class="n">rotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-				<span class="n">bone</span><span class="o">.</span><span class="n">set_rotation_euler</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">bone</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
 
-			<span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-				<span class="n">bone</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
-
-			<span class="k">if</span> <span class="n">scale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-				<span class="n">bone</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
+            <span class="k">if</span> <span class="n">scale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">bone</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Armature.clear_pose">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.clear_pose">[docs]</a>
-	<span class="k">def</span> <span class="nf">clear_pose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bones</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Clear the pose of the armature.</span>
-<span class="sd">		For the target bones, sets poses to zero, and removes any IK constraints.</span>
+    <span class="k">def</span> <span class="nf">clear_pose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bones</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the pose of the armature.</span>
+<span class="sd">        For the target bones, sets poses to zero, and removes any IK constraints.</span>
 
-<span class="sd">		:param rot: Clear rotation</span>
-<span class="sd">		:param location: Clear location</span>
-<span class="sd">		:param scale: Clear scale</span>
-<span class="sd">		:param bones: List of bones to clear. If not given, will clear all bones.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        :param rot: Clear rotation</span>
+<span class="sd">        :param location: Clear location</span>
+<span class="sd">        :param scale: Clear scale</span>
+<span class="sd">        :param bones: List of bones to clear. If not given, will clear all bones.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="k">with</span> <span class="n">SetMode</span><span class="p">(</span><span class="s1">&#39;POSE&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
-			<span class="k">for</span> <span class="n">bone</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">bones</span><span class="p">:</span>
-				<span class="k">if</span> <span class="n">bones</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">bones</span><span class="p">:</span>
-					<span class="k">if</span> <span class="n">rot</span><span class="p">:</span>
-						<span class="n">bone</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-					<span class="k">if</span> <span class="n">location</span><span class="p">:</span>
-						<span class="n">bone</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-					<span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
-						<span class="n">bone</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">SetMode</span><span class="p">(</span><span class="s2">&quot;POSE&quot;</span><span class="p">,</span> <span class="nb">object</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">bone</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">bones</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">bones</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">bones</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">rot</span><span class="p">:</span>
+                        <span class="n">bone</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">location</span><span class="p">:</span>
+                        <span class="n">bone</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+                        <span class="n">bone</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-				<span class="k">for</span> <span class="n">bone_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-					<span class="k">if</span> <span class="n">bone_name</span> <span class="o">==</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-						<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="p">[</span><span class="n">bone_name</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>  <span class="c1"># remove the constraint</span>
-						<span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">bone_name</span><span class="p">)</span>  <span class="c1"># remove reference to it</span>
+                <span class="k">for</span> <span class="n">bone_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">bone_name</span> <span class="o">==</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="p">[</span><span class="n">bone_name</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>  <span class="c1"># remove the constraint</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ik_constraints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">bone_name</span><span class="p">)</span>  <span class="c1"># remove reference to it</span>
 
-				<span class="k">for</span> <span class="n">cname</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">keys</span><span class="p">()]:</span>
-					<span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span>
-					<span class="k">if</span> <span class="n">constraint</span><span class="o">.</span><span class="n">pose_bone</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-						<span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
-						<span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">cname</span><span class="p">)</span></div>
-
+                <span class="k">for</span> <span class="n">cname</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">keys</span><span class="p">()]:</span>
+                    <span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">constraint</span><span class="o">.</span><span class="n">pose_bone</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">cname</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Armature.add_constraint">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.armature.html#blendersynth.blender.armature.Armature.add_constraint">[docs]</a>
-	<span class="k">def</span> <span class="nf">add_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">],</span> <span class="n">constraint_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span><span class="n">Empty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoneConstraint</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Applies a generic bone constraint. Returns BoneConstraint object</span>
+    <span class="k">def</span> <span class="nf">add_constraint</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">bone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PoseBone</span><span class="p">],</span>
+        <span class="n">constraint_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">target</span><span class="p">:</span> <span class="n">Empty</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoneConstraint</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies a generic bone constraint. Returns BoneConstraint object</span>
 
-<span class="sd">		:param bone: Bone to apply constraint to</span>
-<span class="sd">		:param constraint_name:</span>
-<span class="sd">		:param target: Empty target. If none given, will create one.</span>
+<span class="sd">        :param bone: Bone to apply constraint to</span>
+<span class="sd">        :param constraint_name:</span>
+<span class="sd">        :param target: Empty target. If none given, will create one.</span>
 
-<span class="sd">		Any other constraint specific keyword arguments given as well will be fed into the new constraint</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">        Any other constraint specific keyword arguments given as well will be fed into the new constraint</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-		<span class="n">bone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bone</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span>
+        <span class="n">bone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bone</span><span class="p">(</span><span class="n">bone</span><span class="p">)</span>
 
-		<span class="c1"># Add IK constraint to the specified bone</span>
-		<span class="n">constraint</span> <span class="o">=</span> <span class="n">bone</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">constraint_name</span><span class="p">)</span>
-		<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-			<span class="nb">setattr</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="c1"># Add IK constraint to the specified bone</span>
+        <span class="n">constraint</span> <span class="o">=</span> <span class="n">bone</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">constraint_name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
-		<span class="c1"># Create an empty to serve as the IK target</span>
-		<span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">target</span> <span class="o">=</span> <span class="n">Empty</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Target_For_&quot;</span> <span class="o">+</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="c1"># Create an empty to serve as the IK target</span>
+        <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">Empty</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Target_For_&quot;</span> <span class="o">+</span> <span class="n">bone</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-		<span class="n">constraint</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">object</span>
+        <span class="n">constraint</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">object</span>
 
-		<span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-		<span class="n">constraint</span> <span class="o">=</span> <span class="n">BoneConstraint</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="n">constraint</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">constraint</span>
+        <span class="n">constraint</span> <span class="o">=</span> <span class="n">BoneConstraint</span><span class="p">(</span><span class="n">bone</span><span class="p">,</span> <span class="n">constraint</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="n">constraint</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">constraint</span>
 
-		<span class="k">return</span> <span class="n">constraint</span></div>
+        <span class="k">return</span> <span class="n">constraint</span></div>
 </div>
 
 </pre></div>

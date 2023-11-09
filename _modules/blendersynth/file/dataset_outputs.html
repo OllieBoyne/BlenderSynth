@@ -110,14 +110,14 @@
 <div class="viewcode-block" id="save_label">
 <a class="viewcode-back" href="../../../api/blendersynth.file.dataset_outputs.html#blendersynth.file.dataset_outputs.save_label">[docs]</a>
 <span class="k">def</span> <span class="nf">save_label</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">pth</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Save a label to a file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save a label to a file.</span>
 
-<span class="sd">	:param data: The data to save.</span>
-<span class="sd">	:param pth: The path to save the data to.&quot;&quot;&quot;</span>
+<span class="sd">    :param data: The data to save.</span>
+<span class="sd">    :param pth: The path to save the data to.&quot;&quot;&quot;</span>
 
-	<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pth</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pth</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
-		<span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span></div>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pth</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pth</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span></div>
 
 </pre></div>
 
