@@ -14,7 +14,7 @@ def _new_shader_node(node_tree, node_type):
 class Material(BsynObject):
     """BlenderSynth Material class. Will always be a node material."""
 
-    def __init__(self, name, shader_type="ShaderNodeBsdfPrincipled", mat=None):
+    def __init__(self, name="NewMaterial", shader_type="ShaderNodeBsdfPrincipled", mat=None):
         if mat is None:
             mat = bpy.data.materials.new(name)
             mat.use_nodes = True
