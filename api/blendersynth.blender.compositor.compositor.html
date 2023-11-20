@@ -129,20 +129,20 @@ and any overlays on this output (e.g. Bounding Box Visualization)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>input_data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a>, <a class="reference internal" href="blendersynth.blender.aov.html#blendersynth.blender.aov.AOV" title="blendersynth.blender.aov.AOV"><code class="xref py py-class docutils literal notranslate"><span class="pre">AOV</span></code></a>]) – If <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>,  will get the input_data from that key in the render_layers_node. If <code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code>, use that node as input. If <code class="xref py py-class docutils literal notranslate"><span class="pre">AOV</span></code>, use that AOV as input (storing AOV).</p></li>
-<li><p><strong>directory</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Directory to save output to</p></li>
-<li><p><strong>file_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of file to save output to. If None, will use <cite>name</cite> (or <cite>input_data</cite> if <cite>name</cite> is None)</p></li>
-<li><p><strong>file_format</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – File format to save output as. Must be in <a class="reference internal" href="#blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS" title="blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS"><code class="xref py py-class docutils literal notranslate"><span class="pre">AVAILABLE_FORMATS</span></code></a></p></li>
-<li><p><strong>color_mode</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Color mode to save output as.</p></li>
-<li><p><strong>jpeg_quality</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Quality of JPEG output.</p></li>
-<li><p><strong>png_compression</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Compression of PNG output.</p></li>
-<li><p><strong>color_depth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Color depth of output.</p></li>
-<li><p><strong>EXR_color_depth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Color depth of EXR output.</p></li>
-<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of output. If not given, will take the str representation of input_data</p></li>
+<li><p><strong>input_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a>, <a class="reference internal" href="blendersynth.blender.aov.html#blendersynth.blender.aov.AOV" title="blendersynth.blender.aov.AOV"><code class="xref py py-class docutils literal notranslate"><span class="pre">AOV</span></code></a>]</span>) – If <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>,  will get the input_data from that key in the render_layers_node. If <code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code>, use that node as input. If <code class="xref py py-class docutils literal notranslate"><span class="pre">AOV</span></code>, use that AOV as input (storing AOV).</p></li>
+<li><p><strong>directory</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Directory to save output to</p></li>
+<li><p><strong>file_name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of file to save output to. If None, will use <cite>name</cite> (or <cite>input_data</cite> if <cite>name</cite> is None)</p></li>
+<li><p><strong>file_format</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – File format to save output as. Must be in <a class="reference internal" href="#blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS" title="blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS"><code class="xref py py-class docutils literal notranslate"><span class="pre">AVAILABLE_FORMATS</span></code></a></p></li>
+<li><p><strong>color_mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color mode to save output as.</p></li>
+<li><p><strong>jpeg_quality</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Quality of JPEG output.</p></li>
+<li><p><strong>png_compression</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Compression of PNG output.</p></li>
+<li><p><strong>color_depth</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color depth of output.</p></li>
+<li><p><strong>EXR_color_depth</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color depth of EXR output.</p></li>
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of output. If not given, will take the str representation of input_data</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Name of output, which can be used to update filename or directory</p>
@@ -157,12 +157,12 @@ and any overlays on this output (e.g. Bounding Box Visualization)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Size of axes. Default 100</p></li>
-<li><p><strong>thickness</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Thickness of axes. Default 2</p></li>
+<li><p><strong>size</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Size of axes. Default 100</p></li>
+<li><p><strong>thickness</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Thickness of axes. Default 2</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay" title="blendersynth.blender.compositor.image_overlay.AxesOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">AxesOverlay</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay" title="blendersynth.blender.compositor.image_overlay.AxesOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">AxesOverlay</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -175,11 +175,11 @@ and any overlays on this output (e.g. Bounding Box Visualization)</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>col</strong> – (3,) or (N, 3) Color(s) of bounding box(es) [in BGR]</p></li>
-<li><p><strong>thickness</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – (,) or (N,) Thickness(es) of bounding box(es)</p></li>
+<li><p><strong>thickness</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – (,) or (N,) Thickness(es) of bounding box(es)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay" title="blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoundingBoxOverlay</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay" title="blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoundingBoxOverlay</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -193,11 +193,11 @@ and any values below that are depth/max_depth * col.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>max_depth</strong> – Maximum depth value to normalize to</p></li>
-<li><p><strong>col</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – Color of maximum depth value. 0-255 RGB or RGBA.</p></li>
+<li><p><strong>col</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span>) – Color of maximum depth value. 0-255 RGB or RGBA.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -209,14 +209,14 @@ and any values below that are depth/max_depth * col.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>marker</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default ‘x’</p></li>
-<li><p><strong>size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Size of marker. Default 5</p></li>
-<li><p><strong>color</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – Color of marker, RGB or RGBA, default (0, 0, 255) (red)</p></li>
-<li><p><strong>thickness</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Thickness of marker. Default 2</p></li>
+<li><p><strong>marker</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default ‘x’</p></li>
+<li><p><strong>size</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Size of marker. Default 5</p></li>
+<li><p><strong>color</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span>) – Color of marker, RGB or RGBA, default (0, 0, 255) (red)</p></li>
+<li><p><strong>thickness</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Thickness of marker. Default 2</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay" title="blendersynth.blender.compositor.image_overlay.KeypointsOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeypointsOverlay</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay" title="blendersynth.blender.compositor.image_overlay.KeypointsOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeypointsOverlay</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -227,7 +227,7 @@ and any values below that are depth/max_depth * col.</p>
 <dd><p>Get mask node from pass index. If not found, create new mask node</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -239,12 +239,12 @@ and any values below that are depth/max_depth * col.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>camera</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.camera.html#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="blendersynth.blender.camera.html#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a>]]) – Camera(s) to render from. If None, will use <cite>scene.camera</cite>. If multiple, will render each camera separately, appending the camera’s names as the output file names.</p></li>
-<li><p><strong>scene</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code>) – Scene to render. If None, will use <cite>bpy.context.scene</cite>.</p></li>
-<li><p><strong>annotations</strong> (<a class="reference internal" href="blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.AnnotationHandler" title="blendersynth.annotations.annotation_handler.AnnotationHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationHandler</span></code></a>) – Object containing annotation information for each camera view to be used for overlays</p></li>
-<li><p><strong>animation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, will render an animation, using <cite>frame_start</cite> and <cite>frame_end</cite> as the start and end frames.</p></li>
-<li><p><strong>frame_start</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Start frame for animation.</p></li>
-<li><p><strong>frame_end</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – End frame for animation.</p></li>
+<li><p><strong>camera</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.camera.html#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="blendersynth.blender.camera.html#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a>]]</span>) – Camera(s) to render from. If None, will use <cite>scene.camera</cite>. If multiple, will render each camera separately, appending the camera’s names as the output file names.</p></li>
+<li><p><strong>scene</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code></span>) – Scene to render. If None, will use <cite>bpy.context.scene</cite>.</p></li>
+<li><p><strong>annotations</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.AnnotationHandler" title="blendersynth.annotations.annotation_handler.AnnotationHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationHandler</span></code></a></span>) – Object containing annotation information for each camera view to be used for overlays</p></li>
+<li><p><strong>animation</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, will render an animation, using <cite>frame_start</cite> and <cite>frame_end</cite> as the start and end frames.</p></li>
+<li><p><strong>frame_start</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Start frame for animation.</p></li>
+<li><p><strong>frame_end</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – End frame for animation.</p></li>
 </ul>
 </dd>
 </dl>
@@ -260,7 +260,7 @@ and any values below that are depth/max_depth * col.</p>
 </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AlphaImageOverlay" title="blendersynth.blender.compositor.image_overlay.AlphaImageOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlphaImageOverlay</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AlphaImageOverlay" title="blendersynth.blender.compositor.image_overlay.AlphaImageOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlphaImageOverlay</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -271,7 +271,7 @@ and any values below that are depth/max_depth * col.</p>
 <dd><p>Reassign all filenames (not directories) for all file output nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fname</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – new filename, without extension</p>
+<dd class="field-odd"><p><strong>fname</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – new filename, without extension</p>
 </dd>
 </dl>
 </dd></dl>
@@ -283,8 +283,8 @@ and any values below that are depth/max_depth * col.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – key of output, as given in <cite>define_output</cite></p></li>
-<li><p><strong>directory</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – new directory</p></li>
+<li><p><strong>key</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – key of output, as given in <cite>define_output</cite></p></li>
+<li><p><strong>directory</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – new directory</p></li>
 </ul>
 </dd>
 </dl>
@@ -297,8 +297,8 @@ and any values below that are depth/max_depth * col.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – key of output, as given in <cite>define_output</cite></p></li>
-<li><p><strong>fname</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – new filename, without extension</p></li>
+<li><p><strong>key</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – key of output, as given in <cite>define_output</cite></p></li>
+<li><p><strong>fname</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – new filename, without extension</p></li>
 </ul>
 </dd>
 </dl>

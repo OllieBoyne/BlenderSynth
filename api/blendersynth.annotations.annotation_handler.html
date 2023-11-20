@@ -123,9 +123,9 @@
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bbox</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.BboxAnnotation" title="blendersynth.utils.types.BboxAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BboxAnnotation</span></code></a>) – Bounding box tuple per instance</p></li>
-<li><p><strong>keypoints</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.KeypointOrAxesAnnotation" title="blendersynth.utils.types.KeypointOrAxesAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeypointOrAxesAnnotation</span></code></a>) – [N x 2] array per instance</p></li>
-<li><p><strong>axes</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.KeypointOrAxesAnnotation" title="blendersynth.utils.types.KeypointOrAxesAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeypointOrAxesAnnotation</span></code></a>) – [4 x 2] array per instance</p></li>
+<li><p><strong>bbox</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>]]</span>) – Bounding box tuple per instance</p></li>
+<li><p><strong>keypoints</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</span>) – [N x 2] array per instance</p></li>
+<li><p><strong>axes</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</span>) – [4 x 2] array per instance</p></li>
 </ul>
 </dd>
 </dl>
@@ -137,7 +137,7 @@
 <dd><p>Return a deep copy of this Annotation instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#blendersynth.annotations.annotation_handler.Annotation" title="blendersynth.annotations.annotation_handler.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#blendersynth.annotations.annotation_handler.Annotation" title="blendersynth.annotations.annotation_handler.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -149,13 +149,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>item</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A key in <a class="reference internal" href="#blendersynth.annotations.annotation_handler.ANN_TYPES" title="blendersynth.annotations.annotation_handler.ANN_TYPES"><code class="xref py py-class docutils literal notranslate"><span class="pre">ANN_TYPES</span></code></a></p></li>
+<li><p><strong>item</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – A key in <a class="reference internal" href="#blendersynth.annotations.annotation_handler.ANN_TYPES" title="blendersynth.annotations.annotation_handler.ANN_TYPES"><code class="xref py py-class docutils literal notranslate"><span class="pre">ANN_TYPES</span></code></a></p></li>
 <li><p><strong>value</strong> – Value to set</p></li>
-<li><p><strong>inplace</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, set in place and return self</p></li>
+<li><p><strong>inplace</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, set in place and return self</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#blendersynth.annotations.annotation_handler.Annotation" title="blendersynth.annotations.annotation_handler.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#blendersynth.annotations.annotation_handler.Annotation" title="blendersynth.annotations.annotation_handler.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -167,12 +167,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>other</strong> (<a class="reference internal" href="#blendersynth.annotations.annotation_handler.Annotation" title="blendersynth.annotations.annotation_handler.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>) – Annotation to join with</p></li>
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#blendersynth.annotations.annotation_handler.Annotation" title="blendersynth.annotations.annotation_handler.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a></span>) – Annotation to join with</p></li>
 <li><p><strong>priority</strong> – Which annotation to take priority when merging</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#blendersynth.annotations.annotation_handler.Annotation" title="blendersynth.annotations.annotation_handler.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#blendersynth.annotations.annotation_handler.Annotation" title="blendersynth.annotations.annotation_handler.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -188,7 +188,7 @@
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/annotations/annotation_handler.html#AnnotationHandler.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.annotations.annotation_handler.AnnotationHandler.__init__" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – Dictionary of camera_name: Annotation class</p>
+<dd class="field-odd"><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span>) – Dictionary of camera_name: Annotation class</p>
 </dd>
 </dl>
 </dd></dl>
@@ -200,12 +200,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – Dictionary of camera_name: annotation (e.g. bboxes)</p></li>
-<li><p><strong>ann_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Type of annotation (e.g. ‘bbox’)</p></li>
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span>) – Dictionary of camera_name: annotation (e.g. bboxes)</p></li>
+<li><p><strong>ann_type</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Type of annotation (e.g. ‘bbox’)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#blendersynth.annotations.annotation_handler.AnnotationHandler" title="blendersynth.annotations.annotation_handler.AnnotationHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationHandler</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#blendersynth.annotations.annotation_handler.AnnotationHandler" title="blendersynth.annotations.annotation_handler.AnnotationHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationHandler</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -216,7 +216,7 @@
 <dd><p>Return annotation for a given camera (default to an empty <a class="reference internal" href="#blendersynth.annotations.annotation_handler.Annotation" title="blendersynth.annotations.annotation_handler.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> instance if not found)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#blendersynth.annotations.annotation_handler.Annotation" title="blendersynth.annotations.annotation_handler.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#blendersynth.annotations.annotation_handler.Annotation" title="blendersynth.annotations.annotation_handler.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -229,12 +229,12 @@ comprising the union of the two AnnotationHandlers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>other</strong> (<a class="reference internal" href="#blendersynth.annotations.annotation_handler.AnnotationHandler" title="blendersynth.annotations.annotation_handler.AnnotationHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationHandler</span></code></a>) – AnnotationHandler to merge with</p></li>
-<li><p><strong>priority</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Which AnnotationHandler to take priority when merging</p></li>
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#blendersynth.annotations.annotation_handler.AnnotationHandler" title="blendersynth.annotations.annotation_handler.AnnotationHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationHandler</span></code></a></span>) – AnnotationHandler to merge with</p></li>
+<li><p><strong>priority</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Which AnnotationHandler to take priority when merging</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#blendersynth.annotations.annotation_handler.AnnotationHandler" title="blendersynth.annotations.annotation_handler.AnnotationHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationHandler</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#blendersynth.annotations.annotation_handler.AnnotationHandler" title="blendersynth.annotations.annotation_handler.AnnotationHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationHandler</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>

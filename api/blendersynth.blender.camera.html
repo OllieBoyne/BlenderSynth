@@ -118,8 +118,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frames</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of keyframes to animate at - length N</p></li>
-<li><p><strong>fracs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of fractions along path to animate at - length N</p></li>
+<li><p><strong>frames</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span>) – tuple of keyframes to animate at - length N</p></li>
+<li><p><strong>fracs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span>) – tuple of fractions along path to animate at - length N</p></li>
 </ul>
 </dd>
 </dl>
@@ -138,13 +138,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of camera</p></li>
-<li><p><strong>location</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]) – Location of camera</p></li>
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of camera</p></li>
+<li><p><strong>location</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</span>) – Location of camera</p></li>
 <li><p><strong>rotation_euler</strong> – Rotation of camera in euler angles</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -156,11 +156,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<a class="reference internal" href="blendersynth.blender.curve.html#blendersynth.blender.curve.Curve" title="blendersynth.blender.curve.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curve</span></code></a>) – Curve object</p></li>
-<li><p><strong>zero</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, set camera location to (0, 0, 0) [aligns camera with path]</p></li>
-<li><p><strong>animate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If True, animate camera along path</p></li>
-<li><p><strong>frames</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of keyframes to animate at - length N</p></li>
-<li><p><strong>fracs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – tuple of fractions along path to animate at - length N</p></li>
+<li><p><strong>path</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.curve.html#blendersynth.blender.curve.Curve" title="blendersynth.blender.curve.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curve</span></code></a></span>) – Curve object</p></li>
+<li><p><strong>zero</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, set camera location to (0, 0, 0) [aligns camera with path]</p></li>
+<li><p><strong>animate</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, animate camera along path</p></li>
+<li><p><strong>frames</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span>) – tuple of keyframes to animate at - length N</p></li>
+<li><p><strong>fracs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span>) – tuple of fractions along path to animate at - length N</p></li>
 </ul>
 </dd>
 </dl>
@@ -178,10 +178,10 @@
 <dd><p>Create from a named camera in scene</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of camera</p>
+<dd class="field-odd"><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of camera</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -199,8 +199,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>at</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Point to look at</p></li>
-<li><p><strong>up</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Up vector</p></li>
+<li><p><strong>at</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>]</span>) – Point to look at</p></li>
+<li><p><strong>up</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>]</span>) – Up vector</p></li>
 </ul>
 </dd>
 </dl>
@@ -213,8 +213,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>obj</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh" title="blendersynth.blender.mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Object</span></code>]) – Object to look at</p></li>
-<li><p><strong>up</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a>) – Up vector</p></li>
+<li><p><strong>obj</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh" title="blendersynth.blender.mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Object</span></code>]</span>) – Object to look at</p></li>
+<li><p><strong>up</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>]</span>) – Up vector</p></li>
 </ul>
 </dd>
 </dl>
@@ -233,8 +233,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Frame number</p></li>
-<li><p><strong>offset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Offset fraction (0-1)</p></li>
+<li><p><strong>frame</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Frame number</p></li>
+<li><p><strong>offset</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Offset fraction (0-1)</p></li>
 </ul>
 </dd>
 </dl>
@@ -342,7 +342,7 @@
 <dd><p>Track to object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>obj</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject" title="blendersynth.blender.bsyn_object.BsynObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">BsynObject</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Object</span></code>]) – BsynObject or Blender Object to track to</p>
+<dd class="field-odd"><p><strong>obj</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.bsyn_object.html#blendersynth.blender.bsyn_object.BsynObject" title="blendersynth.blender.bsyn_object.BsynObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">BsynObject</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Object</span></code>]</span>) – BsynObject or Blender Object to track to</p>
 </dd>
 </dl>
 </dd></dl>
