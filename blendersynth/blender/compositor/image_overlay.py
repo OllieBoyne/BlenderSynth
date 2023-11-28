@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 from ...file.tempfiles import create_temp_file
 from typing import List
+from ...utils import io
 
 
 class AlphaImageOverlay(CompositorNodeGroup):
@@ -60,7 +61,7 @@ class AlphaImageOverlay(CompositorNodeGroup):
         cv2.imwrite(self.temp_img_loc, self.img)
 
         # connect this image to the overlay node
-        self.overlay_img.image = bpy.data.images.load(self.temp_img_loc)
+        self.overlay_img.image = io.load_image(self.temp_img_loc)
         return self.temp_img_loc
 
 

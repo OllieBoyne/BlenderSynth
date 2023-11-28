@@ -1,6 +1,7 @@
 import bpy
 from .bsyn_object import BsynObject
 from .nodes import tidy_tree
+from ..utils import io
 
 
 def _new_shader_node(node_tree, node_type):
@@ -100,7 +101,7 @@ class Material(BsynObject):
         else:
             tex_image_node = nodes.new("ShaderNodeTexImage")
 
-        tex_image_node.image = bpy.data.images.load(image_loc)
+        tex_image_node.image = io.load_image(image_loc)
         self._image_nodes[input_name] = tex_image_node
 
         if input_name == "Displacement":

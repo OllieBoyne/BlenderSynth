@@ -1,6 +1,7 @@
 import bpy
 from .nodes.node_arranger import tidy_tree
 from typing import Union
+from ..utils import io
 
 
 class World:
@@ -92,7 +93,7 @@ class World:
         :param intensity: [Optional] Set the intensity of the HDRI lighting"""
 
         self._setup_hdri()
-        self.world_nodes["Environment Texture"].image = bpy.data.images.load(pth)
+        self.world_nodes["Environment Texture"].image = io.load_image(pth)
         self._lighting_from_background(affect_scene)
 
         if intensity:
