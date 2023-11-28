@@ -2,6 +2,8 @@ import os
 import glob
 import re
 from .tempfiles import create_temp_file
+from ..utils.types import Camera
+from typing import List
 
 from ..utils import import_module
 
@@ -104,3 +106,30 @@ def frames_to_video(
             os.remove(f)
 
     print("Video created at " + output_loc)
+
+
+def frames_to_video_multiview(
+    cameras: List[Camera], directory=".", out_loc="vid.mp4", **kwargs
+):
+    """
+    Following the rendering of a multiview animation, this function handles rendering the frames separately into
+    videos.
+
+    :param cameras: List of cameras used for rendering
+    :param directory: Directory to look for frames in
+    :param out_loc: Output location for videos. Each camera will be saved as a separate video with the camera name prepended
+    :param kwargs: Keyword arguments to pass to :func:`frames_to_video`
+    """
+
+    for cam in cameras:
+        frame_files = sorted(
+            [
+                os.path.join(directory, f)
+                for f in os.listdir(directory)
+                if f.startswith(cam.name)
+            ]
+        )
+        out_f = os.path.join(
+            os.path.dirname(out_loc), f"{cam.name}_{os.path.basename(out_loc)}"
+        )
+        frames_to_video(frame_list=frame_files, output_loc=out_f, **kwargs)

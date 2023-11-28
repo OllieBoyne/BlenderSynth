@@ -73,6 +73,21 @@ def _get_badfname(fname, N=100):
     raise FileNotFoundError(f"File {fname} not found")
 
 
+def _all_anim_frames(fname, N=1000):
+    """Search for filename in the format
+    <main_fname><i:04d>.<ext>
+    where i is the frame number. if no file found for i < N, raise error.
+    otherwise, return found file
+    """
+    f, ext = os.path.splitext(fname)
+    for i in range(N):
+        fname = f + f"{i:04d}" + ext
+        if os.path.isfile(fname):
+            yield fname
+        else:
+            break
+
+
 def remove_ext(fname):
     return os.path.splitext(fname)[0]  # remove extension if given
 
@@ -424,8 +439,8 @@ class Compositor:
         node = self.file_output_nodes[str(key)]
         node.base_path = directory
 
-    def _fix_namings(self, prefix=None):
-        """After rendering,
+    def _fix_namings_static(self, prefix=None):
+        """After rendering a static scene,
         File Output node has property that frame number gets added to filename.
         Fix that here"""
 
@@ -441,6 +456,23 @@ class Compositor:
                 node.base_path, prefix + node.file_slots[0].path + ext
             )
             shutil.move(bad_file_name, target_file_name)
+
+    def _fix_namings_animation(self, prefix=None):
+        """After rendering an animation, find all the files that have been rendered,
+        and prepend prefix to them"""
+        if prefix is None:
+            return
+
+        for node in self.file_output_nodes.values():
+            # get expected file name and extension
+            ext = format_to_extension[node.format.file_format]
+            for fname in _all_anim_frames(
+                os.path.join(node.base_path, node.file_slots[0].path + ext)
+            ):
+                target_file_name = os.path.join(
+                    node.base_path, prefix + "_" + os.path.basename(fname)
+                )
+                shutil.move(fname, target_file_name)
 
     def _update_aovs(self):
         """Update any AOVs that are connected to the render layers node"""
@@ -496,8 +528,11 @@ class Compositor:
             scene.camera = cam.obj
             render(animation=animation)
 
-            if not animation:
-                self._fix_namings(prefix=cam.name if multi_camera else None)
+            if animation:
+                self._fix_namings_animation(prefix=cam.name if multi_camera else None)
+
+            else:
+                self._fix_namings_static(prefix=cam.name if multi_camera else None)
 
         # reset active camera
         scene.camera = _original_active_camera

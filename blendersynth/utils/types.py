@@ -90,6 +90,7 @@ for k in [
 
 # to avoid circular referencing, we also create some more type hints here (e.g. Mesh)
 Mesh = "blendersynth.blender.mesh.Mesh"
+Camera = "blendersynth.blender.camera.Camera"
 
 for name in ["Mesh"]:
     obj = globals()[name]
