@@ -107,6 +107,7 @@
 <span></span><span class="kn">import</span> <span class="nn">bpy</span>
 <span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span>
 <span class="kn">from</span> <span class="nn">.nodes</span> <span class="kn">import</span> <span class="n">tidy_tree</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">io</span>
 
 
 <span class="k">def</span> <span class="nf">_new_shader_node</span><span class="p">(</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">node_type</span><span class="p">):</span>
@@ -213,7 +214,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tex_image_node</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;ShaderNodeTexImage&quot;</span><span class="p">)</span>
 
-        <span class="n">tex_image_node</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">image_loc</span><span class="p">)</span>
+        <span class="n">tex_image_node</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">load_image</span><span class="p">(</span><span class="n">image_loc</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_image_nodes</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">tex_image_node</span>
 
         <span class="k">if</span> <span class="n">input_name</span> <span class="o">==</span> <span class="s2">&quot;Displacement&quot;</span><span class="p">:</span>
