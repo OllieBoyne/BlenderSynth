@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -14,8 +14,10 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Debugging &amp; Troubleshooting &mdash; BlenderSynth</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -118,7 +120,15 @@
 <section id="troubleshooting">
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">bsyn</span></code> imports all <code class="docutils literal notranslate"><span class="pre">bpy</span></code> functionality, so you can call any <code class="docutils literal notranslate"><span class="pre">bpy</span></code> function as if you would normally.</p>
-<p>If any issues with the Blender scripts not having the correct modules, try <code class="docutils literal notranslate"><span class="pre">bsyn.fix_blender_modules()</span></code>, or to completely reconfigure Blender, <code class="docutils literal notranslate"><span class="pre">bsyn.fix_blender_install()</span></code>. If installing from local clone, use <code class="docutils literal notranslate"><span class="pre">local=True</span></code> argument to both. If you are making changes to the local clone, use <code class="docutils literal notranslate"><span class="pre">editable=True</span></code> to install in editable mode.</p>
+<p>If you find any issues with the Blender scripts not having the correct modules, try <code class="docutils literal notranslate"><span class="pre">bsyn.fix_blender_modules()</span></code>, or to completely reconfigure Blender, <code class="docutils literal notranslate"><span class="pre">bsyn.fix_blender_install()</span></code>. If installing from local clone, use <code class="docutils literal notranslate"><span class="pre">local=True</span></code> argument to both. If you are making changes to the local clone, use <code class="docutils literal notranslate"><span class="pre">editable=True</span></code> to install in editable mode.</p>
+</section>
+<section id="custom-modules">
+<h2>Custom modules<a class="headerlink" href="#custom-modules" title="Link to this heading"></a></h2>
+<p>To install custom modules for your Blender python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
+<span class="n">bysn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">install_module</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 

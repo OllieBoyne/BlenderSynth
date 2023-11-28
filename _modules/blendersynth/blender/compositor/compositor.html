@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
   <meta charset="utf-8" />
     <!-- Google tag (gtag.js) -->
@@ -13,8 +13,10 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.blender.compositor.compositor &mdash; BlenderSynth</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
@@ -159,6 +161,8 @@
 <span class="p">]</span>
 <span class="sd">&quot;&quot;&quot;List of available output file formats&quot;&quot;&quot;</span>
 
+<span class="c1"># docs-special-members: __init__</span>
+
 
 <span class="k">def</span> <span class="nf">_get_badfname</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Search for filename in the format</span>
@@ -184,6 +188,8 @@
 <span class="k">class</span> <span class="nc">Compositor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compositor output - for handling file outputs, and managing Compositor node tree&quot;&quot;&quot;</span>
 
+<div class="viewcode-block" id="Compositor.__init__">
+<a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">view_layer</span><span class="o">=</span><span class="s2">&quot;ViewLayer&quot;</span><span class="p">,</span>
@@ -215,7 +221,8 @@
         <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_rgb_color_space</span><span class="p">(</span><span class="n">rgb_color_space</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">background_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_set_background_color</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_background_color</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">_tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tidy up node tree&quot;&quot;&quot;</span>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
     <!-- Google tag (gtag.js) -->
@@ -13,8 +13,10 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.blender.bsyn_object &mdash; BlenderSynth</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -402,7 +404,24 @@
 
         <span class="n">constraint</span><span class="o">.</span><span class="n">offset_factor</span> <span class="o">=</span> <span class="n">offset</span>
         <span class="n">constraint</span><span class="o">.</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s2">&quot;offset_factor&quot;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
-</div>
+
+
+    <span class="nd">@animatable_property</span><span class="p">(</span><span class="s2">&quot;hide_viewport&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">viewport_visibility</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Show/hide object in viewport</span>
+
+<span class="sd">        :param value: True to show, False to hide</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hide_viewport</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">value</span>
+
+    <span class="nd">@animatable_property</span><span class="p">(</span><span class="s2">&quot;hide_render&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">render_visibility</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Show/hide object in render</span>
+
+<span class="sd">        :param value: True to show, False to hide</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hide_render</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">value</span></div>
 
 </pre></div>
 
