@@ -270,3 +270,20 @@ class BsynObject:
 
         constraint.offset_factor = offset
         constraint.keyframe_insert(data_path="offset_factor", frame=frame)
+
+    @animatable_property("hide_viewport")
+    def viewport_visibility(self, value: bool):
+        """Show/hide object in viewport
+
+        :param value: True to show, False to hide
+        """
+
+        self.object.hide_viewport = not value
+
+    @animatable_property("hide_render")
+    def render_visibility(self, value: bool):
+        """Show/hide object in render
+
+        :param value: True to show, False to hide
+        """
+        self.object.hide_render = not value
