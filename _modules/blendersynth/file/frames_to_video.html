@@ -108,6 +108,8 @@
 <span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">.tempfiles</span> <span class="kn">import</span> <span class="n">create_temp_file</span>
+<span class="kn">from</span> <span class="nn">..utils.types</span> <span class="kn">import</span> <span class="n">Camera</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">import_module</span>
 
@@ -218,6 +220,36 @@
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Video created at &quot;</span> <span class="o">+</span> <span class="n">output_loc</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="frames_to_video_multiview">
+<a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.frames_to_video_multiview">[docs]</a>
+<span class="k">def</span> <span class="nf">frames_to_video_multiview</span><span class="p">(</span>
+    <span class="n">cameras</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Camera</span><span class="p">],</span> <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">out_loc</span><span class="o">=</span><span class="s2">&quot;vid.mp4&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Following the rendering of a multiview animation, this function handles rendering the frames separately into</span>
+<span class="sd">    videos.</span>
+
+<span class="sd">    :param cameras: List of cameras used for rendering</span>
+<span class="sd">    :param directory: Directory to look for frames in</span>
+<span class="sd">    :param out_loc: Output location for videos. Each camera will be saved as a separate video with the camera name prepended</span>
+<span class="sd">    :param kwargs: Keyword arguments to pass to :func:`frames_to_video`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">cam</span> <span class="ow">in</span> <span class="n">cameras</span><span class="p">:</span>
+        <span class="n">frame_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">cam</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">out_f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">out_loc</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cam</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">out_loc</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">frames_to_video</span><span class="p">(</span><span class="n">frame_list</span><span class="o">=</span><span class="n">frame_files</span><span class="p">,</span> <span class="n">output_loc</span><span class="o">=</span><span class="n">out_f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 </pre></div>
 

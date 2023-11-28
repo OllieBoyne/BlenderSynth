@@ -179,6 +179,21 @@
     <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">_all_anim_frames</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search for filename in the format</span>
+<span class="sd">    &lt;main_fname&gt;&lt;i:04d&gt;.&lt;ext&gt;</span>
+<span class="sd">    where i is the frame number. if no file found for i &lt; N, raise error.</span>
+<span class="sd">    otherwise, return found file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">f</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">f</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">04d</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">ext</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">fname</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+
+
 <span class="k">def</span> <span class="nf">remove_ext</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fname</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># remove extension if given</span>
 
@@ -565,8 +580,8 @@
         <span class="n">node</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">directory</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_fix_namings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;After rendering,</span>
+    <span class="k">def</span> <span class="nf">_fix_namings_static</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;After rendering a static scene,</span>
 <span class="sd">        File Output node has property that frame number gets added to filename.</span>
 <span class="sd">        Fix that here&quot;&quot;&quot;</span>
 
@@ -582,6 +597,23 @@
                 <span class="n">node</span><span class="o">.</span><span class="n">base_path</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="n">ext</span>
             <span class="p">)</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">bad_file_name</span><span class="p">,</span> <span class="n">target_file_name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_fix_namings_animation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;After rendering an animation, find all the files that have been rendered,</span>
+<span class="sd">        and prepend prefix to them&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_nodes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="c1"># get expected file name and extension</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="n">format_to_extension</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">file_format</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">_all_anim_frames</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">base_path</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="n">ext</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="n">target_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">base_path</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">target_file_name</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_update_aovs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update any AOVs that are connected to the render layers node&quot;&quot;&quot;</span>
@@ -639,8 +671,11 @@
             <span class="n">scene</span><span class="o">.</span><span class="n">camera</span> <span class="o">=</span> <span class="n">cam</span><span class="o">.</span><span class="n">obj</span>
             <span class="n">render</span><span class="p">(</span><span class="n">animation</span><span class="o">=</span><span class="n">animation</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">animation</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_fix_namings</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">cam</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">multi_camera</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">animation</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fix_namings_animation</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">cam</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">multi_camera</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fix_namings_static</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">cam</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">multi_camera</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="c1"># reset active camera</span>
         <span class="n">scene</span><span class="o">.</span><span class="n">camera</span> <span class="o">=</span> <span class="n">_original_active_camera</span></div>
