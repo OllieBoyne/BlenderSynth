@@ -55,6 +55,8 @@ AVAILABLE_FORMATS = [
 ]
 """List of available output file formats"""
 
+# docs-special-members: __init__
+
 
 def _get_badfname(fname, N=100):
     """Search for filename in the format
