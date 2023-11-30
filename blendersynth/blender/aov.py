@@ -1,7 +1,7 @@
 """Shader AOV manager"""
 
 import bpy
-from .nodes import tidy_tree, DeformedGeneratedTextureCoordinates
+from .nodes import tidy_tree, DeformedGeneratedTextureCoordinates, tree_add_socket
 from ..utils import types
 from typing import Union
 
@@ -301,8 +301,8 @@ class AttrRGBAOV(AOV):
         # Create Int Index -> HSV as a node group, so the 'num_objects' parameter can be edited centrally
         self.group = bpy.data.node_groups.new(name="IdxToHue", type="ShaderNodeTree")
 
-        self.group.inputs.new(f"NodeSocketInt", "Index")
-        self.group.outputs.new(f"NodeSocketColor", "Color")
+        tree_add_socket(self.group, "NodeSocketFloat", "Index", "INPUT")
+        tree_add_socket(self.group, "NodeSocketColor", "Color", "OUTPUT")
 
         self.input_node = self.group.nodes.new("NodeGroupInput")
         self.output_node = self.group.nodes.new("NodeGroupOutput")

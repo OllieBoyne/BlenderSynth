@@ -20,9 +20,9 @@ class MaskOverlay(CompositorNodeGroup):
         super().__init__(name, node_tree)
 
         # define I/O
-        self.group.inputs.new("NodeSocketFloat", "IndexOB")
-        self.group.inputs.new(f"NodeSocket{dtype}", "Image")
-        self.group.outputs.new(f"NodeSocket{dtype}", "Image")
+        self.add_socket("NodeSocketFloat", "IndexOB", "INPUT")
+        self.add_socket(f"NodeSocket{dtype}", "Image", "INPUT")
+        self.add_socket(f"NodeSocket{dtype}", "Image", "OUTPUT")
 
         # create nodes
         self.mask_node = self.group.nodes.new("CompositorNodeIDMask")

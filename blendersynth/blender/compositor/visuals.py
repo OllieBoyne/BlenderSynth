@@ -7,8 +7,8 @@ class DepthVis(CompositorNodeGroup):
         super().__init__(name="DepthVis", node_tree=node_tree)
         self.max_depth = 1
 
-        self.group.inputs.new("NodeSocketFloat", "Depth")
-        self.group.outputs.new("NodeSocketColor", "Image")
+        self.add_socket("NodeSocketFloat", "Depth", "INPUT")
+        self.add_socket("NodeSocketColor", "Image", "OUTPUT")
 
         self.map_range_node = self.group.nodes.new("CompositorNodeMapRange")
         self.map_range_node.inputs["From Max"].default_value = max_depth

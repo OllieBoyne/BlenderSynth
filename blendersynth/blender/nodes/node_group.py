@@ -1,12 +1,34 @@
 """Custom node groups"""
 import bpy
 from .node_arranger import tidy_tree
+from ...utils import version
+
 import numpy as np
 import os
 import cv2
 
 # docs-special-members: __init__
 # no-inherited-members
+
+
+def tree_add_socket(tree: bpy.types.NodeTree, socket_type: str, name: str, in_out: str):
+    """Create a new socket, compatible with Blender <4
+
+    :param tree: NodeTree to add socket to
+    :param socket_type: Type of socket
+    :param name: Name of socket
+    :param in_out: INPUT or OUTPUT"""
+
+    assert in_out in ["INPUT", "OUTPUT"], f"Invalid in_out: {in_out}"
+
+    if version.is_version_plus(4):
+        tree.interface.new_socket(socket_type=socket_type, name=name, in_out=in_out)
+
+    else:
+        if in_out == "INPUT":
+            tree.inputs.new("NodeSocketColor", "Image")
+        else:
+            tree.outputs.new("NodeSocketColor", "Image")
 
 
 class NodeGroup:
@@ -55,6 +77,16 @@ class NodeGroup:
     def add_node(self, key: str) -> bpy.types.Node:
         """Create a new node in the group by name"""
         return self.group.nodes.new(key)
+
+    def add_socket(self, socket_type: str, name: str, in_out: str):
+        """
+        Create a new socket, compatible with Blender <4
+
+        :param socket_type: Type of socket
+        :param name: Name of socket
+        :param in_out: INPUT or OUTPUT
+        """
+        tree_add_socket(self.group, socket_type, name, in_out)
 
     def link(
         self, from_socket: bpy.types.NodeSocket, to_socket: bpy.types.NodeSocket

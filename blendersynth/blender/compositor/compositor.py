@@ -542,7 +542,7 @@ class Compositor:
         AOVs in raw space). So set the color space for RGB socket here."""
 
         color_space_node = self.node_tree.nodes.new("CompositorNodeConvertColorSpace")
-        color_space_node.from_color_space = "Linear"
+        color_space_node.from_color_space = "Non-Color"
         color_space_node.to_color_space = color_space
 
         self.node_tree.links.new(self._rgb_socket, color_space_node.inputs[0])

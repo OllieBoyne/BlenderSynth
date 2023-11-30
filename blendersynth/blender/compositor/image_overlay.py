@@ -24,8 +24,8 @@ class AlphaImageOverlay(CompositorNodeGroup):
             self.height = scene.render.resolution_y
 
         # define I/O
-        self.group.inputs.new("NodeSocketColor", "Image")
-        self.group.outputs.new("NodeSocketColor", "Image")
+        self.add_socket("NodeSocketColor", "Image", "INPUT")
+        self.add_socket("NodeSocketColor", "Image", "OUTPUT")
 
         # create nodes
         self.overlay_img = self.group.nodes.new("CompositorNodeImage")

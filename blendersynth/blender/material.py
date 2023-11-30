@@ -2,12 +2,14 @@ import bpy
 from .bsyn_object import BsynObject
 from .nodes import tidy_tree
 from ..utils import io
+from ..utils import version
 
 
 def _new_shader_node(node_tree, node_type):
     shader_node = node_tree.nodes.new(type=node_type)
     if node_type == "ShaderNodeBsdfPrincipled":
-        shader_node.inputs["Specular"].default_value = 0
+        spec_key = "Specular IOR Level" if version.is_version_plus(4) else "Specular"
+        shader_node.inputs[spec_key].default_value = 0
 
     return shader_node
 
@@ -15,7 +17,9 @@ def _new_shader_node(node_tree, node_type):
 class Material(BsynObject):
     """BlenderSynth Material class. Will always be a node material."""
 
-    def __init__(self, name="NewMaterial", shader_type="ShaderNodeBsdfPrincipled", mat=None):
+    def __init__(
+        self, name="NewMaterial", shader_type="ShaderNodeBsdfPrincipled", mat=None
+    ):
         if mat is None:
             mat = bpy.data.materials.new(name)
             mat.use_nodes = True
