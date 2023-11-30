@@ -30,7 +30,7 @@ BlenderSynth is a Python library for generating large scale synthetic datasets u
 
 See documentation for [installation](https://ollieboyne.github.io/BlenderSynth/getting_started/installation.html), [debugging/troubleshooting](https://ollieboyne.github.io/BlenderSynth/getting_started/troubleshooting.html) and [examples](https://ollieboyne.github.io/BlenderSynth/).
 
-BlenderSynth supports Blender 3.0 and 4.0.
+BlenderSynth supports Blender 3 and 4.
 
 ## Contributions and Projects
 
