@@ -215,11 +215,24 @@
     <span class="k">def</span> <span class="nf">fov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fov</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_fov</span><span class="p">(</span><span class="n">fov</span><span class="p">)</span>
 
-    <span class="nd">@animatable_property</span><span class="p">(</span>
-        <span class="s2">&quot;lens&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span>
-    <span class="p">)</span>  <span class="c1"># FOV is not animatable, so keyframe focal length instead</span>
+    <span class="c1"># FOV is not animatable, so keyframe focal length instead</span>
+    <span class="nd">@animatable_property</span><span class="p">(</span><span class="s2">&quot;lens&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">set_fov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fov</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">fov</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">focal_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Focal length in mm&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lens</span>
+
+    <span class="nd">@focal_length</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">focal_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">focal_length</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_focal_length</span><span class="p">(</span><span class="n">focal_length</span><span class="p">)</span>
+
+    <span class="nd">@animatable_property</span><span class="p">(</span><span class="s2">&quot;lens&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">set_focal_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">focal_length</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lens</span> <span class="o">=</span> <span class="n">focal_length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@property</span>

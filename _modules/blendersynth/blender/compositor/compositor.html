@@ -164,12 +164,14 @@
 
 <span class="c1"># docs-special-members: __init__</span>
 
+
 <span class="k">def</span> <span class="nf">_default_color_space</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get default color space for Blender version&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">is_version_plus</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;AgX Base sRGB&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;Filmic sRGB&quot;</span>
+
 
 <span class="k">def</span> <span class="nf">_get_badfname</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Search for filename in the format</span>
