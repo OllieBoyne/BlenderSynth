@@ -1,0 +1,6 @@
+:code:`blendersynth.utils.version`
+=====================================
+
+.. automodule:: blendersynth.utils.version
+	:members:
+	:inherited-members:

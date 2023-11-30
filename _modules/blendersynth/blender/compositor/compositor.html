@@ -686,7 +686,7 @@
 <span class="sd">        AOVs in raw space). So set the color space for RGB socket here.&quot;&quot;&quot;</span>
 
         <span class="n">color_space_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeConvertColorSpace&quot;</span><span class="p">)</span>
-        <span class="n">color_space_node</span><span class="o">.</span><span class="n">from_color_space</span> <span class="o">=</span> <span class="s2">&quot;Linear&quot;</span>
+        <span class="n">color_space_node</span><span class="o">.</span><span class="n">from_color_space</span> <span class="o">=</span> <span class="s2">&quot;Non-Color&quot;</span>
         <span class="n">color_space_node</span><span class="o">.</span><span class="n">to_color_space</span> <span class="o">=</span> <span class="n">color_space</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span><span class="p">,</span> <span class="n">color_space_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>

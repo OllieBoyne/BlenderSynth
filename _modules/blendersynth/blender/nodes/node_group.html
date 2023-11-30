@@ -107,12 +107,37 @@
 <span></span><span class="sd">&quot;&quot;&quot;Custom node groups&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">bpy</span>
 <span class="kn">from</span> <span class="nn">.node_arranger</span> <span class="kn">import</span> <span class="n">tidy_tree</span>
+<span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">version</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
 
 <span class="c1"># docs-special-members: __init__</span>
 <span class="c1"># no-inherited-members</span>
+
+
+<div class="viewcode-block" id="tree_add_socket">
+<a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.tree_add_socket">[docs]</a>
+<span class="k">def</span> <span class="nf">tree_add_socket</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeTree</span><span class="p">,</span> <span class="n">socket_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">in_out</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a new socket, compatible with Blender &lt;4</span>
+
+<span class="sd">    :param tree: NodeTree to add socket to</span>
+<span class="sd">    :param socket_type: Type of socket</span>
+<span class="sd">    :param name: Name of socket</span>
+<span class="sd">    :param in_out: INPUT or OUTPUT&quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="n">in_out</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;INPUT&quot;</span><span class="p">,</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;Invalid in_out: </span><span class="si">{</span><span class="n">in_out</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">is_version_plus</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">tree</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">new_socket</span><span class="p">(</span><span class="n">socket_type</span><span class="o">=</span><span class="n">socket_type</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">in_out</span><span class="o">=</span><span class="n">in_out</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">in_out</span> <span class="o">==</span> <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeSocketColor&quot;</span><span class="p">,</span> <span class="s2">&quot;Image&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeSocketColor&quot;</span><span class="p">,</span> <span class="s2">&quot;Image&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="NodeGroup">
@@ -174,6 +199,19 @@
     <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Node</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new node in the group by name&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NodeGroup.add_socket">
+<a class="viewcode-back" href="../../../../api/blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.NodeGroup.add_socket">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_socket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">socket_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">in_out</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new socket, compatible with Blender &lt;4</span>
+
+<span class="sd">        :param socket_type: Type of socket</span>
+<span class="sd">        :param name: Name of socket</span>
+<span class="sd">        :param in_out: INPUT or OUTPUT</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tree_add_socket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">,</span> <span class="n">socket_type</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">in_out</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="NodeGroup.link">

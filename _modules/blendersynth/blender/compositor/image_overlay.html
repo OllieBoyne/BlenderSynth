@@ -132,8 +132,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_y</span>
 
         <span class="c1"># define I/O</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeSocketColor&quot;</span><span class="p">,</span> <span class="s2">&quot;Image&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeSocketColor&quot;</span><span class="p">,</span> <span class="s2">&quot;Image&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_socket</span><span class="p">(</span><span class="s2">&quot;NodeSocketColor&quot;</span><span class="p">,</span> <span class="s2">&quot;Image&quot;</span><span class="p">,</span> <span class="s2">&quot;INPUT&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_socket</span><span class="p">(</span><span class="s2">&quot;NodeSocketColor&quot;</span><span class="p">,</span> <span class="s2">&quot;Image&quot;</span><span class="p">,</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">)</span>
 
         <span class="c1"># create nodes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">overlay_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeImage&quot;</span><span class="p">)</span>

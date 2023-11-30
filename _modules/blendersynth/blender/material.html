@@ -108,12 +108,14 @@
 <span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span>
 <span class="kn">from</span> <span class="nn">.nodes</span> <span class="kn">import</span> <span class="n">tidy_tree</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">io</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">version</span>
 
 
 <span class="k">def</span> <span class="nf">_new_shader_node</span><span class="p">(</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">node_type</span><span class="p">):</span>
     <span class="n">shader_node</span> <span class="o">=</span> <span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">node_type</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">node_type</span> <span class="o">==</span> <span class="s2">&quot;ShaderNodeBsdfPrincipled&quot;</span><span class="p">:</span>
-        <span class="n">shader_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Specular&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">spec_key</span> <span class="o">=</span> <span class="s2">&quot;Specular IOR Level&quot;</span> <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">is_version_plus</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;Specular&quot;</span>
+        <span class="n">shader_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">spec_key</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">return</span> <span class="n">shader_node</span>
 
@@ -123,7 +125,9 @@
 <span class="k">class</span> <span class="nc">Material</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;BlenderSynth Material class. Will always be a node material.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;NewMaterial&quot;</span><span class="p">,</span> <span class="n">shader_type</span><span class="o">=</span><span class="s2">&quot;ShaderNodeBsdfPrincipled&quot;</span><span class="p">,</span> <span class="n">mat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;NewMaterial&quot;</span><span class="p">,</span> <span class="n">shader_type</span><span class="o">=</span><span class="s2">&quot;ShaderNodeBsdfPrincipled&quot;</span><span class="p">,</span> <span class="n">mat</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">mat</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             <span class="n">mat</span><span class="o">.</span><span class="n">use_nodes</span> <span class="o">=</span> <span class="kc">True</span>

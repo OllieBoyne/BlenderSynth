@@ -12,7 +12,7 @@
     </script>
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blendersynth.utils.io &mdash; BlenderSynth</title>
+  <title>blendersynth.utils.version &mdash; BlenderSynth</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
 
@@ -94,7 +94,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">blendersynth.utils.io</li>
+      <li class="breadcrumb-item active">blendersynth.utils.version</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -103,21 +103,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for blendersynth.utils.io</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">bpy</span>
+  <h1>Source code for blendersynth.utils.version</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">bpy</span>
 
 
-<div class="viewcode-block" id="load_image">
-<a class="viewcode-back" href="../../../api/blendersynth.utils.io.html#blendersynth.utils.io.load_image">[docs]</a>
-<span class="k">def</span> <span class="nf">load_image</span><span class="p">(</span><span class="n">pth</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load an image from a path. Use :func:`os.path.abspath` to avoid rel path issues on Windows.</span>
+<div class="viewcode-block" id="is_version">
+<a class="viewcode-back" href="../../../api/blendersynth.utils.version.html#blendersynth.utils.version.is_version">[docs]</a>
+<span class="k">def</span> <span class="nf">is_version</span><span class="p">(</span><span class="n">version_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the Blender version is equal to the given version number.</span>
 
-<span class="sd">    :param pth: Path to the image</span>
-
+<span class="sd">    :param version_num: version number to check against</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">abs_pth</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">pth</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">abs_pth</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">version_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="n">version_num</span></div>
+
+
+
+<div class="viewcode-block" id="is_version_plus">
+<a class="viewcode-back" href="../../../api/blendersynth.utils.version.html#blendersynth.utils.version.is_version_plus">[docs]</a>
+<span class="k">def</span> <span class="nf">is_version_plus</span><span class="p">(</span><span class="n">version_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the Blender version is greater than or equal to the given version number.</span>
+
+<span class="sd">    is_version_plus(4.0) equivalent to is version 4.0+</span>
+
+<span class="sd">    :param version_num: version number to check against</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">version_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">version_num</span></div>
 
 </pre></div>
 

@@ -10,3 +10,4 @@
 	blendersynth.utils.io
 	blendersynth.utils.layout
 	blendersynth.utils.types
+	blendersynth.utils.version

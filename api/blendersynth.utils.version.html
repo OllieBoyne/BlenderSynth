@@ -13,7 +13,7 @@
     </script>
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blendersynth.utils.types &mdash; BlenderSynth</title>
+  <title>blendersynth.utils.version &mdash; BlenderSynth</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -31,8 +31,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="blendersynth.utils.version" href="blendersynth.utils.version.html" />
-    <link rel="prev" title="blendersynth.utils.layout" href="blendersynth.utils.layout.html" /> 
+    <link rel="prev" title="blendersynth.utils.types" href="blendersynth.utils.types.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -97,9 +96,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="blendersynth.utils.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.types</span></code></li>
+      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.version</span></code></li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/blendersynth.utils.types.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/blendersynth.utils.version.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -107,46 +106,35 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.utils.types">
-<span id="blendersynth-utils-types"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.types</span></code><a class="headerlink" href="#module-blendersynth.utils.types" title="Link to this heading"></a></h1>
-<dl class="py data">
-<dt class="sig sig-object py" id="blendersynth.utils.types.BboxAnnotation">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.types.</span></span><span class="sig-name descname"><span class="pre">BboxAnnotation</span></span><a class="headerlink" href="#blendersynth.utils.types.BboxAnnotation" title="Link to this definition"></a></dt>
-<dd><p>Bbox annotation, a 1D array per instance</p>
-<p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>]]</p>
+  <section id="module-blendersynth.utils.version">
+<span id="blendersynth-utils-version"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.utils.version</span></code><a class="headerlink" href="#module-blendersynth.utils.version" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.version.is_version">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.version.</span></span><span class="sig-name descname"><span class="pre">is_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version_num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/version.html#is_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.version.is_version" title="Link to this definition"></a></dt>
+<dd><p>Check if the Blender version is equal to the given version number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>version_num</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – version number to check against</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="py data">
-<dt class="sig sig-object py" id="blendersynth.utils.types.KeypointOrAxesAnnotation">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.types.</span></span><span class="sig-name descname"><span class="pre">KeypointOrAxesAnnotation</span></span><a class="headerlink" href="#blendersynth.utils.types.KeypointOrAxesAnnotation" title="Link to this definition"></a></dt>
-<dd><p>Keypoint Annotations, an N x 2 ndarray per instance,
-or Axes annotation, a 4 x 2 ndarray per instance</p>
-<p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="blendersynth.utils.types.VectorLike">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.types.</span></span><span class="sig-name descname"><span class="pre">VectorLike</span></span><a class="headerlink" href="#blendersynth.utils.types.VectorLike" title="Link to this definition"></a></dt>
-<dd><p>A type hint that represents vector-like objects. Can be any of:</p>
-<ul class="simple">
-<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">mathutils.Vector</span></code></p></li>
-<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></li>
-<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p></li>
-<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p></li>
-</ul>
-<p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>]</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="blendersynth.utils.types.VectorLikeOrScalar">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.types.</span></span><span class="sig-name descname"><span class="pre">VectorLikeOrScalar</span></span><a class="headerlink" href="#blendersynth.utils.types.VectorLikeOrScalar" title="Link to this definition"></a></dt>
-<dd><p>A type hint that represents vector-like objects. Can be any of:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#blendersynth.utils.types.VectorLike" title="blendersynth.utils.types.VectorLike"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLike</span></code></a></p></li>
-<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p></li>
-<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p></li>
-</ul>
-<p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.utils.version.is_version_plus">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.utils.version.</span></span><span class="sig-name descname"><span class="pre">is_version_plus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version_num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/utils/version.html#is_version_plus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.utils.version.is_version_plus" title="Link to this definition"></a></dt>
+<dd><p>Check if the Blender version is greater than or equal to the given version number.</p>
+<p>is_version_plus(4.0) equivalent to is version 4.0+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>version_num</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – version number to check against</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -155,8 +143,7 @@ or Axes annotation, a 4 x 2 ndarray per instance</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="blendersynth.utils.layout.html" class="btn btn-neutral float-left" title="blendersynth.utils.layout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="blendersynth.utils.version.html" class="btn btn-neutral float-right" title="blendersynth.utils.version" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="blendersynth.utils.types.html" class="btn btn-neutral float-left" title="blendersynth.utils.types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

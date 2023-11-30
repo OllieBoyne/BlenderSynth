@@ -107,7 +107,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;Shader AOV manager&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">.nodes</span> <span class="kn">import</span> <span class="n">tidy_tree</span><span class="p">,</span> <span class="n">DeformedGeneratedTextureCoordinates</span>
+<span class="kn">from</span> <span class="nn">.nodes</span> <span class="kn">import</span> <span class="n">tidy_tree</span><span class="p">,</span> <span class="n">DeformedGeneratedTextureCoordinates</span><span class="p">,</span> <span class="n">tree_add_socket</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">types</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
@@ -453,8 +453,8 @@
         <span class="c1"># Create Int Index -&gt; HSV as a node group, so the &#39;num_objects&#39; parameter can be edited centrally</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">node_groups</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;IdxToHue&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;ShaderNodeTree&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NodeSocketInt&quot;</span><span class="p">,</span> <span class="s2">&quot;Index&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NodeSocketColor&quot;</span><span class="p">,</span> <span class="s2">&quot;Color&quot;</span><span class="p">)</span>
+        <span class="n">tree_add_socket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">,</span> <span class="s2">&quot;NodeSocketFloat&quot;</span><span class="p">,</span> <span class="s2">&quot;Index&quot;</span><span class="p">,</span> <span class="s2">&quot;INPUT&quot;</span><span class="p">)</span>
+        <span class="n">tree_add_socket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">,</span> <span class="s2">&quot;NodeSocketColor&quot;</span><span class="p">,</span> <span class="s2">&quot;Color&quot;</span><span class="p">,</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">input_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeGroupInput&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;NodeGroupOutput&quot;</span><span class="p">)</span>

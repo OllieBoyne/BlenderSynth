@@ -147,6 +147,21 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.NodeGroup.add_socket">
+<span class="sig-name descname"><span class="pre">add_socket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">socket_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_out</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_group.html#NodeGroup.add_socket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_group.NodeGroup.add_socket" title="Link to this definition"></a></dt>
+<dd><p>Create a new socket, compatible with Blender &lt;4</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>socket_type</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Type of socket</p></li>
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of socket</p></li>
+<li><p><strong>in_out</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – INPUT or OUTPUT</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.NodeGroup.input">
 <span class="sig-name descname"><span class="pre">input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_group.html#NodeGroup.input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_group.NodeGroup.input" title="Link to this definition"></a></dt>
 <dd><p>Get input socket by name</p>
@@ -214,6 +229,22 @@
 <dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.ShaderNodeGroup">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.nodes.node_group.</span></span><span class="sig-name descname"><span class="pre">ShaderNodeGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_group.html#ShaderNodeGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_group.ShaderNodeGroup" title="Link to this definition"></a></dt>
 <dd><p>Node Group for use in the shader editor</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.blender.nodes.node_group.tree_add_socket">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.nodes.node_group.</span></span><span class="sig-name descname"><span class="pre">tree_add_socket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socket_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_out</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/node_group.html#tree_add_socket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.node_group.tree_add_socket" title="Link to this definition"></a></dt>
+<dd><p>Create a new socket, compatible with Blender &lt;4</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tree</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeTree</span></code></span>) – NodeTree to add socket to</p></li>
+<li><p><strong>socket_type</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Type of socket</p></li>
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of socket</p></li>
+<li><p><strong>in_out</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – INPUT or OUTPUT</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
