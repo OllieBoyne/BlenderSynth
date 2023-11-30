@@ -17,6 +17,7 @@ from ...annotations import Annotation, AnnotationHandler
 from ..nodes import tidy_tree
 from ..world import world
 from ..camera import Camera
+from ...utils import version
 
 from typing import Union, List
 
@@ -57,6 +58,12 @@ AVAILABLE_FORMATS = [
 
 # docs-special-members: __init__
 
+def _default_color_space():
+    """Get default color space for Blender version"""
+    if version.is_version_plus(4):
+        return "AgX Base sRGB"
+    else:
+        return "Filmic sRGB"
 
 def _get_badfname(fname, N=100):
     """Search for filename in the format
@@ -99,13 +106,17 @@ class Compositor:
         self,
         view_layer="ViewLayer",
         background_color: tuple = None,
-        rgb_color_space: str = "Filmic sRGB",
+        rgb_color_space: str = None,
     ):
         """
         :param view_layer: Name of View Layer to render
         :param background_color: If given, RGB[A] tuple in range [0-1], will overwrite World background with solid color (while retaining lighting effects).
-        :param rgb_color_space: Color transform for RGB only.
+        :param rgb_color_space: Color transform for RGB only. Defaults to `AgX Base sRGB` for Blender 4+, and `Filmic sRGB` for older versions.
         """
+
+        if rgb_color_space is None:
+            rgb_color_space = _default_color_space()
+
         # Create compositor node tree
         bpy.context.scene.use_nodes = True
         self.node_tree = bpy.context.scene.node_tree
