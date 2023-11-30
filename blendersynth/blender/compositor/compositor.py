@@ -58,12 +58,14 @@ AVAILABLE_FORMATS = [
 
 # docs-special-members: __init__
 
+
 def _default_color_space():
     """Get default color space for Blender version"""
     if version.is_version_plus(4):
         return "AgX Base sRGB"
     else:
         return "Filmic sRGB"
+
 
 def _get_badfname(fname, N=100):
     """Search for filename in the format
