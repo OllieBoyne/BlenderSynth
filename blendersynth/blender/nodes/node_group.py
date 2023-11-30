@@ -26,9 +26,9 @@ def tree_add_socket(tree: bpy.types.NodeTree, socket_type: str, name: str, in_ou
 
     else:
         if in_out == "INPUT":
-            tree.inputs.new("NodeSocketColor", "Image")
+            tree.inputs.new(socket_type, name)
         else:
-            tree.outputs.new("NodeSocketColor", "Image")
+            tree.outputs.new(socket_type, name)
 
 
 class NodeGroup:
