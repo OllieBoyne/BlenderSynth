@@ -649,16 +649,31 @@ class Mesh(BsynObject):
 
         return None
 
-    def get_shape_key(self, name: str) -> bpy.types.ShapeKey:
-        """Get a given shape key object"""
+    def get_shape_key(self, name: str, create: bool = False) -> bpy.types.ShapeKey:
+        """Get a given shape key object.
+
+        :param name: Name of shape key
+        :param create: If True, create shape key if it doesn't exist. Otherwise, raise error.
+        """
         keys = self.shape_keys
         if keys is None:
-            raise ValueError(f"Tried to get key '{name}' - no shape keys available.")
+            if create:
+                self.obj.shape_key_add(name="Basis")
+                keys = self.shape_keys
+            else:
+                raise KeyError(f"Tried to get key '{name}' - no shape keys available.")
 
-        elif name not in keys.key_blocks:
-            raise ValueError(f"Tried to get key '{name}' - not found in shape keys.")
+        if name not in keys.key_blocks:
+            if create:
+                self.create_shape_key(name)
+            else:
+                raise KeyError(f"Tried to get key '{name}' - not found in shape keys.")
 
         return keys.key_blocks[name]
+
+    def create_shape_key(self, name: str):
+        """Create a new shape key with a given name."""
+        self.obj.shape_key_add(name=name)
 
     def set_shape_key(self, name: str, value: float, frame: int = None):
         """Set shape key to a given value.
@@ -683,16 +698,17 @@ class Mesh(BsynObject):
         for k, v in data.items():
             self.set_shape_key(k, v, frame=frame)
 
-    def set_shape_key_data(self, name: str, data: np.ndarray):
+    def set_shape_key_data(self, name: str, data: np.ndarray, create: bool = True):
         """Set shape key to a given value.
 
         :param name: Name of shape key
-        :param data: Data to set shape key to
+        :param data: Data to set shape key to (absolute positions - *not* offsets)
+        :param create: If True, create shape key if it doesn't exist. Otherwise, raise error.
         """
 
-        # self.get_shape_key(name).data.foreach_set("co", data.ravel())
+        shape_key = self.get_shape_key(name, create=create)
         for i, coord in enumerate(data):
-            self.get_shape_key(name).data[i].co = coord
+            shape_key.data[i].co = coord
 
     def make_shape_key(self, name: str, data: np.ndarray):
         """Create a new shape key, optionally with data.
