@@ -816,16 +816,34 @@
 
 <div class="viewcode-block" id="Mesh.get_shape_key">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.get_shape_key">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_shape_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">ShapeKey</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a given shape key object&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">get_shape_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">create</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">ShapeKey</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a given shape key object.</span>
+
+<span class="sd">        :param name: Name of shape key</span>
+<span class="sd">        :param create: If True, create shape key if it doesn&#39;t exist. Otherwise, raise error.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_keys</span>
         <span class="k">if</span> <span class="n">keys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tried to get key &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; - no shape keys available.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">create</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">shape_key_add</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Basis&quot;</span><span class="p">)</span>
+                <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_keys</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tried to get key &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; - no shape keys available.&quot;</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">keys</span><span class="o">.</span><span class="n">key_blocks</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tried to get key &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; - not found in shape keys.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">keys</span><span class="o">.</span><span class="n">key_blocks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">create</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">create_shape_key</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tried to get key &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; - not found in shape keys.&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">keys</span><span class="o">.</span><span class="n">key_blocks</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Mesh.create_shape_key">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.create_shape_key">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_shape_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new shape key with a given name.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">shape_key_add</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Mesh.set_shape_key">
@@ -859,16 +877,17 @@
 
 <div class="viewcode-block" id="Mesh.set_shape_key_data">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.set_shape_key_data">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_shape_key_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_shape_key_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">create</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set shape key to a given value.</span>
 
 <span class="sd">        :param name: Name of shape key</span>
-<span class="sd">        :param data: Data to set shape key to</span>
+<span class="sd">        :param data: Data to set shape key to (absolute positions - *not* offsets)</span>
+<span class="sd">        :param create: If True, create shape key if it doesn&#39;t exist. Otherwise, raise error.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># self.get_shape_key(name).data.foreach_set(&quot;co&quot;, data.ravel())</span>
+        <span class="n">shape_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_shape_key</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">create</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_shape_key</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">co</span> <span class="o">=</span> <span class="n">coord</span></div>
+            <span class="n">shape_key</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">co</span> <span class="o">=</span> <span class="n">coord</span></div>
 
 
 <div class="viewcode-block" id="Mesh.make_shape_key">

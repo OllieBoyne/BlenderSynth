@@ -228,6 +228,12 @@ the object never goes below (mode=’min’) or above (mode=’max’) the given
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.create_shape_key">
+<span class="sig-name descname"><span class="pre">create_shape_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.create_shape_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.create_shape_key" title="Link to this definition"></a></dt>
+<dd><p>Create a new shape key with a given name.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.delete">
 <span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delete_materials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.delete" title="Link to this definition"></a></dt>
 <dd><p>Clear mesh from scene &amp; mesh data.</p>
@@ -425,11 +431,17 @@ If no name given, return first armature found.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.get_shape_key">
-<span class="sig-name descname"><span class="pre">get_shape_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.get_shape_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.get_shape_key" title="Link to this definition"></a></dt>
-<dd><p>Get a given shape key object</p>
+<span class="sig-name descname"><span class="pre">get_shape_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.get_shape_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.get_shape_key" title="Link to this definition"></a></dt>
+<dd><p>Get a given shape key object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeKey</span></code></span></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of shape key</p></li>
+<li><p><strong>create</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, create shape key if it doesn’t exist. Otherwise, raise error.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeKey</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -636,13 +648,14 @@ If no name given, return first armature found.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.set_shape_key_data">
-<span class="sig-name descname"><span class="pre">set_shape_key_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.set_shape_key_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.set_shape_key_data" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_shape_key_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.set_shape_key_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.set_shape_key_data" title="Link to this definition"></a></dt>
 <dd><p>Set shape key to a given value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of shape key</p></li>
-<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Data to set shape key to</p></li>
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Data to set shape key to (absolute positions - <em>not</em> offsets)</p></li>
+<li><p><strong>create</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, create shape key if it doesn’t exist. Otherwise, raise error.</p></li>
 </ul>
 </dd>
 </dl>
