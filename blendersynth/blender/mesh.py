@@ -698,23 +698,39 @@ class Mesh(BsynObject):
         for k, v in data.items():
             self.set_shape_key(k, v, frame=frame)
 
-    def set_shape_key_data(self, name: str, data: np.ndarray, create: bool = True):
+    def set_shape_key_data(
+        self,
+        name: str,
+        data: np.ndarray,
+        create: bool = True,
+        value_min: float = 0,
+        value_max: float = 1,
+    ):
         """Set shape key to a given value.
 
         :param name: Name of shape key
         :param data: Data to set shape key to (absolute positions - *not* offsets)
         :param create: If True, create shape key if it doesn't exist. Otherwise, raise error.
+        :param value_min: Minimum value of shape key
+        :param value_max: Maximum value of shape key
         """
 
         shape_key = self.get_shape_key(name, create=create)
         for i, coord in enumerate(data):
             shape_key.data[i].co = coord
 
-    def make_shape_key(self, name: str, data: np.ndarray):
+        shape_key.slider_min = value_min
+        shape_key.slider_max = value_max
+
+    def make_shape_key(
+        self, name: str, data: np.ndarray, value_min: float = 0, value_max: float = 1
+    ):
         """Create a new shape key, optionally with data.
 
         :param name: Name of shape key
         :param data: Data to set shape key to
+        :param value_min: Minimum value of shape key
+        :param value_max: Maximum value of shape key
         """
 
         if self.shape_keys is None:
@@ -725,7 +741,9 @@ class Mesh(BsynObject):
 
         self.obj.shape_key_add(name=name)
         if data is not None:
-            self.set_shape_key_data(name, data)
+            self.set_shape_key_data(
+                name, data, value_min=value_min, value_max=value_max
+            )
 
     @property
     def _all_objects(self):
