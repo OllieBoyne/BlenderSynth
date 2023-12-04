@@ -877,26 +877,42 @@
 
 <div class="viewcode-block" id="Mesh.set_shape_key_data">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.set_shape_key_data">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_shape_key_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">create</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_shape_key_data</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">create</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">value_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">value_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set shape key to a given value.</span>
 
 <span class="sd">        :param name: Name of shape key</span>
 <span class="sd">        :param data: Data to set shape key to (absolute positions - *not* offsets)</span>
 <span class="sd">        :param create: If True, create shape key if it doesn&#39;t exist. Otherwise, raise error.</span>
+<span class="sd">        :param value_min: Minimum value of shape key</span>
+<span class="sd">        :param value_max: Maximum value of shape key</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">shape_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_shape_key</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">create</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-            <span class="n">shape_key</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">co</span> <span class="o">=</span> <span class="n">coord</span></div>
+            <span class="n">shape_key</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">co</span> <span class="o">=</span> <span class="n">coord</span>
+
+        <span class="n">shape_key</span><span class="o">.</span><span class="n">slider_min</span> <span class="o">=</span> <span class="n">value_min</span>
+        <span class="n">shape_key</span><span class="o">.</span><span class="n">slider_max</span> <span class="o">=</span> <span class="n">value_max</span></div>
 
 
 <div class="viewcode-block" id="Mesh.make_shape_key">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.make_shape_key">[docs]</a>
-    <span class="k">def</span> <span class="nf">make_shape_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">make_shape_key</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">value_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">value_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new shape key, optionally with data.</span>
 
 <span class="sd">        :param name: Name of shape key</span>
 <span class="sd">        :param data: Data to set shape key to</span>
+<span class="sd">        :param value_min: Minimum value of shape key</span>
+<span class="sd">        :param value_max: Maximum value of shape key</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_keys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -907,7 +923,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">shape_key_add</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_shape_key_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_shape_key_data</span><span class="p">(</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">value_min</span><span class="o">=</span><span class="n">value_min</span><span class="p">,</span> <span class="n">value_max</span><span class="o">=</span><span class="n">value_max</span>
+            <span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
