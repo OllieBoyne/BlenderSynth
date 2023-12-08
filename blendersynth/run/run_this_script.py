@@ -58,6 +58,9 @@ def run_this_script(
     :param blend_as_copy: If True, will copy `blend_src` to a temp file before opening - this is useful if you want to make sure you don't accidentally override your `blend_src` file
 
     args & kwargs are passed to the script being run as command line arguments.
+
+    The flag `--run_this_script` is passed to the script being run to indicate that it is being run from `run_this_script`.
+    Use function `is_from_run_this_script` to check if the script is being run from `run_this_script`.
     """
     running_in_blender = is_blender_running()
 
@@ -89,6 +92,8 @@ def run_this_script(
 
         for key, value in kwargs.items():
             commands += [f"--{key}", str(value)]
+
+        commands += ['--run_this_script']  # flag to indicate that this is being run from run_this_script
 
         subprocess.call(commands, env=env)
 
@@ -134,3 +139,7 @@ def run_this_script(
             # text_block = bpy.data.texts.load(script_path)
             # layout.change_area_to("DOPESHEET_EDITOR", "TEXT_EDITOR")
             # layout.get_area("TEXT_EDITOR").spaces[0].text = text_block
+
+def is_from_run_this_script():
+    """Returns True if this script is being run from run_this_script"""
+    return '--run_this_script' in sys.argv

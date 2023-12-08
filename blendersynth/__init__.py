@@ -17,7 +17,7 @@ def fix_blender_modules(local=False, editable=False):
     )
 
 
-from .run.run_this_script import run_this_script, is_blender_running
+from .run.run_this_script import run_this_script, is_blender_running, is_from_run_this_script
 
 from .utils.blender_setup.blender_locator import get_blender_path
 from .run.import_handling import conditional_import, IllegalImport
