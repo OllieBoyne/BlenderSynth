@@ -16,13 +16,13 @@ elif platform == "win32":
 class BlenderCommand:
     """Construct command for running blender script"""
 
-    def __init__(self, blender_loc, blend_path=None, background=True):
+    def __init__(self, blender_loc, blend_src=None, background=True):
         self.blender_loc = blender_loc
-        self.blend_path = blend_path
+        self.blend_src = blend_src
         self.background = background
         self._command = [
             blender_loc,
-            blend_path if blend_path else "",
+            blend_src if blend_src else "",
             "--background" if background else "",
         ]
 
@@ -69,14 +69,14 @@ class Runner:
         num_threads=1,
         print_to_stdout=False,
         distributed: tuple = None,
-        blend_path: str = None,
+        blend_src: str = None,
         **script_kwargs,
     ):
         """
         :param jsons: N sized list of .json files, each with info about the given job
         :param num_threads: threads to run in parallel (default = 1)
         :param distributed: tuple of (machine index, total machines) for distributed rendering
-        :param blend_path: path to blend file to open (note: this is preferable to `blendersynth.load_blend` as it handles context better)
+        :param blend_src: path to blend file to open (note: this is preferable to `blendersynth.load_blend` as it handles context better)
         """
 
         # if distributed, split jsons into chunks
@@ -94,7 +94,7 @@ class Runner:
         json_chunks = _list_split(self.jsons, self.num_threads)
 
         blender_loc = get_blender_path()
-        command = BlenderCommand(blender_loc=blender_loc, background=True)
+        command = BlenderCommand(blender_loc=blender_loc, background=True, blend_src=blend_src)
         command.compose(script=script, **script_kwargs)
 
         thread_manager = BlenderThreadManager(
@@ -115,7 +115,7 @@ def execute_jobs(
     num_threads: int = 1,
     print_to_stdout: bool = False,
     distributed: tuple = None,
-    blend_path: str = None,
+    blend_src: str = None,
     **script_kwargs,
 ):
     """
@@ -128,7 +128,7 @@ def execute_jobs(
     :param num_threads: threads to run in parallel (default = 1)
     :param print_to_stdout: If True, print to stdout instead of saving to file
     :param distributed: tuple of (machine index, total machines) for distributed rendering
-    :param blend_path: path to blend file to open (note: this is preferable to `blendersynth.load_blend` as it handles context better)
+    :param blend_src: path to blend file to open (note: this is preferable to `blendersynth.load_blend` as it handles context better)
     """
 
     assert not (
@@ -153,7 +153,7 @@ def execute_jobs(
         num_threads,
         print_to_stdout=print_to_stdout,
         distributed=distributed,
-        blend_path=blend_path,
+        blend_src=blend_src,
         **script_kwargs,
     )
 
