@@ -291,7 +291,7 @@ class AttrAOV(AOV):
         attr_node = shader_node_tree.nodes.new("ShaderNodeAttribute")
         attr_node.attribute_type = self.attribute_type
         attr_node.attribute_name = self.attribute_name
-        return attr_node.outputs["Instance Index"]
+        return attr_node.outputs["Fac"]
 
 
 class InstanceIDAOV(AttrAOV):
