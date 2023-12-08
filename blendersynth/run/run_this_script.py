@@ -48,8 +48,6 @@ def run_this_script(
 ):
     """Run the script in which this function is called from Blender.
 
-    Will also place a copy of the script inside Blender.
-
     :param open_blender: If True, open a Blender instance after all code is executed, otherwise run in background
     :param debug: If True, will run in debug mode
     :param IDE: IDE to use for debugging. Currently only PyCharm and VSCode are supported
@@ -119,12 +117,12 @@ def run_this_script(
         if open_blender:
             # load the script into blender for viewing
             import bpy
-            from ..utils import layout
+            # REMOVED FUNCTIONALITY TO LOAD SCRIPT TEXT INTO BLENDER AS CAUSING ISSUES
+            # from ..utils import layout
 
-            caller_path = bpy.path.abspath(caller_path)
-            script_path = _copy_over_script(caller_path)
+            # caller_path = bpy.path.abspath(caller_path)
+            # script_path = _copy_over_script(caller_path)
 
-            text_block = bpy.data.texts.load(script_path)
-
-            layout.change_area_to("DOPESHEET_EDITOR", "TEXT_EDITOR")
-            layout.get_area("TEXT_EDITOR").spaces[0].text = text_block
+            # text_block = bpy.data.texts.load(script_path)
+            # layout.change_area_to("DOPESHEET_EDITOR", "TEXT_EDITOR")
+            # layout.get_area("TEXT_EDITOR").spaces[0].text = text_block
