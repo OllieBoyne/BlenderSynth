@@ -20,7 +20,11 @@ class BlenderCommand:
         self.blender_loc = blender_loc
         self.blend_path = blend_path
         self.background = background
-        self._command = [blender_loc, blend_path if blend_path else "", "--background" if background else ""]
+        self._command = [
+            blender_loc,
+            blend_path if blend_path else "",
+            "--background" if background else "",
+        ]
 
     def compose(self, script, args=(), **kwargs):
         command = self._command + ["--python", script]
@@ -65,7 +69,7 @@ class Runner:
         num_threads=1,
         print_to_stdout=False,
         distributed: tuple = None,
-        blend_path:str=None,
+        blend_path: str = None,
         **script_kwargs,
     ):
         """
@@ -111,7 +115,7 @@ def execute_jobs(
     num_threads: int = 1,
     print_to_stdout: bool = False,
     distributed: tuple = None,
-    blend_path:str=None,
+    blend_path: str = None,
     **script_kwargs,
 ):
     """
