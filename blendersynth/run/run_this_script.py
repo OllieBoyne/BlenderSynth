@@ -43,6 +43,7 @@ def run_this_script(
     IDE: str = "PyCharm",
     port: int = 5678,
     host: str = "localhost",
+    blend_src: str = None,
     **kwargs,
 ):
     """Run the script in which this function is called from Blender.
@@ -54,10 +55,10 @@ def run_this_script(
     :param IDE: IDE to use for debugging. Currently only PyCharm and VSCode are supported
     :param port: Port to use for debugging
     :param host: Host to use for debugging
+    :param blend_src: Path to blend file to open (note: this is preferable to `blendersynth.load_blend` as it handles context better)
 
     args & kwargs are passed to the script being run as command line arguments.
     """
-
     running_in_blender = is_blender_running()
 
     caller_path = inspect.stack()[
@@ -73,6 +74,7 @@ def run_this_script(
 
         commands = (
             [blender_path]
+            + [blend_src] * (blend_src is not None)
             + ["--background"] * (not open_blender)
             + ["--python", caller_path, "--"]
         )

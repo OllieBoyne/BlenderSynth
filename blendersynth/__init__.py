@@ -95,8 +95,10 @@ if is_blender:
 
     # set render engine to cycles
     from .run.pre_ops import on_script_open
+    from .run.load_blend import load_blend
 
-    on_script_open()
+    has_loaded_scene = '.blend' in sys.argv[1]
+    on_script_open(delete_existing=not has_loaded_scene)
 
 if not (BLENDER_IMPORTS or TYPE_CHECKING):
     check_blender_install(

@@ -16,10 +16,11 @@ elif platform == "win32":
 class BlenderCommand:
     """Construct command for running blender script"""
 
-    def __init__(self, blender_loc, background=True):
+    def __init__(self, blender_loc, blend_path=None, background=True):
         self.blender_loc = blender_loc
+        self.blend_path = blend_path
         self.background = background
-        self._command = [blender_loc, "--background" if background else ""]
+        self._command = [blender_loc, blend_path if blend_path else "", "--background" if background else ""]
 
     def compose(self, script, args=(), **kwargs):
         command = self._command + ["--python", script]
@@ -64,12 +65,14 @@ class Runner:
         num_threads=1,
         print_to_stdout=False,
         distributed: tuple = None,
+        blend_path:str=None,
         **script_kwargs,
     ):
         """
         :param jsons: N sized list of .json files, each with info about the given job
         :param num_threads: threads to run in parallel (default = 1)
         :param distributed: tuple of (machine index, total machines) for distributed rendering
+        :param blend_path: path to blend file to open (note: this is preferable to `blendersynth.load_blend` as it handles context better)
         """
 
         # if distributed, split jsons into chunks
@@ -108,6 +111,7 @@ def execute_jobs(
     num_threads: int = 1,
     print_to_stdout: bool = False,
     distributed: tuple = None,
+    blend_path:str=None,
     **script_kwargs,
 ):
     """
@@ -120,6 +124,7 @@ def execute_jobs(
     :param num_threads: threads to run in parallel (default = 1)
     :param print_to_stdout: If True, print to stdout instead of saving to file
     :param distributed: tuple of (machine index, total machines) for distributed rendering
+    :param blend_path: path to blend file to open (note: this is preferable to `blendersynth.load_blend` as it handles context better)
     """
 
     assert not (
@@ -144,6 +149,7 @@ def execute_jobs(
         num_threads,
         print_to_stdout=print_to_stdout,
         distributed=distributed,
+        blend_path=blend_path,
         **script_kwargs,
     )
 
