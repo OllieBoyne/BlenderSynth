@@ -98,11 +98,24 @@ class Camera(BsynObject):
     def fov(self, fov):
         self.set_fov(fov)
 
-    @animatable_property(
-        "lens", "data"
-    )  # FOV is not animatable, so keyframe focal length instead
+    # FOV is not animatable, so keyframe focal length instead
+    @animatable_property("lens", "data")
     def set_fov(self, fov):
         self.camera.data.angle = fov * np.pi / 180
+        self.update()
+
+    @property
+    def focal_length(self):
+        """Focal length in mm"""
+        return self.camera.data.lens
+
+    @focal_length.setter
+    def focal_length(self, focal_length):
+        self.set_focal_length(focal_length)
+
+    @animatable_property("lens", "data")
+    def set_focal_length(self, focal_length):
+        self.camera.data.lens = focal_length
         self.update()
 
     @property
