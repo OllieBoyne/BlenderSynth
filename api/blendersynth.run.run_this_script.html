@@ -117,6 +117,12 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.run.run_this_script.is_from_run_this_script">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.run.run_this_script.</span></span><span class="sig-name descname"><span class="pre">is_from_run_this_script</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/run_this_script.html#is_from_run_this_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.run_this_script.is_from_run_this_script" title="Link to this definition"></a></dt>
+<dd><p>Returns True if this script is being run from run_this_script</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="blendersynth.run.run_this_script.run_this_script">
 <span class="sig-prename descclassname"><span class="pre">blendersynth.run.run_this_script.</span></span><span class="sig-name descname"><span class="pre">run_this_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_blender</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">IDE</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PyCharm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5678</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'localhost'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blend_src</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blend_as_copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/run_this_script.html#run_this_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.run_this_script.run_this_script" title="Link to this definition"></a></dt>
 <dd><p>Run the script in which this function is called from Blender.</p>
@@ -134,6 +140,8 @@
 </dd>
 </dl>
 <p>args &amp; kwargs are passed to the script being run as command line arguments.</p>
+<p>The flag <cite>–run_this_script</cite> is passed to the script being run to indicate that it is being run from <cite>run_this_script</cite>.
+Use function <cite>is_from_run_this_script</cite> to check if the script is being run from <cite>run_this_script</cite>.</p>
 </dd></dl>
 
 </section>

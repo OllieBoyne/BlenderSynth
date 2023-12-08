@@ -169,6 +169,9 @@
 <span class="sd">    :param blend_as_copy: If True, will copy `blend_src` to a temp file before opening - this is useful if you want to make sure you don&#39;t accidentally override your `blend_src` file</span>
 
 <span class="sd">    args &amp; kwargs are passed to the script being run as command line arguments.</span>
+
+<span class="sd">    The flag `--run_this_script` is passed to the script being run to indicate that it is being run from `run_this_script`.</span>
+<span class="sd">    Use function `is_from_run_this_script` to check if the script is being run from `run_this_script`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">running_in_blender</span> <span class="o">=</span> <span class="n">is_blender_running</span><span class="p">()</span>
 
@@ -200,6 +203,8 @@
 
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;--</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span>
+
+        <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;--run_this_script&#39;</span><span class="p">]</span>  <span class="c1"># flag to indicate that this is being run from run_this_script</span>
 
         <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
 
@@ -246,6 +251,13 @@
             <span class="c1"># text_block = bpy.data.texts.load(script_path)</span>
             <span class="c1"># layout.change_area_to(&quot;DOPESHEET_EDITOR&quot;, &quot;TEXT_EDITOR&quot;)</span>
             <span class="c1"># layout.get_area(&quot;TEXT_EDITOR&quot;).spaces[0].text = text_block</span>
+
+<div class="viewcode-block" id="is_from_run_this_script">
+<a class="viewcode-back" href="../../../api/blendersynth.run.run_this_script.html#blendersynth.run.run_this_script.is_from_run_this_script">[docs]</a>
+<span class="k">def</span> <span class="nf">is_from_run_this_script</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns True if this script is being run from run_this_script&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;--run_this_script&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span></div>
+
 </pre></div>
 
            </div>
