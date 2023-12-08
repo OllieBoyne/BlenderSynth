@@ -131,8 +131,6 @@
 <span class="sd">    See `Blender docs &lt;https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html&gt;`_ for more info.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">AOV_TYPE</span> <span class="o">=</span> <span class="s2">&quot;COLOR&quot;</span>
-
 <div class="viewcode-block" id="AOV.__init__">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.AOV.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -179,7 +177,7 @@
         <span class="n">shader_aov_node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="n">shader_node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">out_socket</span><span class="p">,</span> <span class="n">shader_aov_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">AOV_TYPE</span><span class="o">.</span><span class="n">title</span><span class="p">()])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_aov</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">AOV_TYPE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_aov</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AOV_TYPE</span>
         <span class="n">tidy_tree</span><span class="p">(</span><span class="n">shader_node_tree</span><span class="p">)</span></div>
 
 
@@ -387,6 +385,44 @@
     <span class="k">def</span> <span class="nf">_add_to_shader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shader_node_tree</span><span class="p">):</span>
         <span class="n">texcon_node</span> <span class="o">=</span> <span class="n">shader_node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;ShaderNodeTexCoord&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">texcon_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;UV&quot;</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="ValueAOV">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.ValueAOV">[docs]</a>
+<span class="k">class</span> <span class="nc">ValueAOV</span><span class="p">(</span><span class="n">AOV</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A generic AOV that outputs a single value&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ValueAOV.__init__">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.aov.html#blendersynth.blender.aov.ValueAOV.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param value: Value to output</span>
+<span class="sd">        :param name: Name of AOV</span>
+<span class="sd">        :param kwargs: Additional kwargs to pass to :class:`AOV`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_node</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
+
+    <span class="nd">@value</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Value&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">_add_to_shader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shader_node_tree</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_node</span> <span class="o">=</span> <span class="n">shader_node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;ShaderNodeValue&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Value&quot;</span><span class="p">]</span></div>
 
 
 
