@@ -44,6 +44,7 @@ def run_this_script(
     port: int = 5678,
     host: str = "localhost",
     blend_src: str = None,
+    blend_as_copy: bool = False,
     **kwargs,
 ):
     """Run the script in which this function is called from Blender.
@@ -54,6 +55,7 @@ def run_this_script(
     :param port: Port to use for debugging
     :param host: Host to use for debugging
     :param blend_src: Path to blend file to open (note: this is preferable to `blendersynth.load_blend` as it handles context better)
+    :param blend_as_copy: If True, will copy `blend_src` to a temp file before opening - this is useful if you want to make sure you don't accidentally override your `blend_src` file
 
     args & kwargs are passed to the script being run as command line arguments.
     """
@@ -69,6 +71,11 @@ def run_this_script(
         env["PYTHONPATH"] = caller_dir + os.pathsep + env.get("PYTHONPATH", "")
 
         blender_path = get_blender_path()
+
+        if blend_src is not None and blend_as_copy:
+            new_filepath = create_temp_file(ext=".blend")
+            copyfile(blend_src, new_filepath)
+            blend_src = new_filepath
 
         commands = (
             [blender_path]
@@ -117,6 +124,7 @@ def run_this_script(
         if open_blender:
             # load the script into blender for viewing
             import bpy
+
             # REMOVED FUNCTIONALITY TO LOAD SCRIPT TEXT INTO BLENDER AS CAUSING ISSUES
             # from ..utils import layout
 
