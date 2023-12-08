@@ -23,8 +23,6 @@ class AOV:
     See `Blender docs <https://docs.blender.org/manual/en/latest/render/shader_nodes/output/aov.html>`_ for more info.
     """
 
-    AOV_TYPE = "COLOR"
-
     def __init__(self, *, name=None, **kwargs):
         if name is None:
             name = self.__class__.__name__
@@ -66,7 +64,7 @@ class AOV:
         shader_aov_node.name = self.name
         shader_node_tree.links.new(out_socket, shader_aov_node.inputs[AOV_TYPE.title()])
 
-        self._aov.type = self.AOV_TYPE
+        self._aov.type = AOV_TYPE
         tidy_tree(shader_node_tree)
 
     def _add_to_shader(self, shader_node_tree) -> bpy.types.NodeSocket:
@@ -249,6 +247,38 @@ class UVAOV(AOV):
     def _add_to_shader(self, shader_node_tree):
         texcon_node = shader_node_tree.nodes.new("ShaderNodeTexCoord")
         return texcon_node.outputs["UV"]
+
+
+class ValueAOV(AOV):
+    """A generic AOV that outputs a single value"""
+
+    def __init__(self, value: float = 0, name=None, **kwargs):
+        """
+        :param value: Value to output
+        :param name: Name of AOV
+        :param kwargs: Additional kwargs to pass to :class:`AOV`
+        """
+
+        super().__init__(name=name, **kwargs)
+        self._value = 0
+        self.value_node = None
+
+        self.value = value
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        self._value = value
+        if self.value_node is not None:
+            self.value_node.outputs["Value"].default_value = value
+
+    def _add_to_shader(self, shader_node_tree):
+        self.value_node = shader_node_tree.nodes.new("ShaderNodeValue")
+        self.value = self._value
+        return self.value_node.outputs["Value"]
 
 
 class AttrAOV(AOV):
