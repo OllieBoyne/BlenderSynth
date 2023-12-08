@@ -6,7 +6,7 @@ Dataset creation
 .. toctree::
    :maxdepth: 1
 
-   create_dataset
-   generate_labels
    blender_script
+   generate_labels
+   create_dataset
 

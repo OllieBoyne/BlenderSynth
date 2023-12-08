@@ -12,7 +12,7 @@
     </script>
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blendersynth.run.pre_ops &mdash; BlenderSynth</title>
+  <title>blendersynth.run.load_blend &mdash; BlenderSynth</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
 
@@ -94,7 +94,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">blendersynth.run.pre_ops</li>
+      <li class="breadcrumb-item active">blendersynth.run.load_blend</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -103,30 +103,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for blendersynth.run.pre_ops</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Some preferential blender operations to run (e.g. setup) that will be run before debug mode is entered&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">..blender</span> <span class="kn">import</span> <span class="n">render</span>
+  <h1>Source code for blendersynth.run.load_blend</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">bpy</span>
 
 
-<div class="viewcode-block" id="on_script_open">
-<a class="viewcode-back" href="../../../api/blendersynth.run.pre_ops.html#blendersynth.run.pre_ops.on_script_open">[docs]</a>
-<span class="k">def</span> <span class="nf">on_script_open</span><span class="p">(</span><span class="n">delete_existing</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    On script open:</span>
+<div class="viewcode-block" id="load_blend">
+<a class="viewcode-back" href="../../../api/blendersynth.run.load_blend.html#blendersynth.run.load_blend.load_blend">[docs]</a>
+<span class="k">def</span> <span class="nf">load_blend</span><span class="p">(</span><span class="n">src</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Load a .blend file into the current blender session.</span>
 
-<span class="sd">    - Set Engine to CYCLES</span>
-<span class="sd">    - Delete default Cube &amp; Light</span>
-<span class="sd">    - Disable splash screen</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">render</span><span class="o">.</span><span class="n">set_engine</span><span class="p">(</span><span class="s2">&quot;CYCLES&quot;</span><span class="p">)</span>
+<span class="sd">	Note: This can cause context issues, so use with caution. If possible, use `blendersynth.run_this_script` instead.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">fix_context</span><span class="p">():</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Fix bpy.context if some command (like .blend import) changed/emptied it&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">window</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">window_manager</span><span class="o">.</span><span class="n">windows</span><span class="p">:</span>
+			<span class="n">screen</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">screen</span>
+			<span class="k">for</span> <span class="n">area</span> <span class="ow">in</span> <span class="n">screen</span><span class="o">.</span><span class="n">areas</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">area</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;VIEW_3D&#39;</span><span class="p">:</span>
+					<span class="k">for</span> <span class="n">region</span> <span class="ow">in</span> <span class="n">area</span><span class="o">.</span><span class="n">regions</span><span class="p">:</span>
+						<span class="k">if</span> <span class="n">region</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;WINDOW&#39;</span><span class="p">:</span>
+							<span class="n">override</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;window&#39;</span><span class="p">:</span> <span class="n">window</span><span class="p">,</span> <span class="s1">&#39;screen&#39;</span><span class="p">:</span> <span class="n">screen</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">:</span> <span class="n">area</span><span class="p">,</span> <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="n">region</span><span class="p">}</span>
+							<span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">screen_full_area</span><span class="p">(</span><span class="n">override</span><span class="p">)</span>
+							<span class="k">break</span>
 
-    <span class="k">if</span> <span class="n">delete_existing</span><span class="p">:</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="s2">&quot;Cube&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="s2">&quot;Light&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
-
-    <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">show_splash</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># disable splash screen</span></div>
+	<span class="n">f</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">wm</span><span class="o">.</span><span class="n">open_mainfile</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="n">src</span><span class="p">)</span>
+	<span class="n">fix_context</span><span class="p">()</span>
+	<span class="k">return</span> <span class="n">f</span></div>
 
 </pre></div>
 

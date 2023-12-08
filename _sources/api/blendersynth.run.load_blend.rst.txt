@@ -1,0 +1,6 @@
+:code:`blendersynth.run.load_blend`
+======================================
+
+.. automodule:: blendersynth.run.load_blend
+	:members:
+	:inherited-members:
