@@ -155,6 +155,7 @@ class Material(BsynObject):
         self.links.new(self.scale_node.outputs[0], mapping_node.inputs["Scale"])
         self.links.new(tex_coord_node.outputs["UV"], mapping_node.inputs["Vector"])
         self._texture_scaling_socket = mapping_node.outputs["Vector"]
+        self.scale = 1  # set default scale
 
     def set_bdsf_property(self, key: str, value: float):
         """Set the property of the BSDF node"""
