@@ -213,6 +213,14 @@
     <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">dimensions</span>
+
+    <span class="nd">@dimensions</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
+
     <span class="nd">@animatable_property</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set location of object.</span>
@@ -261,6 +269,19 @@
             <span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 
         <span class="n">resize_fac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">resize_fac</span><span class="p">)</span>
+
+    <span class="nd">@animatable_property</span><span class="p">(</span><span class="s2">&quot;dimensions&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">set_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLikeOrScalar</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set dimensions of object.</span>
+
+<span class="sd">        :param dimensions: Dimensions to set. Either single value or 3 long vector&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dimensions</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">dimensions</span> <span class="o">=</span> <span class="p">(</span><span class="n">dimensions</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">)</span>
+
+        <span class="n">resize_fac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dimensions</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
             <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">resize_fac</span><span class="p">)</span>

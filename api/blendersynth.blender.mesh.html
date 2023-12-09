@@ -245,6 +245,20 @@ the object never goes below (mode=’min’) or above (mode=’max’) the given
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.export_obj">
+<span class="sig-name descname"><span class="pre">export_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_loc</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/mesh.html#Mesh.export_obj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.export_obj" title="Link to this definition"></a></dt>
+<dd><p>Export object to .obj file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj_loc</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Location to save .obj file to</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments to pass to <cite>bpy.ops.wm.obj_export</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.follow_path">
 <span class="sig-name descname"><span class="pre">follow_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">250)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.follow_path" title="Link to this definition"></a></dt>
 <dd><p>Follow path, with optional animation setting.</p>
@@ -573,6 +587,20 @@ If no name given, return first armature found.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>class_id</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Class ID to assign to object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.mesh.Mesh.set_dimensions">
+<span class="sig-name descname"><span class="pre">set_dimensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dimensions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.mesh.Mesh.set_dimensions" title="Link to this definition"></a></dt>
+<dd><p>Set dimensions of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dimensions</strong> (<a class="reference internal" href="blendersynth.utils.types.html#blendersynth.utils.types.VectorLikeOrScalar" title="blendersynth.utils.types.VectorLikeOrScalar"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorLikeOrScalar</span></code></a>) – Dimensions to set. Either single value or 3 long vector</p></li>
+<li><p><strong>frame</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Optional frame for animating</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

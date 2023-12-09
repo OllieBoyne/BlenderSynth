@@ -984,6 +984,19 @@
 
         <span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="n">objects_to_join</span><span class="p">,</span> <span class="n">active_object</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
             <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Mesh.export_obj">
+<a class="viewcode-back" href="../../../api/blendersynth.blender.mesh.html#blendersynth.blender.mesh.Mesh.export_obj">[docs]</a>
+    <span class="k">def</span> <span class="nf">export_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_loc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Export object to .obj file.</span>
+
+<span class="sd">        :param obj_loc: Location to save .obj file to</span>
+<span class="sd">        :param kwargs: Additional arguments to pass to `bpy.ops.wm.obj_export`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">wm</span><span class="o">.</span><span class="n">obj_export</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="n">obj_loc</span><span class="p">,</span>
+                                  <span class="n">export_selected_objects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
