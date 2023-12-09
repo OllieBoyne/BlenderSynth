@@ -796,3 +796,13 @@ class Mesh(BsynObject):
 
         with SelectObjects(objects_to_join, active_object=self.obj):
             bpy.ops.object.join()
+
+    def export_obj(self, obj_loc: str, **kwargs):
+        """Export object to .obj file.
+
+        :param obj_loc: Location to save .obj file to
+        :param kwargs: Additional arguments to pass to `bpy.ops.wm.obj_export`
+        """
+        with SelectObjects(self._all_objects):
+            bpy.ops.wm.obj_export(filepath=obj_loc,
+                                  export_selected_objects=True, **kwargs)
