@@ -1,1 +1,1 @@
-from .check_blender_install import check_blender_install
+from .check_blender_install import check_blender_install, install_module

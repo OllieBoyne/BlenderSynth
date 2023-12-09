@@ -1,6 +1,6 @@
 # First, make sure Blender has been set up properly
 import sys
-from .utils.blender_setup import check_blender_install
+from .utils.blender_setup import check_blender_install, install_module
 
 
 def fix_blender_install(local=False, editable=False):
