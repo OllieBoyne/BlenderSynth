@@ -102,6 +102,14 @@ class BsynObject:
     def scale(self, scale):
         self.set_scale(scale)
 
+    @property
+    def dimensions(self):
+        return self.obj.dimensions
+
+    @dimensions.setter
+    def dimensions(self, dimensions):
+        self.set_dimensions(dimensions)
+
     @animatable_property("location")
     def set_location(self, location: types.VectorLike):
         """Set location of object.
@@ -150,6 +158,19 @@ class BsynObject:
             scale = (scale, scale, scale)
 
         resize_fac = np.array(scale) / np.array(self.scale)
+
+        with SelectObjects(self._all_objects):
+            bpy.ops.transform.resize(value=resize_fac)
+
+    @animatable_property("dimensions")
+    def set_dimensions(self, dimensions: types.VectorLikeOrScalar):
+        """Set dimensions of object.
+
+        :param dimensions: Dimensions to set. Either single value or 3 long vector"""
+        if isinstance(dimensions, (int, float)):
+            dimensions = (dimensions, dimensions, dimensions)
+
+        resize_fac = np.array(dimensions) / np.array(self.dimensions)
 
         with SelectObjects(self._all_objects):
             bpy.ops.transform.resize(value=resize_fac)
