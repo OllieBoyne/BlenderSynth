@@ -24,7 +24,7 @@ dependencies = [
 ]
 
 
-def setup_blender_stubs():
+def setup_blender_stubs(blender_path):
     """Install blender stubs in vanilla python environment,
     for correct Blender version"""
 
@@ -33,7 +33,7 @@ def setup_blender_stubs():
     # Get Blender version from the output
     script_code = "import bpy; print('VERSION' + '.'.join(map(str, bpy.app.version)))"
     result = subprocess.run(
-        ["blender", "--background", "--python-expr", script_code],
+        [blender_path, "--background", "--python-expr", script_code],
         capture_output=True,
         text=True,
     )
@@ -124,8 +124,6 @@ def check_blender_install(
     Force: if True, will run first time setup (overwriting any existing config.ini)
     regardless"""
 
-    setup_blender_stubs()  # check blender stubs
-
     if force_all:
         remove_config()  # remove config file if it exists to force first time setup
 
@@ -139,6 +137,8 @@ def check_blender_install(
     blender_path = get_blender_path()
     if blender_path is None:
         blender_path = set_blender_path()
+
+    setup_blender_stubs(blender_path)  # check blender stubs
 
     python_path = find_blender_python(blender_path)
 
