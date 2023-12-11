@@ -132,7 +132,7 @@
 
 <div class="viewcode-block" id="setup_blender_stubs">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.check_blender_install.html#blendersynth.utils.blender_setup.check_blender_install.setup_blender_stubs">[docs]</a>
-<span class="k">def</span> <span class="nf">setup_blender_stubs</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">setup_blender_stubs</span><span class="p">(</span><span class="n">blender_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Install blender stubs in vanilla python environment,</span>
 <span class="sd">    for correct Blender version&quot;&quot;&quot;</span>
 
@@ -141,7 +141,7 @@
     <span class="c1"># Get Blender version from the output</span>
     <span class="n">script_code</span> <span class="o">=</span> <span class="s2">&quot;import bpy; print(&#39;VERSION&#39; + &#39;.&#39;.join(map(str, bpy.app.version)))&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-        <span class="p">[</span><span class="s2">&quot;blender&quot;</span><span class="p">,</span> <span class="s2">&quot;--background&quot;</span><span class="p">,</span> <span class="s2">&quot;--python-expr&quot;</span><span class="p">,</span> <span class="n">script_code</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">blender_path</span><span class="p">,</span> <span class="s2">&quot;--background&quot;</span><span class="p">,</span> <span class="s2">&quot;--python-expr&quot;</span><span class="p">,</span> <span class="n">script_code</span><span class="p">],</span>
         <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
@@ -238,8 +238,6 @@
 <span class="sd">    Force: if True, will run first time setup (overwriting any existing config.ini)</span>
 <span class="sd">    regardless&quot;&quot;&quot;</span>
 
-    <span class="n">setup_blender_stubs</span><span class="p">()</span>  <span class="c1"># check blender stubs</span>
-
     <span class="k">if</span> <span class="n">force_all</span><span class="p">:</span>
         <span class="n">remove_config</span><span class="p">()</span>  <span class="c1"># remove config file if it exists to force first time setup</span>
 
@@ -253,6 +251,8 @@
     <span class="n">blender_path</span> <span class="o">=</span> <span class="n">get_blender_path</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">blender_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">blender_path</span> <span class="o">=</span> <span class="n">set_blender_path</span><span class="p">()</span>
+
+    <span class="n">setup_blender_stubs</span><span class="p">(</span><span class="n">blender_path</span><span class="p">)</span>  <span class="c1"># check blender stubs</span>
 
     <span class="n">python_path</span> <span class="o">=</span> <span class="n">find_blender_python</span><span class="p">(</span><span class="n">blender_path</span><span class="p">)</span>
 
