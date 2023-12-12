@@ -240,8 +240,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aovs</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List of AOVs (used to update before rendering)</span>
 
-        <span class="c1"># We set view transform to &#39;Raw&#39; to avoid any gamma correction to all non-Image layers</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">view_settings</span><span class="o">.</span><span class="n">view_transform</span> <span class="o">=</span> <span class="s2">&quot;Raw&quot;</span>
+        <span class="c1"># We set no view transform by default - all color correction</span>
+        <span class="c1"># to be handled in compositor, so that AOVs are in raw color space</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">display_settings</span><span class="o">.</span><span class="n">display_device</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">view_settings</span><span class="o">.</span><span class="n">view_transform</span> <span class="o">=</span> <span class="s1">&#39;Standard&#39;</span>
 
         <span class="c1"># Socket to be used as RGB input for anything. Defined separately in case of applying overlays (e.g. background color)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">get_node_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="s2">&quot;Render Layers&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span>
@@ -699,7 +701,7 @@
 <span class="sd">        AOVs in raw space). So set the color space for RGB socket here.&quot;&quot;&quot;</span>
 
         <span class="n">color_space_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeConvertColorSpace&quot;</span><span class="p">)</span>
-        <span class="n">color_space_node</span><span class="o">.</span><span class="n">from_color_space</span> <span class="o">=</span> <span class="s2">&quot;Non-Color&quot;</span>
+        <span class="n">color_space_node</span><span class="o">.</span><span class="n">from_color_space</span> <span class="o">=</span> <span class="s2">&quot;Linear&quot;</span>
         <span class="n">color_space_node</span><span class="o">.</span><span class="n">to_color_space</span> <span class="o">=</span> <span class="n">color_space</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span><span class="p">,</span> <span class="n">color_space_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
