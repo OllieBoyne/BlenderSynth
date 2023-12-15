@@ -13,7 +13,7 @@ def hstack(
     :param loglevel: ffmpeg loglevel (see ffmpeg documentation, default error)"""
 
     (
-        ffmpeg.filter([ffmpeg.input(v) for v in videos], "hstack")
+        ffmpeg.filter([ffmpeg.input(v) for v in videos], "hstack", inputs=len(videos))
         .output(out_path)
         .global_args("-loglevel", loglevel)
         .run(overwrite_output=overwrite)
