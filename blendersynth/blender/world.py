@@ -14,9 +14,17 @@ class World:
         self.world_nodes = self.node_tree.nodes
 
         self.hdri_link = None
-        self._setup_nodes()
 
-        self.set_color((0.051,) * 3)  # match blender's default world color
+        # if default setup (a Background node and a WorldOutput node)
+        if len(self.world_nodes) == 2 and all(
+            [node.name in ["Background", "World Output"] for node in self.world_nodes]
+        ):
+            self._setup_nodes()
+            self.set_color((0.051,) * 3)  # match blender's default world color
+
+        else:
+            self._load_nodes()
+            self._setup_hdri()
 
     def _check_exists(self):
         """Node tree may have been wiped, eg by loading a new file.
@@ -42,6 +50,23 @@ class World:
         )
 
         tidy_tree(self.node_tree)
+
+    def _load_nodes(self):
+        """If Nodes already exist, load them"""
+        try:
+            self.node_texture = self.world_nodes["Environment Texture"]
+            self.node_background = self.world_nodes["Background"]
+            self.node_output = self.world_nodes["World Output"]
+        except KeyError:
+            raise KeyError("To load in a World, the World must have 'Environment Texture', 'Background', and 'World Output' nodes.")
+
+        # add links if they don't exist
+        if len(self.node_tree.links) == 0:
+            self.node_tree.links.new(
+                self.node_background.outputs["Background"],
+                self.node_output.inputs["Surface"],
+            )
+
 
     def _setup_color(self):
         self._check_exists()
