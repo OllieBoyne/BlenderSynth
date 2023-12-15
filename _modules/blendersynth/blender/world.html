@@ -122,9 +122,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">hdri_link</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_nodes</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_color</span><span class="p">((</span><span class="mf">0.051</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># match blender&#39;s default world color</span>
+        <span class="c1"># if default setup (a Background node and a WorldOutput node)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Background&quot;</span><span class="p">,</span> <span class="s2">&quot;World Output&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_setup_nodes</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_color</span><span class="p">((</span><span class="mf">0.051</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># match blender&#39;s default world color</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_load_nodes</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_setup_hdri</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_check_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Node tree may have been wiped, eg by loading a new file.</span>
@@ -150,6 +158,23 @@
         <span class="p">)</span>
 
         <span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_load_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If Nodes already exist, load them&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">node_texture</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">[</span><span class="s2">&quot;Environment Texture&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">node_background</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">[</span><span class="s2">&quot;Background&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">node_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">[</span><span class="s2">&quot;World Output&quot;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;To load in a World, the World must have &#39;Environment Texture&#39;, &#39;Background&#39;, and &#39;World Output&#39; nodes.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># add links if they don&#39;t exist</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">node_background</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Background&quot;</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">node_output</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Surface&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+
 
     <span class="k">def</span> <span class="nf">_setup_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_exists</span><span class="p">()</span>
