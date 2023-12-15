@@ -132,8 +132,17 @@ class Compositor:
 
         # We set no view transform by default - all color correction
         # to be handled in compositor, so that AOVs are in raw color space
-        bpy.context.scene.display_settings.display_device = 'None'
-        bpy.context.scene.view_settings.view_transform = 'Standard'
+        # Handling different on different devices
+        for (dd, vt) in [('None', 'Standard'), ('sRGB', 'Standard')]:
+            try:
+                bpy.context.scene.display_settings.display_device = dd
+                bpy.context.scene.view_settings.view_transform = vt
+                break
+            except TypeError:
+                continue
+        else:
+            raise ValueError("No acceptable display devices found - please report this issue on GitHub.")
+
 
         # Socket to be used as RGB input for anything. Defined separately in case of applying overlays (e.g. background color)
         self._rgb_socket = get_node_by_name(self.node_tree, "Render Layers").outputs[
@@ -557,7 +566,16 @@ class Compositor:
         AOVs in raw space). So set the color space for RGB socket here."""
 
         color_space_node = self.node_tree.nodes.new("CompositorNodeConvertColorSpace")
-        color_space_node.from_color_space = "Linear"
+
+        for key in ["Linear", "Non-Color"]:
+            try:
+                color_space_node.from_color_space = key
+                break
+            except TypeError:
+                continue
+        else:
+            raise ValueError("No acceptable color spaces found - please report this issue on GitHub.")
+
         color_space_node.to_color_space = color_space
 
         self.node_tree.links.new(self._rgb_socket, color_space_node.inputs[0])
