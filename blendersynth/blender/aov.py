@@ -38,7 +38,7 @@ class AOV:
 
         for aov in view_layer.aovs:
             if aov.name == self.name:
-                return
+                raise ValueError("AOV `{}` already exists - each AOV must have a unique name".format(self.name))
 
         aov = view_layer.aovs.add()
         aov.name = self.name
