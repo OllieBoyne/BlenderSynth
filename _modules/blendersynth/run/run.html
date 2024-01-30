@@ -128,11 +128,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">blender_loc</span> <span class="o">=</span> <span class="n">blender_loc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blend_src</span> <span class="o">=</span> <span class="n">blend_src</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">background</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">blender_loc</span><span class="p">,</span>
-            <span class="n">blend_src</span> <span class="k">if</span> <span class="n">blend_src</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;--background&quot;</span> <span class="k">if</span> <span class="n">background</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="p">[</span><span class="n">blender_loc</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">blend_src</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">+=</span> <span class="p">[</span><span class="n">blend_src</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">background</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--background&quot;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;--python&quot;</span><span class="p">,</span> <span class="n">script</span><span class="p">]</span>
