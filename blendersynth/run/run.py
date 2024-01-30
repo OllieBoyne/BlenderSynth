@@ -20,11 +20,13 @@ class BlenderCommand:
         self.blender_loc = blender_loc
         self.blend_src = blend_src
         self.background = background
-        self._command = [
-            blender_loc,
-            blend_src if blend_src else "",
-            "--background" if background else "",
-        ]
+        self._command = [blender_loc]
+
+        if blend_src:
+            self._command += [blend_src]
+
+        if background:
+            self._command += ["--background"]
 
     def compose(self, script, args=(), **kwargs):
         command = self._command + ["--python", script]
