@@ -97,7 +97,7 @@ if is_blender:
     from .run.pre_ops import on_script_open
     from .run.load_blend import load_blend
 
-    has_loaded_scene = ".blend" in sys.argv[1]
+    has_loaded_scene = len(sys.argv) > 1 and ".blend" in sys.argv[1]
     on_script_open(delete_existing=not has_loaded_scene)
 
 if not (BLENDER_IMPORTS or TYPE_CHECKING):
