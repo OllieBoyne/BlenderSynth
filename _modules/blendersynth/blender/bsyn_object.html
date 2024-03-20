@@ -388,8 +388,9 @@
         <span class="c1"># if there are any track constraints, place this constraint first</span>
         <span class="c1"># so that the object is not rotated by the track constraint</span>
         <span class="n">track_constraint_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Track To&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">track_constraint_idx</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">track_constraint_idx</span><span class="p">,</span> <span class="n">track_constraint_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
+        <span class="n">follow_path_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Follow Path&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">track_constraint_idx</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">follow_path_idx</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">track_constraint_idx</span><span class="p">,</span> <span class="n">follow_path_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BsynObject.animate_path">
