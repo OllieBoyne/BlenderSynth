@@ -260,9 +260,8 @@ class BsynObject:
         # if there are any track constraints, place this constraint first
         # so that the object is not rotated by the track constraint
         track_constraint_idx = self.object.constraints.find("Track To")
-        follow_path_idx = self.object.constraints.find("Follow Path")
-        if track_constraint_idx > -1 and follow_path_idx > -1:
-            self.object.constraints.move(track_constraint_idx, follow_path_idx + 1)
+        if track_constraint_idx > -1:
+            self.object.constraints.move(track_constraint_idx, track_constraint_idx + 1)
 
     def animate_path(self, frames: tuple = (0, 250), fracs: tuple = (0, 1)):
         """Animate object along path.
