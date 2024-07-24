@@ -7,6 +7,6 @@ Dataset creation
    :maxdepth: 1
 
    create_dataset
-   generate_labels
    blender_script
+   generate_labels
 
