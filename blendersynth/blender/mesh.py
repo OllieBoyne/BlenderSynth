@@ -19,6 +19,7 @@ from mathutils import Vector, Euler
 from typing import Union, List
 from copy import deepcopy
 from ..utils import types
+from ..utils import version
 
 _primitives = {
     "cube": bpy.ops.mesh.primitive_cube_add,
@@ -255,8 +256,10 @@ class Mesh(BsynObject):
 
         importer = GetNewObject(bpy.context.scene)
         with importer:
+            filepath = obj_loc if version.is_version_plus(4.2) else fname
+
             bpy.ops.wm.obj_import(
-                filepath=fname,
+                filepath=filepath,
                 directory=directory,
                 filter_image=False,
                 files=[{"name": fname}],

@@ -3,6 +3,7 @@
 import bpy
 from .nodes import tidy_tree, DeformedGeneratedTextureCoordinates, tree_add_socket
 from ..utils import types
+from ..utils import version
 from typing import Union
 
 ref_frames = ["CAMERA", "WORLD", "OBJECT"]
@@ -61,7 +62,13 @@ class AOV:
             )
 
         shader_aov_node = shader_node_tree.nodes.new("ShaderNodeOutputAOV")
-        shader_aov_node.name = self.name
+
+        # https://projects.blender.org/blender/blender/commit/deb332601c2a5c5c41df21543c08ac1381ca4a0a
+        if version.is_version_plus(4.2):
+            shader_aov_node.aov_name = self.name
+        else:
+            shader_aov_node.name = self.name
+
         shader_node_tree.links.new(out_socket, shader_aov_node.inputs[AOV_TYPE.title()])
 
         self._aov.type = AOV_TYPE
