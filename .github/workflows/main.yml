@@ -32,6 +32,7 @@ jobs:
           pip install ffmpeg-python
           pip install sphinx_autodoc_typehints
           pip install git+https://github.com/sphinx-contrib/googleanalytics
+          pip install "docutils>=0.18.1,<0.21"
 
       - name: Build docs
         run: |
