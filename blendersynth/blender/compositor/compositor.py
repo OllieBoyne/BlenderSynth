@@ -143,6 +143,9 @@ class Compositor:
         else:
             raise ValueError("No acceptable display devices found - please report this issue on GitHub.")
 
+        # Handled more simply in 4.2+:
+        if version.is_version_plus(4.2):
+            bpy.context.scene.view_settings.view_transform = 'Raw'
 
         # Socket to be used as RGB input for anything. Defined separately in case of applying overlays (e.g. background color)
         self._rgb_socket = get_node_by_name(self.node_tree, "Render Layers").outputs[
