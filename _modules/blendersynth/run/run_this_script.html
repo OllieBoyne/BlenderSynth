@@ -184,6 +184,12 @@
 
         <span class="n">blender_path</span> <span class="o">=</span> <span class="n">get_blender_path</span><span class="p">()</span>
 
+        <span class="c1"># Dump current sys.path to a tempfile so it can be loaded in.</span>
+        <span class="n">sys_path</span> <span class="o">=</span> <span class="n">create_temp_file</span><span class="p">(</span><span class="n">ext</span><span class="o">=</span><span class="s2">&quot;.txt&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">blend_src</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">blend_as_copy</span><span class="p">:</span>
             <span class="n">new_filepath</span> <span class="o">=</span> <span class="n">create_temp_file</span><span class="p">(</span><span class="n">ext</span><span class="o">=</span><span class="s2">&quot;.blend&quot;</span><span class="p">)</span>
             <span class="n">copyfile</span><span class="p">(</span><span class="n">blend_src</span><span class="p">,</span> <span class="n">new_filepath</span><span class="p">)</span>
@@ -202,7 +208,12 @@
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;--</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span>
 
-        <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;--run_this_script&#39;</span><span class="p">]</span>  <span class="c1"># flag to indicate that this is being run from run_this_script</span>
+        <span class="k">if</span> <span class="n">sys_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--sys_path&quot;</span><span class="p">,</span> <span class="n">sys_path</span><span class="p">]</span>
+
+        <span class="n">commands</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="s2">&quot;--run_this_script&quot;</span>
+        <span class="p">]</span>  <span class="c1"># flag to indicate that this is being run from run_this_script</span>
 
         <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
 
@@ -234,27 +245,19 @@
                 <span class="n">debugpy</span><span class="o">.</span><span class="n">listen</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
                 <span class="n">debugpy</span><span class="o">.</span><span class="n">wait_for_client</span><span class="p">()</span>
 
-        <span class="c1"># blender is running this script</span>
-        <span class="k">if</span> <span class="n">open_blender</span><span class="p">:</span>
-            <span class="c1"># load the script into blender for viewing</span>
-            <span class="kn">import</span> <span class="nn">bpy</span></div>
+        <span class="c1"># Load sys.path from tempfile</span>
+        <span class="n">sys_path</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;--sys_path&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span></div>
 
 
-            <span class="c1"># REMOVED FUNCTIONALITY TO LOAD SCRIPT TEXT INTO BLENDER AS CAUSING ISSUES</span>
-            <span class="c1"># from ..utils import layout</span>
-
-            <span class="c1"># caller_path = bpy.path.abspath(caller_path)</span>
-            <span class="c1"># script_path = _copy_over_script(caller_path)</span>
-
-            <span class="c1"># text_block = bpy.data.texts.load(script_path)</span>
-            <span class="c1"># layout.change_area_to(&quot;DOPESHEET_EDITOR&quot;, &quot;TEXT_EDITOR&quot;)</span>
-            <span class="c1"># layout.get_area(&quot;TEXT_EDITOR&quot;).spaces[0].text = text_block</span>
 
 <div class="viewcode-block" id="is_from_run_this_script">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run_this_script.html#blendersynth.run.run_this_script.is_from_run_this_script">[docs]</a>
 <span class="k">def</span> <span class="nf">is_from_run_this_script</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns True if this script is being run from run_this_script&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s1">&#39;--run_this_script&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span></div>
+    <span class="k">return</span> <span class="s2">&quot;--run_this_script&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span></div>
 
 </pre></div>
 
