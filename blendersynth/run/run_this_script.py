@@ -75,6 +75,12 @@ def run_this_script(
 
         blender_path = get_blender_path()
 
+        # Dump current sys.path to a tempfile so it can be loaded in.
+        sys_path = create_temp_file(ext=".txt")
+        with open(sys_path, "w") as file:
+            for path in sys.path:
+                file.write(path + "\n")
+
         if blend_src is not None and blend_as_copy:
             new_filepath = create_temp_file(ext=".blend")
             copyfile(blend_src, new_filepath)
@@ -93,7 +99,12 @@ def run_this_script(
         for key, value in kwargs.items():
             commands += [f"--{key}", str(value)]
 
-        commands += ['--run_this_script']  # flag to indicate that this is being run from run_this_script
+        if sys_path is not None:
+            commands += ["--sys_path", sys_path]
+
+        commands += [
+            "--run_this_script"
+        ]  # flag to indicate that this is being run from run_this_script
 
         subprocess.call(commands, env=env)
 
@@ -125,21 +136,13 @@ def run_this_script(
                 debugpy.listen((host, port))
                 debugpy.wait_for_client()
 
-        # blender is running this script
-        if open_blender:
-            # load the script into blender for viewing
-            import bpy
+        # Load sys.path from tempfile
+        sys_path = sys.argv[sys.argv.index("--sys_path") + 1]
+        with open(sys_path, "r") as file:
+            for path in file:
+                sys.path.append(path.strip())
 
-            # REMOVED FUNCTIONALITY TO LOAD SCRIPT TEXT INTO BLENDER AS CAUSING ISSUES
-            # from ..utils import layout
-
-            # caller_path = bpy.path.abspath(caller_path)
-            # script_path = _copy_over_script(caller_path)
-
-            # text_block = bpy.data.texts.load(script_path)
-            # layout.change_area_to("DOPESHEET_EDITOR", "TEXT_EDITOR")
-            # layout.get_area("TEXT_EDITOR").spaces[0].text = text_block
 
 def is_from_run_this_script():
     """Returns True if this script is being run from run_this_script"""
-    return '--run_this_script' in sys.argv
+    return "--run_this_script" in sys.argv
