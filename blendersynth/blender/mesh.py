@@ -256,15 +256,20 @@ class Mesh(BsynObject):
 
         importer = GetNewObject(bpy.context.scene)
         with importer:
-            filepath = obj_loc if version.is_version_plus(4.2) else fname
+            if version.is_version_plus(4.2):
+                kwargs = {"filepath": obj_loc}
+            else:
+                kwargs = {
+                    "filepath": fname,
+                    "files": [{"name": fname}],
+                }
 
             bpy.ops.wm.obj_import(
-                filepath=filepath,
                 directory=directory,
                 filter_image=False,
-                files=[{"name": fname}],
                 forward_axis=forward_axis,
                 up_axis=up_axis,
+                **kwargs,
             )
 
         if class_id is None:
@@ -807,5 +812,6 @@ class Mesh(BsynObject):
         :param kwargs: Additional arguments to pass to `bpy.ops.wm.obj_export`
         """
         with SelectObjects(self._all_objects):
-            bpy.ops.wm.obj_export(filepath=obj_loc,
-                                  export_selected_objects=True, **kwargs)
+            bpy.ops.wm.obj_export(
+                filepath=obj_loc, export_selected_objects=True, **kwargs
+            )
