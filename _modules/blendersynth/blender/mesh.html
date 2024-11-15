@@ -376,15 +376,20 @@
 
         <span class="n">importer</span> <span class="o">=</span> <span class="n">GetNewObject</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">importer</span><span class="p">:</span>
-            <span class="n">filepath</span> <span class="o">=</span> <span class="n">obj_loc</span> <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">is_version_plus</span><span class="p">(</span><span class="mf">4.2</span><span class="p">)</span> <span class="k">else</span> <span class="n">fname</span>
+            <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">is_version_plus</span><span class="p">(</span><span class="mf">4.2</span><span class="p">):</span>
+                <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;filepath&quot;</span><span class="p">:</span> <span class="n">obj_loc</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;filepath&quot;</span><span class="p">:</span> <span class="n">fname</span><span class="p">,</span>
+                    <span class="s2">&quot;files&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">fname</span><span class="p">}],</span>
+                <span class="p">}</span>
 
             <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">wm</span><span class="o">.</span><span class="n">obj_import</span><span class="p">(</span>
-                <span class="n">filepath</span><span class="o">=</span><span class="n">filepath</span><span class="p">,</span>
                 <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span>
                 <span class="n">filter_image</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">files</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">fname</span><span class="p">}],</span>
                 <span class="n">forward_axis</span><span class="o">=</span><span class="n">forward_axis</span><span class="p">,</span>
                 <span class="n">up_axis</span><span class="o">=</span><span class="n">up_axis</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">class_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -996,8 +1001,9 @@
 <span class="sd">        :param kwargs: Additional arguments to pass to `bpy.ops.wm.obj_export`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="n">SelectObjects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_objects</span><span class="p">):</span>
-            <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">wm</span><span class="o">.</span><span class="n">obj_export</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="n">obj_loc</span><span class="p">,</span>
-                                  <span class="n">export_selected_objects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">wm</span><span class="o">.</span><span class="n">obj_export</span><span class="p">(</span>
+                <span class="n">filepath</span><span class="o">=</span><span class="n">obj_loc</span><span class="p">,</span> <span class="n">export_selected_objects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span></div>
 </div>
 
 </pre></div>
