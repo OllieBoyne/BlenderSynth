@@ -6,6 +6,7 @@ import os
 from ..utils.blender_setup.blender_locator import get_blender_path
 from ..file.tempfiles import create_temp_file, cleanup_temp_files as cleanup
 from shutil import copyfile
+import argparse
 
 
 def _copy_over_script(filepath: str) -> str:
@@ -146,3 +147,30 @@ def run_this_script(
 def is_from_run_this_script():
     """Returns True if this script is being run from run_this_script"""
     return "--run_this_script" in sys.argv
+
+
+class ArgumentParser(argparse.ArgumentParser):
+    """Subclass of ArgumentParser to properly handle arguments passed through to Blender."""
+
+    _REMOVE_KWARGS = ['--sys_path']
+    _REMOVE_ARGS = ['--run_this_script']
+
+    def parse_args(self, args = None, namespace = None):
+        if not is_blender_running():
+            return super().parse_args(args, namespace)
+
+        else:
+            argv = sys.argv[sys.argv.index('--') + 1:]
+
+            # Remove arguments that are not meant for the script
+            for arg in self._REMOVE_KWARGS:
+                if arg in argv:
+                    idx = argv.index(arg)
+                    argv.pop(idx)
+                    argv.pop(idx)
+
+            for arg in self._REMOVE_ARGS:
+                if arg in argv:
+                    argv.remove(arg)
+
+            return super().parse_args(argv, namespace)
