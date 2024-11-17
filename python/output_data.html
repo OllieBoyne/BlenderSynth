@@ -147,12 +147,14 @@
 <span class="n">rgb_mask</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span><span class="n">obj_pass_idx</span><span class="p">,</span> <span class="s1">&#39;Image&#39;</span><span class="p">)</span>  <span class="c1"># create an RGB mask (i.e. only render monkey)</span>
 <span class="n">bounding_box_visual</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">get_bounding_box_visual</span><span class="p">()</span>
 <span class="n">keypoints_visual</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">get_keypoints_visual</span><span class="p">()</span>  <span class="c1"># Create a visual of keypoints</span>
+<span class="n">axes_visual</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">get_axes_visual</span><span class="p">()</span>  <span class="c1"># Create a visual of axes</span>
 
 <span class="c1"># AOV support - custom pass through a material shader</span>
 <span class="c1"># For simplicity, we will assign all AOVs to all objects - but that doesn&#39;t have to be done.</span>
 <span class="n">all_objects</span> <span class="o">=</span> <span class="n">objects</span> <span class="o">+</span> <span class="p">[</span><span class="n">floor</span><span class="p">]</span>
 
 <span class="n">cam_normals_aov</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">aov</span><span class="o">.</span><span class="n">NormalsAOV</span><span class="p">(</span><span class="n">ref_frame</span><span class="o">=</span><span class="s1">&#39;CAMERA&#39;</span><span class="p">,</span> <span class="n">polarity</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">binary_mask_aov</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">aov</span><span class="o">.</span><span class="n">ValueAOV</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">instancing_aov</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">aov</span><span class="o">.</span><span class="n">InstanceRGBAOV</span><span class="p">()</span>
 <span class="n">class_aov</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">aov</span><span class="o">.</span><span class="n">ClassRGBAOV</span><span class="p">()</span>
 <span class="n">UVAOV</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">aov</span><span class="o">.</span><span class="n">UVAOV</span><span class="p">()</span>  <span class="c1"># UV Coordinates</span>
@@ -162,6 +164,10 @@
 	<span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">all_objects</span><span class="p">:</span>
 		<span class="n">obj</span><span class="o">.</span><span class="n">assign_aov</span><span class="p">(</span><span class="n">aov</span><span class="p">)</span>
 
+<span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">all_objects</span><span class="p">:</span>
+	<span class="k">if</span> <span class="s1">&#39;Cube&#39;</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+		<span class="n">obj</span><span class="o">.</span><span class="n">assign_aov</span><span class="p">(</span><span class="n">binary_mask_aov</span><span class="p">)</span>
+
 <span class="c1"># Now we assign our render passes to the compositor, telling it what files to output</span>
 <span class="n">output_folder</span> <span class="o">=</span> <span class="s1">&#39;data_formats&#39;</span>
 
@@ -170,9 +176,11 @@
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">rgb_mask</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rgb_masked&#39;</span><span class="p">)</span> <span class="c1"># render RGB layer masked by monkey</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">bounding_box_visual</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;bounding_box_visual&#39;</span><span class="p">)</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">keypoints_visual</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;keypoints&#39;</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">axes_visual</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;axes&#39;</span><span class="p">)</span>
 
 <span class="c1"># All of the following will not have any colour correction</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">depth_vis</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">)</span>  <span class="c1"># render visual of depth layer</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">binary_mask_aov</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;binary_mask&#39;</span><span class="p">)</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">instancing_aov</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;instancing&#39;</span><span class="p">)</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">class_aov</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;semantic&#39;</span><span class="p">)</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">cam_normals_aov</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;normals&#39;</span><span class="p">)</span>
@@ -187,7 +195,10 @@
 <span class="c1"># and all bounding boxes</span>
 <span class="n">bounding_boxes</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">bounding_boxes</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">camera</span><span class="p">)</span>
 
-<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">camera</span><span class="o">=</span><span class="n">camera</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="n">keypoints</span> <span class="o">+</span> <span class="n">bounding_boxes</span><span class="p">)</span>  <span class="c1"># render all the different passes - see output folder for results</span>
+<span class="c1"># and all axes</span>
+<span class="n">axes</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">get_axes</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span>
+
+<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">camera</span><span class="o">=</span><span class="n">camera</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="n">keypoints</span> <span class="o">+</span> <span class="n">bounding_boxes</span> <span class="o">+</span> <span class="n">axes</span><span class="p">)</span>  <span class="c1"># render all the different passes - see output folder for results</span>
 </pre></div>
 </div>
 </section>

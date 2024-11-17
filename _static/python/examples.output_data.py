@@ -37,12 +37,14 @@ depth_vis = comp.get_depth_visual(max_depth=20)  # Create a visual of the depth 
 rgb_mask = comp.get_mask(obj_pass_idx, 'Image')  # create an RGB mask (i.e. only render monkey)
 bounding_box_visual = comp.get_bounding_box_visual()
 keypoints_visual = comp.get_keypoints_visual()  # Create a visual of keypoints
+axes_visual = comp.get_axes_visual()  # Create a visual of axes
 
 # AOV support - custom pass through a material shader
 # For simplicity, we will assign all AOVs to all objects - but that doesn't have to be done.
 all_objects = objects + [floor]
 
 cam_normals_aov = bsyn.aov.NormalsAOV(ref_frame='CAMERA', polarity=[-1, 1, -1])
+binary_mask_aov = bsyn.aov.ValueAOV(value=1)
 instancing_aov = bsyn.aov.InstanceRGBAOV()
 class_aov = bsyn.aov.ClassRGBAOV()
 UVAOV = bsyn.aov.UVAOV()  # UV Coordinates
@@ -52,6 +54,10 @@ for aov in [cam_normals_aov, instancing_aov, class_aov, UVAOV, NOCAOV]:
 	for obj in all_objects:
 		obj.assign_aov(aov)
 
+for obj in all_objects:
+	if 'Cube' in obj.name:
+		obj.assign_aov(binary_mask_aov)
+
 # Now we assign our render passes to the compositor, telling it what files to output
 output_folder = 'data_formats'
 
@@ -60,9 +66,11 @@ comp.define_output('Image', output_folder, file_name='rgb')  # render RGB layer
 comp.define_output(rgb_mask, output_folder, name='rgb_masked') # render RGB layer masked by monkey
 comp.define_output(bounding_box_visual, output_folder, name='bounding_box_visual')
 comp.define_output(keypoints_visual, output_folder, name='keypoints')
+comp.define_output(axes_visual, output_folder, name='axes')
 
 # All of the following will not have any colour correction
 comp.define_output(depth_vis, output_folder)  # render visual of depth layer
+comp.define_output(binary_mask_aov, output_folder, name='binary_mask')
 comp.define_output(instancing_aov, output_folder, name='instancing')
 comp.define_output(class_aov, output_folder, name='semantic')
 comp.define_output(cam_normals_aov, output_folder, name='normals')
@@ -77,4 +85,7 @@ keypoints = bsyn.annotations.keypoints.project_keypoints(cube_vertices)
 # and all bounding boxes
 bounding_boxes = bsyn.annotations.bounding_boxes(objects, camera)
 
-comp.render(camera=camera, annotations=keypoints + bounding_boxes)  # render all the different passes - see output folder for results
+# and all axes
+axes = bsyn.annotations.get_axes(objects)
+
+comp.render(camera=camera, annotations=keypoints + bounding_boxes + axes)  # render all the different passes - see output folder for results
