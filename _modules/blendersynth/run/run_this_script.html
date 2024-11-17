@@ -110,6 +110,7 @@
 <span class="kn">from</span> <span class="nn">..utils.blender_setup.blender_locator</span> <span class="kn">import</span> <span class="n">get_blender_path</span>
 <span class="kn">from</span> <span class="nn">..file.tempfiles</span> <span class="kn">import</span> <span class="n">create_temp_file</span><span class="p">,</span> <span class="n">cleanup_temp_files</span> <span class="k">as</span> <span class="n">cleanup</span>
 <span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copyfile</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
 
 
 <span class="k">def</span> <span class="nf">_copy_over_script</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -258,6 +259,36 @@
 <span class="k">def</span> <span class="nf">is_from_run_this_script</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns True if this script is being run from run_this_script&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;--run_this_script&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span></div>
+
+
+
+<div class="viewcode-block" id="ArgumentParser">
+<a class="viewcode-back" href="../../../api/blendersynth.run.run_this_script.html#blendersynth.run.run_this_script.ArgumentParser">[docs]</a>
+<span class="k">class</span> <span class="nc">ArgumentParser</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of ArgumentParser to properly handle arguments passed through to Blender.&quot;&quot;&quot;</span>
+
+    <span class="n">_REMOVE_KWARGS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;--sys_path&#39;</span><span class="p">]</span>
+    <span class="n">_REMOVE_ARGS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;--run_this_script&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">parse_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">namespace</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_blender_running</span><span class="p">():</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">argv</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;--&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+
+            <span class="c1"># Remove arguments that are not meant for the script</span>
+            <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_REMOVE_KWARGS</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">argv</span><span class="p">:</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="n">argv</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+                    <span class="n">argv</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+                    <span class="n">argv</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_REMOVE_ARGS</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">argv</span><span class="p">:</span>
+                    <span class="n">argv</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span></div>
 
 </pre></div>
 
