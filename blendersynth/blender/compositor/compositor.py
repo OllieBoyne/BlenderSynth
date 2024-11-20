@@ -133,6 +133,7 @@ class Compositor:
         self.file_output_node: bpy.types.CompositorNodeOutputFile = (
             self.node_tree.nodes.new("CompositorNodeOutputFile")
         )
+        self.file_output_node.file_slots[0].path = '_tmp'  # Avoids error in deleting input node.
         self.file_output_node.base_path = self._tempdir.name
 
         self.file_output_slots = {}  # Mapping of file output name to file output slot
@@ -436,6 +437,7 @@ class Compositor:
         if os.path.isfile(pth):
             return pth
 
+        print(os.listdir(self._tempdir.name))
         raise FileNotFoundError(f"File {pth} not found")
 
     def _update_aovs(self):

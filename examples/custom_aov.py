@@ -35,6 +35,6 @@ bsyn.render.set_cycles_samples(10)
 
 # Define outputs & render
 comp = bsyn.Compositor(background_color=(1, 1, 1))
-comp.define_output('Image', file_name='rgb', directory='custom_aov')
-comp.define_output(aov, file_name='position', directory='custom_aov')
-comp.render()
+comp.define_output('Image', name='rgb')
+comp.define_output(aov, name='position')
+comp.render().save_all('custom_aov')

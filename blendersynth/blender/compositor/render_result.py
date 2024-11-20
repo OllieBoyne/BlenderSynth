@@ -18,7 +18,7 @@ class RenderResult:
 
         self.output_types = list(set([k[0] for k in render_paths.keys()]))
         self.camera_names = list(set([k[1] for k in render_paths.keys()]))
-        self.frame_numbers = list(set([k[2] for k in render_paths.keys()]))
+        self.frames = list(set([k[2] for k in render_paths.keys()]))
 
     @property
     def num_cameras(self) -> int:
@@ -26,7 +26,7 @@ class RenderResult:
 
     @property
     def num_frames(self) -> int:
-        return len(self.frame_numbers)
+        return len(self.frames)
 
     def get_render(self, output_type: str, camera_name: str = None, frame_number: int = None) -> str:
 
@@ -38,9 +38,9 @@ class RenderResult:
 
         if frame_number is None:
             if self.num_frames != 1:
-                raise ValueError("Must specify frame number if more than one frame. Frames: ", self.frame_numbers)
+                raise ValueError("Must specify frame number if more than one frame. Frames: ", self.frames)
 
-            frame_number = self.frame_numbers[0]
+            frame_number = self.frames[0]
 
         return self._render_paths[(output_type, camera_name, frame_number)]
 
@@ -52,6 +52,8 @@ class RenderResult:
         If only 1 camera or only 1 frame, those formats will be suppressed by default.
         """
 
+        os.makedirs(output_directory, exist_ok=True)
+
         suppress_camera_name = suppress_camera_name and self.num_cameras == 1
         suppress_frame_number = suppress_frame_number and self.num_frames == 1
 
@@ -61,7 +63,7 @@ class RenderResult:
             if not suppress_camera_name:
                 fname += f'_{camera}'
             if not suppress_frame_number:
-                fname += f'_{frame}'
+                fname += f'_{frame:06d}'
 
             fname += os.path.splitext(path)[1]
 
@@ -69,6 +71,8 @@ class RenderResult:
 
     def save_file(self, output_path: str, output_type: str, camera_name: str = None, frame_number: int = None):
         """Save a single file to a path."""
+
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
         path = self.get_render(output_type, camera_name, frame_number)
 

@@ -1,9 +1,9 @@
 import blendersynth as bsyn
 import numpy as np
 
-bsyn.run_this_script(open_blender=True)
+bsyn.run_this_script(open_blender=False)
 
-comp = bsyn.Compositor()  # Create a new compositor - this manages all the render layers
+comp = bsyn.Compositor() # Create a new compositor - this manages all the render layers
 
 # We create a simple scene with a random selection of objects on a plane
 floor = bsyn.Mesh.from_primitive('plane', scale=35) # Create floor

@@ -14,4 +14,4 @@ camera.set_fov(20)  # zoom in
 # render
 comp = bsyn.Compositor()
 comp.define_output('Image', 'obj', file_name='rgb')
-comp.render()
+comp.render().save_all('obj')

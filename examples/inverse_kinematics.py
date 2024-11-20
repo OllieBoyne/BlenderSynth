@@ -1,14 +1,14 @@
 import os
 import blendersynth as bsyn
 
-bsyn.run_this_script()
+bsyn.run_this_script(open_blender=False)
 
 # Load object from .fbx file (complete with rigging)
 obj = bsyn.Mesh.from_fbx('../resources/objects/bendy_rod/bendy_rod.fbx')
 
 # render settings
 bsyn.render.set_cycles_samples(10)
-bsyn.render.set_resolution(512, 512)
+bsyn.render.set_resolution(256, 256)
 num_frames = 100
 
 # we have a bone named 'top', which we want to control the position of
@@ -32,9 +32,8 @@ camera.look_at(obj.centroid())
 # now we render an animation
 comp = bsyn.Compositor()
 render_dir = 'inverse_kinematics/rgb'
-os.makedirs(render_dir, exist_ok=True)
-comp.define_output('Image', directory=render_dir, file_name='rgb')
-comp.render(animation=True, frame_end=num_frames)
+comp.define_output('Image', name='rgb')
+comp.render(animation=True, frame_end=num_frames).save_all(render_dir)
 
 # convert rendered frames to video
 os.makedirs(render_dir, exist_ok=True)
