@@ -2,6 +2,7 @@ import bpy
 from ..utils import get_node_by_name
 import os
 import shutil
+import tempfile
 from ..render import render, render_depth
 from ..nodes import CompositorNodeGroup
 from ..aov import AOV
@@ -18,6 +19,7 @@ from ..nodes import tidy_tree
 from ..world import world
 from ..camera import Camera
 from ...utils import version
+from .render_result import RenderResult
 
 from typing import Union, List
 
@@ -62,9 +64,9 @@ AVAILABLE_FORMATS = [
 def _default_color_space():
     """Get default color space for Blender version"""
     if version.is_version_plus(4):
-        return "AgX Base sRGB"
+        return "AgX"
     else:
-        return "Filmic sRGB"
+        return "Filmic"
 
 
 def _get_badfname(fname, N=100):
@@ -116,6 +118,8 @@ class Compositor:
         :param rgb_color_space: Color transform for RGB only. Defaults to `AgX Base sRGB` for Blender 4+, and `Filmic sRGB` for older versions.
         """
 
+        self._tempdir = tempfile.TemporaryDirectory()
+
         if rgb_color_space is None:
             rgb_color_space = _default_color_space()
 
@@ -123,35 +127,26 @@ class Compositor:
         bpy.context.scene.use_nodes = True
         self.node_tree = bpy.context.scene.node_tree
 
-        self.view_layer = view_layer  #
+        self.view_layer = view_layer
 
-        self.file_output_nodes = {}  # Mapping of output name to FileOutputNode
+        # Create file output node.
+        self.file_output_node: bpy.types.CompositorNodeOutputFile = (
+            self.node_tree.nodes.new("CompositorNodeOutputFile")
+        )
+        self.file_output_node.base_path = self._tempdir.name
+
+        self.file_output_slots = {}  # Mapping of file output name to file output slot
         self.mask_nodes = {}  # Mapping of mask pass index to CompositorNodeGroup
         self.overlays = {}
         self.aovs = []  # List of AOVs (used to update before rendering)
 
-        # We set no view transform by default - all color correction
-        # to be handled in compositor, so that AOVs are in raw color space
-        # Handling different on different devices
-        for (dd, vt) in [('None', 'Standard'), ('sRGB', 'Standard')]:
-            try:
-                bpy.context.scene.display_settings.display_device = dd
-                bpy.context.scene.view_settings.view_transform = vt
-                break
-            except TypeError:
-                continue
-        else:
-            raise ValueError("No acceptable display devices found - please report this issue on GitHub.")
-
-        # Handled more simply in 4.2+:
-        if version.is_version_plus(4.2):
-            bpy.context.scene.view_settings.view_transform = 'Raw'
+        bpy.context.scene.display_settings.display_device = "sRGB"
+        bpy.context.scene.view_settings.view_transform = rgb_color_space
 
         # Socket to be used as RGB input for anything. Defined separately in case of applying overlays (e.g. background color)
         self._rgb_socket = get_node_by_name(self.node_tree, "Render Layers").outputs[
             "Image"
         ]
-        self._set_rgb_color_space(rgb_color_space)
         if background_color is not None:
             self._set_background_color(background_color)
 
@@ -343,15 +338,14 @@ class Compositor:
     def define_output(
         self,
         input_data: Union[str, CompositorNodeGroup, AOV],
-        directory: str = ".",
-        file_name: str = None,
+        name: str = None,
+        is_data: bool = False,
         file_format: str = "PNG",
         color_mode: str = "RGBA",
         jpeg_quality: int = 90,
         png_compression: int = 15,
         color_depth: str = "8",
         EXR_color_depth: str = "32",
-        name: str = None,
     ) -> str:
         """Add a connection between a valid render output, and a file output node.
 
@@ -362,8 +356,8 @@ class Compositor:
         and any overlays on this output (e.g. Bounding Box Visualization)
 
         :param input_data: If :class:`str`,  will get the input_data from that key in the render_layers_node. If :class:`~CompositorNodeGroup`, use that node as input. If :class:`AOV`, use that AOV as input (storing AOV).
-        :param directory: Directory to save output to
-        :param file_name: Name of file to save output to. If None, will use `name` (or `input_data` if `name` is None)
+        :param name: If no file_path given, save at Compositor's directory / name (or `input_data` if `file_name` is None)
+        :param is_data: If True, save with no color correction. If False, save with color correction.
         :param file_format: File format to save output as. Must be in :class:`AVAILABLE_FORMATS`
         :param color_mode: Color mode to save output as.
         :param jpeg_quality: Quality of JPEG output.
@@ -376,6 +370,9 @@ class Compositor:
 
         """
 
+        if name is None:
+            name = str(input_data)
+
         if isinstance(input_data, AOV):
             self.aovs.append(input_data)
             input_data = (
@@ -386,125 +383,69 @@ class Compositor:
             file_format in format_to_extension
         ), f"File format `{file_format}` not supported. Options are: {list(format_to_extension.keys())}"
 
-        if name is None:
-            name = str(input_data)
-
-        node_name = f"File Output {name}"
-
         # check node doesn't exist
-        if name in self.file_output_nodes:
+        if name in self.keys:
             raise ValueError(
                 f"File output `{name}` already exists. Only call define_output once per output type."
             )
 
-        if file_name is None:  # if fname is not given, use input_name
-            file_name = name
-
-        file_name = remove_ext(file_name)
-        directory = os.path.abspath(directory)  # make sure directory is absolute
-        os.makedirs(directory, exist_ok=True)
-
         # Create new 'File Output' node in compositor
-        node = self.node_tree.nodes.new("CompositorNodeOutputFile")
-        node.name = node_name
+        file_output_socket = self.file_output_node.file_slots.new(name)
+        file_output_slot = self.file_output_node.file_slots[-1]
 
+        self.file_output_slots[name] = file_output_slot
+
+        file_output_slot.save_as_render = not is_data
+
+        from_socket = None
         if isinstance(input_data, str):
-            self.node_tree.links.new(
-                self._get_render_layer_output(input_data), node.inputs["Image"]
-            )
+            from_socket = self._get_render_layer_output(input_data)
 
         elif isinstance(input_data, CompositorNodeGroup):  # add overlay in between
-            self.node_tree.links.new(input_data.outputs[0], node.inputs["Image"])
+            from_socket = input_data.outputs[0]
 
         else:
             raise NotImplementedError(
                 f"input_data must be either str or CompositorNodeGroup, got {type(input_data)}"
             )
 
+        self.node_tree.links.new(from_socket, file_output_socket)
+
         # Set file output node properties
-        node.label = node_name
-        node.base_path = directory
-        node.file_slots[0].path = file_name
+        file_output_slot.path = name
 
         # File format kwargs
-        node.format.file_format = file_format
-        node.format.color_mode = color_mode
-        node.format.quality = jpeg_quality
-        node.format.compression = png_compression
-        node.format.color_depth = (
+        file_output_slot.use_node_format = False
+        file_output_slot.format.file_format = file_format
+        file_output_slot.format.color_mode = color_mode
+        file_output_slot.format.quality = jpeg_quality
+        file_output_slot.format.compression = png_compression
+        file_output_slot.format.color_depth = (
             color_depth if file_format != "OPEN_EXR" else EXR_color_depth
         )
-
-        self.file_output_nodes[name] = node
 
         self._tidy_tree()
         return name
 
-    def update_filename(self, key: str, fname: str):
-        """Reassign the filename (not directory) for a given file output node.
+    def _find_file_at_frame(self, key: str, frame: int = 0):
+        slot = self.file_output_slots[key]
+        ext = format_to_extension[slot.format.file_format]
 
-        :param key: key of output, as given in `define_output`
-        :param fname: new filename, without extension"""
-        fname = remove_ext(fname)
-        node = self.file_output_nodes[str(key)]
-        node.file_slots[0].path = fname
+        pth = os.path.join(self._tempdir.name, f"{key}{frame:04d}{ext}")
 
-    def update_all_filenames(self, fname: str):
-        """Reassign all filenames (not directories) for all file output nodes.
+        if os.path.isfile(pth):
+            return pth
 
-        :param fname: new filename, without extension"""
-        fname = remove_ext(fname)
-        for node in self.file_output_nodes.values():
-            node.file_slots[0].path = fname
-
-    def update_directory(self, key: str, directory: str):
-        """Reassign the directory for a given file output node
-
-        :param key: key of output, as given in `define_output`
-        :param directory: new directory
-        """
-        node = self.file_output_nodes[str(key)]
-        node.base_path = directory
-
-    def _fix_namings_static(self, prefix=None):
-        """After rendering a static scene,
-        File Output node has property that frame number gets added to filename.
-        Fix that here"""
-
-        prefix = "" if prefix is None else prefix + "_"
-
-        for node in self.file_output_nodes.values():
-            # get expected file name and extension
-            ext = format_to_extension[node.format.file_format]
-            bad_file_name = _get_badfname(
-                os.path.join(node.base_path, node.file_slots[0].path + ext)
-            )
-            target_file_name = os.path.join(
-                node.base_path, prefix + node.file_slots[0].path + ext
-            )
-            shutil.move(bad_file_name, target_file_name)
-
-    def _fix_namings_animation(self, prefix=None):
-        """After rendering an animation, find all the files that have been rendered,
-        and prepend prefix to them"""
-        if prefix is None:
-            return
-
-        for node in self.file_output_nodes.values():
-            # get expected file name and extension
-            ext = format_to_extension[node.format.file_format]
-            for fname in _all_anim_frames(
-                os.path.join(node.base_path, node.file_slots[0].path + ext)
-            ):
-                target_file_name = os.path.join(
-                    node.base_path, prefix + "_" + os.path.basename(fname)
-                )
-                shutil.move(fname, target_file_name)
+        raise FileNotFoundError(f"File {pth} not found")
 
     def _update_aovs(self):
         """Update any AOVs that are connected to the render layers node"""
         for aov in self.aovs:
             aov.update()
+
+    @property
+    def keys(self):
+        return self.file_output_slots.keys()
 
     def render(
         self,
@@ -514,7 +455,7 @@ class Compositor:
         animation: bool = False,
         frame_start: int = 0,
         frame_end: int = 250,
-    ):
+    ) -> RenderResult:
         """Render the scene.
 
         :param camera: Camera(s) to render from. If None, will use `scene.camera`. If multiple, will render each camera separately, appending the camera's names as the output file names.
@@ -540,6 +481,7 @@ class Compositor:
         if not multi_camera:
             camera = [camera]
 
+        render_paths = {}
         for cam in camera:
             if annotations is not None:
                 annotation = annotations.get_annotation_by_camera(cam.name)
@@ -555,34 +497,28 @@ class Compositor:
             scene.camera = cam.obj
             render(animation=animation)
 
-            if animation:
-                self._fix_namings_animation(prefix=cam.name if multi_camera else None)
+            camera_frame_dir = os.path.join(self._tempdir.name, cam.name)
+            os.makedirs(camera_frame_dir, exist_ok=True)
 
+            if animation:
+                frames = list(range(frame_start, frame_end + 1))
             else:
-                self._fix_namings_static(prefix=cam.name if multi_camera else None)
+                frames = [bpy.context.scene.frame_current]
+
+            for frame in frames:
+                for key in self.keys:
+                    pth = self._find_file_at_frame(key, frame=frame)
+
+                    # Move to camera dir to avoid overwriting.
+                    new_pth = os.path.join(camera_frame_dir, os.path.basename(pth))
+                    shutil.move(pth, new_pth)
+
+                    render_paths[(key, cam.name, frame)] = new_pth
 
         # reset active camera
         scene.camera = _original_active_camera
 
-    def _set_rgb_color_space(self, color_space: str = "Filmic sRGB"):
-        """Color spaces are all handled manually within compositor (so that we keep
-        AOVs in raw space). So set the color space for RGB socket here."""
-
-        color_space_node = self.node_tree.nodes.new("CompositorNodeConvertColorSpace")
-
-        for key in ["Linear", "Non-Color"]:
-            try:
-                color_space_node.from_color_space = key
-                break
-            except TypeError:
-                continue
-        else:
-            raise ValueError("No acceptable color spaces found - please report this issue on GitHub.")
-
-        color_space_node.to_color_space = color_space
-
-        self.node_tree.links.new(self._rgb_socket, color_space_node.inputs[0])
-        self._rgb_socket = color_space_node.outputs[0]
+        return RenderResult(render_paths)
 
     def _set_background_color(self, color: tuple = (0, 0, 0)):
         """Set a solid background color, instead of transparent.
