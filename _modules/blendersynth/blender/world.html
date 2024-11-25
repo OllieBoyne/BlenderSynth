@@ -115,6 +115,11 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;Color&quot;</span>
+
+        <span class="k">if</span> <span class="s2">&quot;World&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">worlds</span><span class="p">:</span>
+            <span class="n">world</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">worlds</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;World&quot;</span><span class="p">)</span>
+            <span class="n">world</span><span class="o">.</span><span class="n">use_nodes</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">world</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">worlds</span><span class="p">[</span><span class="s2">&quot;World&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">node_tree</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span>
@@ -164,7 +169,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">node_background</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">[</span><span class="s2">&quot;Background&quot;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">node_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">[</span><span class="s2">&quot;World Output&quot;</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;To load in a World, the World must have &#39;Environment Texture&#39;, &#39;Background&#39;, and &#39;World Output&#39; nodes.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="s2">&quot;To load in a World, the World must have &#39;Environment Texture&#39;, &#39;Background&#39;, and &#39;World Output&#39; nodes.&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># add links if they don&#39;t exist</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -172,7 +179,6 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">node_background</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Background&quot;</span><span class="p">],</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">node_output</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Surface&quot;</span><span class="p">],</span>
             <span class="p">)</span>
-
 
     <span class="k">def</span> <span class="nf">_setup_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_exists</span><span class="p">()</span>

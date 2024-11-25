@@ -107,6 +107,15 @@
 <span class="kn">from</span> <span class="nn">..blender</span> <span class="kn">import</span> <span class="n">render</span>
 
 
+<div class="viewcode-block" id="reset_scene">
+<a class="viewcode-back" href="../../../api/blendersynth.run.pre_ops.html#blendersynth.run.pre_ops.reset_scene">[docs]</a>
+<span class="k">def</span> <span class="nf">reset_scene</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the scene to default settings&quot;&quot;&quot;</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">wm</span><span class="o">.</span><span class="n">read_factory_settings</span><span class="p">(</span><span class="n">use_empty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">render</span><span class="o">.</span><span class="n">set_engine</span><span class="p">(</span><span class="s2">&quot;CYCLES&quot;</span><span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="on_script_open">
 <a class="viewcode-back" href="../../../api/blendersynth.run.pre_ops.html#blendersynth.run.pre_ops.on_script_open">[docs]</a>
 <span class="k">def</span> <span class="nf">on_script_open</span><span class="p">(</span><span class="n">delete_existing</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
