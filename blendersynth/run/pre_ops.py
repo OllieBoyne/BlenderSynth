@@ -3,6 +3,12 @@ import bpy
 from ..blender import render
 
 
+def reset_scene():
+    """Reset the scene to default settings"""
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    render.set_engine("CYCLES")
+
+
 def on_script_open(delete_existing=True):
     """
     On script open:

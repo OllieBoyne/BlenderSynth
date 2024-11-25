@@ -17,7 +17,12 @@ def fix_blender_modules(local=False, editable=False):
     )
 
 
-from .run.run_this_script import run_this_script, is_blender_running, is_from_run_this_script, ArgumentParser
+from .run.run_this_script import (
+    run_this_script,
+    is_blender_running,
+    is_from_run_this_script,
+    ArgumentParser,
+)
 
 from .utils.blender_setup.blender_locator import get_blender_path
 from .run.import_handling import conditional_import, IllegalImport
@@ -94,7 +99,7 @@ if is_blender:
         return bpy.ops.wm.open_mainfile(filepath=src)
 
     # set render engine to cycles
-    from .run.pre_ops import on_script_open
+    from .run.pre_ops import on_script_open, reset_scene
     from .run.load_blend import load_blend
 
     has_loaded_scene = len(sys.argv) > 1 and ".blend" in sys.argv[1]
