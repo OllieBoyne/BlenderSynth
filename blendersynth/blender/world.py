@@ -9,6 +9,11 @@ class World:
 
     def __init__(self):
         self.mode = "Color"
+
+        if "World" not in bpy.data.worlds:
+            world = bpy.data.worlds.new("World")
+            world.use_nodes = True
+
         self.world = bpy.data.worlds["World"]
         self.node_tree = self.world.node_tree
         self.world_nodes = self.node_tree.nodes
@@ -58,7 +63,9 @@ class World:
             self.node_background = self.world_nodes["Background"]
             self.node_output = self.world_nodes["World Output"]
         except KeyError:
-            raise KeyError("To load in a World, the World must have 'Environment Texture', 'Background', and 'World Output' nodes.")
+            raise KeyError(
+                "To load in a World, the World must have 'Environment Texture', 'Background', and 'World Output' nodes."
+            )
 
         # add links if they don't exist
         if len(self.node_tree.links) == 0:
@@ -66,7 +73,6 @@ class World:
                 self.node_background.outputs["Background"],
                 self.node_output.inputs["Surface"],
             )
-
 
     def _setup_color(self):
         self._check_exists()
