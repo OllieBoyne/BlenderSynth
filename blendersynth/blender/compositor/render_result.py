@@ -1,6 +1,7 @@
 import os.path
 from pathlib import Path
 from shutil import copyfile
+import cv2
 
 class RenderResult:
     """Result of any form of render.
@@ -28,7 +29,7 @@ class RenderResult:
     def num_frames(self) -> int:
         return len(self.frames)
 
-    def get_render(self, output_type: str, camera_name: str = None, frame_number: int = None) -> str:
+    def get_render_path(self, output_type: str, camera_name: str = None, frame_number: int = None) -> str:
 
         if camera_name is None:
             if self.num_cameras != 1:
@@ -72,9 +73,10 @@ class RenderResult:
     def save_file(self, output_path: str, output_type: str, camera_name: str = None, frame_number: int = None):
         """Save a single file to a path."""
 
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        if os.path.dirname(output_path):
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-        path = self.get_render(output_type, camera_name, frame_number)
+        path = self.get_render_path(output_type, camera_name, frame_number)
 
         target_ext = os.path.splitext(output_path)[1]
         rendered_ext = os.path.splitext(path)[1]
