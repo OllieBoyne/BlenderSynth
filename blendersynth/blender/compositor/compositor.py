@@ -4,7 +4,7 @@ import os
 import shutil
 import tempfile
 from ..render import render, render_depth
-from ..nodes import CompositorNodeGroup
+from ..nodes import CompositorNodeGroup, srgb_to_linear
 from ..aov import AOV
 from .mask_overlay import MaskOverlay
 from .visuals import DepthVis
@@ -409,6 +409,15 @@ class Compositor:
             raise NotImplementedError(
                 f"input_data must be either str or CompositorNodeGroup, got {type(input_data)}"
             )
+
+        if file_format == "PNG" and color_depth == "8" and is_data:
+            # Bug: Blender applies sRGB to 8-bit PNGs without 'save_as_render'
+            # We want an untransformed colorspace, so here we unapply sRGB
+            converter = self.node_tree.nodes.new(type="CompositorNodeGroup")
+            converter.node_tree = srgb_to_linear()
+
+            self.node_tree.links.new(from_socket, converter.inputs[0])
+            from_socket = converter.outputs[0]
 
         self.node_tree.links.new(from_socket, file_output_socket)
 
