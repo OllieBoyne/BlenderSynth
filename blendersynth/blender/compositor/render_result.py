@@ -1,7 +1,5 @@
 import os.path
-from pathlib import Path
 from shutil import copyfile
-import cv2
 
 class RenderResult:
     """Result of any form of render.
@@ -54,9 +52,12 @@ class RenderResult:
     def get_render_path(self, output_type: str, camera_name: str = None, frame_number: int = None) -> str:
         """Get the path to a specific render output.
 
-        :param output_type: Type of output - `name` used in :meth:`~blendersynth.compositor.Compositor.render`
+        :param output_type: Type of output - `name` returned from :meth:`~blendersynth.blender.compositor.compositor.Compositor.define_output`.
         :param camera_name: Name of camera to get render for. Only required if multiple cameras used.
-        :param frame_number: Frame number to get render for. Only required if multiple frames used."""
+        :param frame_number: Frame number to get render for. Only required if multiple frames used.
+
+        :return: Path to the render output.
+        """
 
         if camera_name is None:
             if self.num_cameras != 1:
@@ -103,7 +104,7 @@ class RenderResult:
         """Save a single file to a path.
 
         :param output_path: Path to save file to.
-        :param output_type: Type of output - `name` used in :meth:`~blendersynth.compositor.Compositor.render`
+        :param output_type: Type of output - `name` returned from :meth:`~blendersynth.blender.compositor.compositor.Compositor.define_output`.
         :param camera_name: Name of camera to get render for. Only required if multiple cameras used.
         :param frame_number: Frame number to get render for. Only required if multiple frames used."""
 
