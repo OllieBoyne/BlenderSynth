@@ -111,14 +111,14 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
 
-<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">()</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">(</span><span class="n">open_blender</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Load object from .fbx file (complete with rigging)</span>
 <span class="n">obj</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_fbx</span><span class="p">(</span><span class="s1">&#39;../resources/objects/bendy_rod/bendy_rod.fbx&#39;</span><span class="p">)</span>
 
 <span class="c1"># render settings</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_cycles_samples</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_resolution</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_resolution</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
 <span class="n">num_frames</span> <span class="o">=</span> <span class="mi">100</span>
 
 <span class="c1"># we have a bone named &#39;top&#39;, which we want to control the position of</span>
@@ -142,9 +142,8 @@
 <span class="c1"># now we render an animation</span>
 <span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>
 <span class="n">render_dir</span> <span class="o">=</span> <span class="s1">&#39;inverse_kinematics/rgb&#39;</span>
-<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">render_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">render_dir</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">)</span>
-<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">animation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame_end</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">animation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame_end</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span><span class="o">.</span><span class="n">save_all</span><span class="p">(</span><span class="n">render_dir</span><span class="p">)</span>
 
 <span class="c1"># convert rendered frames to video</span>
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">render_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

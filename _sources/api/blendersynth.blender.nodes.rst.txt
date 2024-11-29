@@ -7,4 +7,5 @@
 
 	blendersynth.blender.nodes.node_arranger
 	blendersynth.blender.nodes.node_group
+	blendersynth.blender.nodes.sRGB
 	blendersynth.blender.nodes.shader_node_groups

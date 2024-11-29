@@ -1,9 +1,9 @@
 import blendersynth as bsyn
 import numpy as np
 
-bsyn.run_this_script()
+bsyn.run_this_script(open_blender=False)
 
-comp = bsyn.Compositor()  # Create a new compositor - this manages all the render layers
+comp = bsyn.Compositor() # Create a new compositor - this manages all the render layers
 
 # We create a simple scene with a random selection of objects on a plane
 floor = bsyn.Mesh.from_primitive('plane', scale=35) # Create floor
@@ -62,21 +62,21 @@ for obj in all_objects:
 output_folder = 'data_formats'
 
 # All of the following will have Blender's Filmic colour correction by default
-comp.define_output('Image', output_folder, file_name='rgb')  # render RGB layer
-comp.define_output(rgb_mask, output_folder, name='rgb_masked') # render RGB layer masked by monkey
-comp.define_output(bounding_box_visual, output_folder, name='bounding_box_visual')
-comp.define_output(keypoints_visual, output_folder, name='keypoints')
-comp.define_output(axes_visual, output_folder, name='axes')
+comp.define_output('Image', name='rgb')  # render RGB layer
+comp.define_output(rgb_mask, name='rgb_masked') # render RGB layer masked by monkey
+comp.define_output(bounding_box_visual, name='bounding_box_visual')
+comp.define_output(keypoints_visual, name='keypoints')
+comp.define_output(axes_visual, name='axes')
 
 # All of the following will not have any colour correction
-comp.define_output(depth_vis, output_folder)  # render visual of depth layer
-comp.define_output(binary_mask_aov, output_folder, name='binary_mask')
-comp.define_output(instancing_aov, output_folder, name='instancing')
-comp.define_output(class_aov, output_folder, name='semantic')
-comp.define_output(cam_normals_aov, output_folder, name='normals')
-comp.define_output(UVAOV, output_folder, name='UV')
-comp.define_output(NOCAOV, output_folder, name='NOC')
-comp.define_output('Depth', output_folder, file_format='OPEN_EXR')
+comp.define_output(depth_vis, is_data=True)  # render visual of depth layer
+comp.define_output(binary_mask_aov, name='binary_mask', is_data=True)
+comp.define_output(instancing_aov, name='instancing', is_data=True)
+comp.define_output(class_aov, name='semantic', is_data=True)
+comp.define_output(cam_normals_aov, name='normals', is_data=True)
+comp.define_output(UVAOV, name='UV', is_data=True)
+comp.define_output(NOCAOV, name='NOC', is_data=True)
+comp.define_output('Depth', file_format='OPEN_EXR', is_data=True)
 
 # we will plot all cube keypoints
 cube_vertices = np.concatenate([obj.get_keypoints([*range(8)]) for obj in objects if 'Cube' in obj.name])
@@ -88,4 +88,5 @@ bounding_boxes = bsyn.annotations.bounding_boxes(objects, camera)
 # and all axes
 axes = bsyn.annotations.get_axes(objects)
 
-comp.render(camera=camera, annotations=keypoints + bounding_boxes + axes)  # render all the different passes - see output folder for results
+render_result = comp.render(camera=camera, annotations=keypoints + bounding_boxes + axes)  # render all the different passes - see output folder for results
+render_result.save_all(output_folder)

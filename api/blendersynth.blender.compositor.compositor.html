@@ -134,25 +134,25 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.define_output">
-<span class="sig-name descname"><span class="pre">define_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PNG'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RGBA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jpeg_quality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">png_compression</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EXR_color_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'32'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.define_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.define_output" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">define_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PNG'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RGBA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jpeg_quality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">png_compression</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EXR_color_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'32'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.define_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.define_output" title="Link to this definition"></a></dt>
 <dd><p>Add a connection between a valid render output, and a file output node.</p>
 <p>This should only be called once per output (NOT inside a loop).
-Inside the loop, only call <a class="reference internal" href="#blendersynth.blender.compositor.compositor.Compositor.update_filename" title="blendersynth.blender.compositor.compositor.Compositor.update_filename"><code class="xref py py-attr docutils literal notranslate"><span class="pre">update_filename</span></code></a>, <a class="reference internal" href="#blendersynth.blender.compositor.compositor.Compositor.update_all_filenames" title="blendersynth.blender.compositor.compositor.Compositor.update_all_filenames"><code class="xref py py-attr docutils literal notranslate"><span class="pre">update_all_filenames</span></code></a> <a class="reference internal" href="#blendersynth.blender.compositor.compositor.Compositor.update_directory" title="blendersynth.blender.compositor.compositor.Compositor.update_directory"><code class="xref py py-attr docutils literal notranslate"><span class="pre">update_directory</span></code></a></p>
+Inside the loop, only call <code class="xref py py-attr docutils literal notranslate"><span class="pre">update_filename</span></code>, <code class="xref py py-attr docutils literal notranslate"><span class="pre">update_all_filenames</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">update_directory</span></code></p>
 <p>All outputs will be defined in raw color space (no color correction), except for the RGB output,
 and any overlays on this output (e.g. Bounding Box Visualization)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a>, <a class="reference internal" href="blendersynth.blender.aov.html#blendersynth.blender.aov.AOV" title="blendersynth.blender.aov.AOV"><code class="xref py py-class docutils literal notranslate"><span class="pre">AOV</span></code></a>]</span>) – If <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>,  will get the input_data from that key in the render_layers_node. If <code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code>, use that node as input. If <code class="xref py py-class docutils literal notranslate"><span class="pre">AOV</span></code>, use that AOV as input (storing AOV).</p></li>
-<li><p><strong>directory</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Directory to save output to</p></li>
-<li><p><strong>file_name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of file to save output to. If None, will use <cite>name</cite> (or <cite>input_data</cite> if <cite>name</cite> is None)</p></li>
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – If no file_path given, save at Compositor’s directory / name (or <cite>input_data</cite> if <cite>file_name</cite> is None)</p></li>
+<li><p><strong>is_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, save with no color correction. If False, save with color correction.</p></li>
 <li><p><strong>file_format</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – File format to save output as. Must be in <a class="reference internal" href="#blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS" title="blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS"><code class="xref py py-class docutils literal notranslate"><span class="pre">AVAILABLE_FORMATS</span></code></a></p></li>
 <li><p><strong>color_mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color mode to save output as.</p></li>
 <li><p><strong>jpeg_quality</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Quality of JPEG output.</p></li>
 <li><p><strong>png_compression</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Compression of PNG output.</p></li>
 <li><p><strong>color_depth</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color depth of output.</p></li>
 <li><p><strong>EXR_color_depth</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color depth of EXR output.</p></li>
-<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of output. If not given, will take the str representation of input_data</p></li>
+<li><p><strong>name</strong> – Name of output. If not given, will take the str representation of input_data</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -261,6 +261,9 @@ and any values below that are depth/max_depth * col.</p>
 <li><p><strong>frame_end</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – End frame for animation.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.compositor.render_result.html#blendersynth.blender.compositor.render_result.RenderResult" title="blendersynth.blender.compositor.render_result.RenderResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RenderResult</span></code></a></span></p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -275,45 +278,6 @@ and any values below that are depth/max_depth * col.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AlphaImageOverlay" title="blendersynth.blender.compositor.image_overlay.AlphaImageOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlphaImageOverlay</span></code></a></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.update_all_filenames">
-<span class="sig-name descname"><span class="pre">update_all_filenames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.update_all_filenames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.update_all_filenames" title="Link to this definition"></a></dt>
-<dd><p>Reassign all filenames (not directories) for all file output nodes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fname</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – new filename, without extension</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.update_directory">
-<span class="sig-name descname"><span class="pre">update_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.update_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.update_directory" title="Link to this definition"></a></dt>
-<dd><p>Reassign the directory for a given file output node</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>key</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – key of output, as given in <cite>define_output</cite></p></li>
-<li><p><strong>directory</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – new directory</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.update_filename">
-<span class="sig-name descname"><span class="pre">update_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.update_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.update_filename" title="Link to this definition"></a></dt>
-<dd><p>Reassign the filename (not directory) for a given file output node.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>key</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – key of output, as given in <cite>define_output</cite></p></li>
-<li><p><strong>fname</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – new filename, without extension</p></li>
-</ul>
 </dd>
 </dl>
 </dd></dl>

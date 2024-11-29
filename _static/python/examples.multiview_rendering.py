@@ -29,10 +29,10 @@ monkey.assign_aov(normal_aov)
 comp = bsyn.Compositor()
 output_folder = 'multiview'
 os.makedirs(output_folder, exist_ok=True)
-comp.define_output('Image', file_name='rgb', directory=output_folder)
-comp.define_output(normal_aov, file_name='normals', directory=output_folder)
+comp.define_output('Image', name='rgb')
+comp.define_output(normal_aov, name='normals')
 
 bounding_boxes = bsyn.annotations.bounding_boxes([monkey], cameras)
-comp.define_output(comp.get_bounding_box_visual(), output_folder, name='bounding_box_visual')
+comp.define_output(comp.get_bounding_box_visual(), name='bounding_box_visual')
 
-comp.render(camera=cameras, annotations=bounding_boxes)
+comp.render(camera=cameras, annotations=bounding_boxes).save_all(output_folder)

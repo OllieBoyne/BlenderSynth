@@ -15,7 +15,7 @@
     </script>
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blendersynth.blender.nodes.shader_node_groups &mdash; BlenderSynth</title>
+  <title>blendersynth.blender.nodes.sRGB &mdash; BlenderSynth</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -29,8 +29,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="blendersynth.blender.other_objects" href="blendersynth.blender.other_objects.html" />
-    <link rel="prev" title="blendersynth.blender.nodes.sRGB" href="blendersynth.blender.nodes.sRGB.html" /> 
+    <link rel="next" title="blendersynth.blender.nodes.shader_node_groups" href="blendersynth.blender.nodes.shader_node_groups.html" />
+    <link rel="prev" title="blendersynth.blender.nodes.node_group" href="blendersynth.blender.nodes.node_group.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -96,9 +96,9 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="blendersynth.blender.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender</span></code></a></li>
           <li class="breadcrumb-item"><a href="blendersynth.blender.nodes.html"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes.shader_node_groups</span></code></li>
+      <li class="breadcrumb-item active"><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes.sRGB</span></code></li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/blendersynth.blender.nodes.shader_node_groups.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/blendersynth.blender.nodes.sRGB.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -106,40 +106,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.blender.nodes.shader_node_groups">
-<span id="blendersynth-blender-nodes-shader-node-groups"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes.shader_node_groups</span></code><a class="headerlink" href="#module-blendersynth.blender.nodes.shader_node_groups" title="Link to this heading"></a></h1>
-<p>Node Group collections for use in Blender</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="blendersynth.blender.nodes.shader_node_groups.DeformedGeneratedTextureCoordinates">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.nodes.shader_node_groups.</span></span><span class="sig-name descname"><span class="pre">DeformedGeneratedTextureCoordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/shader_node_groups.html#DeformedGeneratedTextureCoordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.shader_node_groups.DeformedGeneratedTextureCoordinates" title="Link to this definition"></a></dt>
-<dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">ShaderNodeGroup</span></code> that outputs generated texture coordinates, but in the deformed space.</p>
-<p>For example use, see <a class="reference internal" href="blendersynth.blender.aov.html#blendersynth.blender.aov.DisplacementGeneratedAOV" title="blendersynth.blender.aov.DisplacementGeneratedAOV"><code class="xref py py-class docutils literal notranslate"><span class="pre">DisplacementGeneratedAOV</span></code></a>.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.nodes.shader_node_groups.DeformedGeneratedTextureCoordinates.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/nodes/shader_node_groups.html#DeformedGeneratedTextureCoordinates.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.nodes.shader_node_groups.DeformedGeneratedTextureCoordinates.__init__" title="Link to this definition"></a></dt>
-<dd><p>To calculate the generated space, either needs mesh or bbox_min, bbox_max.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>node_tree</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeTree</span></code></span>) – NodeTree to add group to</p></li>
-<li><p><strong>mesh</strong> (<span class="sphinx_autodoc_typehints-type">blendersynth.blender.mesh.Mesh</span>) – If given, <cite>bbox_min</cite> and <cite>bbox_max</cite> are calculated using this</p></li>
-<li><p><strong>bbox_min</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>]</span>) – If given, <cite>bbox_max</cite> must also be given. The minimum of the bounding box of the mesh</p></li>
-<li><p><strong>bbox_max</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>]</span>) – If given, <cite>bbox_min</cite> must also be given. The maximum of the bounding box of the mesh</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+  <section id="module-blendersynth.blender.nodes.sRGB">
+<span id="blendersynth-blender-nodes-srgb"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.nodes.sRGB</span></code><a class="headerlink" href="#module-blendersynth.blender.nodes.sRGB" title="Link to this heading"></a></h1>
+<p>Compositor node groups for converting sRGB to linear RGB.</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="blendersynth.blender.nodes.sRGB.html" class="btn btn-neutral float-left" title="blendersynth.blender.nodes.sRGB" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="blendersynth.blender.other_objects.html" class="btn btn-neutral float-right" title="blendersynth.blender.other_objects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="blendersynth.blender.nodes.node_group.html" class="btn btn-neutral float-left" title="blendersynth.blender.nodes.node_group" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="blendersynth.blender.nodes.shader_node_groups.html" class="btn btn-neutral float-right" title="blendersynth.blender.nodes.shader_node_groups" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

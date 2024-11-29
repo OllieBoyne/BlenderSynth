@@ -17,5 +17,5 @@ camera.set_fov(20)  # zoom in
 
 # render
 comp = bsyn.Compositor()
-comp.define_output('Image', 'texturing', file_name='rgb')
-comp.render()
+comp.define_output('Image', name='rgb')
+comp.render().save_all('texturing')

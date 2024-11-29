@@ -1,0 +1,6 @@
+:code:`blendersynth.blender.nodes.sRGB`
+==========================================
+
+.. automodule:: blendersynth.blender.nodes.sRGB
+	:members:
+	:inherited-members:

@@ -1,0 +1,6 @@
+:code:`blendersynth.blender.compositor.render_result`
+========================================================
+
+.. automodule:: blendersynth.blender.compositor.render_result
+	:members:
+	:inherited-members:

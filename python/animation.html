@@ -109,6 +109,8 @@
 <p>In this example, we create the animation below, showing RGB &amp; normals:</p>
 <a class="reference external image-reference" href="../_static/images/resources.animation_output.gif"><img alt="" src="../_images/resources.animation_output.gif" /></a>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Simple animation example&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">import</span> <span class="nn">blendersynth</span> <span class="k">as</span> <span class="nn">bsyn</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">run_this_script</span><span class="p">()</span>
 
@@ -117,8 +119,8 @@
 <span class="n">monkey</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_primitive</span><span class="p">(</span><span class="s1">&#39;monkey&#39;</span><span class="p">)</span>
 
 <span class="c1"># Set some render settings</span>
-<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_cycles_samples</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_resolution</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_cycles_samples</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_resolution</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
 <span class="n">num_frames</span> <span class="o">=</span> <span class="mi">100</span>
 
 <span class="c1"># Set the &#39;animation&#39; to be the rotation of the camera</span>
@@ -126,6 +128,8 @@
 <span class="n">camera</span><span class="o">.</span><span class="n">track_to</span><span class="p">(</span><span class="n">monkey</span><span class="p">)</span>  <span class="c1"># look at monkey</span>
 <span class="n">circular_path</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Curve</span><span class="p">(</span><span class="s1">&#39;circle&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">camera</span><span class="o">.</span><span class="n">follow_path</span><span class="p">(</span><span class="n">circular_path</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_frames</span><span class="p">),</span> <span class="n">fracs</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>  <span class="c1"># set to follow circular path</span>
+
+<span class="n">light</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Light</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;POINT&#39;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">intensity</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 
 <span class="c1"># Also animate the position, rotation and scale of the monkey</span>
 <span class="n">monkey</span><span class="o">.</span><span class="n">set_location</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -143,10 +147,20 @@
 <span class="n">monkey</span><span class="o">.</span><span class="n">assign_aov</span><span class="p">(</span><span class="n">normal_aov</span><span class="p">)</span>
 
 <span class="c1"># Define data outputs</span>
-<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;animation/rgb&#39;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">)</span>
-<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">normal_aov</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s1">&#39;animation/normal&#39;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;normals&#39;</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">normal_aov</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;normals&#39;</span><span class="p">)</span>
 
-<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">animation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame_end</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
+<span class="n">render_result</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">animation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame_end</span><span class="o">=</span><span class="n">num_frames</span><span class="p">)</span>
+
+<span class="n">rgb_dir</span> <span class="o">=</span> <span class="s1">&#39;animation/rgb&#39;</span>
+<span class="n">normal_dir</span> <span class="o">=</span> <span class="s1">&#39;animation/normal&#39;</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">rgb_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">normal_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_frames</span><span class="p">):</span>
+    <span class="n">render_result</span><span class="o">.</span><span class="n">save_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rgb_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;rgb_</span><span class="si">{</span><span class="n">frame</span><span class="si">:</span><span class="s1">03d</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">),</span> <span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">frame_number</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+    <span class="n">render_result</span><span class="o">.</span><span class="n">save_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">normal_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;normals_</span><span class="si">{</span><span class="n">frame</span><span class="si">:</span><span class="s1">03d</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">),</span> <span class="s1">&#39;normals&#39;</span><span class="p">,</span> <span class="n">frame_number</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
 
 <span class="c1"># convert rendered frames to video</span>
 <span class="n">bsyn</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">frames_to_video</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s1">&#39;animation/rgb&#39;</span><span class="p">,</span> <span class="n">output_loc</span><span class="o">=</span><span class="s1">&#39;animation/rgb.gif&#39;</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">delete_images</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_fmt</span><span class="o">=</span><span class="s1">&#39;gif&#39;</span><span class="p">)</span>
