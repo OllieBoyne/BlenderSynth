@@ -1,8 +1,13 @@
 from typing import Union, List, Tuple, ForwardRef
+import os
 
 try:
     from mathutils import Vector
 except ImportError:
+    Vector = "mathutils.Vector"
+
+# Sphinx cannot handle mathutils.Vector properly for local docs build.
+if os.getenv("SPHINX_BUILD"):
     Vector = "mathutils.Vector"
 
 import numpy as np

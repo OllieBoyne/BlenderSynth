@@ -2,7 +2,6 @@
 #
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
-
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -20,7 +19,8 @@ release = '2023'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = ['sphinx.ext.autodoc', 'sphinx_autodoc_typehints', 'sphinx.ext.viewcode',
-			  'm2r2', 'sphinx.ext.napoleon', 'sphinxcontrib.googleanalytics']
+			  'm2r2', 'sphinx.ext.napoleon', 'sphinxcontrib.googleanalytics',
+			  'sphinx.ext.intersphinx',]
 
 templates_path = ['_templates']
 source_dir = 'docs'
@@ -28,7 +28,7 @@ master_doc = 'index'
 
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-autodoc_mock_imports = ["bpy", "mathutils", "bpy_extras", "bmesh", "opencv-python", "cv2"]
+autodoc_mock_imports = ["bpy", "bpy_extras", "bmesh", "opencv-python", "cv2"]
 
 
 # -- Options for HTML output -------------------------------------------------
