@@ -17,19 +17,46 @@ class RenderResult:
 
         self._render_paths = render_paths
 
-        self.output_types = list(set([k[0] for k in render_paths.keys()]))
-        self.camera_names = list(set([k[1] for k in render_paths.keys()]))
-        self.frames = list(set([k[2] for k in render_paths.keys()]))
+        self._output_types = list(set([k[0] for k in render_paths.keys()]))
+        self._camera_names = list(set([k[1] for k in render_paths.keys()]))
+        self._frames = list(set([k[2] for k in render_paths.keys()]))
+
+    @property
+    def output_types(self) -> list[str]:
+        """List of output types."""
+        return self._output_types
+
+    @property
+    def camera_names(self) -> list[str]:
+        """List of camera names."""
+        return self._camera_names
+
+    @property
+    def frames(self) -> list[int]:
+        """List of frame numbers."""
+        return self._frames
 
     @property
     def num_cameras(self) -> int:
+        """Number of cameras in the render."""
         return len(self.camera_names)
 
     @property
     def num_frames(self) -> int:
+        """Number of frames in the render."""
         return len(self.frames)
 
+    @property
+    def num_output_types(self) -> int:
+        """Number of output types in the render."""
+        return len(self.output_types)
+
     def get_render_path(self, output_type: str, camera_name: str = None, frame_number: int = None) -> str:
+        """Get the path to a specific render output.
+
+        :param output_type: Type of output - `name` used in :meth:`~blendersynth.compositor.Compositor.render`
+        :param camera_name: Name of camera to get render for. Only required if multiple cameras used.
+        :param frame_number: Frame number to get render for. Only required if multiple frames used."""
 
         if camera_name is None:
             if self.num_cameras != 1:
@@ -50,7 +77,9 @@ class RenderResult:
 
         By default, saves files in format {data_type}_{camera_name}_{frame_number}.{ext}.
 
-        If only 1 camera or only 1 frame, those formats will be suppressed by default.
+        :param output_directory: Directory to save files to.
+        :param suppress_camera_name: If True, suppress camera name in filename (only works if single camera).
+        :param suppress_frame_number: If True, suppress frame number in filename (only works if single frame).
         """
 
         os.makedirs(output_directory, exist_ok=True)
@@ -71,7 +100,12 @@ class RenderResult:
             copyfile(path, os.path.join(output_directory, fname))
 
     def save_file(self, output_path: str, output_type: str, camera_name: str = None, frame_number: int = None):
-        """Save a single file to a path."""
+        """Save a single file to a path.
+
+        :param output_path: Path to save file to.
+        :param output_type: Type of output - `name` used in :meth:`~blendersynth.compositor.Compositor.render`
+        :param camera_name: Name of camera to get render for. Only required if multiple cameras used.
+        :param frame_number: Frame number to get render for. Only required if multiple frames used."""
 
         if os.path.dirname(output_path):
             os.makedirs(os.path.dirname(output_path), exist_ok=True)

@@ -347,7 +347,7 @@ class Compositor:
         png_compression: int = 15,
         color_depth: str = "8",
         EXR_color_depth: str = "32",
-    ) -> str:
+    ) -> None:
         """Add a connection between a valid render output, and a file output node.
 
         This should only be called once per output (NOT inside a loop).
@@ -357,7 +357,7 @@ class Compositor:
         and any overlays on this output (e.g. Bounding Box Visualization)
 
         :param input_data: If :class:`str`,  will get the input_data from that key in the render_layers_node. If :class:`~CompositorNodeGroup`, use that node as input. If :class:`AOV`, use that AOV as input (storing AOV).
-        :param name: If no file_path given, save at Compositor's directory / name (or `input_data` if `file_name` is None)
+        :param name: Target name of output.
         :param is_data: If True, save with no color correction. If False, save with color correction.
         :param file_format: File format to save output as. Must be in :class:`AVAILABLE_FORMATS`
         :param color_mode: Color mode to save output as.
@@ -365,10 +365,6 @@ class Compositor:
         :param png_compression: Compression of PNG output.
         :param color_depth: Color depth of output.
         :param EXR_color_depth: Color depth of EXR output.
-        :param name: Name of output. If not given, will take the str representation of input_data
-
-        :returns: Name of output, which can be used to update filename or directory
-
         """
 
         if name is None:
@@ -435,7 +431,6 @@ class Compositor:
         )
 
         self._tidy_tree()
-        return name
 
     def _find_file_at_frame(self, key: str, frame: int = 0):
         slot = self.file_output_slots[key]
@@ -446,7 +441,6 @@ class Compositor:
         if os.path.isfile(pth):
             return pth
 
-        print(os.listdir(self._tempdir.name))
         raise FileNotFoundError(f"File {pth} not found")
 
     def _update_aovs(self):
@@ -455,8 +449,9 @@ class Compositor:
             aov.update()
 
     @property
-    def keys(self):
-        return self.file_output_slots.keys()
+    def keys(self) -> List[str]:
+        """List of output keys."""
+        return list(self.file_output_slots.keys())
 
     def render(
         self,
@@ -475,6 +470,8 @@ class Compositor:
         :param animation: If True, will render an animation, using `frame_start` and `frame_end` as the start and end frames.
         :param frame_start: Start frame for animation.
         :param frame_end: End frame for animation.
+
+        :returns: :class:`~blendersynth.blender.compositor.render_result.Render` object containing paths to rendered files.
         """
 
         if scene is None:
