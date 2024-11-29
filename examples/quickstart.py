@@ -19,5 +19,5 @@ bsyn.render.set_cycles_samples(10)
 bsyn.render.set_resolution(256, 256)
 bsyn.render.set_transparent()
 
-comp.define_output('Image', directory='quickstart', file_name='rgb')  # render RGB layer
-comp.render()  # render the result
+comp.define_output('Image', name='rgb')  # render RGB layer
+comp.render().save_all('quickstart')  # render the result

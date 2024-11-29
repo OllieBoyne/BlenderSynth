@@ -18,8 +18,8 @@ axis_visual = comp.get_axes_visual()
 combined_visual = comp.stack_visuals(bounding_box_visual, keypoints_visual, axis_visual)
 
 # Define outputs
-comp.define_output('Image', directory='pose')
-comp.define_output(combined_visual, file_name='visual', directory='pose')
+comp.define_output('Image')
+comp.define_output(combined_visual, name='visual')
 
 # Calculate bounding boxes
 objects = [monkey, cube]
@@ -31,4 +31,5 @@ keypoints = bsyn.annotations.keypoints.project_keypoints([obj.centroid() for obj
 # Calculate axes in 2D. In 3D, use e.g. monkey.axes
 axes = bsyn.annotations.get_axes(objects)
 
-comp.render(annotations=axes + keypoints + bounding_boxes)
+render_result = comp.render(annotations=axes + keypoints + bounding_boxes)
+render_result.save_all('pose')
