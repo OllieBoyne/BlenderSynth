@@ -35,14 +35,22 @@ import sys
         
 bsyn.run_this_script(test_arg={test_arg_val})
         
-print(sys.argv)
+print("SYS:", sys.argv)
         """
 
         stdout, stderr = _run_script(script)
 
-        argv = eval(stdout.split("\n")[0])
-        self.assertIn('--test_arg', argv)
-        self.assertEqual(argv[argv.index('--test_arg') + 1], str(test_arg_val))
+        sys_line = ""
+        for line in stdout.split("\n"):
+            if line.startswith("SYS:"):
+                sys_line = line
+                break
+
+        self.assertNotEqual(sys_line, "")
+
+        sys_argv = eval(sys_line.split("SYS: ")[1])
+        self.assertIn("--test_arg", sys_argv)
+        self.assertEqual(sys_argv[sys_argv.index('--test_arg') + 1], str(test_arg_val))
 
     def test_argparse_handling(self):
 
@@ -57,12 +65,12 @@ parser.add_argument("--test_arg2", type=int, default=5)
 args = parser.parse_args()
 bsyn.run_this_script(**vars(args))
 
-print(args.test_arg)
-print(args.test_arg2)
+print("test_arg", args.test_arg)
+print("test_arg2", args.test_arg2)
 """
 
         stdout, stderr = _run_script(script, test_arg=test_arg)
 
         lines = stdout.split("\n")
-        self.assertEqual(lines[0], str(test_arg))
-        self.assertEqual(lines[1], "5")
+        self.assertIn(f"test_arg {test_arg}", lines)
+        self.assertIn("test_arg2 5", lines)
