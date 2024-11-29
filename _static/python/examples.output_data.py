@@ -61,7 +61,7 @@ for obj in all_objects:
 # Now we assign our render passes to the compositor, telling it what files to output
 output_folder = 'data_formats'
 
-# All of the following will have Blender's Filmic colour correction by default
+# All of the following will have Blender's Filmic/AgX (<4.0, >4.0) colour correction by default
 comp.define_output('Image', name='rgb')  # render RGB layer
 comp.define_output(rgb_mask, name='rgb_masked') # render RGB layer masked by monkey
 comp.define_output(bounding_box_visual, name='bounding_box_visual')

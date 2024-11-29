@@ -171,7 +171,7 @@
 <span class="c1"># Now we assign our render passes to the compositor, telling it what files to output</span>
 <span class="n">output_folder</span> <span class="o">=</span> <span class="s1">&#39;data_formats&#39;</span>
 
-<span class="c1"># All of the following will have Blender&#39;s Filmic colour correction by default</span>
+<span class="c1"># All of the following will have Blender&#39;s Filmic/AgX (&lt;4.0, &gt;4.0) colour correction by default</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">)</span>  <span class="c1"># render RGB layer</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">rgb_mask</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rgb_masked&#39;</span><span class="p">)</span> <span class="c1"># render RGB layer masked by monkey</span>
 <span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">bounding_box_visual</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;bounding_box_visual&#39;</span><span class="p">)</span>
