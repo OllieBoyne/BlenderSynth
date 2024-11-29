@@ -476,7 +476,7 @@
         <span class="n">png_compression</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
         <span class="n">color_depth</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;8&quot;</span><span class="p">,</span>
         <span class="n">EXR_color_depth</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;32&quot;</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a connection between a valid render output, and a file output node.</span>
 
 <span class="sd">        This should only be called once per output (NOT inside a loop).</span>
@@ -486,7 +486,7 @@
 <span class="sd">        and any overlays on this output (e.g. Bounding Box Visualization)</span>
 
 <span class="sd">        :param input_data: If :class:`str`,  will get the input_data from that key in the render_layers_node. If :class:`~CompositorNodeGroup`, use that node as input. If :class:`AOV`, use that AOV as input (storing AOV).</span>
-<span class="sd">        :param name: If no file_path given, save at Compositor&#39;s directory / name (or `input_data` if `file_name` is None)</span>
+<span class="sd">        :param name: Target name of output.</span>
 <span class="sd">        :param is_data: If True, save with no color correction. If False, save with color correction.</span>
 <span class="sd">        :param file_format: File format to save output as. Must be in :class:`AVAILABLE_FORMATS`</span>
 <span class="sd">        :param color_mode: Color mode to save output as.</span>
@@ -494,10 +494,6 @@
 <span class="sd">        :param png_compression: Compression of PNG output.</span>
 <span class="sd">        :param color_depth: Color depth of output.</span>
 <span class="sd">        :param EXR_color_depth: Color depth of EXR output.</span>
-<span class="sd">        :param name: Name of output. If not given, will take the str representation of input_data</span>
-
-<span class="sd">        :returns: Name of output, which can be used to update filename or directory</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -563,8 +559,7 @@
             <span class="n">color_depth</span> <span class="k">if</span> <span class="n">file_format</span> <span class="o">!=</span> <span class="s2">&quot;OPEN_EXR&quot;</span> <span class="k">else</span> <span class="n">EXR_color_depth</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">name</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tidy_tree</span><span class="p">()</span></div>
 
 
     <span class="k">def</span> <span class="nf">_find_file_at_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
@@ -576,7 +571,6 @@
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">pth</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">pth</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tempdir</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">pth</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_update_aovs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -585,8 +579,9 @@
             <span class="n">aov</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_slots</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List of output keys.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_output_slots</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
 <div class="viewcode-block" id="Compositor.render">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.render">[docs]</a>
@@ -607,6 +602,8 @@
 <span class="sd">        :param animation: If True, will render an animation, using `frame_start` and `frame_end` as the start and end frames.</span>
 <span class="sd">        :param frame_start: Start frame for animation.</span>
 <span class="sd">        :param frame_end: End frame for animation.</span>
+
+<span class="sd">        :returns: :class:`~blendersynth.blender.compositor.render_result.Render` object containing paths to rendered files.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">scene</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

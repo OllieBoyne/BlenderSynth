@@ -144,7 +144,7 @@ and any overlays on this output (e.g. Bounding Box Visualization)</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a>, <a class="reference internal" href="blendersynth.blender.aov.html#blendersynth.blender.aov.AOV" title="blendersynth.blender.aov.AOV"><code class="xref py py-class docutils literal notranslate"><span class="pre">AOV</span></code></a>]</span>) – If <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>,  will get the input_data from that key in the render_layers_node. If <code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code>, use that node as input. If <code class="xref py py-class docutils literal notranslate"><span class="pre">AOV</span></code>, use that AOV as input (storing AOV).</p></li>
-<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – If no file_path given, save at Compositor’s directory / name (or <cite>input_data</cite> if <cite>file_name</cite> is None)</p></li>
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Target name of output.</p></li>
 <li><p><strong>is_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, save with no color correction. If False, save with color correction.</p></li>
 <li><p><strong>file_format</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – File format to save output as. Must be in <a class="reference internal" href="#blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS" title="blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS"><code class="xref py py-class docutils literal notranslate"><span class="pre">AVAILABLE_FORMATS</span></code></a></p></li>
 <li><p><strong>color_mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color mode to save output as.</p></li>
@@ -152,14 +152,10 @@ and any overlays on this output (e.g. Bounding Box Visualization)</p>
 <li><p><strong>png_compression</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Compression of PNG output.</p></li>
 <li><p><strong>color_depth</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color depth of output.</p></li>
 <li><p><strong>EXR_color_depth</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color depth of EXR output.</p></li>
-<li><p><strong>name</strong> – Name of output. If not given, will take the str representation of input_data</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Name of output, which can be used to update filename or directory</p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -246,6 +242,12 @@ and any values below that are depth/max_depth * col.</p>
 </dl>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.keys">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">keys</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.keys" title="Link to this definition"></a></dt>
+<dd><p>List of output keys.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.render">
 <span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.render" title="Link to this definition"></a></dt>
@@ -263,6 +265,9 @@ and any values below that are depth/max_depth * col.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.compositor.render_result.html#blendersynth.blender.compositor.render_result.RenderResult" title="blendersynth.blender.compositor.render_result.RenderResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RenderResult</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Render</span></code> object containing paths to rendered files.</p>
 </dd>
 </dl>
 </dd></dl>
