@@ -36,7 +36,7 @@ BlenderSynth supports Blender 3 and 4.
 
 This project is currently in Beta. Please let me know what new features you would like, or feel free to make a pull request!
 
-BlenderSynth has been used in research for foot reconstruction, see my other projects [FOUND](https://ollieboyne.com/FOUND) and [FOCUS](https://ollieboyne.com/FOCUS)
+BlenderSynth has been used in research for foot reconstruction, see my other projects [FOUND](https://ollieboyne.com/FOUND) and [FOCUS](https://ollieboyne.com/FOCUS).
 
 If you use BlenderSynth for a project, please [contact me](https://ollieboyne.github.io) about it - I might include it in the documentation as a usage example!
 
