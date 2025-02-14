@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.run.run &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,14 +102,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.run.run</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">.blender_threading</span> <span class="kn">import</span> <span class="n">BlenderThreadManager</span><span class="p">,</span> <span class="n">_list_split</span>
-<span class="kn">from</span> <span class="nn">..utils.blender_setup.blender_locator</span> <span class="kn">import</span> <span class="n">get_blender_path</span>
-<span class="kn">from</span> <span class="nn">..file.tempfiles</span> <span class="kn">import</span> <span class="n">cleanup_temp_files</span> <span class="k">as</span> <span class="n">cleanup</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.blender_threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">BlenderThreadManager</span><span class="p">,</span> <span class="n">_list_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils.blender_setup.blender_locator</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_blender_path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..file.tempfiles</span><span class="w"> </span><span class="kn">import</span> <span class="n">cleanup_temp_files</span> <span class="k">as</span> <span class="n">cleanup</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">platform</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sys</span><span class="w"> </span><span class="kn">import</span> <span class="n">platform</span>
 
 <span class="k">if</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux&quot;</span> <span class="ow">or</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux2&quot;</span> <span class="ow">or</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;darwin&quot;</span><span class="p">:</span>
     <span class="n">nul_text</span> <span class="o">=</span> <span class="s2">&quot;/dev/null&quot;</span>
@@ -119,10 +119,10 @@
 
 <div class="viewcode-block" id="BlenderCommand">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand">[docs]</a>
-<span class="k">class</span> <span class="nc">BlenderCommand</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BlenderCommand</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct command for running blender script&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blender_loc</span><span class="p">,</span> <span class="n">blend_src</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blender_loc</span><span class="p">,</span> <span class="n">blend_src</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blender_loc</span> <span class="o">=</span> <span class="n">blender_loc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blend_src</span> <span class="o">=</span> <span class="n">blend_src</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">background</span>
@@ -134,7 +134,7 @@
         <span class="k">if</span> <span class="n">background</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--background&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;--python&quot;</span><span class="p">,</span> <span class="n">script</span><span class="p">]</span>
         <span class="n">command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
@@ -146,12 +146,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="n">command</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span>
 
 <div class="viewcode-block" id="BlenderCommand.copy">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand.copy">[docs]</a>
-    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a copy of the command&quot;&quot;&quot;</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="n">BlenderCommand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blender_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="p">)</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">]</span>
@@ -160,7 +160,7 @@
 
 <div class="viewcode-block" id="BlenderCommand.set_job">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand.set_job">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_list</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_list</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Receives list of json files, adds as , separated string to command&quot;&quot;&quot;</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--jobs&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">job_list</span><span class="p">)]</span>
@@ -169,7 +169,7 @@
 
 <div class="viewcode-block" id="BlenderCommand.set_logger">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.BlenderCommand.set_logger">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set file for logging&quot;&quot;&quot;</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">_command</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--log&quot;</span><span class="p">,</span> <span class="n">log_loc</span><span class="p">]</span>
@@ -178,8 +178,8 @@
 
 
 
-<span class="k">class</span> <span class="nc">Runner</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Runner</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">script</span><span class="p">,</span>
         <span class="n">jsons</span><span class="p">,</span>
@@ -228,7 +228,7 @@
 
 <div class="viewcode-block" id="execute_jobs">
 <a class="viewcode-back" href="../../../api/blendersynth.run.run.html#blendersynth.run.run.execute_jobs">[docs]</a>
-<span class="k">def</span> <span class="nf">execute_jobs</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">execute_jobs</span><span class="p">(</span>
     <span class="n">script</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">json_src</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>

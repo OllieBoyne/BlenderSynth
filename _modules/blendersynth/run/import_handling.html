@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.run.import_handling &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -104,15 +104,15 @@
   <h1>Source code for blendersynth.run.import_handling</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;For calling errors if a user tries run certain operations in the wrong python environment&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">importlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">import_module</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 
 <span class="n">package_name</span> <span class="o">=</span> <span class="s2">&quot;blendersynth&quot;</span>
 
 
 <div class="viewcode-block" id="conditional_import">
 <a class="viewcode-back" href="../../../api/blendersynth.run.import_handling.html#blendersynth.run.import_handling.conditional_import">[docs]</a>
-<span class="k">def</span> <span class="nf">conditional_import</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">conditional_import</span><span class="p">(</span>
     <span class="n">condition</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;IllegalImport&quot;</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -143,20 +143,20 @@
 
 <div class="viewcode-block" id="IllegalImport">
 <a class="viewcode-back" href="../../../api/blendersynth.run.import_handling.html#blendersynth.run.import_handling.IllegalImport">[docs]</a>
-<span class="k">class</span> <span class="nc">IllegalImport</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IllegalImport</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Object which raises error on any interaction, to tell users they have used BlenderSynth incorrectly.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">REQUIRES_BLENDER</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">REQUIRES_BLENDER</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">REQUIRES_BLENDER</span> <span class="o">=</span> <span class="n">REQUIRES_BLENDER</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">REQUIRES_BLENDER</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span>
                 <span class="s2">&quot;This object can only be used inside a Blender python environment. &quot;</span>

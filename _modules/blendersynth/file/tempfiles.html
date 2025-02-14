@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.file.tempfiles &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,8 +102,8 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.file.tempfiles</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="n">tempdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">_get_default_tempdir</span><span class="p">(),</span> <span class="s2">&quot;blendersynth&quot;</span><span class="p">)</span>
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -111,7 +111,7 @@
 
 <div class="viewcode-block" id="create_temp_file">
 <a class="viewcode-back" href="../../../api/blendersynth.file.tempfiles.html#blendersynth.file.tempfiles.create_temp_file">[docs]</a>
-<span class="k">def</span> <span class="nf">create_temp_file</span><span class="p">(</span><span class="n">ext</span><span class="o">=</span><span class="s2">&quot;.png&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_temp_file</span><span class="p">(</span><span class="n">ext</span><span class="o">=</span><span class="s2">&quot;.png&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create and return a temporary filename that will be in the user&#39;s tempdir.</span>
 <span class="sd">    These can all be cleaned up after use by the `cleanup_temp_files` function.</span>
 
@@ -126,7 +126,7 @@
 
 <div class="viewcode-block" id="cleanup_temp_files">
 <a class="viewcode-back" href="../../../api/blendersynth.file.tempfiles.html#blendersynth.file.tempfiles.cleanup_temp_files">[docs]</a>
-<span class="k">def</span> <span class="nf">cleanup_temp_files</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cleanup_temp_files</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete all temporary files in the `blendersynth` tempdir&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">tempdir</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span></div>

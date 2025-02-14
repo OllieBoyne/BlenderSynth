@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.annotations.annotation_handler &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,9 +102,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.annotations.annotation_handler</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">types</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">types</span>
 
 <span class="c1"># docs-special-members: __init__</span>
 
@@ -114,12 +114,12 @@
 
 <div class="viewcode-block" id="Annotation">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.Annotation">[docs]</a>
-<span class="k">class</span> <span class="nc">Annotation</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Annotation</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for storing annotations for a single image.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Annotation.__init__">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.Annotation.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">bbox</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">BboxAnnotation</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">keypoints</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">KeypointOrAxesAnnotation</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -136,17 +136,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Annotation&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Annotation&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;In place set, returning self&quot;&quot;&quot;</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
 <div class="viewcode-block" id="Annotation.set">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.Annotation.set">[docs]</a>
-    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Annotation&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Annotation&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new Annotation, with item set to value.</span>
 
 <span class="sd">        :param item: A key in :class:`ANN_TYPES`</span>
@@ -161,14 +161,14 @@
 
 <div class="viewcode-block" id="Annotation.copy">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.Annotation.copy">[docs]</a>
-    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Annotation&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Annotation&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a deep copy of this Annotation instance&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Annotation.union">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.Annotation.union">[docs]</a>
-    <span class="k">def</span> <span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Annotation&quot;</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="s2">&quot;other&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Annotation&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Annotation&quot;</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="s2">&quot;other&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Annotation&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Joins two annotations together, returning a new Annotation instance.</span>
 
 <span class="sd">        :param other: Annotation to join with</span>
@@ -191,19 +191,19 @@
         <span class="k">return</span> <span class="n">combined</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Annotation&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Annotation&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="AnnotationHandler">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.AnnotationHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">AnnotationHandler</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AnnotationHandler</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An object for storing and handling per-view :class:`Annotation` instances&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="AnnotationHandler.__init__">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.AnnotationHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param data: Dictionary of camera_name: Annotation class</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -214,7 +214,7 @@
 <div class="viewcode-block" id="AnnotationHandler.from_annotations">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.AnnotationHandler.from_annotations">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_annotations</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_annotations</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ann_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bbox&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;AnnotationHandler&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an Annotation Handler from a single type of annotation</span>
@@ -237,7 +237,7 @@
 
 <div class="viewcode-block" id="AnnotationHandler.union">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.AnnotationHandler.union">[docs]</a>
-    <span class="k">def</span> <span class="nf">union</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">union</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;AnnotationHandler&quot;</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;other&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;AnnotationHandler&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Combine two AnnotationHandlers, merging annotations wherever possible. Returns a new instance</span>
@@ -265,12 +265,12 @@
 
 <div class="viewcode-block" id="AnnotationHandler.get_annotation_by_camera">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.AnnotationHandler.get_annotation_by_camera">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_annotation_by_camera</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotation</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_annotation_by_camera</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotation</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return annotation for a given camera (default to an empty :class:`Annotation` instance if not found)&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">camera_name</span><span class="p">,</span> <span class="n">Annotation</span><span class="p">())</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;AnnotationHandler&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;AnnotationHandler&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
 
 </pre></div>

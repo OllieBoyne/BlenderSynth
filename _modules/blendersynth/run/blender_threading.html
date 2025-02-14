@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.run.blender_threading &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,28 +102,28 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.run.blender_threading</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">perf_counter</span><span class="p">,</span> <span class="n">sleep</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span>
-<span class="kn">import</span> <span class="nn">atexit</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">perf_counter</span><span class="p">,</span> <span class="n">sleep</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">Popen</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">atexit</span>
 
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 
-<span class="k">def</span> <span class="nf">_list_split</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">chunks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_list_split</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">chunks</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Split a list into chunks&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[[</span><span class="o">*</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)]</span>
 
 
 <div class="viewcode-block" id="BlenderThread">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread">[docs]</a>
-<span class="k">class</span> <span class="nc">BlenderThread</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BlenderThread</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Manages a list of jobs, which it feeds into sequential Blender instances in a single thread.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">command</span><span class="p">,</span>
         <span class="n">jobs</span><span class="p">,</span>
@@ -176,7 +176,7 @@
 
 <div class="viewcode-block" id="BlenderThread.check_in">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.check_in">[docs]</a>
-    <span class="k">def</span> <span class="nf">check_in</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_in</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if current job still running, if not move to next job.</span>
 <span class="sd">        If all jobs complete, set self.finished = True&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
@@ -195,7 +195,7 @@
 
 <div class="viewcode-block" id="BlenderThread.start_job">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.start_job">[docs]</a>
-    <span class="k">def</span> <span class="nf">start_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param job: Index of job to start</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -218,31 +218,31 @@
 
 <div class="viewcode-block" id="BlenderThread.terminate">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.terminate">[docs]</a>
-    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;End process&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span></div>
 
 
-    <span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
             <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">num_rendered</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_rendered</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read through Log file to find how many renders have been completed&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger_loc</span><span class="p">):</span>
             <span class="k">return</span> <span class="mi">0</span>  <span class="c1"># process not started yet</span>
@@ -254,16 +254,16 @@
 
         <span class="k">return</span> <span class="n">x</span>
 
-    <span class="k">def</span> <span class="nf">remaining_idxs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remaining_idxs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">success</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">success</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
 
 <div class="viewcode-block" id="BlenderThread.check_status">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.check_status">[docs]</a>
-    <span class="k">def</span> <span class="nf">check_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;True if still running successfully, False if exceeded timeout&quot;&quot;&quot;</span>
         <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendered</span>
         <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_n</span><span class="p">:</span>
@@ -281,10 +281,10 @@
 
 <div class="viewcode-block" id="BlenderThreadManager">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThreadManager">[docs]</a>
-<span class="k">class</span> <span class="nc">BlenderThreadManager</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BlenderThreadManager</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Manager of multiple :class:`~blendersynth.run.blender_threading.BlenderThread` instances&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">command</span><span class="p">,</span>
         <span class="n">jsons</span><span class="p">,</span>
@@ -343,12 +343,12 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thread</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">))</span>
 
 <div class="viewcode-block" id="BlenderThreadManager.start">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThreadManager.start">[docs]</a>
-    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">progress_bars</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">tick</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
@@ -428,10 +428,10 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">num_rendered</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_rendered</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">num_rendered</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update_report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">t1</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
         <span class="n">elapsed</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>
 
@@ -457,7 +457,7 @@
 
 <div class="viewcode-block" id="BlenderThreadManager.terminate">
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThreadManager.terminate">[docs]</a>
-    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;End all threads&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">:</span>
             <span class="n">thread</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span></div>

@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.blender.utils &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -103,47 +103,47 @@
              
   <h1>Source code for blendersynth.blender.utils</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Context managers and operations for handling Blender&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 
-<span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">mathutils</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">types</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mathutils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">types</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
 
 <span class="c1"># docs-special-members: __init__</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.bsyn_object</span><span class="w"> </span><span class="kn">import</span> <span class="n">BsynObject</span>
 
 
-<span class="k">def</span> <span class="nf">_quaternion_equal</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Quaternion</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Quaternion</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_quaternion_equal</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Quaternion</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Quaternion</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if two quaternion rotations are functionally equal&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">tol</span>
 
 
-<span class="k">def</span> <span class="nf">_euler_equal</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_euler_equal</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if two euler rotations are equal&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_quaternion_equal</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">to_quaternion</span><span class="p">(),</span> <span class="n">b</span><span class="o">.</span><span class="n">to_quaternion</span><span class="p">(),</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_euler_from</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_euler_from</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get euler rotation from a to b&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">to_quaternion</span><span class="p">()</span><span class="o">.</span><span class="n">rotation_difference</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">to_quaternion</span><span class="p">()))</span><span class="o">.</span><span class="n">to_euler</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_euler_add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_euler_add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute euler rotation of a, followed by b&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">to_quaternion</span><span class="p">()</span> <span class="o">@</span> <span class="n">b</span><span class="o">.</span><span class="n">to_quaternion</span><span class="p">())</span><span class="o">.</span><span class="n">to_euler</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_euler_invert</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_euler_invert</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Euler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Invert euler rotation&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">to_quaternion</span><span class="p">()</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span><span class="o">.</span><span class="n">to_euler</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_is_object_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_object_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if object is still available&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span>
@@ -154,7 +154,7 @@
 
 <div class="viewcode-block" id="GetNewObject">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.GetNewObject">[docs]</a>
-<span class="k">class</span> <span class="nc">GetNewObject</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GetNewObject</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager for getting the newly imported object(s) to the scene.</span>
 
 <span class="sd">    On exit, will return the newly imported object(s).</span>
@@ -164,15 +164,15 @@
 
 <div class="viewcode-block" id="GetNewObject.__init__">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.GetNewObject.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="n">scene</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imported_obj</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">old_objs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_objs</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;No imported objects found...&quot;</span>
 
@@ -194,7 +194,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_select</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_select</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Select/deselect an object&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">_is_object_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;select_set&quot;</span><span class="p">):</span>  <span class="c1"># e.g. Mesh</span>
@@ -205,14 +205,14 @@
 
 <div class="viewcode-block" id="SelectObjects">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.SelectObjects">[docs]</a>
-<span class="k">class</span> <span class="nc">SelectObjects</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SelectObjects</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager for selecting objects.</span>
 <span class="sd">    On exit, will reselect the objects that were selected before entering the context.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SelectObjects.__init__">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.SelectObjects.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">active_object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -247,7 +247,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_ops</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">edit</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">old_objs</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">selected_objects</span>
         <span class="c1"># deselect all</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ops</span><span class="o">.</span><span class="n">select_all</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;DESELECT&quot;</span><span class="p">)</span>
@@ -256,7 +256,7 @@
         <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
             <span class="n">_select</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
             <span class="n">_select</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -267,13 +267,13 @@
 
 <div class="viewcode-block" id="SetMode">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.SetMode">[docs]</a>
-<span class="k">class</span> <span class="nc">SetMode</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SetMode</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager for changing the mode of a specific object in Blender (e.g., to `POSE`),</span>
 <span class="sd">    returning to the original mode on exit.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SetMode.__init__">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.SetMode.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize with the target mode and object</span>
 
 <span class="sd">        :param target_mode: Mode to set the object to</span>
@@ -284,7 +284,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">original_active_object</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">original_active_object</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">:</span>
@@ -293,7 +293,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">original_mode</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">mode</span>
         <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">mode_set</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target_mode</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">mode_set</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">original_mode</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">_is_object_valid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">original_active_object</span><span class="p">):</span>
@@ -303,13 +303,13 @@
 
 <div class="viewcode-block" id="CursorAt">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.CursorAt">[docs]</a>
-<span class="k">class</span> <span class="nc">CursorAt</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CursorAt</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager for moving the cursor to a specific location in space.</span>
 <span class="sd">    On exit, will return the cursor to its original location.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CursorAt.__init__">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.CursorAt.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize with the target location</span>
 
 <span class="sd">        :param target: Location to move the cursor to&quot;&quot;&quot;</span>
@@ -318,18 +318,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">original_location</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_location</span></div>
 
 
 
 <div class="viewcode-block" id="get_node_by_name">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.get_node_by_name">[docs]</a>
-<span class="k">def</span> <span class="nf">get_node_by_name</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_node_by_name</span><span class="p">(</span>
     <span class="n">node_tree</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">NodeTree</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">raise_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Node</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a nodetree and a key, return the first node found with label matching key.</span>
@@ -351,7 +351,7 @@
 
 <div class="viewcode-block" id="handle_vec">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.handle_vec">[docs]</a>
-<span class="k">def</span> <span class="nf">handle_vec</span><span class="p">(</span><span class="n">vec</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">,</span> <span class="n">expected_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_vec</span><span class="p">(</span><span class="n">vec</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">VectorLike</span><span class="p">,</span> <span class="n">expected_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check `vec` is expected_length. Convert from tuple or ndarray to mathutils.Vector.</span>
 
 <span class="sd">    :param vec: Vector to check</span>
@@ -372,7 +372,7 @@
 
 <div class="viewcode-block" id="animatable_property">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.utils.html#blendersynth.blender.utils.animatable_property">[docs]</a>
-<span class="k">def</span> <span class="nf">animatable_property</span><span class="p">(</span><span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">id_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">animatable_property</span><span class="p">(</span><span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">id_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator that wraps around a function to take a frame number and value, and set the property at that frame.</span>
 
 <span class="sd">    Example usage::</span>
@@ -398,11 +398,11 @@
 <span class="sd">    :param id_path: Use for animating ID blocks other than object (e.g. &#39;data&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="n">original_sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="n">original_params</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">original_sig</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
-        <span class="k">def</span> <span class="nf">subwrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BsynObject&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">subwrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BsynObject&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">frame</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">frame</span>
             <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

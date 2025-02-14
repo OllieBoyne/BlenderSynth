@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.utils.blender_setup.blender_locator &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,12 +102,12 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.utils.blender_setup.blender_locator</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">platformdirs</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">configparser</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">platformdirs</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">configparser</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="n">appname</span> <span class="o">=</span> <span class="s2">&quot;blendersynth&quot;</span>
 <span class="n">appauthor</span> <span class="o">=</span> <span class="s2">&quot;BlenderSynth&quot;</span>
@@ -118,7 +118,7 @@
 
 <div class="viewcode-block" id="is_blender_in_path">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.is_blender_in_path">[docs]</a>
-<span class="k">def</span> <span class="nf">is_blender_in_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_blender_in_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if blender is in the PATH (i.e. can be run from the command line with &#39;blender&#39;)&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;blender&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 
@@ -126,7 +126,7 @@
 
 <div class="viewcode-block" id="find_blender_python">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.find_blender_python">[docs]</a>
-<span class="k">def</span> <span class="nf">find_blender_python</span><span class="p">(</span><span class="n">blender_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_blender_python</span><span class="p">(</span><span class="n">blender_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a blender executable, find the python interpreter it uses</span>
 
 <span class="sd">    :param blender_path: path to blender executable&quot;&quot;&quot;</span>
@@ -162,7 +162,7 @@
 
 <div class="viewcode-block" id="validate_blender_path">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.validate_blender_path">[docs]</a>
-<span class="k">def</span> <span class="nf">validate_blender_path</span><span class="p">(</span><span class="n">blender_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_blender_path</span><span class="p">(</span><span class="n">blender_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if `blender_path` is a valid blender executable.</span>
 
 <span class="sd">    :param blender_path: path to blender executable&quot;&quot;&quot;</span>
@@ -175,7 +175,7 @@
 
 <div class="viewcode-block" id="set_blender_path">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.set_blender_path">[docs]</a>
-<span class="k">def</span> <span class="nf">set_blender_path</span><span class="p">(</span><span class="n">_blender_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_blender_path</span><span class="p">(</span><span class="n">_blender_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;First time set-up of Blender Path. Will try to find Blender path in following order of</span>
 <span class="sd">    precedence:</span>
 
@@ -230,7 +230,7 @@
 
 <div class="viewcode-block" id="get_blender_path">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.get_blender_path">[docs]</a>
-<span class="k">def</span> <span class="nf">get_blender_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_blender_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return blender path,</span>
 <span class="sd">    or None if no config file found&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">read_from_config</span><span class="p">(</span><span class="s2">&quot;BLENDER_PATH&quot;</span><span class="p">)</span></div>
@@ -239,7 +239,7 @@
 
 <div class="viewcode-block" id="write_to_config">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.write_to_config">[docs]</a>
-<span class="k">def</span> <span class="nf">write_to_config</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="s2">&quot;BLENDER_SETUP&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_to_config</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="s2">&quot;BLENDER_SETUP&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load config, and write key value pair to cfg[section]&quot;&quot;&quot;</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
 
@@ -258,7 +258,7 @@
 
 <div class="viewcode-block" id="read_from_config">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.read_from_config">[docs]</a>
-<span class="k">def</span> <span class="nf">read_from_config</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="s2">&quot;BLENDER_SETUP&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_from_config</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="s2">&quot;BLENDER_SETUP&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load config, and read value from cfg[section]&quot;&quot;&quot;</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
 
@@ -277,7 +277,7 @@
 
 <div class="viewcode-block" id="remove_from_config">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.remove_from_config">[docs]</a>
-<span class="k">def</span> <span class="nf">remove_from_config</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="s2">&quot;BLENDER_SETUP&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_from_config</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="s2">&quot;BLENDER_SETUP&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load config, and remove key from cfg[section]&quot;&quot;&quot;</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
 
@@ -299,7 +299,7 @@
 
 <div class="viewcode-block" id="remove_config">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.blender_locator.html#blendersynth.utils.blender_setup.blender_locator.remove_config">[docs]</a>
-<span class="k">def</span> <span class="nf">remove_config</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_config</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove config file&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">config_file</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span></div>

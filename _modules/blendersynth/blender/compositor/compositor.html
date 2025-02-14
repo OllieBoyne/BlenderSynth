@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.blender.compositor.compositor &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,30 +102,30 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.blender.compositor.compositor</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">get_node_by_name</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">from</span> <span class="nn">..render</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">render_depth</span>
-<span class="kn">from</span> <span class="nn">..nodes</span> <span class="kn">import</span> <span class="n">CompositorNodeGroup</span><span class="p">,</span> <span class="n">srgb_to_linear</span>
-<span class="kn">from</span> <span class="nn">..aov</span> <span class="kn">import</span> <span class="n">AOV</span>
-<span class="kn">from</span> <span class="nn">.mask_overlay</span> <span class="kn">import</span> <span class="n">MaskOverlay</span>
-<span class="kn">from</span> <span class="nn">.visuals</span> <span class="kn">import</span> <span class="n">DepthVis</span>
-<span class="kn">from</span> <span class="nn">.image_overlay</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_node_by_name</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..render</span><span class="w"> </span><span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">render_depth</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..nodes</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompositorNodeGroup</span><span class="p">,</span> <span class="n">srgb_to_linear</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..aov</span><span class="w"> </span><span class="kn">import</span> <span class="n">AOV</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.mask_overlay</span><span class="w"> </span><span class="kn">import</span> <span class="n">MaskOverlay</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.visuals</span><span class="w"> </span><span class="kn">import</span> <span class="n">DepthVis</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.image_overlay</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">KeypointsOverlay</span><span class="p">,</span>
     <span class="n">BoundingBoxOverlay</span><span class="p">,</span>
     <span class="n">AlphaImageOverlay</span><span class="p">,</span>
     <span class="n">AxesOverlay</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">...annotations</span> <span class="kn">import</span> <span class="n">Annotation</span><span class="p">,</span> <span class="n">AnnotationHandler</span>
-<span class="kn">from</span> <span class="nn">..nodes</span> <span class="kn">import</span> <span class="n">tidy_tree</span>
-<span class="kn">from</span> <span class="nn">..world</span> <span class="kn">import</span> <span class="n">world</span>
-<span class="kn">from</span> <span class="nn">..camera</span> <span class="kn">import</span> <span class="n">Camera</span>
-<span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">version</span>
-<span class="kn">from</span> <span class="nn">.render_result</span> <span class="kn">import</span> <span class="n">RenderResult</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...annotations</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotation</span><span class="p">,</span> <span class="n">AnnotationHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..nodes</span><span class="w"> </span><span class="kn">import</span> <span class="n">tidy_tree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..world</span><span class="w"> </span><span class="kn">import</span> <span class="n">world</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..camera</span><span class="w"> </span><span class="kn">import</span> <span class="n">Camera</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.render_result</span><span class="w"> </span><span class="kn">import</span> <span class="n">RenderResult</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 
 <span class="c1"># Mapping of file formats to extensions</span>
 <span class="n">format_to_extension</span> <span class="o">=</span> <span class="p">{</span>
@@ -165,7 +165,7 @@
 <span class="c1"># docs-special-members: __init__</span>
 
 
-<span class="k">def</span> <span class="nf">_default_color_space</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_default_color_space</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get default color space for Blender version&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">is_version_plus</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;AgX&quot;</span>
@@ -173,7 +173,7 @@
         <span class="k">return</span> <span class="s2">&quot;Filmic&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">_get_badfname</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_badfname</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Search for filename in the format</span>
 <span class="sd">    &lt;main_fname&gt;&lt;i:04d&gt;.&lt;ext&gt;</span>
 <span class="sd">    where i is the frame number. if no file found for i &lt; N, raise error.</span>
@@ -188,7 +188,7 @@
     <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_all_anim_frames</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_all_anim_frames</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Search for filename in the format</span>
 <span class="sd">    &lt;main_fname&gt;&lt;i:04d&gt;.&lt;ext&gt;</span>
 <span class="sd">    where i is the frame number. if no file found for i &lt; N, raise error.</span>
@@ -203,18 +203,18 @@
             <span class="k">break</span>
 
 
-<span class="k">def</span> <span class="nf">remove_ext</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_ext</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fname</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># remove extension if given</span>
 
 
 <div class="viewcode-block" id="Compositor">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor">[docs]</a>
-<span class="k">class</span> <span class="nc">Compositor</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Compositor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compositor output - for handling file outputs, and managing Compositor node tree&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Compositor.__init__">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">view_layer</span><span class="o">=</span><span class="s2">&quot;ViewLayer&quot;</span><span class="p">,</span>
         <span class="n">background_color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -260,15 +260,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_background_color</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tidy up node tree&quot;&quot;&quot;</span>
         <span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">render_layers_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_layers_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">get_node_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="s2">&quot;Render Layers&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_get_render_layer_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_render_layer_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get output socket from Render Layers node&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;Image&quot;</span><span class="p">:</span>  <span class="c1"># special case</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span>
@@ -277,7 +277,7 @@
 
 <div class="viewcode-block" id="Compositor.get_mask">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_mask">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_mask</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">input_rgb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">],</span> <span class="n">anti_aliasing</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompositorNodeGroup</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get mask node from pass index. If not found, create new mask node&quot;&quot;&quot;</span>
@@ -321,7 +321,7 @@
 
 <div class="viewcode-block" id="Compositor.get_bounding_box_visual">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_bounding_box_visual">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_bounding_box_visual</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_bounding_box_visual</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">255.0</span><span class="p">,</span> <span class="mf">255.0</span><span class="p">),</span> <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoundingBoxOverlay</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -351,7 +351,7 @@
 
 <div class="viewcode-block" id="Compositor.get_keypoints_visual">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_keypoints_visual">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_keypoints_visual</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_keypoints_visual</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">marker</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
@@ -390,7 +390,7 @@
 
 <div class="viewcode-block" id="Compositor.get_axes_visual">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_axes_visual">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_axes_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AxesOverlay</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_axes_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AxesOverlay</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return an axes visual overlay.</span>
 
@@ -415,7 +415,7 @@
 
 <div class="viewcode-block" id="Compositor.stack_visuals">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.stack_visuals">[docs]</a>
-    <span class="k">def</span> <span class="nf">stack_visuals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">visuals</span><span class="p">:</span> <span class="n">AlphaImageOverlay</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AlphaImageOverlay</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stack_visuals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">visuals</span><span class="p">:</span> <span class="n">AlphaImageOverlay</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AlphaImageOverlay</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a series of image overlays, stack them and return to be used as a single output node.</span>
 
 <span class="sd">        :param *visuals: Stack of overlays to add.&quot;&quot;&quot;</span>
@@ -439,7 +439,7 @@
 
 <div class="viewcode-block" id="Compositor.get_depth_visual">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.get_depth_visual">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_depth_visual</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_depth_visual</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompositorNodeGroup</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get depth visual, which normalizes depth values so max_depth = col,</span>
@@ -465,7 +465,7 @@
 
 <div class="viewcode-block" id="Compositor.define_output">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.define_output">[docs]</a>
-    <span class="k">def</span> <span class="nf">define_output</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">define_output</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">input_data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">,</span> <span class="n">AOV</span><span class="p">],</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -566,7 +566,7 @@
         <span class="k">return</span> <span class="n">name</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_find_file_at_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_file_at_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="n">slot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_output_slots</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="n">format_to_extension</span><span class="p">[</span><span class="n">slot</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">file_format</span><span class="p">]</span>
 
@@ -577,19 +577,19 @@
 
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">pth</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_update_aovs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_aovs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update any AOVs that are connected to the render layers node&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">aov</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aovs</span><span class="p">:</span>
             <span class="n">aov</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;List of output keys.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_output_slots</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
 <div class="viewcode-block" id="Compositor.render">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.compositor.html#blendersynth.blender.compositor.compositor.Compositor.render">[docs]</a>
-    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">camera</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Camera</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Camera</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">scene</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -665,7 +665,7 @@
         <span class="k">return</span> <span class="n">RenderResult</span><span class="p">(</span><span class="n">render_paths</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_set_background_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_background_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a solid background color, instead of transparent.</span>
 <span class="sd">        Will remove the visuals of existing world background (but not the lighting effects).</span>
 

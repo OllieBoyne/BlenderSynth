@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.file.ffmpeg_utils &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,13 +102,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.file.ffmpeg_utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">ffmpeg</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ffmpeg</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 
 <div class="viewcode-block" id="hstack">
 <a class="viewcode-back" href="../../../api/blendersynth.file.ffmpeg_utils.html#blendersynth.file.ffmpeg_utils.hstack">[docs]</a>
-<span class="k">def</span> <span class="nf">hstack</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hstack</span><span class="p">(</span>
     <span class="n">videos</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">out_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">loglevel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Horizontally stack videos.</span>

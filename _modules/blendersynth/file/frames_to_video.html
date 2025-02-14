@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.file.frames_to_video &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,14 +102,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.file.frames_to_video</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">glob</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">.tempfiles</span> <span class="kn">import</span> <span class="n">create_temp_file</span>
-<span class="kn">from</span> <span class="nn">..utils.types</span> <span class="kn">import</span> <span class="n">Camera</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.tempfiles</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_temp_file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Camera</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">import_module</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">import_module</span>
 
 <span class="n">ffmpeg</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;ffmpeg&quot;</span><span class="p">,</span> <span class="s2">&quot;ffmpeg-python&quot;</span><span class="p">)</span>
 
@@ -119,7 +119,7 @@
 
 <div class="viewcode-block" id="get_frames_from_directory">
 <a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.get_frames_from_directory">[docs]</a>
-<span class="k">def</span> <span class="nf">get_frames_from_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">exts</span><span class="o">=</span><span class="n">valid_frames_exts</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_frames_from_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">exts</span><span class="o">=</span><span class="n">valid_frames_exts</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of all paths to files in directory which have a valid frame extension&quot;&quot;&quot;</span>
     <span class="n">files</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
@@ -134,7 +134,7 @@
 
 <div class="viewcode-block" id="ffmpeg_input_from_files">
 <a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.ffmpeg_input_from_files">[docs]</a>
-<span class="k">def</span> <span class="nf">ffmpeg_input_from_files</span><span class="p">(</span><span class="n">file_list</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ffmpeg_input_from_files</span><span class="p">(</span><span class="n">file_list</span><span class="p">,</span> <span class="n">frame_rate</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return ffmpeg input from list of files&quot;&quot;&quot;</span>
     <span class="n">file_list_loc</span> <span class="o">=</span> <span class="n">create_temp_file</span><span class="p">(</span><span class="n">ext</span><span class="o">=</span><span class="s2">&quot;.txt&quot;</span><span class="p">)</span>
 
@@ -149,7 +149,7 @@
 
 <div class="viewcode-block" id="frames_to_video">
 <a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.frames_to_video">[docs]</a>
-<span class="k">def</span> <span class="nf">frames_to_video</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">frames_to_video</span><span class="p">(</span>
     <span class="o">*</span><span class="n">args</span><span class="p">,</span>
     <span class="n">frame_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">frame_fmt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -223,7 +223,7 @@
 
 <div class="viewcode-block" id="frames_to_video_multiview">
 <a class="viewcode-back" href="../../../api/blendersynth.file.frames_to_video.html#blendersynth.file.frames_to_video.frames_to_video_multiview">[docs]</a>
-<span class="k">def</span> <span class="nf">frames_to_video_multiview</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">frames_to_video_multiview</span><span class="p">(</span>
     <span class="n">cameras</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Camera</span><span class="p">],</span> <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">out_loc</span><span class="o">=</span><span class="s2">&quot;vid.mp4&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>

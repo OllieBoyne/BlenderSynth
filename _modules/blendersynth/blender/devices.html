@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.blender.devices &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -104,23 +104,23 @@
   <h1>Source code for blendersynth.blender.devices</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Blender device management.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
 
 
 <span class="c1"># no-inherited-members</span>
 
 
-<span class="k">def</span> <span class="nf">_isgpu</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_isgpu</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;CUDA&quot;</span><span class="p">,</span> <span class="s2">&quot;OPENCL&quot;</span><span class="p">,</span> <span class="s2">&quot;METAL&quot;</span><span class="p">}</span>
 
 
 <div class="viewcode-block" id="DeviceList">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.devices.html#blendersynth.blender.devices.DeviceList">[docs]</a>
-<span class="k">class</span> <span class="nc">DeviceList</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DeviceList</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the names of all devices.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">device</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span></div>
 
@@ -128,17 +128,17 @@
 
 <div class="viewcode-block" id="Devices">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.devices.html#blendersynth.blender.devices.Devices">[docs]</a>
-<span class="k">class</span> <span class="nc">Devices</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Devices</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A manager for Blender rendering devices (CPU &amp; GPU).&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span> <span class="o">=</span> <span class="n">DeviceList</span><span class="p">(</span>
             <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">addons</span><span class="p">[</span><span class="s2">&quot;cycles&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">devices</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Devices.set_device_usage">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.devices.html#blendersynth.blender.devices.Devices.set_device_usage">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_device_usage</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_device_usage</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">cpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">cuda</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -171,28 +171,28 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">available_gpus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceList</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">available_gpus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceList</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of all GPU devices.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">DeviceList</span><span class="p">(</span><span class="n">device</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span> <span class="k">if</span> <span class="n">_isgpu</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">enabled_gpus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceList</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enabled_gpus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceList</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of available GPU devices.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">DeviceList</span><span class="p">(</span><span class="n">device</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_gpus</span> <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">use</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">device_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">device_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of all device names.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span><span class="o">.</span><span class="n">names</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">enabled_device_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enabled_device_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of named devices that are enabled.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">device</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_list</span> <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">use</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Devices.set_by_name">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.devices.html#blendersynth.blender.devices.Devices.set_by_name">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set use/not use based on a device name.</span>
 
 <span class="sd">        :param name: Device name</span>

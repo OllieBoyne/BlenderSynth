@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.blender.render &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,8 +102,8 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.blender.render</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">.devices</span> <span class="kn">import</span> <span class="n">Devices</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">Devices</span>
 
 <span class="n">ENGINES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BLENDER_EEVEE&quot;</span><span class="p">,</span> <span class="s2">&quot;BLENDER_WORKBENCH&quot;</span><span class="p">,</span> <span class="s2">&quot;CYCLES&quot;</span><span class="p">]</span>
 <span class="sd">&quot;&quot;&quot;List of valid render engines&quot;&quot;&quot;</span>
@@ -111,7 +111,7 @@
 
 <div class="viewcode-block" id="render">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.render">[docs]</a>
-<span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">animation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">animation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Render the scene</span>
 
 <span class="sd">    :param animation: If True, render the animation. Otherwise, render a single frame.</span>
@@ -125,7 +125,7 @@
 
 <div class="viewcode-block" id="render_with_cpu">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.render_with_cpu">[docs]</a>
-<span class="k">def</span> <span class="nf">render_with_cpu</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">render_with_cpu</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Render with CPU&quot;&quot;&quot;</span>
     <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">cycles</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;CPU&quot;</span></div>
 
@@ -133,7 +133,7 @@
 
 <div class="viewcode-block" id="render_with_gpu">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.render_with_gpu">[docs]</a>
-<span class="k">def</span> <span class="nf">render_with_gpu</span><span class="p">(</span><span class="n">force_enable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">render_with_gpu</span><span class="p">(</span><span class="n">force_enable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Render with GPU.</span>
 
 <span class="sd">    :param force_enable: If True, enable all GPU devices. Otherwise, use the devices that are already enabled. To enable separately, either change your settings in blender, or see :attr:`blendersynth.blender.devices.Devices.set_device_usage`</span>
@@ -167,7 +167,7 @@
 
 <div class="viewcode-block" id="set_engine">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.set_engine">[docs]</a>
-<span class="k">def</span> <span class="nf">set_engine</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_engine</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the render engine</span>
 
 <span class="sd">    :param engine: The render engine to use. See :data:`~blendersynth.blender.render.ENGINES` for valid options.</span>
@@ -179,7 +179,7 @@
 
 <div class="viewcode-block" id="set_resolution">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.set_resolution">[docs]</a>
-<span class="k">def</span> <span class="nf">set_resolution</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_resolution</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the render resolution</span>
 
 <span class="sd">    :param x: The width of the image in pixels</span>
@@ -191,7 +191,7 @@
 
 <div class="viewcode-block" id="set_cycles_samples">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.set_cycles_samples">[docs]</a>
-<span class="k">def</span> <span class="nf">set_cycles_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_cycles_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the number of samples for the Cycles renderer&quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">engine</span> <span class="o">==</span> <span class="s2">&quot;CYCLES&quot;</span>
@@ -202,7 +202,7 @@
 
 <div class="viewcode-block" id="render_depth">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.render_depth">[docs]</a>
-<span class="k">def</span> <span class="nf">render_depth</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">render_depth</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enable the depth pass of the renderer&quot;&quot;&quot;</span>
     <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">use_pass_z</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># enable depth pass</span></div>
 
@@ -210,7 +210,7 @@
 
 <div class="viewcode-block" id="set_transparent">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.render.html#blendersynth.blender.render.set_transparent">[docs]</a>
-<span class="k">def</span> <span class="nf">set_transparent</span><span class="p">(</span><span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_transparent</span><span class="p">(</span><span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the background of the scene to transparent</span>
 
 <span class="sd">    :param scene: The scene to set the background of. If None, use the active scene.</span>

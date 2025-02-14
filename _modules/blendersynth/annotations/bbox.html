@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.annotations.bbox &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,19 +102,19 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.annotations.bbox</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">project_points</span>
-<span class="kn">import</span> <span class="nn">mathutils</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">..blender.mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">..blender.camera</span> <span class="kn">import</span> <span class="n">Camera</span>
-<span class="kn">from</span> <span class="nn">.annotation_handler</span> <span class="kn">import</span> <span class="n">AnnotationHandler</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">project_points</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mathutils</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..blender.mesh</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..blender.camera</span><span class="w"> </span><span class="kn">import</span> <span class="n">Camera</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.annotation_handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnnotationHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="n">BBOX_FMTS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;x1y1x2y2&quot;</span><span class="p">,</span> <span class="s2">&quot;xywh&quot;</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_bounding_box</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_bounding_box</span><span class="p">(</span>
     <span class="nb">object</span><span class="p">:</span> <span class="n">Mesh</span><span class="p">,</span>
     <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">scene</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -162,7 +162,7 @@
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_bounding_boxes</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_bounding_boxes</span><span class="p">(</span>
     <span class="n">objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Mesh</span><span class="p">],</span>
     <span class="n">camera</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Camera</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">scene</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -195,7 +195,7 @@
 
 <div class="viewcode-block" id="bounding_boxes">
 <a class="viewcode-back" href="../../../api/blendersynth.annotations.bbox.html#blendersynth.annotations.bbox.bounding_boxes">[docs]</a>
-<span class="k">def</span> <span class="nf">bounding_boxes</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">bounding_boxes</span><span class="p">(</span>
     <span class="n">objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Mesh</span><span class="p">],</span>
     <span class="n">camera</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Camera</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Camera</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">scene</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.utils.layout &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,7 +102,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.utils.layout</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">bpy</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
 
 <span class="n">AREA_TYPES</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;VIEW_3D&quot;</span><span class="p">,</span>
@@ -129,7 +129,7 @@
 
 <div class="viewcode-block" id="get_areas">
 <a class="viewcode-back" href="../../../api/blendersynth.utils.layout.html#blendersynth.utils.layout.get_areas">[docs]</a>
-<span class="k">def</span> <span class="nf">get_areas</span><span class="p">(</span><span class="n">area_type</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_areas</span><span class="p">(</span><span class="n">area_type</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Yield all areas of the given type.</span>
 
 <span class="sd">    :param area_type: Area type to get (one of :attr:`~blendersynth.utils.layout.AREA_TYPES`)</span>
@@ -144,7 +144,7 @@
 
 <div class="viewcode-block" id="get_area">
 <a class="viewcode-back" href="../../../api/blendersynth.utils.layout.html#blendersynth.utils.layout.get_area">[docs]</a>
-<span class="k">def</span> <span class="nf">get_area</span><span class="p">(</span><span class="n">area_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Area</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_area</span><span class="p">(</span><span class="n">area_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Area</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the first found area of the given type.</span>
 
 <span class="sd">    :param area_type: Area type to get (one of :attr:`~blendersynth.utils.layout.AREA_TYPES`)</span>
@@ -156,7 +156,7 @@
 
 <div class="viewcode-block" id="change_area_to">
 <a class="viewcode-back" href="../../../api/blendersynth.utils.layout.html#blendersynth.utils.layout.change_area_to">[docs]</a>
-<span class="k">def</span> <span class="nf">change_area_to</span><span class="p">(</span><span class="n">area_type_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">area_type_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">change_area_to</span><span class="p">(</span><span class="n">area_type_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">area_type_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Change the first area found.</span>
 
 <span class="sd">    :param area_type_from: Area type to change from (one of :attr:`~blendersynth.utils.layout.AREA_TYPES`)</span>

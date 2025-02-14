@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.utils.blender_setup.check_blender_install &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,10 +102,10 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.utils.blender_setup.check_blender_install</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">blendersynth.utils.blender_setup.blender_locator</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">blendersynth.utils.blender_setup.blender_locator</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">find_blender_python</span><span class="p">,</span>
     <span class="n">get_blender_path</span><span class="p">,</span>
     <span class="n">remove_config</span><span class="p">,</span>
@@ -130,7 +130,7 @@
 
 <div class="viewcode-block" id="setup_blender_stubs">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.check_blender_install.html#blendersynth.utils.blender_setup.check_blender_install.setup_blender_stubs">[docs]</a>
-<span class="k">def</span> <span class="nf">setup_blender_stubs</span><span class="p">(</span><span class="n">blender_path</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_blender_stubs</span><span class="p">(</span><span class="n">blender_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Install blender stubs in vanilla python environment,</span>
 <span class="sd">    for correct Blender version&quot;&quot;&quot;</span>
 
@@ -158,7 +158,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">check_module</span><span class="p">(</span><span class="n">python_executable</span><span class="p">,</span> <span class="n">module_name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_module</span><span class="p">(</span><span class="n">python_executable</span><span class="p">,</span> <span class="n">module_name</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span>
             <span class="p">[</span><span class="n">python_executable</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;pip&quot;</span><span class="p">,</span> <span class="s2">&quot;show&quot;</span><span class="p">,</span> <span class="n">module_name</span><span class="p">],</span>
@@ -170,7 +170,7 @@
         <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">def</span> <span class="nf">_install_module</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_install_module</span><span class="p">(</span>
     <span class="n">python_executable</span><span class="p">,</span>
     <span class="n">module_name</span><span class="p">,</span>
     <span class="n">is_test_pypi</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -198,7 +198,7 @@
 
 <div class="viewcode-block" id="install_module">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.check_blender_install.html#blendersynth.utils.blender_setup.check_blender_install.install_module">[docs]</a>
-<span class="k">def</span> <span class="nf">install_module</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">install_module</span><span class="p">(</span>
     <span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">upgrade</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">editable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Install a module to Blender Python.</span>
@@ -219,7 +219,7 @@
 
 <div class="viewcode-block" id="check_blender_install">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.check_blender_install.html#blendersynth.utils.blender_setup.check_blender_install.check_blender_install">[docs]</a>
-<span class="k">def</span> <span class="nf">check_blender_install</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_blender_install</span><span class="p">(</span>
     <span class="n">force_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">force_find_blender</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">force_find_blender_python</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>

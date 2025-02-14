@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.blender.boolean &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -103,11 +103,11 @@
              
   <h1>Source code for blendersynth.blender.boolean</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Functions for boolean operations of meshes&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">types</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">types</span>
 
 
-<span class="k">def</span> <span class="nf">_apply_boolean</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_apply_boolean</span><span class="p">(</span>
     <span class="n">target</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span>
     <span class="o">*</span><span class="n">others</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span>
     <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;UNION&quot;</span><span class="p">,</span>
@@ -129,7 +129,7 @@
 
 <div class="viewcode-block" id="union">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.boolean.html#blendersynth.blender.boolean.union">[docs]</a>
-<span class="k">def</span> <span class="nf">union</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="o">*</span><span class="n">others</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">hide_others</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">union</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="o">*</span><span class="n">others</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">hide_others</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply the union boolean modifier to a collection of meshes.</span>
 
 <span class="sd">    :param target: The target Mesh: this is returned by the function</span>
@@ -141,7 +141,7 @@
 
 <div class="viewcode-block" id="difference">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.boolean.html#blendersynth.blender.boolean.difference">[docs]</a>
-<span class="k">def</span> <span class="nf">difference</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="o">*</span><span class="n">others</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">hide_others</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">difference</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="o">*</span><span class="n">others</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">hide_others</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply the difference boolean modifier to a collection of meshes.</span>
 
 <span class="sd">    :param target: The target Mesh: this is returned by the function</span>
@@ -156,7 +156,7 @@
 
 <div class="viewcode-block" id="intersect">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.boolean.html#blendersynth.blender.boolean.intersect">[docs]</a>
-<span class="k">def</span> <span class="nf">intersect</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="o">*</span><span class="n">others</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">hide_others</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">intersect</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="o">*</span><span class="n">others</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">hide_others</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply the intersect boolean modifier to a collection of meshes.</span>
 
 <span class="sd">    :param target: The target Mesh: this is returned by the function</span>

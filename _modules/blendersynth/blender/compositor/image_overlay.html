@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.blender.compositor.image_overlay &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -103,21 +103,21 @@
              
   <h1>Source code for blendersynth.blender.compositor.image_overlay</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Overlay RGB image in compositor&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">..nodes</span> <span class="kn">import</span> <span class="n">CompositorNodeGroup</span>
-<span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">import</span> <span class="nn">cv2</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">...file.tempfiles</span> <span class="kn">import</span> <span class="n">create_temp_file</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
-<span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">io</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..nodes</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompositorNodeGroup</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...file.tempfiles</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_temp_file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">io</span>
 
 
 <div class="viewcode-block" id="AlphaImageOverlay">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AlphaImageOverlay">[docs]</a>
-<span class="k">class</span> <span class="nc">AlphaImageOverlay</span><span class="p">(</span><span class="n">CompositorNodeGroup</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AlphaImageOverlay</span><span class="p">(</span><span class="n">CompositorNodeGroup</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Overlay an image on top of the render, using the alpha channel of the image as a mask&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;AlphaImageOverlay&quot;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;AlphaImageOverlay&quot;</span><span class="p">,</span> <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a mix node which overlays an image on top of the input image.&quot;&quot;&quot;</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node_tree</span><span class="p">)</span>
@@ -157,7 +157,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">tidy</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">create_img</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_img</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># create temp image to draw keypoints on, with 8 random alphanumeric characters</span>
         <span class="c1"># 8 random alphanum chars</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">temp_img_loc</span> <span class="o">=</span> <span class="n">create_temp_file</span><span class="p">(</span><span class="s2">&quot;.png&quot;</span><span class="p">)</span>
@@ -174,10 +174,10 @@
 
 <div class="viewcode-block" id="KeypointsOverlay">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay">[docs]</a>
-<span class="k">class</span> <span class="nc">KeypointsOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">KeypointsOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Overlay which draws keypoints on top of the render.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;KeypointsOverlay&quot;</span><span class="p">,</span>
         <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -208,7 +208,7 @@
 
 <div class="viewcode-block" id="KeypointsOverlay.update">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">keypoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">scene</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -289,10 +289,10 @@
 
 <div class="viewcode-block" id="BoundingBoxOverlay">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay">[docs]</a>
-<span class="k">class</span> <span class="nc">BoundingBoxOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BoundingBoxOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Overlay which draws bounding boxes on top of the render.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;BoundingBoxOverlay&quot;</span><span class="p">,</span>
         <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -307,7 +307,7 @@
 
 <div class="viewcode-block" id="BoundingBoxOverlay.update">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bboxes</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bboxes</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">camera</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given [N x 4] bounding boxes, draw them onto a new temp image.&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">resolution_x</span>
@@ -337,10 +337,10 @@
 
 <div class="viewcode-block" id="AxesOverlay">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay">[docs]</a>
-<span class="k">class</span> <span class="nc">AxesOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AxesOverlay</span><span class="p">(</span><span class="n">AlphaImageOverlay</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Overlay which draws axes on top of an existing render&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;BoundingBoxOverlay&quot;</span><span class="p">,</span>
         <span class="n">node_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -356,7 +356,7 @@
 
 <div class="viewcode-block" id="AxesOverlay.update">
 <a class="viewcode-back" href="../../../../api/blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
         <span class="n">scene</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Scene</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

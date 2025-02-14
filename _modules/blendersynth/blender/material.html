@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.blender.material &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,14 +102,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.blender.material</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">.bsyn_object</span> <span class="kn">import</span> <span class="n">BsynObject</span>
-<span class="kn">from</span> <span class="nn">.nodes</span> <span class="kn">import</span> <span class="n">tidy_tree</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">io</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">version</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.bsyn_object</span><span class="w"> </span><span class="kn">import</span> <span class="n">BsynObject</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.nodes</span><span class="w"> </span><span class="kn">import</span> <span class="n">tidy_tree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">io</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span>
 
 
-<span class="k">def</span> <span class="nf">_new_shader_node</span><span class="p">(</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">node_type</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_new_shader_node</span><span class="p">(</span><span class="n">node_tree</span><span class="p">,</span> <span class="n">node_type</span><span class="p">):</span>
     <span class="n">shader_node</span> <span class="o">=</span> <span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">node_type</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">node_type</span> <span class="o">==</span> <span class="s2">&quot;ShaderNodeBsdfPrincipled&quot;</span><span class="p">:</span>
         <span class="n">spec_key</span> <span class="o">=</span> <span class="s2">&quot;Specular IOR Level&quot;</span> <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">is_version_plus</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;Specular&quot;</span>
@@ -120,10 +120,10 @@
 
 <div class="viewcode-block" id="Material">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.material.html#blendersynth.blender.material.Material">[docs]</a>
-<span class="k">class</span> <span class="nc">Material</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Material</span><span class="p">(</span><span class="n">BsynObject</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;BlenderSynth Material class. Will always be a node material.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;NewMaterial&quot;</span><span class="p">,</span> <span class="n">shader_type</span><span class="o">=</span><span class="s2">&quot;ShaderNodeBsdfPrincipled&quot;</span><span class="p">,</span> <span class="n">mat</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="n">mat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -158,7 +158,7 @@
 <div class="viewcode-block" id="Material.from_image">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.material.html#blendersynth.blender.material.Material.from_image">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_image</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_image</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">image_loc</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ImageMaterials&quot;</span><span class="p">,</span>
@@ -183,7 +183,7 @@
 
 <div class="viewcode-block" id="Material.add_source">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.material.html#blendersynth.blender.material.Material.add_source">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_source</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_source</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">image_loc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">input_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Base Color&quot;</span><span class="p">,</span>
@@ -239,7 +239,7 @@
 
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_blender_material</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">blender_mat</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Material</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_blender_material</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">blender_mat</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Material</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">blender_mat</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Material</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid Blender material&quot;</span><span class="p">)</span>
 
@@ -256,7 +256,7 @@
 
         <span class="k">return</span> <span class="n">mat</span>
 
-    <span class="k">def</span> <span class="nf">_add_scaling_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_scaling_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add scaling node to the material node tree&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;ShaderNodeValue&quot;</span><span class="p">)</span>
@@ -271,7 +271,7 @@
 
 <div class="viewcode-block" id="Material.set_bdsf_property">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.material.html#blendersynth.blender.material.Material.set_bdsf_property">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_bdsf_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_bdsf_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the property of the BSDF node&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shader</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;BSDF_PRINCIPLED&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Shader is not a Principled BSDF&quot;</span><span class="p">)</span>
@@ -283,16 +283,16 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span>
 
     <span class="nd">@scale</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span></div>
 
 </pre></div>

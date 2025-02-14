@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.run.load_blend &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,18 +102,18 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.run.load_blend</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">bpy</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
 
 
 <div class="viewcode-block" id="load_blend">
 <a class="viewcode-back" href="../../../api/blendersynth.run.load_blend.html#blendersynth.run.load_blend.load_blend">[docs]</a>
-<span class="k">def</span> <span class="nf">load_blend</span><span class="p">(</span><span class="n">src</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_blend</span><span class="p">(</span><span class="n">src</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a .blend file into the current blender session.</span>
 
 <span class="sd">    Note: This can cause context issues, so use with caution. If possible, use `blendersynth.run_this_script` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">fix_context</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fix_context</span><span class="p">():</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fix bpy.context if some command (like .blend import) changed/emptied it&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">window</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">window_manager</span><span class="o">.</span><span class="n">windows</span><span class="p">:</span>
             <span class="n">screen</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">screen</span>

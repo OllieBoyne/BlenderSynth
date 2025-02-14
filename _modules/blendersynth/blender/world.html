@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.blender.world &mdash; BlenderSynth</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -102,18 +102,18 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.blender.world</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">from</span> <span class="nn">.nodes.node_arranger</span> <span class="kn">import</span> <span class="n">tidy_tree</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">io</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.nodes.node_arranger</span><span class="w"> </span><span class="kn">import</span> <span class="n">tidy_tree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">io</span>
 
 
 <div class="viewcode-block" id="World">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.world.html#blendersynth.blender.world.World">[docs]</a>
-<span class="k">class</span> <span class="nc">World</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">World</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;World object - for managing world nodes, HDRIs, etc.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;Color&quot;</span>
 
         <span class="k">if</span> <span class="s2">&quot;World&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">worlds</span><span class="p">:</span>
@@ -137,7 +137,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_load_nodes</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_setup_hdri</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_check_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Node tree may have been wiped, eg by loading a new file.</span>
 <span class="sd">        Check if the nodes exist, and if not, recreate them.&quot;&quot;&quot;</span>
 
@@ -146,7 +146,7 @@
         <span class="k">except</span> <span class="ne">ReferenceError</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_setup_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_exists</span><span class="p">()</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span>
         <span class="n">nodes</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
@@ -162,7 +162,7 @@
 
         <span class="n">tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_load_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;If Nodes already exist, load them&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">node_texture</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">[</span><span class="s2">&quot;Environment Texture&quot;</span><span class="p">]</span>
@@ -180,7 +180,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">node_output</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Surface&quot;</span><span class="p">],</span>
             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_setup_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_exists</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;Color&quot;</span><span class="p">:</span>
             <span class="k">return</span>
@@ -192,7 +192,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;Color&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_setup_hdri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_hdri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_exists</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;HDRI&quot;</span><span class="p">:</span>
             <span class="k">return</span>
@@ -207,7 +207,7 @@
 
 <div class="viewcode-block" id="World.set_color">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.world.html#blendersynth.blender.world.World.set_color">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">],</span> <span class="n">affect_scene</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">],</span> <span class="n">affect_scene</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the world color.</span>
 
 <span class="sd">        :param color: RGB or RGBA color</span>
@@ -227,7 +227,7 @@
 
 <div class="viewcode-block" id="World.set_hdri">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.world.html#blendersynth.blender.world.World.set_hdri">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_hdri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pth</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">affect_scene</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">intensity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_hdri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pth</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">affect_scene</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">intensity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the HDRI image location</span>
 
 <span class="sd">        :param pth: Path to the HDRI image (.hdr or .exr)</span>
@@ -244,7 +244,7 @@
 
 <div class="viewcode-block" id="World.set_intensity">
 <a class="viewcode-back" href="../../../api/blendersynth.blender.world.html#blendersynth.blender.world.World.set_intensity">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intensity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intensity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the intensity of the color/HDRI.</span>
 
 <span class="sd">        :param intensity: The intensity value</span>
@@ -252,10 +252,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">world_nodes</span><span class="p">[</span><span class="s2">&quot;Background&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">intensity</span></div>
 
 
-    <span class="k">def</span> <span class="nf">set_transparent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_transparent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">film_transparent</span> <span class="o">=</span> <span class="n">transparent</span>
 
-    <span class="k">def</span> <span class="nf">_lighting_from_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_lighting_from_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the ability for the background to influence lighting on the scene&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">cycles_visibility</span><span class="o">.</span><span class="n">diffuse</span> <span class="o">=</span> <span class="n">val</span></div>
 
