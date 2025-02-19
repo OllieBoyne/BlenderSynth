@@ -1,0 +1,6 @@
+:code:`blendersynth.blender.compositor.overlay`
+==================================================
+
+.. automodule:: blendersynth.blender.compositor.overlay
+	:members:
+	:inherited-members:

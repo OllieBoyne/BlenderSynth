@@ -8,5 +8,6 @@
 	blendersynth.blender.compositor.compositor
 	blendersynth.blender.compositor.image_overlay
 	blendersynth.blender.compositor.mask_overlay
+	blendersynth.blender.compositor.overlay
 	blendersynth.blender.compositor.render_result
 	blendersynth.blender.compositor.visuals
