@@ -109,7 +109,7 @@
 <span id="blendersynth-blender-camera"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.camera</span></code><a class="headerlink" href="#module-blendersynth.blender.camera" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.camera.</span></span><span class="sig-name descname"><span class="pre">Camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/camera.html#Camera"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.camera.Camera" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.camera.</span></span><span class="sig-name descname"><span class="pre">Camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.Camera" title="Link to this definition"></a></dt>
 <dd><p>Camera object, to handle movement, tracking, etc.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.animate_path">
@@ -127,13 +127,13 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.axes">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">axes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#blendersynth.blender.camera.Camera.axes" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">axes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#blendersynth.blender.camera.Camera.axes" title="Link to this definition"></a></dt>
 <dd><p>Return 3x3 rotation matrix (normalized) to represent axes</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.create">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Camera'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/camera.html#Camera.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.camera.Camera.create" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Camera'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.Camera.create" title="Link to this definition"></a></dt>
 <dd><p>Create a new camera object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -151,7 +151,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.focal_length">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">focal_length</span></span><a class="headerlink" href="#blendersynth.blender.camera.Camera.focal_length" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">focal_length</span></span><a class="headerlink" href="#blendersynth.blender.camera.Camera.focal_length" title="Link to this definition"></a></dt>
 <dd><p>Focal length in mm</p>
 </dd></dl>
 
@@ -174,13 +174,13 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.fov">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fov</span></span><a class="headerlink" href="#blendersynth.blender.camera.Camera.fov" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fov</span></span><a class="headerlink" href="#blendersynth.blender.camera.Camera.fov" title="Link to this definition"></a></dt>
 <dd><p>Field of view in degrees</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.from_scene">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Camera'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/camera.html#Camera.from_scene"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.camera.Camera.from_scene" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Camera'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.Camera.from_scene" title="Link to this definition"></a></dt>
 <dd><p>Create from a named camera in scene</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -194,13 +194,13 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.location">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span></em><a class="headerlink" href="#blendersynth.blender.camera.Camera.location" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span></em><a class="headerlink" href="#blendersynth.blender.camera.Camera.location" title="Link to this definition"></a></dt>
 <dd><p>Location of object</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.look_at">
-<span class="sig-name descname"><span class="pre">look_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/camera.html#Camera.look_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.camera.Camera.look_at" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">look_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.Camera.look_at" title="Link to this definition"></a></dt>
 <dd><p>Look at a point in space, with up vector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -214,7 +214,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.look_at_object">
-<span class="sig-name descname"><span class="pre">look_at_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/camera.html#Camera.look_at_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.camera.Camera.look_at_object" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">look_at_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">mathutils.Vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.Camera.look_at_object" title="Link to this definition"></a></dt>
 <dd><p>Look at an object, with up vector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -228,7 +228,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.matrix_world">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matrix_world</span></span><a class="headerlink" href="#blendersynth.blender.camera.Camera.matrix_world" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matrix_world</span></span><a class="headerlink" href="#blendersynth.blender.camera.Camera.matrix_world" title="Link to this definition"></a></dt>
 <dd><p>Return world matrix of object(s).</p>
 </dd></dl>
 
@@ -274,7 +274,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.rotation_euler">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation_euler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Euler</span></em><a class="headerlink" href="#blendersynth.blender.camera.Camera.rotation_euler" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation_euler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Euler</span></em><a class="headerlink" href="#blendersynth.blender.camera.Camera.rotation_euler" title="Link to this definition"></a></dt>
 <dd><p>Rotation in euler XYZ angles</p>
 </dd></dl>
 
@@ -405,7 +405,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.camera.Camera.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/camera.html#Camera.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.camera.Camera.update" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.camera.Camera.update" title="Link to this definition"></a></dt>
 <dd><p>Update view layer and depsgraph</p>
 </dd></dl>
 

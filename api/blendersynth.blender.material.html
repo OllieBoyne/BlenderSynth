@@ -109,11 +109,11 @@
 <span id="blendersynth-blender-material"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.material</span></code><a class="headerlink" href="#module-blendersynth.blender.material" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.material.Material">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.material.</span></span><span class="sig-name descname"><span class="pre">Material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NewMaterial'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shader_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ShaderNodeBsdfPrincipled'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/material.html#Material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.material.Material" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.material.</span></span><span class="sig-name descname"><span class="pre">Material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NewMaterial'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shader_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ShaderNodeBsdfPrincipled'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.material.Material" title="Link to this definition"></a></dt>
 <dd><p>BlenderSynth Material class. Will always be a node material.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.material.Material.add_source">
-<span class="sig-name descname"><span class="pre">add_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Base</span> <span class="pre">Color'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_global_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_duplicate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/material.html#Material.add_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.material.Material.add_source" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Base</span> <span class="pre">Color'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_global_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_duplicate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.material.Material.add_source" title="Link to this definition"></a></dt>
 <dd><p>Add an image texture node to the material node tree, and connect it to the specified input of the Shader.
 :type image_loc: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>
 :param image_loc: Image location
@@ -142,7 +142,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.material.Material.axes">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">axes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#blendersynth.blender.material.Material.axes" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">axes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#blendersynth.blender.material.Material.axes" title="Link to this definition"></a></dt>
 <dd><p>Return 3x3 rotation matrix (normalized) to represent axes</p>
 </dd></dl>
 
@@ -165,7 +165,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.material.Material.from_image">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ImageMaterials'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shader_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ShaderNodeBsdfPrincipled'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_global_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/material.html#Material.from_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.material.Material.from_image" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ImageMaterials'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shader_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ShaderNodeBsdfPrincipled'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_global_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.material.Material.from_image" title="Link to this definition"></a></dt>
 <dd><p>Create a new material from an image texture.
 :type image_loc:
 :param image_loc: Location of the image
@@ -181,13 +181,13 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.material.Material.location">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span></em><a class="headerlink" href="#blendersynth.blender.material.Material.location" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Vector</span></em><a class="headerlink" href="#blendersynth.blender.material.Material.location" title="Link to this definition"></a></dt>
 <dd><p>Location of object</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.material.Material.matrix_world">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matrix_world</span></span><a class="headerlink" href="#blendersynth.blender.material.Material.matrix_world" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matrix_world</span></span><a class="headerlink" href="#blendersynth.blender.material.Material.matrix_world" title="Link to this definition"></a></dt>
 <dd><p>Return world matrix of object(s).</p>
 </dd></dl>
 
@@ -233,7 +233,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.material.Material.rotation_euler">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation_euler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Euler</span></em><a class="headerlink" href="#blendersynth.blender.material.Material.rotation_euler" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation_euler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">mathutils.Euler</span></em><a class="headerlink" href="#blendersynth.blender.material.Material.rotation_euler" title="Link to this definition"></a></dt>
 <dd><p>Rotation in euler XYZ angles</p>
 </dd></dl>
 
@@ -245,7 +245,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="blendersynth.blender.material.Material.set_bdsf_property">
-<span class="sig-name descname"><span class="pre">set_bdsf_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/material.html#Material.set_bdsf_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.material.Material.set_bdsf_property" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_bdsf_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.material.Material.set_bdsf_property" title="Link to this definition"></a></dt>
 <dd><p>Set the property of the BSDF node</p>
 </dd></dl>
 
