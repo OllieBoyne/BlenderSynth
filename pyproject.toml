@@ -4,9 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "blendersynth"
-version = "0.2.7"
+version = "0.3.2"
 authors = [
   { name="Ollie Boyne", email="ollieboyne@gmail.com" },
+]
+dependencies = [
+    "platformdirs>=3.11.0",
+    "numpy",
+    "tqdm",
+    "ffmpeg-python",
+    "blender-stubs"
 ]
 description = "Synthetic Rendering for Blender"
 readme = "README.md"
