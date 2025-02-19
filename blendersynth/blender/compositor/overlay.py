@@ -20,7 +20,6 @@ class Overlay:
 
         for camera in render_result.camera_names:
             for frame in render_result.frames:
-                print(self.keys_in, render_result.render_paths)
                 paths_in = [
                     render_result.get_render_path(key, camera, frame)
                     for key in self.keys_in
