@@ -1,8 +1,10 @@
 import bpy
+
 from ..utils import get_node_by_name
 import os
 import shutil
 import tempfile
+from pathlib import Path
 from ..render import render, render_depth
 from ..nodes import CompositorNodeGroup, srgb_to_linear
 from ..aov import AOV
@@ -20,6 +22,7 @@ from ..world import world
 from ..camera import Camera
 from ...utils import version
 from .render_result import RenderResult
+from .overlay import BackgroundColor
 
 from typing import Union, List
 
@@ -133,13 +136,17 @@ class Compositor:
         self.file_output_node: bpy.types.CompositorNodeOutputFile = (
             self.node_tree.nodes.new("CompositorNodeOutputFile")
         )
-        self.file_output_node.file_slots[0].path = '_tmp'  # Avoids error in deleting input node.
+        self.file_output_node.file_slots[
+            0
+        ].path = "_tmp"  # Avoids error in deleting input node.
         self.file_output_node.base_path = self._tempdir.name
 
         self.file_output_slots = {}  # Mapping of file output name to file output slot
         self.mask_nodes = {}  # Mapping of mask pass index to CompositorNodeGroup
         self.overlays = {}
         self.aovs = []  # List of AOVs (used to update before rendering)
+
+        self._image_output_keys = []  # Output slot names which output 'Image'.
 
         bpy.context.scene.display_settings.display_device = "sRGB"
         bpy.context.scene.view_settings.view_transform = rgb_color_space
@@ -148,8 +155,10 @@ class Compositor:
         self._rgb_socket = get_node_by_name(self.node_tree, "Render Layers").outputs[
             "Image"
         ]
-        if background_color is not None:
-            self._set_background_color(background_color)
+        self._background_color = background_color
+
+        # Always create an alpha mask output.
+        self.define_output("Alpha", "alpha", is_data=True)
 
     def _tidy_tree(self):
         """Tidy up node tree"""
@@ -400,6 +409,9 @@ class Compositor:
         if isinstance(input_data, str):
             from_socket = self._get_render_layer_output(input_data)
 
+            if input_data == "Image":
+                self._image_output_keys.append(name)
+
         elif isinstance(input_data, CompositorNodeGroup):  # add overlay in between
             from_socket = input_data.outputs[0]
 
@@ -478,6 +490,19 @@ class Compositor:
         :returns: :class:`~blendersynth.blender.compositor.render_result.RenderResult` object containing paths to rendered files.
         """
 
+        # Set up all overlays.
+        overlays = []
+        if self._background_color is not None:
+            world.set_transparent()
+            for key in self._image_output_keys:
+                overlays.append(
+                    BackgroundColor(
+                        keys_in=[key, "alpha"],
+                        key_out=key,
+                        background_color=self._background_color,
+                    )
+                )
+
         if scene is None:
             scene = bpy.context.scene
 
@@ -525,35 +550,14 @@ class Compositor:
                     new_pth = os.path.join(camera_frame_dir, os.path.basename(pth))
                     shutil.move(pth, new_pth)
 
-                    render_paths[(key, cam.name, frame)] = new_pth
+                    render_paths[(key, cam.name, frame)] = Path(new_pth)
 
         # reset active camera
         scene.camera = _original_active_camera
 
-        return RenderResult(render_paths)
+        render_result = RenderResult(render_paths)
 
-    def _set_background_color(self, color: tuple = (0, 0, 0)):
-        """Set a solid background color, instead of transparent.
-        Will remove the visuals of existing world background (but not the lighting effects).
+        for overlay in overlays:
+            overlay.apply(render_result)
 
-        :param color: RGBA color, in range [0, 1]
-        """
-
-        world.set_transparent()
-
-        rgba = color
-        if len(rgba) == 3:
-            rgba = (*rgba, 1)
-
-        rgb_node = self.node_tree.nodes.new("CompositorNodeRGB")
-        rgb_node.outputs[0].default_value = rgba
-
-        mix_node = self.node_tree.nodes.new("CompositorNodeMixRGB")
-
-        self.node_tree.links.new(self._rgb_socket, mix_node.inputs[2])
-        self.node_tree.links.new(rgb_node.outputs[0], mix_node.inputs[1])
-
-        self.node_tree.links.new(
-            self._get_render_layer_output("Alpha"), mix_node.inputs["Fac"]
-        )
-        self._rgb_socket = mix_node.outputs["Image"]
+        return render_result

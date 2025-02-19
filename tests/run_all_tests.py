@@ -15,6 +15,7 @@ if not bsyn.is_blender_running():
 bsyn.run_this_script()
 
 from test_compositor import UnitTestCompositor
-tests = [UnitTestCompositor]
+from test_background_color import UnitTestBackgroundColor
+tests = [UnitTestCompositor, UnitTestBackgroundColor]
 for test in tests:
     unittest.TextTestRunner().run(loader.loadTestsFromTestCase(test))
