@@ -1,10 +1,10 @@
 import bpy
-from ffmpeg import overlay
 
 from ..utils import get_node_by_name
 import os
 import shutil
 import tempfile
+from pathlib import Path
 from ..render import render, render_depth
 from ..nodes import CompositorNodeGroup, srgb_to_linear
 from ..aov import AOV
@@ -136,7 +136,9 @@ class Compositor:
         self.file_output_node: bpy.types.CompositorNodeOutputFile = (
             self.node_tree.nodes.new("CompositorNodeOutputFile")
         )
-        self.file_output_node.file_slots[0].path = '_tmp'  # Avoids error in deleting input node.
+        self.file_output_node.file_slots[
+            0
+        ].path = "_tmp"  # Avoids error in deleting input node.
         self.file_output_node.base_path = self._tempdir.name
 
         self.file_output_slots = {}  # Mapping of file output name to file output slot
@@ -144,7 +146,7 @@ class Compositor:
         self.overlays = {}
         self.aovs = []  # List of AOVs (used to update before rendering)
 
-        self._image_output_keys = [] # Output slot names which output 'Image'.
+        self._image_output_keys = []  # Output slot names which output 'Image'.
 
         bpy.context.scene.display_settings.display_device = "sRGB"
         bpy.context.scene.view_settings.view_transform = rgb_color_space
@@ -155,8 +157,8 @@ class Compositor:
         ]
         self._background_color = background_color
 
-        # Create an internal _alpha mask output.
-        self.define_output('Alpha', '_alpha', is_data=True)
+        # Always create an alpha mask output.
+        self.define_output("Alpha", "alpha", is_data=True)
 
     def _tidy_tree(self):
         """Tidy up node tree"""
@@ -493,7 +495,13 @@ class Compositor:
         if self._background_color is not None:
             world.set_transparent()
             for key in self._image_output_keys:
-                overlays.append(BackgroundColor(keys_in=[key, '_alpha'], key_out=key, background_color=self._background_color))
+                overlays.append(
+                    BackgroundColor(
+                        keys_in=[key, "alpha"],
+                        key_out=key,
+                        background_color=self._background_color,
+                    )
+                )
 
         if scene is None:
             scene = bpy.context.scene
@@ -542,7 +550,7 @@ class Compositor:
                     new_pth = os.path.join(camera_frame_dir, os.path.basename(pth))
                     shutil.move(pth, new_pth)
 
-                    render_paths[(key, cam.name, frame)] = new_pth
+                    render_paths[(key, cam.name, frame)] = Path(new_pth)
 
         # reset active camera
         scene.camera = _original_active_camera
