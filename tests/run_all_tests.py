@@ -8,13 +8,15 @@ if not bsyn.is_blender_running():
     from test_run_this_script import UnitTestRunThisScript
     tests = [UnitTestRunThisScript]
 
-    for test in tests:
-        unittest.TextTestRunner().run(loader.loadTestsFromTestCase(test))
+    # for test in tests:
+    #     unittest.TextTestRunner().run(loader.loadTestsFromTestCase(test))
 
 # Some tests run in Blender Python.
 bsyn.run_this_script()
 
 from test_compositor import UnitTestCompositor
-tests = [UnitTestCompositor]
+from test_background_color import UnitTestBackgroundColor
+tests = [UnitTestCompositor, UnitTestBackgroundColor]
+tests = [UnitTestBackgroundColor]
 for test in tests:
     unittest.TextTestRunner().run(loader.loadTestsFromTestCase(test))

@@ -1,5 +1,6 @@
 import os.path
 from shutil import copyfile
+from pathlib import Path
 
 class RenderResult:
     """Result of any form of render.
@@ -7,32 +8,36 @@ class RenderResult:
     Treated as a series of paths to the output files. Handles different output types, cameras, and frame counts.
     """
 
-    def __init__(self, render_paths: dict[tuple, str]):
+    def __init__(self, render_paths: dict[tuple, Path]):
         """Expects dictionary of:
 
         (output_key, camera_name, frame_number) -> Path.
         """
 
-        self._render_paths = render_paths
+        self.render_paths = render_paths
 
-        self._output_types = list(set([k[0] for k in render_paths.keys()]))
-        self._camera_names = list(set([k[1] for k in render_paths.keys()]))
-        self._frames = list(set([k[2] for k in render_paths.keys()]))
+    def add(self, output_key: str, camera_name: str, frame_number: int, path: Path, overwrite=False):
+        """Add a new RenderResult."""
+        key = (output_key, camera_name, frame_number)
+        if key in self.render_paths and not overwrite:
+            raise ValueError(f"Render path already exists for {output_key}, {camera_name}, {frame_number}.")
+
+        self.render_paths[key] = path
 
     @property
     def output_types(self) -> list[str]:
         """List of output types."""
-        return self._output_types
+        return list(set([k[0] for k in self.render_paths.keys()]))
 
     @property
     def camera_names(self) -> list[str]:
         """List of camera names."""
-        return self._camera_names
+        return list(set([k[1] for k in self.render_paths.keys()]))
 
     @property
     def frames(self) -> list[int]:
         """List of frame numbers."""
-        return self._frames
+        return list(set([k[2] for k in self.render_paths.keys()]))
 
     @property
     def num_cameras(self) -> int:
@@ -71,7 +76,7 @@ class RenderResult:
 
             frame_number = self.frames[0]
 
-        return self._render_paths[(output_type, camera_name, frame_number)]
+        return self.render_paths[(output_type, camera_name, frame_number)]
 
     def save_all(self, output_directory: str, suppress_camera_name: bool = True, suppress_frame_number: bool = True):
         """Save all the files to a directory.
@@ -88,7 +93,7 @@ class RenderResult:
         suppress_camera_name = suppress_camera_name and self.num_cameras == 1
         suppress_frame_number = suppress_frame_number and self.num_frames == 1
 
-        for (data_type, camera, frame), path in self._render_paths.items():
+        for (data_type, camera, frame), path in self.render_paths.items():
 
             fname = f'{data_type}'
             if not suppress_camera_name:
