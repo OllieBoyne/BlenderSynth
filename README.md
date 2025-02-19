@@ -36,11 +36,13 @@ BlenderSynth supports Blender 3 and 4.
 
 This project is currently in Beta. Please let me know what new features you would like, or feel free to make a pull request!
 
+BlenderSynth has been used in research for foot reconstruction, see my other projects [FOUND](https://ollieboyne.com/FOUND) and [FOCUS](https://ollieboyne.com/FOCUS).
+
 If you use BlenderSynth for a project, please [contact me](https://ollieboyne.github.io) about it - I might include it in the documentation as a usage example!
 
 ## Citing
 
-If you use BlenderSynth in your work, please cite:
+If you use BlenderSynth in your work, please cite the software, and the paper in which it was introduced,
 
 ```
 @software{blendersynth,
@@ -49,6 +51,15 @@ If you use BlenderSynth in your work, please cite:
   year         = 2023,
   publisher    = {GitHub},
   url          = {https://ollieboyne.github.io/BlenderSynth},
+}
+```
+
+```
+@inproceedings{boyne2024found,
+            title={FOUND: {F}oot {O}ptimisation with {U}ncertain {N}ormals for Surface {D}eformation using Synthetic Data},
+            author={Boyne, Oliver and Bae, Gwangbin and Charles, James and Cipolla, Roberto},
+            booktitle={Winter Conference on Applications of Computer Vision (WACV)},
+            year={2024}
 }
 ```
 
