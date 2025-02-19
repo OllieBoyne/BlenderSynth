@@ -36,6 +36,7 @@ def setup_blender_stubs(blender_path):
         [blender_path, "--background", "--python-expr", script_code],
         capture_output=True,
         text=True,
+        encoding='UTF-8'
     )
 
     for line in result.stdout.split("\n"):
