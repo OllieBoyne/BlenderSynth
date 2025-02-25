@@ -105,80 +105,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.blender.devices">
-<span id="blendersynth-blender-devices"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.devices</span></code><a class="headerlink" href="#module-blendersynth.blender.devices" title="Link to this heading"></a></h1>
-<p>Blender device management.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="blendersynth.blender.devices.DeviceList">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.devices.</span></span><span class="sig-name descname"><span class="pre">DeviceList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.devices.DeviceList" title="Link to this definition"></a></dt>
-<dd><dl class="py property">
-<dt class="sig sig-object py" id="blendersynth.blender.devices.DeviceList.names">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#blendersynth.blender.devices.DeviceList.names" title="Link to this definition"></a></dt>
-<dd><p>Return the names of all devices.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="blendersynth.blender.devices.Devices">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.devices.</span></span><span class="sig-name descname"><span class="pre">Devices</span></span><a class="headerlink" href="#blendersynth.blender.devices.Devices" title="Link to this definition"></a></dt>
-<dd><p>A manager for Blender rendering devices (CPU &amp; GPU).</p>
-<dl class="py property">
-<dt class="sig sig-object py" id="blendersynth.blender.devices.Devices.available_gpus">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_gpus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#blendersynth.blender.devices.DeviceList" title="blendersynth.blender.devices.DeviceList"><span class="pre">DeviceList</span></a></em><a class="headerlink" href="#blendersynth.blender.devices.Devices.available_gpus" title="Link to this definition"></a></dt>
-<dd><p>Return list of all GPU devices.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="blendersynth.blender.devices.Devices.device_names">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">device_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#blendersynth.blender.devices.Devices.device_names" title="Link to this definition"></a></dt>
-<dd><p>Return a list of all device names.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="blendersynth.blender.devices.Devices.enabled_device_names">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">enabled_device_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#blendersynth.blender.devices.Devices.enabled_device_names" title="Link to this definition"></a></dt>
-<dd><p>Return a list of named devices that are enabled.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="blendersynth.blender.devices.Devices.enabled_gpus">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">enabled_gpus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#blendersynth.blender.devices.DeviceList" title="blendersynth.blender.devices.DeviceList"><span class="pre">DeviceList</span></a></em><a class="headerlink" href="#blendersynth.blender.devices.Devices.enabled_gpus" title="Link to this definition"></a></dt>
-<dd><p>Return list of available GPU devices.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.devices.Devices.set_by_name">
-<span class="sig-name descname"><span class="pre">set_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.devices.Devices.set_by_name" title="Link to this definition"></a></dt>
-<dd><p>Set use/not use based on a device name.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Device name</p></li>
-<li><p><strong>use</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Whether to use the device or not</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blendersynth.blender.devices.Devices.set_device_usage">
-<span class="sig-name descname"><span class="pre">set_device_usage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opencl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.devices.Devices.set_device_usage" title="Link to this definition"></a></dt>
-<dd><p>Set/unset all devices of certain types to enabled.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cpu</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Enable/disable CPU devices</p></li>
-<li><p><strong>cuda</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Enable/disable CUDA devices</p></li>
-<li><p><strong>opencl</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Enable/disable OpenCL devices</p></li>
-<li><p><strong>metal</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Enable/disable Metal devices</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+  <section id="blendersynth-blender-devices">
+<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.devices</span></code><a class="headerlink" href="#blendersynth-blender-devices" title="Link to this heading"></a></h1>
 </section>
 
 

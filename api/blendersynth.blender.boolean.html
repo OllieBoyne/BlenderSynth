@@ -105,63 +105,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-blendersynth.blender.boolean">
-<span id="blendersynth-blender-boolean"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.boolean</span></code><a class="headerlink" href="#module-blendersynth.blender.boolean" title="Link to this heading"></a></h1>
-<p>Functions for boolean operations of meshes</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.blender.boolean.difference">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.boolean.</span></span><span class="sig-name descname"><span class="pre">difference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">others</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_others</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.boolean.difference" title="Link to this definition"></a></dt>
-<dd><p>Apply the difference boolean modifier to a collection of meshes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>target</strong> (<span class="sphinx_autodoc_typehints-type">blendersynth.blender.mesh.Mesh</span>) – The target Mesh: this is returned by the function</p></li>
-<li><p><strong>others</strong> (<span class="sphinx_autodoc_typehints-type">blendersynth.blender.mesh.Mesh</span>) – Other Meshes to subtract from <cite>target</cite></p></li>
-<li><p><strong>hide_others</strong> – If True, hide all Meshes in the <cite>others</cite> list</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type">blendersynth.blender.mesh.Mesh</span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.blender.boolean.intersect">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.boolean.</span></span><span class="sig-name descname"><span class="pre">intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">others</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_others</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.boolean.intersect" title="Link to this definition"></a></dt>
-<dd><p>Apply the intersect boolean modifier to a collection of meshes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>target</strong> (<span class="sphinx_autodoc_typehints-type">blendersynth.blender.mesh.Mesh</span>) – The target Mesh: this is returned by the function</p></li>
-<li><p><strong>others</strong> (<span class="sphinx_autodoc_typehints-type">blendersynth.blender.mesh.Mesh</span>) – Other Meshes to intersect with <cite>target</cite></p></li>
-<li><p><strong>hide_others</strong> – If True, hide all Meshes in the <cite>others</cite> list</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type">blendersynth.blender.mesh.Mesh</span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="blendersynth.blender.boolean.union">
-<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.boolean.</span></span><span class="sig-name descname"><span class="pre">union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">others</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_others</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.blender.boolean.union" title="Link to this definition"></a></dt>
-<dd><p>Apply the union boolean modifier to a collection of meshes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>target</strong> (<span class="sphinx_autodoc_typehints-type">blendersynth.blender.mesh.Mesh</span>) – The target Mesh: this is returned by the function</p></li>
-<li><p><strong>others</strong> (<span class="sphinx_autodoc_typehints-type">blendersynth.blender.mesh.Mesh</span>) – Other Meshes to union with <cite>target</cite></p></li>
-<li><p><strong>hide_others</strong> – If True, hide all Meshes in the <cite>others</cite> list</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type">blendersynth.blender.mesh.Mesh</span></p>
-</dd>
-</dl>
-</dd></dl>
-
+  <section id="blendersynth-blender-boolean">
+<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.boolean</span></code><a class="headerlink" href="#blendersynth-blender-boolean" title="Link to this heading"></a></h1>
 </section>
 
 

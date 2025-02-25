@@ -197,6 +197,14 @@
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not install </span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2"> via pip. Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">uninstall_module</span><span class="p">(</span><span class="n">python_executable</span><span class="p">,</span> <span class="n">module_name</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">python_executable</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;pip&quot;</span><span class="p">,</span> <span class="s2">&quot;uninstall&quot;</span><span class="p">,</span> <span class="s2">&quot;-y&quot;</span><span class="p">,</span> <span class="n">module_name</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not uninstall </span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2"> via pip. Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
 <div class="viewcode-block" id="install_module">
 <a class="viewcode-back" href="../../../../api/blendersynth.utils.blender_setup.check_blender_install.html#blendersynth.utils.blender_setup.check_blender_install.install_module">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">install_module</span><span class="p">(</span>
