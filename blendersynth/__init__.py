@@ -2,6 +2,15 @@
 import sys
 from .utils.blender_setup import check_blender_install, install_module
 
+try:
+    # Python 3.8+
+    from importlib.metadata import version, PackageNotFoundError
+except ImportError:
+    # Fallback for older Python versions
+    from importlib_metadata import version, PackageNotFoundError
+
+__version__ = version("blendersynth")
+
 
 def fix_blender_install(local=False, editable=False):
     check_blender_install(

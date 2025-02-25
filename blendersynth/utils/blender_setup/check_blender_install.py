@@ -90,6 +90,14 @@ def _install_module(
         raise Exception(f"Could not install {module_name} via pip. Error: {e}")
 
 
+def uninstall_module(python_executable, module_name):
+    try:
+        subprocess.check_call(
+            [python_executable, "-m", "pip", "uninstall", "-y", module_name]
+        )
+    except subprocess.CalledProcessError as e:
+        raise Exception(f"Could not uninstall {module_name} via pip. Error: {e}")
+
 def install_module(
     module_name: str, version: str = None, upgrade: bool = True, editable: bool = False
 ):
