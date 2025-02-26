@@ -105,8 +105,52 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-run-run">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.run</span></code><a class="headerlink" href="#blendersynth-run-run" title="Link to this heading"></a></h1>
+  <section id="module-blendersynth.run.run">
+<span id="blendersynth-run-run"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.run</span></code><a class="headerlink" href="#module-blendersynth.run.run" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.run.run.BlenderCommand">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.run.run.</span></span><span class="sig-name descname"><span class="pre">BlenderCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blender_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blend_src</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/run.html#BlenderCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.run.BlenderCommand" title="Link to this definition"></a></dt>
+<dd><p>Construct command for running blender script</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.run.run.BlenderCommand.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/run.html#BlenderCommand.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.run.BlenderCommand.copy" title="Link to this definition"></a></dt>
+<dd><p>Return a copy of the command</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.run.run.BlenderCommand.set_job">
+<span class="sig-name descname"><span class="pre">set_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/run.html#BlenderCommand.set_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.run.BlenderCommand.set_job" title="Link to this definition"></a></dt>
+<dd><p>Receives list of json files, adds as , separated string to command</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.run.run.BlenderCommand.set_logger">
+<span class="sig-name descname"><span class="pre">set_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_loc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/run.html#BlenderCommand.set_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.run.BlenderCommand.set_logger" title="Link to this definition"></a></dt>
+<dd><p>Set file for logging</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.run.run.execute_jobs">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.run.run.</span></span><span class="sig-name descname"><span class="pre">execute_jobs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">script</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_src</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_to_stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distributed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blend_src</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">script_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/run.html#execute_jobs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.run.execute_jobs" title="Link to this definition"></a></dt>
+<dd><p>Execute a script, given a list of jobs to execute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>script</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path to script to execute</p></li>
+<li><p><strong>json_src</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span>) – N sized list of .json files, each with info about the given job. OR a directory containing .json files,
+which will be used as the jsons</p></li>
+<li><p><strong>output_directory</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – directory to save output files</p></li>
+<li><p><strong>num_threads</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – threads to run in parallel (default = 1)</p></li>
+<li><p><strong>print_to_stdout</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, print to stdout instead of saving to file</p></li>
+<li><p><strong>distributed</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span>) – tuple of (machine index, total machines) for distributed rendering</p></li>
+<li><p><strong>blend_src</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path to blend file to open (note: this is preferable to <cite>blendersynth.load_blend</cite> as it handles context better)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

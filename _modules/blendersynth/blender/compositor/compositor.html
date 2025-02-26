@@ -103,10 +103,12 @@
              
   <h1>Source code for blendersynth.blender.compositor.compositor</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_node_by_name</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..render</span><span class="w"> </span><span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">render_depth</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..nodes</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompositorNodeGroup</span><span class="p">,</span> <span class="n">srgb_to_linear</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..aov</span><span class="w"> </span><span class="kn">import</span> <span class="n">AOV</span>
@@ -124,6 +126,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..camera</span><span class="w"> </span><span class="kn">import</span> <span class="n">Camera</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.render_result</span><span class="w"> </span><span class="kn">import</span> <span class="n">RenderResult</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.overlay</span><span class="w"> </span><span class="kn">import</span> <span class="n">BackgroundColor</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 
@@ -241,13 +244,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">file_output_node</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">CompositorNodeOutputFile</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeOutputFile&quot;</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">file_output_node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;_tmp&#39;</span>  <span class="c1"># Avoids error in deleting input node.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_output_node</span><span class="o">.</span><span class="n">file_slots</span><span class="p">[</span>
+            <span class="mi">0</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;_tmp&quot;</span>  <span class="c1"># Avoids error in deleting input node.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file_output_node</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tempdir</span><span class="o">.</span><span class="n">name</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">file_output_slots</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Mapping of file output name to file output slot</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mask_nodes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Mapping of mask pass index to CompositorNodeGroup</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">overlays</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aovs</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List of AOVs (used to update before rendering)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image_output_keys</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Output slot names which output &#39;Image&#39;.</span>
 
         <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">display_settings</span><span class="o">.</span><span class="n">display_device</span> <span class="o">=</span> <span class="s2">&quot;sRGB&quot;</span>
         <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">view_settings</span><span class="o">.</span><span class="n">view_transform</span> <span class="o">=</span> <span class="n">rgb_color_space</span>
@@ -256,8 +263,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">get_node_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="p">,</span> <span class="s2">&quot;Render Layers&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span>
             <span class="s2">&quot;Image&quot;</span>
         <span class="p">]</span>
-        <span class="k">if</span> <span class="n">background_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_set_background_color</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_background_color</span> <span class="o">=</span> <span class="n">background_color</span>
+
+        <span class="c1"># Always create an alpha mask output.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">,</span> <span class="n">is_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_tidy_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -529,6 +538,9 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">from_socket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
+            <span class="k">if</span> <span class="n">input_data</span> <span class="o">==</span> <span class="s2">&quot;Image&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_image_output_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">CompositorNodeGroup</span><span class="p">):</span>  <span class="c1"># add overlay in between</span>
             <span class="n">from_socket</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -610,6 +622,19 @@
 <span class="sd">        :returns: :class:`~blendersynth.blender.compositor.render_result.RenderResult` object containing paths to rendered files.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="c1"># Set up all overlays.</span>
+        <span class="n">overlays</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_background_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">world</span><span class="o">.</span><span class="n">set_transparent</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_output_keys</span><span class="p">:</span>
+                <span class="n">overlays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">BackgroundColor</span><span class="p">(</span>
+                        <span class="n">keys_in</span><span class="o">=</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">],</span>
+                        <span class="n">key_out</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+                        <span class="n">background_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_background_color</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">scene</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">scene</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span>
 
@@ -657,39 +682,18 @@
                     <span class="n">new_pth</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">camera_frame_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">pth</span><span class="p">))</span>
                     <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">pth</span><span class="p">,</span> <span class="n">new_pth</span><span class="p">)</span>
 
-                    <span class="n">render_paths</span><span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="n">cam</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">frame</span><span class="p">)]</span> <span class="o">=</span> <span class="n">new_pth</span>
+                    <span class="n">render_paths</span><span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="n">cam</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">frame</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">new_pth</span><span class="p">)</span>
 
         <span class="c1"># reset active camera</span>
         <span class="n">scene</span><span class="o">.</span><span class="n">camera</span> <span class="o">=</span> <span class="n">_original_active_camera</span>
 
-        <span class="k">return</span> <span class="n">RenderResult</span><span class="p">(</span><span class="n">render_paths</span><span class="p">)</span></div>
+        <span class="n">render_result</span> <span class="o">=</span> <span class="n">RenderResult</span><span class="p">(</span><span class="n">render_paths</span><span class="p">)</span>
 
+        <span class="k">for</span> <span class="n">overlay</span> <span class="ow">in</span> <span class="n">overlays</span><span class="p">:</span>
+            <span class="n">overlay</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">render_result</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_set_background_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a solid background color, instead of transparent.</span>
-<span class="sd">        Will remove the visuals of existing world background (but not the lighting effects).</span>
-
-<span class="sd">        :param color: RGBA color, in range [0, 1]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">world</span><span class="o">.</span><span class="n">set_transparent</span><span class="p">()</span>
-
-        <span class="n">rgba</span> <span class="o">=</span> <span class="n">color</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rgba</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">rgba</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">rgba</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-        <span class="n">rgb_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeRGB&quot;</span><span class="p">)</span>
-        <span class="n">rgb_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">default_value</span> <span class="o">=</span> <span class="n">rgba</span>
-
-        <span class="n">mix_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;CompositorNodeMixRGB&quot;</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span><span class="p">,</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">rgb_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">node_tree</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_get_render_layer_output</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">),</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;Fac&quot;</span><span class="p">]</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rgb_socket</span> <span class="o">=</span> <span class="n">mix_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;Image&quot;</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">render_result</span></div>
+</div>
 
 </pre></div>
 

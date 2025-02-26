@@ -105,8 +105,65 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-run-run-this-script">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.run_this_script</span></code><a class="headerlink" href="#blendersynth-run-run-this-script" title="Link to this heading"></a></h1>
+  <section id="module-blendersynth.run.run_this_script">
+<span id="blendersynth-run-run-this-script"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.run.run_this_script</span></code><a class="headerlink" href="#module-blendersynth.run.run_this_script" title="Link to this heading"></a></h1>
+<p>Quick utility to run the current script from Blender</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.run.run_this_script.ArgumentParser">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.run.run_this_script.</span></span><span class="sig-name descname"><span class="pre">ArgumentParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prog=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usage=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epilog=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parents=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter_class=&lt;class</span> <span class="pre">'argparse.HelpFormatter'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix_chars='-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fromfile_prefix_chars=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">argument_default=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conflict_handler='error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_help=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_abbrev=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exit_on_error=True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/run_this_script.html#ArgumentParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.run_this_script.ArgumentParser" title="Link to this definition"></a></dt>
+<dd><p>Subclass of ArgumentParser to properly handle arguments passed through to Blender.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.run.run_this_script.ArgumentParser.add_argument">
+<span class="sig-name descname"><span class="pre">add_argument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blendersynth.run.run_this_script.ArgumentParser.add_argument" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">add_argument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option_string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option_string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.run.run_this_script.ArgumentParser.error">
+<span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/argparse.html#ArgumentParser.error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.run_this_script.ArgumentParser.error" title="Link to this definition"></a></dt>
+<dd><p>Prints a usage message incorporating the message to stderr and
+exits.</p>
+<p>If you override this in a subclass, it should not return – it
+should either exit or raise an exception.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.run.run_this_script.is_blender_running">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.run.run_this_script.</span></span><span class="sig-name descname"><span class="pre">is_blender_running</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/run_this_script.html#is_blender_running"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.run_this_script.is_blender_running" title="Link to this definition"></a></dt>
+<dd><p>Returns True if blender is running, False otherwise</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.run.run_this_script.is_from_run_this_script">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.run.run_this_script.</span></span><span class="sig-name descname"><span class="pre">is_from_run_this_script</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/run_this_script.html#is_from_run_this_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.run_this_script.is_from_run_this_script" title="Link to this definition"></a></dt>
+<dd><p>Returns True if this script is being run from run_this_script</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.run.run_this_script.run_this_script">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.run.run_this_script.</span></span><span class="sig-name descname"><span class="pre">run_this_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_blender</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">IDE</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PyCharm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5678</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'localhost'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blend_src</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blend_as_copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/run/run_this_script.html#run_this_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.run.run_this_script.run_this_script" title="Link to this definition"></a></dt>
+<dd><p>Run the script in which this function is called from Blender.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>open_blender</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, open a Blender instance after all code is executed, otherwise run in background</p></li>
+<li><p><strong>debug</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, will run in debug mode</p></li>
+<li><p><strong>IDE</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – IDE to use for debugging. Currently only PyCharm and VSCode are supported</p></li>
+<li><p><strong>port</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Port to use for debugging</p></li>
+<li><p><strong>host</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Host to use for debugging</p></li>
+<li><p><strong>blend_src</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Path to blend file to open (note: this is preferable to <cite>blendersynth.load_blend</cite> as it handles context better)</p></li>
+<li><p><strong>blend_as_copy</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, will copy <cite>blend_src</cite> to a temp file before opening - this is useful if you want to make sure you don’t accidentally override your <cite>blend_src</cite> file</p></li>
+</ul>
+</dd>
+</dl>
+<p>args &amp; kwargs are passed to the script being run as command line arguments.</p>
+<p>The flag <cite>–run_this_script</cite> is passed to the script being run to indicate that it is being run from <cite>run_this_script</cite>.
+Use function <cite>is_from_run_this_script</cite> to check if the script is being run from <cite>run_this_script</cite>.</p>
+</dd></dl>
+
 </section>
 
 

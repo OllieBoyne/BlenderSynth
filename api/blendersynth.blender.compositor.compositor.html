@@ -106,8 +106,192 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-blender-compositor-compositor">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.compositor.compositor</span></code><a class="headerlink" href="#blendersynth-blender-compositor-compositor" title="Link to this heading"></a></h1>
+  <section id="module-blendersynth.blender.compositor.compositor">
+<span id="blendersynth-blender-compositor-compositor"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.blender.compositor.compositor</span></code><a class="headerlink" href="#module-blendersynth.blender.compositor.compositor" title="Link to this heading"></a></h1>
+<dl class="py data">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.blender.compositor.compositor.</span></span><span class="sig-name descname"><span class="pre">AVAILABLE_FORMATS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['BMP',</span> <span class="pre">'IRIS',</span> <span class="pre">'PNG',</span> <span class="pre">'JPEG',</span> <span class="pre">'JPEG2000',</span> <span class="pre">'TARGA',</span> <span class="pre">'TARGA_RAW',</span> <span class="pre">'CINEON',</span> <span class="pre">'DPX',</span> <span class="pre">'OPEN_EXR_MULTILAYER',</span> <span class="pre">'OPEN_EXR',</span> <span class="pre">'HDR',</span> <span class="pre">'TIFF']</span></em><a class="headerlink" href="#blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS" title="Link to this definition"></a></dt>
+<dd><p>List of available output file formats</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.compositor.compositor.</span></span><span class="sig-name descname"><span class="pre">Compositor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ViewLayer'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rgb_color_space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor" title="Link to this definition"></a></dt>
+<dd><p>Compositor output - for handling file outputs, and managing Compositor node tree</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ViewLayer'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rgb_color_space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.__init__" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>view_layer</strong> – Name of View Layer to render</p></li>
+<li><p><strong>background_color</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span>) – If given, RGB[A] tuple in range [0-1], will overwrite World background with solid color (while retaining lighting effects).</p></li>
+<li><p><strong>rgb_color_space</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color transform for RGB only. Defaults to <cite>AgX Base sRGB</cite> for Blender 4+, and <cite>Filmic sRGB</cite> for older versions.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.define_output">
+<span class="sig-name descname"><span class="pre">define_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PNG'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RGBA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jpeg_quality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">png_compression</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EXR_color_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'32'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.define_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.define_output" title="Link to this definition"></a></dt>
+<dd><p>Add a connection between a valid render output, and a file output node.</p>
+<p>This should only be called once per output (NOT inside a loop).
+Inside the loop, only call <code class="xref py py-attr docutils literal notranslate"><span class="pre">update_filename</span></code>, <code class="xref py py-attr docutils literal notranslate"><span class="pre">update_all_filenames</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">update_directory</span></code></p>
+<p>All outputs will be defined in raw color space (no color correction), except for the RGB output,
+and any overlays on this output (e.g. Bounding Box Visualization)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a>, <a class="reference internal" href="blendersynth.blender.aov.html#blendersynth.blender.aov.AOV" title="blendersynth.blender.aov.AOV"><code class="xref py py-class docutils literal notranslate"><span class="pre">AOV</span></code></a>]</span>) – If <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>,  will get the input_data from that key in the render_layers_node. If <code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code>, use that node as input. If <code class="xref py py-class docutils literal notranslate"><span class="pre">AOV</span></code>, use that AOV as input (storing AOV).</p></li>
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Target name of output. If not given, will infer from input_data.</p></li>
+<li><p><strong>is_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, save with no color correction. If False, save with color correction.</p></li>
+<li><p><strong>file_format</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – File format to save output as. Must be in <a class="reference internal" href="#blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS" title="blendersynth.blender.compositor.compositor.AVAILABLE_FORMATS"><code class="xref py py-class docutils literal notranslate"><span class="pre">AVAILABLE_FORMATS</span></code></a></p></li>
+<li><p><strong>color_mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color mode to save output as.</p></li>
+<li><p><strong>jpeg_quality</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Quality of JPEG output.</p></li>
+<li><p><strong>png_compression</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Compression of PNG output.</p></li>
+<li><p><strong>color_depth</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color depth of output.</p></li>
+<li><p><strong>EXR_color_depth</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Color depth of EXR output.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Name of output.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.get_axes_visual">
+<span class="sig-name descname"><span class="pre">get_axes_visual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_axes_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_axes_visual" title="Link to this definition"></a></dt>
+<dd><p>Return an axes visual overlay.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Size of axes. Default 100</p></li>
+<li><p><strong>thickness</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Thickness of axes. Default 2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AxesOverlay" title="blendersynth.blender.compositor.image_overlay.AxesOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">AxesOverlay</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.get_bounding_box_visual">
+<span class="sig-name descname"><span class="pre">get_bounding_box_visual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.0,</span> <span class="pre">0.0,</span> <span class="pre">255.0,</span> <span class="pre">255.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_bounding_box_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_bounding_box_visual" title="Link to this definition"></a></dt>
+<dd><p>Return a bounding box visual overlay.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>col</strong> – (3,) or (N, 3) Color(s) of bounding box(es) [in BGR]</p></li>
+<li><p><strong>thickness</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – (,) or (N,) Thickness(es) of bounding box(es)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay" title="blendersynth.blender.compositor.image_overlay.BoundingBoxOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoundingBoxOverlay</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.get_depth_visual">
+<span class="sig-name descname"><span class="pre">get_depth_visual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_depth_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_depth_visual" title="Link to this definition"></a></dt>
+<dd><p>Get depth visual, which normalizes depth values so max_depth = col,
+and any values below that are depth/max_depth * col.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_depth</strong> – Maximum depth value to normalize to</p></li>
+<li><p><strong>col</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span>) – Color of maximum depth value. 0-255 RGB or RGBA.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.get_keypoints_visual">
+<span class="sig-name descname"><span class="pre">get_keypoints_visual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">marker</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_keypoints_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_keypoints_visual" title="Link to this definition"></a></dt>
+<dd><p>Return a keypoints visual overlay.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>marker</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Marker type, either [c/circle], [s/square], [t/triangle] or [x]. Default ‘x’</p></li>
+<li><p><strong>size</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Size of marker. Default 5</p></li>
+<li><p><strong>color</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span>) – Color of marker, RGB or RGBA, default (0, 0, 255) (red)</p></li>
+<li><p><strong>thickness</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Thickness of marker. Default 2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.KeypointsOverlay" title="blendersynth.blender.compositor.image_overlay.KeypointsOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeypointsOverlay</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.get_mask">
+<span class="sig-name descname"><span class="pre">get_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_rgb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anti_aliasing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.get_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.get_mask" title="Link to this definition"></a></dt>
+<dd><p>Get mask node from pass index. If not found, create new mask node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.nodes.node_group.html#blendersynth.blender.nodes.node_group.CompositorNodeGroup" title="blendersynth.blender.nodes.node_group.CompositorNodeGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositorNodeGroup</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.keys">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">keys</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.keys" title="Link to this definition"></a></dt>
+<dd><p>List of output keys.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">camera</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.render" title="Link to this definition"></a></dt>
+<dd><p>Render the scene.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>camera</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="blendersynth.blender.camera.html#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="blendersynth.blender.camera.html#blendersynth.blender.camera.Camera" title="blendersynth.blender.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a>]]</span>) – Camera(s) to render from. If None, will use <cite>scene.camera</cite>. If multiple, will render each camera separately, appending the camera’s names as the output file names.</p></li>
+<li><p><strong>scene</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scene</span></code></span>) – Scene to render. If None, will use <cite>bpy.context.scene</cite>.</p></li>
+<li><p><strong>annotations</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.annotations.annotation_handler.html#blendersynth.annotations.annotation_handler.AnnotationHandler" title="blendersynth.annotations.annotation_handler.AnnotationHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationHandler</span></code></a></span>) – Object containing annotation information for each camera view to be used for overlays</p></li>
+<li><p><strong>animation</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If True, will render an animation, using <cite>frame_start</cite> and <cite>frame_end</cite> as the start and end frames.</p></li>
+<li><p><strong>frame_start</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Start frame for animation.</p></li>
+<li><p><strong>frame_end</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – End frame for animation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.compositor.render_result.html#blendersynth.blender.compositor.render_result.RenderResult" title="blendersynth.blender.compositor.render_result.RenderResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RenderResult</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="blendersynth.blender.compositor.render_result.html#blendersynth.blender.compositor.render_result.RenderResult" title="blendersynth.blender.compositor.render_result.RenderResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RenderResult</span></code></a> object containing paths to rendered files.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blendersynth.blender.compositor.compositor.Compositor.stack_visuals">
+<span class="sig-name descname"><span class="pre">stack_visuals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">visuals</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/compositor/compositor.html#Compositor.stack_visuals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.compositor.compositor.Compositor.stack_visuals" title="Link to this definition"></a></dt>
+<dd><p>Given a series of image overlays, stack them and return to be used as a single output node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>*visuals</strong> – <p>Stack of overlays to add.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="blendersynth.blender.compositor.image_overlay.html#blendersynth.blender.compositor.image_overlay.AlphaImageOverlay" title="blendersynth.blender.compositor.image_overlay.AlphaImageOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlphaImageOverlay</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

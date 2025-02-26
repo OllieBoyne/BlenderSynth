@@ -105,8 +105,62 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="blendersynth-file-frames-to-video">
-<h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.file.frames_to_video</span></code><a class="headerlink" href="#blendersynth-file-frames-to-video" title="Link to this heading"></a></h1>
+  <section id="module-blendersynth.file.frames_to_video">
+<span id="blendersynth-file-frames-to-video"></span><h1><code class="code docutils literal notranslate"><span class="pre">blendersynth.file.frames_to_video</span></code><a class="headerlink" href="#module-blendersynth.file.frames_to_video" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.file.frames_to_video.ffmpeg_input_from_files">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.file.frames_to_video.</span></span><span class="sig-name descname"><span class="pre">ffmpeg_input_from_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/file/frames_to_video.html#ffmpeg_input_from_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.file.frames_to_video.ffmpeg_input_from_files" title="Link to this definition"></a></dt>
+<dd><p>Return ffmpeg input from list of files</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.file.frames_to_video.frames_to_video">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.file.frames_to_video.</span></span><span class="sig-name descname"><span class="pre">frames_to_video</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./output.mp4'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mp4'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'yuv420p'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loglevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/file/frames_to_video.html#frames_to_video"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.file.frames_to_video.frames_to_video" title="Link to this definition"></a></dt>
+<dd><p>Need to input one of frame_list or frame_fmt or directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame_list</strong> – [optional] list of frames to concatenate into a video</p></li>
+<li><p><strong>frame_fmt</strong> – [optional] frame format to use as input</p></li>
+<li><p><strong>directory</strong> – [optional] directory to use as input (loads sorted images in directory)</p></li>
+<li><p><strong>frame_rate</strong> – frame rate of video</p></li>
+<li><p><strong>output_loc</strong> – video file location</p></li>
+<li><p><strong>output_fmt</strong> – video file format</p></li>
+<li><p><strong>pix_fmt</strong> – pixel format (see ffmpeg documentation, default yuv420p)</p></li>
+<li><p><strong>overwrite</strong> – overwrite existing video file</p></li>
+<li><p><strong>loglevel</strong> – ffmpeg loglevel (see ffmpeg documentation, default error)</p></li>
+<li><p><strong>delete_images</strong> – delete images after video is created</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.file.frames_to_video.frames_to_video_multiview">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.file.frames_to_video.</span></span><span class="sig-name descname"><span class="pre">frames_to_video_multiview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cameras</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vid.mp4'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/file/frames_to_video.html#frames_to_video_multiview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.file.frames_to_video.frames_to_video_multiview" title="Link to this definition"></a></dt>
+<dd><p>Following the rendering of a multiview animation, this function handles rendering the frames separately into
+videos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cameras</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[blendersynth.blender.camera.Camera]</span>) – List of cameras used for rendering</p></li>
+<li><p><strong>directory</strong> – Directory to look for frames in</p></li>
+<li><p><strong>out_loc</strong> – Output location for videos. Each camera will be saved as a separate video with the camera name prepended</p></li>
+<li><p><strong>kwargs</strong> – Keyword arguments to pass to <a class="reference internal" href="#blendersynth.file.frames_to_video.frames_to_video" title="blendersynth.file.frames_to_video.frames_to_video"><code class="xref py py-func docutils literal notranslate"><span class="pre">frames_to_video()</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blendersynth.file.frames_to_video.get_frames_from_directory">
+<span class="sig-prename descclassname"><span class="pre">blendersynth.file.frames_to_video.</span></span><span class="sig-name descname"><span class="pre">get_frames_from_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('png',</span> <span class="pre">'jpg',</span> <span class="pre">'jpeg',</span> <span class="pre">'bmp',</span> <span class="pre">'tiff',</span> <span class="pre">'tif')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/file/frames_to_video.html#get_frames_from_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.file.frames_to_video.get_frames_from_directory" title="Link to this definition"></a></dt>
+<dd><p>Return a list of all paths to files in directory which have a valid frame extension</p>
+</dd></dl>
+
 </section>
 
 
