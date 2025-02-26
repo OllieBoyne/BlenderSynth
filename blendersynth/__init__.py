@@ -2,16 +2,6 @@
 import sys
 from .utils.blender_setup import check_blender_install, install_module
 
-try:
-    # Python 3.8+
-    from importlib.metadata import version, PackageNotFoundError
-except ImportError:
-    # Fallback for older Python versions
-    from importlib_metadata import version, PackageNotFoundError
-
-__version__ = version("blendersynth")
-
-
 def fix_blender_install(local=False, editable=False):
     check_blender_install(
         force_all=True, blendersynth_from_local=local, blendersynth_editable=editable
@@ -42,6 +32,19 @@ is_blender = is_blender_running()
 BLENDER_IMPORTS = (
     is_building_docs or is_blender
 )  # if blender is running this script, or if building docs
+
+if not is_building_docs:
+    try:
+        # Python 3.8+
+        from importlib.metadata import version, PackageNotFoundError
+    except ImportError:
+        # Fallback for older Python versions
+        from importlib_metadata import version, PackageNotFoundError
+
+    __version__ = version("blendersynth")
+else:
+    __version__ = "0.0.0"
+
 
 if BLENDER_IMPORTS or TYPE_CHECKING:
     from .blender.mesh import Mesh
