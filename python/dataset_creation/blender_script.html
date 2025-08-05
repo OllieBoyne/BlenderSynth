@@ -29,8 +29,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Animation" href="../animation.html" />
-    <link rel="prev" title="Generate labels" href="generate_labels.html" /> 
+    <link rel="next" title="Generate labels" href="generate_labels.html" />
+    <link rel="prev" title="Create dataset" href="create_dataset.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -113,11 +113,9 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">blendersynth</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bsyn</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="c1"># When debugging, you can use the following two lines instead of inputs = bsyn.Inputs()</span>
-<span class="c1"># bsyn.run_this_script(debug=True)</span>
+<span class="c1"># bsyn.run_this_script()</span>
 <span class="c1"># inputs = bsyn.DebugInputs(&lt;path to test json file&gt;)</span>
 
 <span class="n">inputs</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Inputs</span><span class="p">()</span>  <span class="c1"># This is an iterable of the jsons passed in via run.py. Also manages progress bar.</span>
@@ -127,7 +125,7 @@
 <span class="n">light</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Light</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;POINT&#39;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">intensity</span><span class="o">=</span><span class="mf">100.</span><span class="p">)</span>  <span class="c1"># Create light object</span>
 
 <span class="c1"># add normals AOV</span>
-<span class="n">cam_normals_aov</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">aov</span><span class="o">.</span><span class="n">NormalsAOV</span><span class="p">(</span><span class="s1">&#39;cam_normals&#39;</span><span class="p">,</span> <span class="n">ref_frame</span><span class="o">=</span><span class="s1">&#39;CAMERA&#39;</span><span class="p">)</span>
+<span class="n">cam_normals_aov</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">aov</span><span class="o">.</span><span class="n">NormalsAOV</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cam_normals&#39;</span><span class="p">,</span> <span class="n">ref_frame</span><span class="o">=</span><span class="s1">&#39;CAMERA&#39;</span><span class="p">)</span>
 <span class="n">monkey</span><span class="o">.</span><span class="n">assign_aov</span><span class="p">(</span><span class="n">cam_normals_aov</span><span class="p">)</span>
 
 <span class="n">bsyn</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">set_cycles_samples</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -135,8 +133,8 @@
 
 <span class="c1"># create compositor to output RGB, Normals AOV &amp; Depth</span>
 <span class="n">comp</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">Compositor</span><span class="p">()</span>
-<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;example_dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;rgb&#39;</span><span class="p">))</span>  <span class="c1"># render RGB layer</span>
-<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">cam_normals_aov</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;example_dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;normal&#39;</span><span class="p">))</span>  <span class="c1"># render normals layer</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="s1">&#39;Image&#39;</span><span class="p">)</span>  <span class="c1"># render RGB layer</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">define_output</span><span class="p">(</span><span class="n">cam_normals_aov</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span>  <span class="c1"># render normals layer</span>
 
 <span class="c1"># Now iterate through and generate dataset</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">input_data</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
@@ -146,12 +144,13 @@
 
 	<span class="c1"># Render - set the output filename to match the json filename (e.g. 0001.json -&gt; 0001.png)</span>
 	<span class="c1"># see Compositor.update_filename or Compositor.update_directory for alternative functionality</span>
-	<span class="n">comp</span><span class="o">.</span><span class="n">update_all_filenames</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-	<span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+	<span class="n">render_result</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+	<span class="n">render_result</span><span class="o">.</span><span class="n">save_all</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;example_dataset/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 	<span class="c1"># Save the pose and lighting as an output json</span>
 	<span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">input_data</span><span class="p">}</span>  <span class="c1"># items to save to output label</span>
-	<span class="n">output</span><span class="p">[</span><span class="s1">&#39;bbox&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">bounding_box</span><span class="p">(</span><span class="n">monkey</span><span class="p">,</span> <span class="n">return_fmt</span><span class="o">=</span><span class="s1">&#39;xywh&#39;</span><span class="p">)</span>
+	<span class="n">annotation</span> <span class="o">=</span> <span class="n">bsyn</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">bounding_boxes</span><span class="p">([</span><span class="n">monkey</span><span class="p">],</span> <span class="n">return_fmt</span><span class="o">=</span><span class="s1">&#39;xywh&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get_annotation_by_camera</span><span class="p">(</span><span class="s1">&#39;Camera&#39;</span><span class="p">)</span>
+	<span class="n">output</span><span class="p">[</span><span class="s1">&#39;bbox&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">bbox</span>  <span class="c1"># save the bounding box annotations</span>
 	<span class="n">bsyn</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">save_label</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;example_dataset/label/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s1">.json&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -161,8 +160,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="generate_labels.html" class="btn btn-neutral float-left" title="Generate labels" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../animation.html" class="btn btn-neutral float-right" title="Animation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="create_dataset.html" class="btn btn-neutral float-left" title="Create dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generate_labels.html" class="btn btn-neutral float-right" title="Generate labels" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
