@@ -15,7 +15,7 @@ inputs = bsyn.Inputs()  # This is an iterable of the jsons passed in via run.py.
 monkey = bsyn.Mesh.from_primitive('monkey')  # Create Monkey object
 light = bsyn.Light.create('POINT', location=(1, 0, 0), intensity=100.)  # Create light object
 
-# add normals AOV
+# Add normals AOV
 cam_normals_aov = bsyn.aov.NormalsAOV(name='cam_normals', ref_frame='CAMERA')
 monkey.assign_aov(cam_normals_aov)
 
@@ -33,8 +33,6 @@ for i, (fname, input_data) in enumerate(inputs):
 	monkey.rotation_euler = input_data['euler']
 	monkey.location = input_data['location']
 
-	# Render - set the output filename to match the json filename (e.g. 0001.json -> 0001.png)
-	# see Compositor.update_filename or Compositor.update_directory for alternative functionality
 	render_result = comp.render()
 	render_result.save_all(f"example_dataset/{fname}")
 
