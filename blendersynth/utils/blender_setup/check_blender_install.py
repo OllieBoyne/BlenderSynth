@@ -31,7 +31,7 @@ def setup_blender_stubs(blender_path):
     vanilla_python_executable = sys.executable
 
     # Get Blender version from the output
-    script_code = "import bpy; print('VERSION' + '.'.join(map(str, bpy.app.version)))"
+    script_code = "import bpy; print('VERSION' + '.'.join(map(str, bpy.app.version))); bpy.ops.wm.quit_blender()"
     result = subprocess.run(
         [blender_path, "--background", "--python-expr", script_code],
         capture_output=True,
