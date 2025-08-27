@@ -136,24 +136,8 @@
 
     <span class="n">vanilla_python_executable</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">executable</span>
 
-    <span class="c1"># Get Blender version from the output</span>
-    <span class="n">script_code</span> <span class="o">=</span> <span class="s2">&quot;import bpy; print(&#39;VERSION&#39; + &#39;.&#39;.join(map(str, bpy.app.version)))&quot;</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">blender_path</span><span class="p">,</span> <span class="s2">&quot;--background&quot;</span><span class="p">,</span> <span class="s2">&quot;--python-expr&quot;</span><span class="p">,</span> <span class="n">script_code</span><span class="p">],</span>
-        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span>
-    <span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;VERSION&quot;</span><span class="p">):</span>
-            <span class="n">blender_version</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;VERSION&quot;</span><span class="p">)</span> <span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="k">break</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not get Blender version&quot;</span><span class="p">)</span>
-
     <span class="c1"># Install stubs</span>
-    <span class="c1"># Should really use blender_version here</span>
+    <span class="c1"># TODO: Needs integrating with versioning/Blender 4.0.</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">check_module</span><span class="p">(</span><span class="n">vanilla_python_executable</span><span class="p">,</span> <span class="s2">&quot;blender-stubs&quot;</span><span class="p">):</span>
         <span class="n">_install_module</span><span class="p">(</span><span class="n">vanilla_python_executable</span><span class="p">,</span> <span class="s2">&quot;blender-stubs&quot;</span><span class="p">)</span></div>
 
