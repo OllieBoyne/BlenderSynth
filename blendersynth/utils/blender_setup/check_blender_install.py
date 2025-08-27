@@ -30,24 +30,8 @@ def setup_blender_stubs(blender_path):
 
     vanilla_python_executable = sys.executable
 
-    # Get Blender version from the output
-    script_code = "import bpy; print('VERSION' + '.'.join(map(str, bpy.app.version)))"
-    result = subprocess.run(
-        [blender_path, "--background", "--python-expr", script_code],
-        capture_output=True,
-        text=True,
-        encoding='UTF-8'
-    )
-
-    for line in result.stdout.split("\n"):
-        if line.startswith("VERSION"):
-            blender_version = line[len("VERSION") :].strip()
-            break
-    else:
-        raise Exception("Could not get Blender version")
-
     # Install stubs
-    # Should really use blender_version here
+    # TODO: Needs integrating with versioning/Blender 4.0.
     if not check_module(vanilla_python_executable, "blender-stubs"):
         _install_module(vanilla_python_executable, "blender-stubs")
 
