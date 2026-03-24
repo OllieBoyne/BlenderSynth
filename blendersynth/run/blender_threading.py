@@ -171,6 +171,7 @@ class BlenderThreadManager:
         print_to_stdout=False,
         MAX_PER_JOB=100,
         script_directory=None,
+        thread_kwargs=None,
     ):
         """
         :param commands: Base Blender command to run
@@ -178,9 +179,12 @@ class BlenderThreadManager:
         :param log_locs:
         :param MAX_PER_JOB: To prevent memory issues, split up jobs into chunks of MAX_PER_JOB
         :param script_directory: If given, add this to `sys.path` before running the script.
+        :param thread_kwargs: Optional dict of extra keyword arguments forwarded to each :class:`BlenderThread` (e.g. ``timeout``).
         """
-        self.num_threads = len(jsons)
+        if thread_kwargs is None:
+            thread_kwargs = {}
 
+        self.num_threads = len(jsons)
         self.command = command
 
         # create logs
@@ -218,6 +222,7 @@ class BlenderThreadManager:
                 to_stdout=print_to_stdout,
                 MAX_PER_JOB=MAX_PER_JOB,
                 script_directory=script_directory,
+                **thread_kwargs,
             )
 
             self.threads.append(thread)
