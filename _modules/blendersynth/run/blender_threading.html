@@ -16,15 +16,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.run.blender_threading &mdash; BlenderSynth</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../../_static/documentation_options.js?v=a4664895"></script>
-      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -102,15 +102,15 @@
            <div itemprop="articleBody">
              
   <h1>Source code for blendersynth.run.blender_threading</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">perf_counter</span><span class="p">,</span> <span class="n">sleep</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">Popen</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">atexit</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">atexit</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">Popen</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">perf_counter</span><span class="p">,</span> <span class="n">sleep</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_list_split</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">chunks</span><span class="p">):</span>
@@ -131,15 +131,16 @@
         <span class="n">progress_loc</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
         <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
-        <span class="n">to_stdout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">print_to_stdout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">MAX_PER_JOB</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
         <span class="n">script_directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param progress_loc: .log file to write progress to</span>
 <span class="sd">        :param timeout: longest time in (s) without render after which process is finished/failed.</span>
-<span class="sd">        :param to_stdout: If True, print to stdout instead of to a log file.</span>
-<span class="sd">        :param MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.</span>
+<span class="sd">        :param print_to_stdout: If True, print to stdout instead of to a log file.</span>
+<span class="sd">        :param MAX_PER_JOB: To prevent memory issues, split command into jobs of size MAX_PER_JOB,</span>
+<span class="sd">            and run each job in a separate process.</span>
 <span class="sd">        :param script_directory: If given, add this to `sys.path` before running the script.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -158,7 +159,7 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="o">=</span> <span class="n">to_stdout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="o">=</span> <span class="n">print_to_stdout</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_stdout</span> <span class="ow">and</span> <span class="n">log_loc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log_loc</span> <span class="o">=</span> <span class="n">log_loc</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_loc</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
@@ -220,7 +221,8 @@
 <a class="viewcode-back" href="../../../api/blendersynth.run.blender_threading.html#blendersynth.run.blender_threading.BlenderThread.terminate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;End process&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -234,7 +236,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
             <span class="k">return</span> <span class="kc">True</span>
 
@@ -289,19 +291,20 @@
         <span class="n">command</span><span class="p">,</span>
         <span class="n">jsons</span><span class="p">,</span>
         <span class="n">output_directory</span><span class="p">,</span>
-        <span class="n">print_to_stdout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-        <span class="n">script_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">thread_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param commands: Base Blender command to run</span>
 <span class="sd">        :param jsons: A list of num_threads size, each element is a list of jsons to render from</span>
-<span class="sd">        :param log_locs:</span>
-<span class="sd">        :param MAX_PER_JOB: To prevent memory issues, split up jobs into chunks of MAX_PER_JOB</span>
-<span class="sd">        :param script_directory: If given, add this to `sys.path` before running the script.</span>
+<span class="sd">        :param output_directory: Directory to save logs and progress to</span>
+<span class="sd">        :param thread_kwargs: Optional dict of keyword arguments forwarded to each :class:`BlenderThread`.</span>
+<span class="sd">            Allowed keyword arguments are: `print_to_stdout: bool`, `timeout: int`, `MAX_PER_JOB: int`,</span>
+<span class="sd">            `script_directory: str`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jsons</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">thread_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">thread_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jsons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>
 
         <span class="c1"># create logs</span>
@@ -333,12 +336,10 @@
             <span class="n">thread</span> <span class="o">=</span> <span class="n">BlenderThread</span><span class="p">(</span>
                 <span class="n">command</span><span class="p">,</span>
                 <span class="n">jobs</span><span class="o">=</span><span class="n">jsons</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                <span class="n">log_loc</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">logs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">logs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">log_loc</span><span class="o">=</span><span class="n">logs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
                 <span class="n">progress_loc</span><span class="o">=</span><span class="n">progresses</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
                 <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
-                <span class="n">to_stdout</span><span class="o">=</span><span class="n">print_to_stdout</span><span class="p">,</span>
-                <span class="n">MAX_PER_JOB</span><span class="o">=</span><span class="n">MAX_PER_JOB</span><span class="p">,</span>
-                <span class="n">script_directory</span><span class="o">=</span><span class="n">script_directory</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">thread_kwargs</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thread</span><span class="p">)</span>

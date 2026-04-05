@@ -17,15 +17,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.blender.utils &mdash; BlenderSynth</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=a4664895"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -110,7 +110,7 @@
 <p>Context managers and operations for handling Blender</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.utils.CursorAt">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">CursorAt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#CursorAt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.CursorAt" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">CursorAt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#CursorAt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.CursorAt" title="Link to this definition"></a></dt>
 <dd><p>Context manager for moving the cursor to a specific location in space.
 On exit, will return the cursor to its original location.</p>
 <dl class="py method">
@@ -119,7 +119,7 @@ On exit, will return the cursor to its original location.</p>
 <dd><p>Initialize with the target location</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>target</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>]</span>) – Location to move the cursor to</p>
+<dd class="field-odd"><p><strong>target</strong> – Location to move the cursor to</p>
 </dd>
 </dl>
 </dd></dl>
@@ -128,7 +128,7 @@ On exit, will return the cursor to its original location.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.utils.GetNewObject">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">GetNewObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#GetNewObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.GetNewObject" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">GetNewObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#GetNewObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.GetNewObject" title="Link to this definition"></a></dt>
 <dd><p>Context manager for getting the newly imported object(s) to the scene.</p>
 <p>On exit, will return the newly imported object(s).</p>
 <p>Assumes that either (1) only one object is imported, or (2) there is a hierarchy to the imported objects, and the top level object is the one to return.</p>
@@ -141,7 +141,7 @@ On exit, will return the cursor to its original location.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.utils.SelectObjects">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">SelectObjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#SelectObjects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.SelectObjects" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">SelectObjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#SelectObjects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.SelectObjects" title="Link to this definition"></a></dt>
 <dd><p>Context manager for selecting objects.
 On exit, will reselect the objects that were selected before entering the context.</p>
 <dl class="py method">
@@ -162,7 +162,7 @@ On exit, will reselect the objects that were selected before entering the contex
 
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.utils.SetMode">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">SetMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#SetMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.SetMode" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.utils.</span></span><span class="sig-name descname"><span class="pre">SetMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/utils.html#SetMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.utils.SetMode" title="Link to this definition"></a></dt>
 <dd><p>Context manager for changing the mode of a specific object in Blender (e.g., to <cite>POSE</cite>),
 returning to the original mode on exit.</p>
 <dl class="py method">
@@ -241,12 +241,9 @@ returning to the original mode on exit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vec</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>]</span>) – Vector to check</p></li>
-<li><p><strong>expected_length</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Expected length of vector</p></li>
+<li><p><strong>vec</strong> – Vector to check</p></li>
+<li><p><strong>expected_length</strong> – Expected length of vector</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>

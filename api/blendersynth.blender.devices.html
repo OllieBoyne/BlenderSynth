@@ -17,15 +17,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blendersynth.blender.devices &mdash; BlenderSynth</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=a4664895"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -110,10 +110,10 @@
 <p>Blender device management.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.devices.DeviceList">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.devices.</span></span><span class="sig-name descname"><span class="pre">DeviceList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/devices.html#DeviceList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.devices.DeviceList" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.devices.</span></span><span class="sig-name descname"><span class="pre">DeviceList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/blendersynth/blender/devices.html#DeviceList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.devices.DeviceList" title="Link to this definition"></a></dt>
 <dd><dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.devices.DeviceList.names">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#blendersynth.blender.devices.DeviceList.names" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">names</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#blendersynth.blender.devices.DeviceList.names" title="Link to this definition"></a></dt>
 <dd><p>Return the names of all devices.</p>
 </dd></dl>
 
@@ -121,29 +121,29 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="blendersynth.blender.devices.Devices">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.devices.</span></span><span class="sig-name descname"><span class="pre">Devices</span></span><a class="reference internal" href="../_modules/blendersynth/blender/devices.html#Devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.devices.Devices" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">blendersynth.blender.devices.</span></span><span class="sig-name descname"><span class="pre">Devices</span></span><a class="reference internal" href="../_modules/blendersynth/blender/devices.html#Devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blendersynth.blender.devices.Devices" title="Link to this definition"></a></dt>
 <dd><p>A manager for Blender rendering devices (CPU &amp; GPU).</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.devices.Devices.available_gpus">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_gpus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#blendersynth.blender.devices.DeviceList" title="blendersynth.blender.devices.DeviceList"><span class="pre">DeviceList</span></a></em><a class="headerlink" href="#blendersynth.blender.devices.Devices.available_gpus" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">available_gpus</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#blendersynth.blender.devices.DeviceList" title="blendersynth.blender.devices.DeviceList"><span class="pre">DeviceList</span></a></span><a class="headerlink" href="#blendersynth.blender.devices.Devices.available_gpus" title="Link to this definition"></a></dt>
 <dd><p>Return list of all GPU devices.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.devices.Devices.device_names">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">device_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#blendersynth.blender.devices.Devices.device_names" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">device_names</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#blendersynth.blender.devices.Devices.device_names" title="Link to this definition"></a></dt>
 <dd><p>Return a list of all device names.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.devices.Devices.enabled_device_names">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">enabled_device_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#blendersynth.blender.devices.Devices.enabled_device_names" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">enabled_device_names</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#blendersynth.blender.devices.Devices.enabled_device_names" title="Link to this definition"></a></dt>
 <dd><p>Return a list of named devices that are enabled.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="blendersynth.blender.devices.Devices.enabled_gpus">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">enabled_gpus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#blendersynth.blender.devices.DeviceList" title="blendersynth.blender.devices.DeviceList"><span class="pre">DeviceList</span></a></em><a class="headerlink" href="#blendersynth.blender.devices.Devices.enabled_gpus" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">enabled_gpus</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#blendersynth.blender.devices.DeviceList" title="blendersynth.blender.devices.DeviceList"><span class="pre">DeviceList</span></a></span><a class="headerlink" href="#blendersynth.blender.devices.Devices.enabled_gpus" title="Link to this definition"></a></dt>
 <dd><p>Return list of available GPU devices.</p>
 </dd></dl>
 

@@ -16,15 +16,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>argparse &mdash; BlenderSynth</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=a4664895"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
@@ -122,11 +122,12 @@
 <span class="sd">        &#39;integers&#39;, metavar=&#39;int&#39;, nargs=&#39;+&#39;, type=int,</span>
 <span class="sd">        help=&#39;an integer to be summed&#39;)</span>
 <span class="sd">    parser.add_argument(</span>
-<span class="sd">        &#39;--log&#39;, default=sys.stdout, type=argparse.FileType(&#39;w&#39;),</span>
+<span class="sd">        &#39;--log&#39;,</span>
 <span class="sd">        help=&#39;the file where the sum should be written&#39;)</span>
 <span class="sd">    args = parser.parse_args()</span>
-<span class="sd">    args.log.write(&#39;%s&#39; % sum(args.integers))</span>
-<span class="sd">    args.log.close()</span>
+<span class="sd">    with (open(args.log, &#39;w&#39;) if args.log is not None</span>
+<span class="sd">          else contextlib.nullcontext(sys.stdout)) as log:</span>
+<span class="sd">        log.write(&#39;%s&#39; % sum(args.integers))</span>
 
 <span class="sd">The module contains the following public classes:</span>
 
@@ -143,7 +144,8 @@
 
 <span class="sd">    - FileType -- A factory for defining types of files to be created. As the</span>
 <span class="sd">        example above shows, instances of FileType are typically passed as</span>
-<span class="sd">        the type= argument of add_argument() calls.</span>
+<span class="sd">        the type= argument of add_argument() calls. Deprecated since</span>
+<span class="sd">        Python 3.14.</span>
 
 <span class="sd">    - Action -- The base class for parser actions. Typically actions are</span>
 <span class="sd">        selected by passing strings like &#39;store_true&#39; or &#39;append_const&#39; to</span>
@@ -263,18 +265,21 @@
 <span class="sd">    provided by the class are considered an implementation detail.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">prog</span><span class="p">,</span>
-                 <span class="n">indent_increment</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                 <span class="n">max_help_position</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
-                 <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prog</span><span class="p">,</span>
+        <span class="n">indent_increment</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">max_help_position</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="c1"># default setting for width</span>
         <span class="k">if</span> <span class="n">width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
             <span class="n">width</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">get_terminal_size</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span>
             <span class="n">width</span> <span class="o">-=</span> <span class="mi">2</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_prog</span> <span class="o">=</span> <span class="n">prog</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_indent_increment</span> <span class="o">=</span> <span class="n">indent_increment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_help_position</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_help_position</span><span class="p">,</span>
@@ -290,6 +295,16 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_whitespace_matcher</span> <span class="o">=</span> <span class="n">_re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="n">_re</span><span class="o">.</span><span class="n">ASCII</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_long_break_matcher</span> <span class="o">=</span> <span class="n">_re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\n\n\n+&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">_colorize</span><span class="w"> </span><span class="kn">import</span> <span class="n">can_colorize</span><span class="p">,</span> <span class="n">decolor</span><span class="p">,</span> <span class="n">get_theme</span>
+
+        <span class="k">if</span> <span class="n">color</span> <span class="ow">and</span> <span class="n">can_colorize</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_theme</span> <span class="o">=</span> <span class="n">get_theme</span><span class="p">(</span><span class="n">force_color</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">argparse</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_decolor</span> <span class="o">=</span> <span class="n">decolor</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_theme</span> <span class="o">=</span> <span class="n">get_theme</span><span class="p">(</span><span class="n">force_no_color</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">argparse</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_decolor</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">text</span><span class="p">:</span> <span class="n">text</span>
 
     <span class="c1"># ===============================</span>
     <span class="c1"># Section and indentation methods</span>
@@ -329,7 +344,11 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">heading</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">SUPPRESS</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">heading</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">current_indent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">_current_indent</span>
                 <span class="n">heading_text</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(heading)s</span><span class="s1">:&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">heading</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">heading</span><span class="p">)</span>
-                <span class="n">heading</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%*s%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">current_indent</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">heading_text</span><span class="p">)</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">_theme</span>
+                <span class="n">heading</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot; &quot;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">current_indent</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">heading</span><span class="si">}{</span><span class="n">heading_text</span><span class="si">}{</span><span class="n">t</span><span class="o">.</span><span class="n">reset</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">heading</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
@@ -366,7 +385,7 @@
         <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">help</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">SUPPRESS</span><span class="p">:</span>
 
             <span class="c1"># find all invocations</span>
-            <span class="n">get_invocation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_action_invocation</span>
+            <span class="n">get_invocation</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decolor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_format_action_invocation</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
             <span class="n">invocation_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">get_invocation</span><span class="p">(</span><span class="n">action</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_indent</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">subaction</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_indented_subactions</span><span class="p">(</span><span class="n">action</span><span class="p">):</span>
                 <span class="n">invocation_lengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">get_invocation</span><span class="p">(</span><span class="n">subaction</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_indent</span><span class="p">)</span>
@@ -400,42 +419,39 @@
                         <span class="k">if</span> <span class="n">part</span> <span class="ow">and</span> <span class="n">part</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">SUPPRESS</span><span class="p">])</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_format_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">usage</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_theme</span>
+
         <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">prefix</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;usage: &#39;</span><span class="p">)</span>
 
         <span class="c1"># if usage is specified, use that</span>
         <span class="k">if</span> <span class="n">usage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">usage</span> <span class="o">=</span> <span class="n">usage</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prog</span><span class="p">)</span>
+            <span class="n">usage</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">t</span><span class="o">.</span><span class="n">prog_extra</span>
+                <span class="o">+</span> <span class="n">usage</span>
+                <span class="o">%</span> <span class="p">{</span><span class="s2">&quot;prog&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">prog</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">_prog</span><span class="si">}{</span><span class="n">t</span><span class="o">.</span><span class="n">reset</span><span class="si">}{</span><span class="n">t</span><span class="o">.</span><span class="n">prog_extra</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
+                <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">reset</span>
+            <span class="p">)</span>
 
         <span class="c1"># if no optionals or positionals are available, usage is just prog</span>
         <span class="k">elif</span> <span class="n">usage</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">actions</span><span class="p">:</span>
-            <span class="n">usage</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(prog)s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prog</span><span class="p">)</span>
+            <span class="n">usage</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">prog</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">_prog</span><span class="si">}{</span><span class="n">t</span><span class="o">.</span><span class="n">reset</span><span class="si">}</span><span class="s2">&quot;</span>
 
         <span class="c1"># if optionals and positionals are available, calculate usage</span>
         <span class="k">elif</span> <span class="n">usage</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">prog</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(prog)s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prog</span><span class="p">)</span>
 
-            <span class="c1"># split optionals from positionals</span>
-            <span class="n">optionals</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">positionals</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">:</span>
-                    <span class="n">optionals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">positionals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-
+            <span class="n">parts</span><span class="p">,</span> <span class="n">pos_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_actions_usage_parts</span><span class="p">(</span><span class="n">actions</span><span class="p">,</span> <span class="n">groups</span><span class="p">)</span>
             <span class="c1"># build full usage string</span>
-            <span class="nb">format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_actions_usage</span>
-            <span class="n">action_usage</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="n">optionals</span> <span class="o">+</span> <span class="n">positionals</span><span class="p">,</span> <span class="n">groups</span><span class="p">)</span>
-            <span class="n">usage</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="n">prog</span><span class="p">,</span> <span class="n">action_usage</span><span class="p">]</span> <span class="k">if</span> <span class="n">s</span><span class="p">])</span>
+            <span class="n">usage</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">prog</span><span class="p">,</span> <span class="o">*</span><span class="n">parts</span><span class="p">]))</span>
 
             <span class="c1"># wrap the usage parts if it&#39;s too long</span>
             <span class="n">text_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_indent</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">usage</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">text_width</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_decolor</span><span class="p">(</span><span class="n">usage</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">text_width</span><span class="p">:</span>
 
                 <span class="c1"># break usage into wrappable parts</span>
-                <span class="n">opt_parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_actions_usage_parts</span><span class="p">(</span><span class="n">optionals</span><span class="p">,</span> <span class="n">groups</span><span class="p">)</span>
-                <span class="n">pos_parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_actions_usage_parts</span><span class="p">(</span><span class="n">positionals</span><span class="p">,</span> <span class="n">groups</span><span class="p">)</span>
+                <span class="n">opt_parts</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[:</span><span class="n">pos_start</span><span class="p">]</span>
+                <span class="n">pos_parts</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="n">pos_start</span><span class="p">:]</span>
 
                 <span class="c1"># helper for wrapping lines</span>
                 <span class="k">def</span><span class="w"> </span><span class="nf">get_lines</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="n">indent</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -447,12 +463,13 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">line_len</span> <span class="o">=</span> <span class="n">indent_length</span> <span class="o">-</span> <span class="mi">1</span>
                     <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">line_len</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">part</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">text_width</span> <span class="ow">and</span> <span class="n">line</span><span class="p">:</span>
+                        <span class="n">part_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_decolor</span><span class="p">(</span><span class="n">part</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">line_len</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">part_len</span> <span class="o">&gt;</span> <span class="n">text_width</span> <span class="ow">and</span> <span class="n">line</span><span class="p">:</span>
                             <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
                             <span class="n">line</span> <span class="o">=</span> <span class="p">[]</span>
                             <span class="n">line_len</span> <span class="o">=</span> <span class="n">indent_length</span> <span class="o">-</span> <span class="mi">1</span>
                         <span class="n">line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
-                        <span class="n">line_len</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">part</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                        <span class="n">line_len</span> <span class="o">+=</span> <span class="n">part_len</span> <span class="o">+</span> <span class="mi">1</span>
                     <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
                         <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
                     <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -460,8 +477,9 @@
                     <span class="k">return</span> <span class="n">lines</span>
 
                 <span class="c1"># if prog is short, follow it with optionals or positionals</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">prog</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="n">text_width</span><span class="p">:</span>
-                    <span class="n">indent</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">prog</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">prog_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_decolor</span><span class="p">(</span><span class="n">prog</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">+</span> <span class="n">prog_len</span> <span class="o">&lt;=</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="n">text_width</span><span class="p">:</span>
+                    <span class="n">indent</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">+</span> <span class="n">prog_len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">opt_parts</span><span class="p">:</span>
                         <span class="n">lines</span> <span class="o">=</span> <span class="n">get_lines</span><span class="p">([</span><span class="n">prog</span><span class="p">]</span> <span class="o">+</span> <span class="n">opt_parts</span><span class="p">,</span> <span class="n">indent</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span>
                         <span class="n">lines</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">get_lines</span><span class="p">(</span><span class="n">pos_parts</span><span class="p">,</span> <span class="n">indent</span><span class="p">))</span>
@@ -484,97 +502,120 @@
                 <span class="c1"># join lines into usage</span>
                 <span class="n">usage</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
-        <span class="c1"># prefix with &#39;usage:&#39;</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s%s</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">usage</span><span class="p">)</span>
+            <span class="n">usage</span> <span class="o">=</span> <span class="n">usage</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="n">prog</span><span class="p">)</span>
+            <span class="n">usage</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">prog</span><span class="si">}{</span><span class="n">prog</span><span class="si">}{</span><span class="n">t</span><span class="o">.</span><span class="n">reset</span><span class="si">}{</span><span class="n">usage</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_format_actions_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">groups</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_actions_usage_parts</span><span class="p">(</span><span class="n">actions</span><span class="p">,</span> <span class="n">groups</span><span class="p">))</span>
+        <span class="c1"># prefix with &#39;usage:&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">usage</span><span class="si">}{</span><span class="n">prefix</span><span class="si">}{</span><span class="n">t</span><span class="o">.</span><span class="n">reset</span><span class="si">}{</span><span class="n">usage</span><span class="si">}</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_is_long_option</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_actions_usage_parts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">groups</span><span class="p">):</span>
-        <span class="c1"># find group indices and identify actions in groups</span>
-        <span class="n">group_actions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="n">inserts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get usage parts with split index for optionals/positionals.</span>
+
+<span class="sd">        Returns (parts, pos_start) where pos_start is the index in parts</span>
+<span class="sd">        where positionals begin.</span>
+<span class="sd">        This preserves mutually exclusive group formatting across the</span>
+<span class="sd">        optionals/positionals boundary (gh-75949).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">action</span> <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">actions</span> <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">help</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">SUPPRESS</span><span class="p">]</span>
+        <span class="c1"># group actions by mutually exclusive groups</span>
+        <span class="n">action_groups</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">actions</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">group</span><span class="o">.</span><span class="n">_group_actions</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;empty group </span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">help</span> <span class="ow">is</span> <span class="n">SUPPRESS</span> <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">_group_actions</span><span class="p">):</span>
-                <span class="k">continue</span>
-
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">start</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">_group_actions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">_group_actions</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">actions</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span> <span class="o">==</span> <span class="n">group</span><span class="o">.</span><span class="n">_group_actions</span><span class="p">:</span>
-                    <span class="n">group_actions</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">_group_actions</span><span class="p">)</span>
-                    <span class="n">inserts</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span> <span class="o">=</span> <span class="n">group</span>
+            <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">_group_actions</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">action_groups</span><span class="p">:</span>
+                    <span class="n">action_groups</span><span class="p">[</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="n">group</span>
+        <span class="c1"># positional arguments keep their position</span>
+        <span class="n">positionals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">:</span>
+                <span class="n">group</span> <span class="o">=</span> <span class="n">action_groups</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
+                    <span class="n">group_actions</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">action2</span> <span class="k">for</span> <span class="n">action2</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">_group_actions</span>
+                        <span class="k">if</span> <span class="n">action2</span><span class="o">.</span><span class="n">option_strings</span> <span class="ow">and</span>
+                           <span class="n">action_groups</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">action2</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">action</span><span class="p">]</span>
+                    <span class="n">positionals</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">group</span><span class="o">.</span><span class="n">required</span><span class="p">,</span> <span class="n">group_actions</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">positionals</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">action</span><span class="p">]))</span>
+        <span class="c1"># the remaining optional arguments are sorted by the position of</span>
+        <span class="c1"># the first option in the group</span>
+        <span class="n">optionals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span> <span class="ow">and</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">action_groups</span><span class="p">:</span>
+                <span class="n">group</span> <span class="o">=</span> <span class="n">action_groups</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
+                    <span class="n">group_actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">action</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+                        <span class="n">action2</span> <span class="k">for</span> <span class="n">action2</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">_group_actions</span>
+                        <span class="k">if</span> <span class="n">action2</span><span class="o">.</span><span class="n">option_strings</span> <span class="ow">and</span>
+                           <span class="n">action_groups</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">action2</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="p">]</span>
+                    <span class="n">optionals</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">group</span><span class="o">.</span><span class="n">required</span><span class="p">,</span> <span class="n">group_actions</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">optionals</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">action</span><span class="p">]))</span>
 
         <span class="c1"># collect all actions format strings</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_theme</span>
+        <span class="n">pos_start</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">required</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">optionals</span> <span class="o">+</span> <span class="n">positionals</span><span class="p">):</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">optionals</span><span class="p">):</span>
+                <span class="n">pos_start</span> <span class="o">=</span> <span class="n">start</span>
+            <span class="n">in_group</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+                <span class="c1"># produce all arg strings</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">:</span>
+                    <span class="n">default</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_default_metavar_for_positional</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+                    <span class="n">part</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_args</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+                    <span class="c1"># if it&#39;s in a group, strip the outer []</span>
+                    <span class="k">if</span> <span class="n">in_group</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">part</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;[&#39;</span> <span class="ow">and</span> <span class="n">part</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;]&#39;</span><span class="p">:</span>
+                            <span class="n">part</span> <span class="o">=</span> <span class="n">part</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">part</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">summary_action</span> <span class="o">+</span> <span class="n">part</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">reset</span>
 
-            <span class="c1"># suppressed arguments are marked with None</span>
-            <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">help</span> <span class="ow">is</span> <span class="n">SUPPRESS</span><span class="p">:</span>
-                <span class="n">part</span> <span class="o">=</span> <span class="kc">None</span>
-
-            <span class="c1"># produce all arg strings</span>
-            <span class="k">elif</span> <span class="ow">not</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">:</span>
-                <span class="n">default</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_default_metavar_for_positional</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-                <span class="n">part</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_args</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
-
-                <span class="c1"># if it&#39;s in a group, strip the outer []</span>
-                <span class="k">if</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">group_actions</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">part</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;[&#39;</span> <span class="ow">and</span> <span class="n">part</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;]&#39;</span><span class="p">:</span>
-                        <span class="n">part</span> <span class="o">=</span> <span class="n">part</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-            <span class="c1"># produce the first way to invoke the option in brackets</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">option_string</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-                <span class="c1"># if the Optional doesn&#39;t take a value, format is:</span>
-                <span class="c1">#    -s or --long</span>
-                <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">nargs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">part</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">format_usage</span><span class="p">()</span>
-
-                <span class="c1"># if the Optional takes a value, format is:</span>
-                <span class="c1">#    -s ARGS or --long ARGS</span>
+                <span class="c1"># produce the first way to invoke the option in brackets</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">default</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_default_metavar_for_optional</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-                    <span class="n">args_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_args</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
-                    <span class="n">part</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">option_string</span><span class="p">,</span> <span class="n">args_string</span><span class="p">)</span>
+                    <span class="n">option_string</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_long_option</span><span class="p">(</span><span class="n">option_string</span><span class="p">):</span>
+                        <span class="n">option_color</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">summary_long_option</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">option_color</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">summary_short_option</span>
 
-                <span class="c1"># make it look optional if it&#39;s not required or in a group</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">action</span><span class="o">.</span><span class="n">required</span> <span class="ow">and</span> <span class="n">action</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">group_actions</span><span class="p">:</span>
-                    <span class="n">part</span> <span class="o">=</span> <span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">]&#39;</span> <span class="o">%</span> <span class="n">part</span>
+                    <span class="c1"># if the Optional doesn&#39;t take a value, format is:</span>
+                    <span class="c1">#    -s or --long</span>
+                    <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">nargs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">part</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">format_usage</span><span class="p">()</span>
+                        <span class="n">part</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">option_color</span><span class="si">}{</span><span class="n">part</span><span class="si">}{</span><span class="n">t</span><span class="o">.</span><span class="n">reset</span><span class="si">}</span><span class="s2">&quot;</span>
 
-            <span class="c1"># add the action string to the list</span>
-            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+                    <span class="c1"># if the Optional takes a value, format is:</span>
+                    <span class="c1">#    -s ARGS or --long ARGS</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">default</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_default_metavar_for_optional</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+                        <span class="n">args_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_args</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+                        <span class="n">part</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">option_color</span><span class="si">}{</span><span class="n">option_string</span><span class="si">}</span><span class="s2"> &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">summary_label</span><span class="si">}{</span><span class="n">args_string</span><span class="si">}{</span><span class="n">t</span><span class="o">.</span><span class="n">reset</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
 
-        <span class="c1"># group mutually exclusive actions</span>
-        <span class="n">inserted_separators_indices</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">inserts</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-            <span class="n">group</span> <span class="o">=</span> <span class="n">inserts</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span>
-            <span class="n">group_parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
-            <span class="n">group_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group_parts</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">required</span><span class="p">:</span>
-                <span class="nb">open</span><span class="p">,</span> <span class="n">close</span> <span class="o">=</span> <span class="s2">&quot;()&quot;</span> <span class="k">if</span> <span class="n">group_size</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="nb">open</span><span class="p">,</span> <span class="n">close</span> <span class="o">=</span> <span class="s2">&quot;[]&quot;</span>
-            <span class="n">group_parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">open</span> <span class="o">+</span> <span class="n">group_parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">group_parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">group_parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">close</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">part</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">group_parts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">):</span>
-                <span class="c1"># insert a separator if not already done in a nested group</span>
-                <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inserted_separators_indices</span><span class="p">:</span>
-                    <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">part</span> <span class="o">+</span> <span class="s1">&#39; |&#39;</span>
-                    <span class="n">inserted_separators_indices</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-            <span class="n">parts</span><span class="p">[</span><span class="n">start</span> <span class="o">+</span> <span class="n">group_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">group_parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">group_size</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-                <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="c1"># make it look optional if it&#39;s not required or in a group</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">required</span> <span class="ow">or</span> <span class="n">required</span> <span class="ow">or</span> <span class="n">in_group</span><span class="p">):</span>
+                        <span class="n">part</span> <span class="o">=</span> <span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">]&#39;</span> <span class="o">%</span> <span class="n">part</span>
 
-        <span class="c1"># return the usage parts</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parts</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="c1"># add the action string to the list</span>
+                <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">in_group</span><span class="p">:</span>
+                <span class="n">parts</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;(&#39;</span> <span class="k">if</span> <span class="n">required</span> <span class="k">else</span> <span class="s1">&#39;[&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">parts</span><span class="p">[</span><span class="n">start</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; |&#39;</span>
+                <span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;)&#39;</span> <span class="k">if</span> <span class="n">required</span> <span class="k">else</span> <span class="s1">&#39;]&#39;</span>
+
+        <span class="k">if</span> <span class="n">pos_start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pos_start</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parts</span><span class="p">,</span> <span class="n">pos_start</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_format_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="k">if</span> <span class="s1">&#39;%(prog)&#39;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
@@ -590,6 +631,7 @@
         <span class="n">help_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">-</span> <span class="n">help_position</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
         <span class="n">action_width</span> <span class="o">=</span> <span class="n">help_position</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_indent</span> <span class="o">-</span> <span class="mi">2</span>
         <span class="n">action_header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_action_invocation</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">action_header_no_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decolor</span><span class="p">(</span><span class="n">action_header</span><span class="p">)</span>
 
         <span class="c1"># no help; start on same line and add a final newline</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">action</span><span class="o">.</span><span class="n">help</span><span class="p">:</span>
@@ -597,9 +639,15 @@
             <span class="n">action_header</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%*s%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">tup</span>
 
         <span class="c1"># short action name; start on the same line and pad two spaces</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">action_header</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">action_width</span><span class="p">:</span>
-            <span class="n">tup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_indent</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">action_width</span><span class="p">,</span> <span class="n">action_header</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">action_header_no_color</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">action_width</span><span class="p">:</span>
+            <span class="c1"># calculate widths without color codes</span>
+            <span class="n">action_header_color</span> <span class="o">=</span> <span class="n">action_header</span>
+            <span class="n">tup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_indent</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">action_width</span><span class="p">,</span> <span class="n">action_header_no_color</span>
             <span class="n">action_header</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%*s%-*s</span><span class="s1">  &#39;</span> <span class="o">%</span> <span class="n">tup</span>
+            <span class="c1"># swap in the colored header</span>
+            <span class="n">action_header</span> <span class="o">=</span> <span class="n">action_header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                <span class="n">action_header_no_color</span><span class="p">,</span> <span class="n">action_header_color</span>
+            <span class="p">)</span>
             <span class="n">indent_first</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># long action name; start on the next line</span>
@@ -632,23 +680,42 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_join_parts</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_format_action_invocation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_theme</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">:</span>
             <span class="n">default</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_default_metavar_for_positional</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-            <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_metavar_formatter</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">default</span><span class="p">)(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">t</span><span class="o">.</span><span class="n">action</span>
+                <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_metavar_formatter</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">default</span><span class="p">)(</span><span class="mi">1</span><span class="p">))</span>
+                <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">reset</span>
+            <span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">color_option_strings</span><span class="p">(</span><span class="n">strings</span><span class="p">):</span>
+                <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strings</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_long_option</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+                        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">long_option</span><span class="si">}{</span><span class="n">s</span><span class="si">}{</span><span class="n">t</span><span class="o">.</span><span class="n">reset</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">short_option</span><span class="si">}{</span><span class="n">s</span><span class="si">}{</span><span class="n">t</span><span class="o">.</span><span class="n">reset</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">parts</span>
 
             <span class="c1"># if the Optional doesn&#39;t take a value, format is:</span>
             <span class="c1">#    -s, --long</span>
             <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">nargs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">)</span>
+                <span class="n">option_strings</span> <span class="o">=</span> <span class="n">color_option_strings</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">)</span>
+                <span class="k">return</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">option_strings</span><span class="p">)</span>
 
             <span class="c1"># if the Optional takes a value, format is:</span>
             <span class="c1">#    -s, --long ARGS</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">default</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_default_metavar_for_optional</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-                <span class="n">args_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_args</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
-                <span class="k">return</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">args_string</span>
+                <span class="n">option_strings</span> <span class="o">=</span> <span class="n">color_option_strings</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">)</span>
+                <span class="n">args_string</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">label</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">_format_args</span><span class="p">(</span><span class="n">action</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">)</span><span class="si">}{</span><span class="n">t</span><span class="o">.</span><span class="n">reset</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">option_strings</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">args_string</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_metavar_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">default_metavar</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">metavar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -694,16 +761,19 @@
         <span class="k">return</span> <span class="n">result</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_expand_help</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="n">help_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_help_string</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;%&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">help_string</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">help_string</span>
         <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">vars</span><span class="p">(</span><span class="n">action</span><span class="p">),</span> <span class="n">prog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prog</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="ow">is</span> <span class="n">SUPPRESS</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">SUPPRESS</span><span class="p">:</span>
                 <span class="k">del</span> <span class="n">params</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="s1">&#39;__name__&#39;</span><span class="p">):</span>
-                <span class="n">params</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;__name__&#39;</span><span class="p">):</span>
+                <span class="n">params</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;choices&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;choices&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;choices&#39;</span><span class="p">]))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_help_string</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="o">%</span> <span class="n">params</span>
+        <span class="k">return</span> <span class="n">help_string</span> <span class="o">%</span> <span class="n">params</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_iter_indented_subactions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -773,11 +843,14 @@
         <span class="k">if</span> <span class="n">help</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">help</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
-        <span class="k">if</span> <span class="s1">&#39;%(default)&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">help</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">SUPPRESS</span><span class="p">:</span>
-                <span class="n">defaulting_nargs</span> <span class="o">=</span> <span class="p">[</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">ZERO_OR_MORE</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span> <span class="ow">or</span> <span class="n">action</span><span class="o">.</span><span class="n">nargs</span> <span class="ow">in</span> <span class="n">defaulting_nargs</span><span class="p">:</span>
-                    <span class="n">help</span> <span class="o">+=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39; (default: </span><span class="si">%(default)s</span><span class="s1">)&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="s1">&#39;%(default)&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">help</span>
+            <span class="ow">and</span> <span class="n">action</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">SUPPRESS</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">action</span><span class="o">.</span><span class="n">required</span>
+        <span class="p">):</span>
+            <span class="n">defaulting_nargs</span> <span class="o">=</span> <span class="p">(</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">ZERO_OR_MORE</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span> <span class="ow">or</span> <span class="n">action</span><span class="o">.</span><span class="n">nargs</span> <span class="ow">in</span> <span class="n">defaulting_nargs</span><span class="p">:</span>
+                <span class="n">help</span> <span class="o">+=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39; (default: </span><span class="si">%(default)s</span><span class="s1">)&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">help</span>
 
 
@@ -948,22 +1021,16 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">option_strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">option_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;.__call__() not defined&#39;</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;.__call__() not defined&#39;</span><span class="p">)</span>
 
-
-<span class="c1"># FIXME: remove together with `BooleanOptionalAction` deprecated arguments.</span>
-<span class="n">_deprecated_default</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">BooleanOptionalAction</span><span class="p">(</span><span class="n">Action</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">option_strings</span><span class="p">,</span>
                  <span class="n">dest</span><span class="p">,</span>
                  <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="nb">type</span><span class="o">=</span><span class="n">_deprecated_default</span><span class="p">,</span>
-                 <span class="n">choices</span><span class="o">=</span><span class="n">_deprecated_default</span><span class="p">,</span>
                  <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">help</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">metavar</span><span class="o">=</span><span class="n">_deprecated_default</span><span class="p">,</span>
                  <span class="n">deprecated</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="n">_option_strings</span> <span class="o">=</span> <span class="p">[]</span>
@@ -971,38 +1038,19 @@
             <span class="n">_option_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option_string</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">option_string</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;--&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">option_string</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;--no-&#39;</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;invalid option name </span><span class="si">{</span><span class="n">option_string</span><span class="si">!r}</span><span class="s1"> &#39;</span>
+                                     <span class="sa">f</span><span class="s1">&#39;for BooleanOptionalAction&#39;</span><span class="p">)</span>
                 <span class="n">option_string</span> <span class="o">=</span> <span class="s1">&#39;--no-&#39;</span> <span class="o">+</span> <span class="n">option_string</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
                 <span class="n">_option_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option_string</span><span class="p">)</span>
-
-        <span class="c1"># We need `_deprecated` special value to ban explicit arguments that</span>
-        <span class="c1"># match default value. Like:</span>
-        <span class="c1">#   parser.add_argument(&#39;-f&#39;, action=BooleanOptionalAction, type=int)</span>
-        <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;choices&#39;</span><span class="p">,</span> <span class="s1">&#39;metavar&#39;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">locals</span><span class="p">()[</span><span class="n">field_name</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_deprecated_default</span><span class="p">:</span>
-                <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
-                <span class="n">warnings</span><span class="o">.</span><span class="n">_deprecated</span><span class="p">(</span>
-                    <span class="n">field_name</span><span class="p">,</span>
-                    <span class="s2">&quot;</span><span class="si">{name!r}</span><span class="s2"> is deprecated as of Python 3.12 and will be &quot;</span>
-                    <span class="s2">&quot;removed in Python </span><span class="si">{remove}</span><span class="s2">.&quot;</span><span class="p">,</span>
-                    <span class="n">remove</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
-
-        <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="n">_deprecated_default</span><span class="p">:</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">choices</span> <span class="ow">is</span> <span class="n">_deprecated_default</span><span class="p">:</span>
-            <span class="n">choices</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">metavar</span> <span class="ow">is</span> <span class="n">_deprecated_default</span><span class="p">:</span>
-            <span class="n">metavar</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">option_strings</span><span class="o">=</span><span class="n">_option_strings</span><span class="p">,</span>
             <span class="n">dest</span><span class="o">=</span><span class="n">dest</span><span class="p">,</span>
             <span class="n">nargs</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">,</span>
-            <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span>
-            <span class="n">choices</span><span class="o">=</span><span class="n">choices</span><span class="p">,</span>
             <span class="n">required</span><span class="o">=</span><span class="n">required</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="n">help</span><span class="p">,</span>
-            <span class="n">metavar</span><span class="o">=</span><span class="n">metavar</span><span class="p">,</span>
             <span class="n">deprecated</span><span class="o">=</span><span class="n">deprecated</span><span class="p">)</span>
 
 
@@ -1284,6 +1332,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_name_parser_map</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_choices_actions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_deprecated</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">_SubParsersAction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">option_strings</span><span class="o">=</span><span class="n">option_strings</span><span class="p">,</span>
@@ -1299,23 +1348,30 @@
         <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;prog&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;prog&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prog_prefix</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
+        <span class="c1"># set color</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color</span>
+
         <span class="n">aliases</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;aliases&#39;</span><span class="p">,</span> <span class="p">())</span>
 
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_parser_map</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ArgumentError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;conflicting subparser: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;conflicting subparser: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">alias</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_parser_map</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">ArgumentError</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;conflicting subparser alias: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">alias</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;conflicting subparser alias: </span><span class="si">{</span><span class="n">alias</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="c1"># create a pseudo-action to hold the choice help</span>
         <span class="k">if</span> <span class="s1">&#39;help&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">help</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;help&#39;</span><span class="p">)</span>
             <span class="n">choice_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ChoicesPseudoAction</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">aliases</span><span class="p">,</span> <span class="n">help</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_choices_actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">choice_action</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">choice_action</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># create the parser and add it to the map</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser_class</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">choice_action</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">_check_help</span><span class="p">(</span><span class="n">choice_action</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name_parser_map</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">parser</span>
 
         <span class="c1"># make parser available under aliases also</span>
@@ -1380,7 +1436,7 @@
 <span class="c1"># ==============</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">FileType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Factory for creating file object types</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deprecated factory for creating file object types</span>
 
 <span class="sd">    Instances of FileType are typically passed as type= arguments to the</span>
 <span class="sd">    ArgumentParser add_argument() method.</span>
@@ -1397,6 +1453,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">bufsize</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;FileType is deprecated. Simply open files after parsing arguments.&quot;</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="ne">PendingDeprecationWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="n">mode</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bufsize</span> <span class="o">=</span> <span class="n">bufsize</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_encoding</span> <span class="o">=</span> <span class="n">encoding</span>
@@ -1500,7 +1562,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># determines whether an &quot;option&quot; looks like a negative number</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_negative_number_matcher</span> <span class="o">=</span> <span class="n">_re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^-\d+$|^-\d*\.\d+$&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_negative_number_matcher</span> <span class="o">=</span> <span class="n">_re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;-\.?\d&#39;</span><span class="p">)</span>
 
         <span class="c1"># whether or not there are any optionals that look like negative</span>
         <span class="c1"># numbers -- uses a list so it can be shared and edited</span>
@@ -1553,7 +1615,8 @@
         <span class="n">chars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix_chars</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">args</span> <span class="ow">and</span> <span class="s1">&#39;dest&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;dest supplied twice for positional argument&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;dest supplied twice for positional argument,&#39;</span>
+                                <span class="s1">&#39; did you mean metavar?&#39;</span><span class="p">)</span>
             <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_positional_kwargs</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># otherwise, we&#39;re adding an optional argument</span>
@@ -1569,27 +1632,34 @@
                 <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_default</span>
 
         <span class="c1"># create the action object, and add it to the parser</span>
+        <span class="n">action_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;action&#39;</span><span class="p">)</span>
         <span class="n">action_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pop_action_class</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">action_class</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;unknown action &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">action_class</span><span class="p">,))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;unknown action </span><span class="si">{</span><span class="n">action_class</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">action</span> <span class="o">=</span> <span class="n">action_class</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># raise an error if action for positional argument does not</span>
+        <span class="c1"># consume arguments</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span> <span class="ow">and</span> <span class="n">action</span><span class="o">.</span><span class="n">nargs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;action </span><span class="si">{</span><span class="n">action_name</span><span class="si">!r}</span><span class="s1"> is not valid for positional arguments&#39;</span><span class="p">)</span>
 
         <span class="c1"># raise an error if the action type is not callable</span>
         <span class="n">type_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_registry_get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">action</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">type_func</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1"> is not callable&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">type_func</span><span class="p">,))</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">type_func</span><span class="si">!r}</span><span class="s1"> is not callable&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">type_func</span> <span class="ow">is</span> <span class="n">FileType</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1"> is a FileType class object, instance of it&#39;</span>
-                             <span class="s1">&#39; must be passed&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">type_func</span><span class="p">,))</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">type_func</span><span class="si">!r}</span><span class="s1"> is a FileType class object, &#39;</span>
+                            <span class="sa">f</span><span class="s1">&#39;instance of it must be passed&#39;</span><span class="p">)</span>
 
         <span class="c1"># raise an error if the metavar does not match the type</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_get_formatter&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_get_validation_formatter&quot;</span><span class="p">):</span>
+            <span class="n">formatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_validation_formatter</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_get_formatter</span><span class="p">()</span><span class="o">.</span><span class="n">_format_args</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">formatter</span><span class="o">.</span><span class="n">_format_args</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;length of metavar tuple does not match nargs&quot;</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_help</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">add_argument_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1633,8 +1703,8 @@
             <span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">title</span> <span class="ow">in</span> <span class="n">title_group_map</span><span class="p">:</span>
                 <span class="c1"># This branch could happen if a derived class added</span>
                 <span class="c1"># groups with duplicated titles in __init__</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;cannot merge actions - two groups are named </span><span class="si">%r</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">title</span><span class="p">))</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;cannot merge actions - two groups are named </span><span class="si">{</span><span class="n">group</span><span class="o">.</span><span class="n">title</span><span class="si">!r}</span><span class="s1">&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">title_group_map</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="n">group</span>
 
         <span class="c1"># map each action to its group</span>
@@ -1675,13 +1745,15 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_positional_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># make sure required is not specified</span>
         <span class="k">if</span> <span class="s1">&#39;required&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;&#39;required&#39; is an invalid argument for positionals&quot;</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&#39;required&#39; is an invalid argument for positionals&quot;</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="c1"># mark positional arguments as required if at least one is</span>
         <span class="c1"># always required</span>
         <span class="n">nargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nargs&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">nargs</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">ZERO_OR_MORE</span><span class="p">,</span> <span class="n">REMAINDER</span><span class="p">,</span> <span class="n">SUPPRESS</span><span class="p">,</span> <span class="mi">0</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">nargs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;nargs for positionals must be != 0&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nargs</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">ZERO_OR_MORE</span><span class="p">,</span> <span class="n">REMAINDER</span><span class="p">,</span> <span class="n">SUPPRESS</span><span class="p">]:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;required&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="c1"># return the keyword arguments with no option strings</span>
@@ -1694,11 +1766,9 @@
         <span class="k">for</span> <span class="n">option_string</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
             <span class="c1"># error on strings that don&#39;t start with an appropriate prefix</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">option_string</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix_chars</span><span class="p">:</span>
-                <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;option&#39;</span><span class="p">:</span> <span class="n">option_string</span><span class="p">,</span>
-                        <span class="s1">&#39;prefix_chars&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix_chars</span><span class="p">}</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;invalid option string </span><span class="si">%(option)r</span><span class="s1">: &#39;</span>
-                        <span class="s1">&#39;must start with a character </span><span class="si">%(prefix_chars)r</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="n">args</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;invalid option string </span><span class="si">{</span><span class="n">option_string</span><span class="si">!r}</span><span class="s1">: &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;must start with a character </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_chars</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
 
             <span class="c1"># strings starting with two prefix characters are long options</span>
             <span class="n">option_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option_string</span><span class="p">)</span>
@@ -1714,8 +1784,8 @@
                 <span class="n">dest_option_string</span> <span class="o">=</span> <span class="n">option_strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">dest</span> <span class="o">=</span> <span class="n">dest_option_string</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_chars</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">dest</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;dest= is required for options like </span><span class="si">%r</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="n">option_string</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;dest= is required for options like </span><span class="si">{</span><span class="n">option_string</span><span class="si">!r}</span><span class="s1">&#39;</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">dest</span> <span class="o">=</span> <span class="n">dest</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
 
         <span class="c1"># return the updated keyword arguments</span>
@@ -1731,8 +1801,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler_func_name</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;invalid conflict_resolution value: </span><span class="si">%r</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">conflict_handler</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;invalid conflict_resolution value: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">conflict_handler</span><span class="si">!r}</span><span class="s1">&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_check_conflict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
 
@@ -1771,10 +1841,26 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">:</span>
                 <span class="n">action</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">_remove_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_help</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">help</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_get_validation_formatter&quot;</span><span class="p">):</span>
+            <span class="n">formatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_validation_formatter</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">formatter</span><span class="o">.</span><span class="n">_expand_help</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;badly formed help string&#39;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_ArgumentGroup</span><span class="p">(</span><span class="n">_ActionsContainer</span><span class="p">):</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;prefix_chars&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+            <span class="n">depr_msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;The use of the undocumented &#39;prefix_chars&#39; parameter in &quot;</span>
+                <span class="s2">&quot;ArgumentParser.add_argument_group() is deprecated.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">depr_msg</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
         <span class="c1"># add any missing keyword arguments by checking the container</span>
         <span class="n">update</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span>
         <span class="n">update</span><span class="p">(</span><span class="s1">&#39;conflict_handler&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">.</span><span class="n">conflict_handler</span><span class="p">)</span>
@@ -1806,14 +1892,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_group_actions</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">add_argument_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;Nesting argument groups is deprecated.&quot;</span><span class="p">,</span>
-            <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">,</span>
-            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;argument groups cannot be nested&#39;</span><span class="p">)</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_MutuallyExclusiveGroup</span><span class="p">(</span><span class="n">_ArgumentGroup</span><span class="p">):</span>
 
@@ -1824,7 +1903,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_add_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">required</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;mutually exclusive arguments must be optional&#39;</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;mutually exclusive arguments must be optional&#39;</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_container</span><span class="o">.</span><span class="n">_add_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_group_actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
@@ -1834,14 +1913,29 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_container</span><span class="o">.</span><span class="n">_remove_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_group_actions</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_mutually_exclusive_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;Nesting mutually exclusive groups is deprecated.&quot;</span><span class="p">,</span>
-            <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">,</span>
-            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_mutually_exclusive_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;mutually exclusive groups cannot be nested&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_prog_name</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">prog</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">prog</span>
+    <span class="n">arg0</span> <span class="o">=</span> <span class="n">_sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">modspec</span> <span class="o">=</span> <span class="n">_sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;__main__&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">__spec__</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+        <span class="c1"># possibly PYTHONSTARTUP or -X presite or other weird edge case</span>
+        <span class="c1"># no good answer here, so fall back to the default</span>
+        <span class="n">modspec</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">modspec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># simple script</span>
+        <span class="k">return</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">arg0</span><span class="p">)</span>
+    <span class="n">py</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">_sys</span><span class="o">.</span><span class="n">executable</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">modspec</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+        <span class="c1"># imported module or package</span>
+        <span class="n">modname</span> <span class="o">=</span> <span class="n">modspec</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s1">&#39;.__main__&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">py</span><span class="si">}</span><span class="s1"> -m </span><span class="si">{</span><span class="n">modname</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="c1"># directory or ZIP file</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">py</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">arg0</span><span class="si">}</span><span class="s1">&#39;</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">ArgumentParser</span><span class="p">(</span><span class="n">_AttributeHolder</span><span class="p">,</span> <span class="n">_ActionsContainer</span><span class="p">):</span>
@@ -1864,6 +1958,9 @@
 <span class="sd">        - allow_abbrev -- Allow long options to be abbreviated unambiguously</span>
 <span class="sd">        - exit_on_error -- Determines whether or not ArgumentParser exits with</span>
 <span class="sd">            error info when an error occurs</span>
+<span class="sd">        - suggest_on_error - Enables suggestions for mistyped argument choices</span>
+<span class="sd">            and subparser names (default: ``False``)</span>
+<span class="sd">        - color - Allow color output in help messages (default: ``False``)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -1879,19 +1976,18 @@
                  <span class="n">conflict_handler</span><span class="o">=</span><span class="s1">&#39;error&#39;</span><span class="p">,</span>
                  <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">allow_abbrev</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">exit_on_error</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-
+                 <span class="n">exit_on_error</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="o">*</span><span class="p">,</span>
+                 <span class="n">suggest_on_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="p">):</span>
         <span class="n">superinit</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ArgumentParser</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span>
         <span class="n">superinit</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
                   <span class="n">prefix_chars</span><span class="o">=</span><span class="n">prefix_chars</span><span class="p">,</span>
                   <span class="n">argument_default</span><span class="o">=</span><span class="n">argument_default</span><span class="p">,</span>
                   <span class="n">conflict_handler</span><span class="o">=</span><span class="n">conflict_handler</span><span class="p">)</span>
 
-        <span class="c1"># default setting for prog</span>
-        <span class="k">if</span> <span class="n">prog</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">prog</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">_sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">prog</span> <span class="o">=</span> <span class="n">prog</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prog</span> <span class="o">=</span> <span class="n">_prog_name</span><span class="p">(</span><span class="n">prog</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">usage</span> <span class="o">=</span> <span class="n">usage</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epilog</span> <span class="o">=</span> <span class="n">epilog</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">formatter_class</span> <span class="o">=</span> <span class="n">formatter_class</span>
@@ -1899,6 +1995,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">add_help</span> <span class="o">=</span> <span class="n">add_help</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">allow_abbrev</span> <span class="o">=</span> <span class="n">allow_abbrev</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exit_on_error</span> <span class="o">=</span> <span class="n">exit_on_error</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suggest_on_error</span> <span class="o">=</span> <span class="n">suggest_on_error</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+
+        <span class="c1"># Cached formatter for validation (avoids repeated _set_color calls)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cached_formatter</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="n">add_group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_argument_group</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_positionals</span> <span class="o">=</span> <span class="n">add_group</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;positional arguments&#39;</span><span class="p">))</span>
@@ -1948,7 +2049,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">add_subparsers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subparsers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ArgumentError</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;cannot have multiple subparser arguments&#39;</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;cannot have multiple subparser arguments&#39;</span><span class="p">)</span>
 
         <span class="c1"># add the parser class to the arguments if it&#39;s not present</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;parser_class&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
@@ -1963,15 +2064,19 @@
         <span class="c1"># prog defaults to the usage message of this parser, skipping</span>
         <span class="c1"># optional arguments and with no &quot;usage:&quot; prefix</span>
         <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;prog&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">formatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_formatter</span><span class="p">()</span>
+            <span class="c1"># Create formatter without color to avoid storing ANSI codes in prog</span>
+            <span class="n">formatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter_class</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prog</span><span class="p">)</span>
+            <span class="n">formatter</span><span class="o">.</span><span class="n">_set_color</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">positionals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_positional_actions</span><span class="p">()</span>
             <span class="n">groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutually_exclusive_groups</span>
-            <span class="n">formatter</span><span class="o">.</span><span class="n">add_usage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usage</span><span class="p">,</span> <span class="n">positionals</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">formatter</span><span class="o">.</span><span class="n">add_usage</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">positionals</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;prog&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formatter</span><span class="o">.</span><span class="n">format_help</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
         <span class="c1"># create the parsers action and add it to the positionals list</span>
         <span class="n">parsers_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pop_action_class</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s1">&#39;parsers&#39;</span><span class="p">)</span>
         <span class="n">action</span> <span class="o">=</span> <span class="n">parsers_class</span><span class="p">(</span><span class="n">option_strings</span><span class="o">=</span><span class="p">[],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">action</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_help</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_subparsers</span><span class="o">.</span><span class="n">_add_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
 
         <span class="c1"># return the created parsers action</span>
@@ -2602,7 +2707,6 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">default</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">SUPPRESS</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_value</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_check_value</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
         <span class="c1"># when nargs=&#39;*&#39; on a positional, if there were no command-line</span>
         <span class="c1"># args, use the default if it is anything other than None</span>
@@ -2610,11 +2714,8 @@
               <span class="ow">not</span> <span class="n">action</span><span class="o">.</span><span class="n">option_strings</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">default</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_check_value</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># since arg_strings is always [] at this point</span>
-                <span class="c1"># there is no need to use self._check_value(action, value)</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">arg_strings</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># single argument or optional argument produces a single value</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg_strings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">action</span><span class="o">.</span><span class="n">nargs</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">OPTIONAL</span><span class="p">]:</span>
@@ -2647,8 +2748,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">arg_string</span><span class="p">):</span>
         <span class="n">type_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_registry_get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">action</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">type_func</span><span class="p">):</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1"> is not callable&#39;</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">ArgumentError</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">msg</span> <span class="o">%</span> <span class="n">type_func</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">type_func</span><span class="si">!r}</span><span class="s1"> is not callable&#39;</span><span class="p">)</span>
 
         <span class="c1"># convert the value to the appropriate type</span>
         <span class="k">try</span><span class="p">:</span>
@@ -2672,14 +2772,27 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_check_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="c1"># converted value must be one of the choices (if specified)</span>
         <span class="n">choices</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">choices</span>
-        <span class="k">if</span> <span class="n">choices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">choices</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">choices</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">choices</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">:</span>
-                <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
-                        <span class="s1">&#39;choices&#39;</span><span class="p">:</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">action</span><span class="o">.</span><span class="n">choices</span><span class="p">))}</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;invalid choice: </span><span class="si">%(value)r</span><span class="s1"> (choose from </span><span class="si">%(choices)s</span><span class="s1">)&#39;</span><span class="p">)</span>
-                <span class="k">raise</span> <span class="n">ArgumentError</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">msg</span> <span class="o">%</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">choices</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">choices</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">choices</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">choices</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+                    <span class="s1">&#39;choices&#39;</span><span class="p">:</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">action</span><span class="o">.</span><span class="n">choices</span><span class="p">))}</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;invalid choice: </span><span class="si">%(value)r</span><span class="s1"> (choose from </span><span class="si">%(choices)s</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">suggest_on_error</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">choice</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">action</span><span class="o">.</span><span class="n">choices</span><span class="p">):</span>
+                    <span class="kn">import</span><span class="w"> </span><span class="nn">difflib</span>
+                    <span class="n">suggestions</span> <span class="o">=</span> <span class="n">difflib</span><span class="o">.</span><span class="n">get_close_matches</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">action</span><span class="o">.</span><span class="n">choices</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">suggestions</span><span class="p">:</span>
+                        <span class="n">args</span><span class="p">[</span><span class="s1">&#39;closest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suggestions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;invalid choice: </span><span class="si">%(value)r</span><span class="s1">, maybe you meant </span><span class="si">%(closest)r</span><span class="s1">? &#39;</span>
+                                <span class="s1">&#39;(choose from </span><span class="si">%(choices)s</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">ArgumentError</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">msg</span> <span class="o">%</span> <span class="n">args</span><span class="p">)</span>
 
     <span class="c1"># =======================</span>
     <span class="c1"># Help-formatting methods</span>
@@ -2715,7 +2828,16 @@
         <span class="k">return</span> <span class="n">formatter</span><span class="o">.</span><span class="n">format_help</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter_class</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prog</span><span class="p">)</span>
+        <span class="n">formatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter_class</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prog</span><span class="p">)</span>
+        <span class="n">formatter</span><span class="o">.</span><span class="n">_set_color</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">formatter</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_validation_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Return cached formatter for read-only validation operations</span>
+        <span class="c1"># (_expand_help and _format_args). Avoids repeated slow _set_color calls.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_formatter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cached_formatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_formatter</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_formatter</span>
 
     <span class="c1"># =====================</span>
     <span class="c1"># Help-printing methods</span>
