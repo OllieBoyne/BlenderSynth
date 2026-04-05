@@ -1,12 +1,12 @@
-import sys
-from tqdm import tqdm
-from time import perf_counter, sleep
-import numpy as np
-from subprocess import Popen
 import atexit
-
-from datetime import datetime, timedelta
 import os
+import sys
+from datetime import datetime, timedelta
+from subprocess import Popen
+from time import perf_counter, sleep
+
+import numpy as np
+from tqdm import tqdm
 
 
 def _list_split(list, chunks):
@@ -25,15 +25,16 @@ class BlenderThread:
         progress_loc,
         name="",
         timeout: int = 100,
-        to_stdout: bool = False,
+        print_to_stdout: bool = False,
         MAX_PER_JOB: int = 100,
         script_directory: str = None,
     ):
         """
         :param progress_loc: .log file to write progress to
         :param timeout: longest time in (s) without render after which process is finished/failed.
-        :param to_stdout: If True, print to stdout instead of to a log file.
-        :param MAX_PER_JOB: Split command into jobs of size MAX_PER_JOB, and run each job in a separate process.
+        :param print_to_stdout: If True, print to stdout instead of to a log file.
+        :param MAX_PER_JOB: To prevent memory issues, split command into jobs of size MAX_PER_JOB,
+            and run each job in a separate process.
         :param script_directory: If given, add this to `sys.path` before running the script.
         """
 
@@ -52,7 +53,7 @@ class BlenderThread:
         )
         self.timer = perf_counter()
 
-        self.to_stdout = to_stdout
+        self.to_stdout = print_to_stdout
         if not self.to_stdout and log_loc is not None:
             self.log_loc = log_loc
             self.logfile = open(self.log_loc, "a")
@@ -106,7 +107,8 @@ class BlenderThread:
 
     def terminate(self):
         """End process"""
-        self.process.kill()
+        if self.process:
+            self.process.kill()
 
     def kill(self):
         self.terminate()
@@ -119,7 +121,7 @@ class BlenderThread:
 
     @property
     def complete(self):
-        if not self.is_running:
+        if not self.is_running and self.logfile:
             self.logfile.flush()
             return True
 
@@ -168,19 +170,20 @@ class BlenderThreadManager:
         command,
         jsons,
         output_directory,
-        print_to_stdout=False,
-        MAX_PER_JOB=100,
-        script_directory=None,
+        thread_kwargs=None,
     ):
         """
         :param commands: Base Blender command to run
         :param jsons: A list of num_threads size, each element is a list of jsons to render from
-        :param log_locs:
-        :param MAX_PER_JOB: To prevent memory issues, split up jobs into chunks of MAX_PER_JOB
-        :param script_directory: If given, add this to `sys.path` before running the script.
+        :param output_directory: Directory to save logs and progress to
+        :param thread_kwargs: Optional dict of keyword arguments forwarded to each :class:`BlenderThread`.
+            Allowed keyword arguments are: `print_to_stdout: bool`, `timeout: int`, `MAX_PER_JOB: int`,
+            `script_directory: str`.
         """
-        self.num_threads = len(jsons)
+        if thread_kwargs is None:
+            thread_kwargs = {}
 
+        self.num_threads = len(jsons)
         self.command = command
 
         # create logs
@@ -212,12 +215,10 @@ class BlenderThreadManager:
             thread = BlenderThread(
                 command,
                 jobs=jsons[i],
-                log_loc=None if logs is None else logs[i],
+                log_loc=logs[i],
                 progress_loc=progresses[i],
                 name=str(i),
-                to_stdout=print_to_stdout,
-                MAX_PER_JOB=MAX_PER_JOB,
-                script_directory=script_directory,
+                **thread_kwargs,
             )
 
             self.threads.append(thread)

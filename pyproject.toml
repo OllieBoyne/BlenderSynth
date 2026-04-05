@@ -8,6 +8,9 @@ version = "0.3.2"
 authors = [
   { name="Ollie Boyne", email="ollieboyne@gmail.com" },
 ]
+description = "Synthetic Rendering for Blender"
+readme = "README.md"
+requires-python = ">=3.11"
 dependencies = [
     "platformdirs>=3.11.0",
     "numpy",
@@ -15,8 +18,11 @@ dependencies = [
     "ffmpeg-python",
     "blender-stubs"
 ]
-description = "Synthetic Rendering for Blender"
-readme = "README.md"
+
+[dependency-groups]
+dev = [
+    "pip>=26.0.1",
+]
 
 [project.urls]
 "Homepage" = "https://github.com/OllieBoyne/BlenderSynth"

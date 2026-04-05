@@ -3,7 +3,7 @@ import os
 from .blender_threading import BlenderThreadManager, _list_split
 from ..utils.blender_setup.blender_locator import get_blender_path
 from ..file.tempfiles import cleanup_temp_files as cleanup
-from typing import Union
+from typing import Any, Union
 
 from sys import platform
 
@@ -72,14 +72,22 @@ class Runner:
         print_to_stdout=False,
         distributed: tuple = None,
         blend_src: str = None,
-        **script_kwargs,
+        script_kwargs: dict[str, Any] | None = None,
+        thread_kwargs: dict[str, Any] | None = None,
     ):
         """
         :param jsons: N sized list of .json files, each with info about the given job
         :param num_threads: threads to run in parallel (default = 1)
         :param distributed: tuple of (machine index, total machines) for distributed rendering
         :param blend_src: path to blend file to open (note: this is preferable to `blendersynth.load_blend` as it handles context better)
+        :param script_kwargs: keyword arguments to pass to the Blender script
+        :param thread_kwargs: keyword arguments to pass to BlenderThreadManager/BlenderThread (e.g. timeout)
         """
+
+        if script_kwargs is None:
+            script_kwargs = {}
+        if thread_kwargs is None:
+            thread_kwargs = {}
 
         # if distributed, split jsons into chunks
         if distributed is not None:
@@ -105,6 +113,7 @@ class Runner:
             print_to_stdout=print_to_stdout,
             output_directory=output_directory,
             script_directory=os.path.dirname(script),
+            thread_kwargs=thread_kwargs,
         )
 
         thread_manager.start()
@@ -118,7 +127,8 @@ def execute_jobs(
     print_to_stdout: bool = False,
     distributed: tuple = None,
     blend_src: str = None,
-    **script_kwargs,
+    script_kwargs: dict[str, Any] | None = None,
+    thread_kwargs: dict[str, Any] | None = None,
 ):
     """
     Execute a script, given a list of jobs to execute.
@@ -131,6 +141,8 @@ def execute_jobs(
     :param print_to_stdout: If True, print to stdout instead of saving to file
     :param distributed: tuple of (machine index, total machines) for distributed rendering
     :param blend_src: path to blend file to open (note: this is preferable to `blendersynth.load_blend` as it handles context better)
+    :param script_kwargs: keyword arguments to pass to the Blender script
+    :param thread_kwargs: keyword arguments to pass to BlenderThreadManager/BlenderThread (e.g. timeout)
     """
 
     assert not (
@@ -156,7 +168,8 @@ def execute_jobs(
         print_to_stdout=print_to_stdout,
         distributed=distributed,
         blend_src=blend_src,
-        **script_kwargs,
+        script_kwargs=script_kwargs,
+        thread_kwargs=thread_kwargs,
     )
 
     cleanup()

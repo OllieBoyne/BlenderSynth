@@ -6,7 +6,8 @@ loader = unittest.TestLoader()
 # Some tests run in native Python.
 if not bsyn.is_blender_running():
     from test_run_this_script import UnitTestRunThisScript
-    tests = [UnitTestRunThisScript]
+    from test_execute_jobs_kwargs import TestScriptKwargsForwarding, TestThreadKwargsForwarding
+    tests = [UnitTestRunThisScript, TestScriptKwargsForwarding, TestThreadKwargsForwarding]
 
     for test in tests:
         unittest.TextTestRunner().run(loader.loadTestsFromTestCase(test))
